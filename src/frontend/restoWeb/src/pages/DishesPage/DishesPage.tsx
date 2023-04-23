@@ -5,7 +5,7 @@ import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
 import { getAllDishes } from "@src/services/dishCalls";
 import Header from "@src/components/dumpComponents/Header/Header";
-import {IDishFE} from "@src/model/dishInterfaces";
+import {IDishFE} from "../../../../../shared/models/dishInterfaces";
 import Layout from "@src/components/dumpComponents/Layout/Layout";
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
 import SuccessAlert

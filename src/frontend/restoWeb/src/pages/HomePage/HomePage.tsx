@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
 import { getAllResto } from "@src/services/restoCalls";
-import {IRestaurantFrontEnd} from "@src/model/restaurantInterfaces";
+import {IRestaurantFrontEnd}
+  from "../../../../../shared/models/restaurantInterfaces";
 import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from "@src/components/dumpComponents/Layout/Layout";
 import RestoCard from "@src/components/RestoCard/RestoCard";

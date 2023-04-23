@@ -1,5 +1,5 @@
 import {ISearchCommunication} from './communicationInterfaces';
-import {IRestaurantFrontEnd} from '../../../shared/models/restaurantInterfaces';
+import {IRestaurantFrontEnd} from './restaurantInterfaces';
 
 export interface IFilterObj {
   savedFilter: ISearchCommunication;

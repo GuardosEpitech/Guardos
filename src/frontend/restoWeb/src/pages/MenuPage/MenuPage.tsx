@@ -11,7 +11,7 @@ import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from "@src/components/dumpComponents/Layout/Layout";
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
-import { ICategories } from "@src/model/categoryinterfaces";
+import { ICategories } from "../../../../../shared/models/categoryInterfaces";
 
 const theme = createTheme({
   palette: {

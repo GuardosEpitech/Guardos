@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { IFilterObject } from "@src/filter/filter";
+import { ISearchCommunication } from "../../../../../shared/models/communicationInterfaces";
 import styles from "./Filter.module.scss";
 
 const GlobalStyle = () => {
@@ -111,7 +111,7 @@ const Filter = (props: FilterProps) => {
         allergenListChanged.push(allergensCopy[i].name);
       }
     }
-    const inter: IFilterObject = {
+    const inter: ISearchCommunication = {
       allergenList: allergenListChanged
     }
 
@@ -147,7 +147,7 @@ const Filter = (props: FilterProps) => {
         categoriesSelected.push(statesCopy[i].name);
       }
     }
-    const inter: IFilterObject = {
+    const inter: ISearchCommunication = {
       rating: [min, max],
       categories: categoriesSelected
     }
@@ -156,7 +156,7 @@ const Filter = (props: FilterProps) => {
   }
 
   function onChangeRange(event: any) {
-    const inter: IFilterObject = {
+    const inter: ISearchCommunication = {
       range: event.target.value
     }
     props.onRangeChange(inter);
@@ -272,9 +272,9 @@ const Filter = (props: FilterProps) => {
           </div>
           <div>
             <Stack direction="row" spacing={1}>
-              {allergens.map((allergen) => {
+              {allergens.map((allergen, index) => {
                 return (
-                  <ThemeProvider theme={GlobalStyle()}>
+                  <ThemeProvider key={index} theme={GlobalStyle()}>
                     <Chip
                       label={allergen.name}
                       color={allergen.colorButton}

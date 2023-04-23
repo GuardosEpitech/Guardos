@@ -1,9 +1,9 @@
-import { ICategories } from '../models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../models/dishInterfaces';
-import { ILocation } from '../models/locationInterfaces';
-import { IMealType } from '../models/mealTypeInterfaces';
-import { IOpeningHours, IProducts, IRestaurantBackEnd, IRestaurantFrontEnd }
-  from '../models/restaurantInterfaces';
+import { ICategories } from '../../../shared/models/categoryInterfaces';
+import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { ILocation } from '../../../shared/models/locationInterfaces';
+import { IMealType } from '../../../shared/models/mealTypeInterfaces';
+import { IOpeningHours, IProduct, IRestaurantBackEnd, IRestaurantFrontEnd }
+  from '../../../shared/models/restaurantInterfaces';
 import { readAndGetAllRestaurants } from './connectDataBase';
 
 export default class Filter {
@@ -56,7 +56,7 @@ export default class Filter {
       phoneNumber: restaurant.phoneNumber,
       pictures: restaurant.pictures,
       openingHours: [{} as IOpeningHours],
-      products: [{} as IProducts],
+      products: [{} as IProduct],
       dishes: [{} as IDishBE],
       location: {} as ILocation,
       mealType: [{} as IMealType],
@@ -126,12 +126,14 @@ export default class Filter {
       ratingCount: restaurant.ratingCount,
       pictures: restaurant.pictures,
       openingHours: [{} as IOpeningHours],
-      products: [{} as IProducts],
+      products: [{} as IProduct],
       id: restaurant.id,
       phoneNumber: restaurant.phoneNumber,
       categories: [{} as ICategories],
       location: restaurant.location,
-      hitRate: hitRate
+      hitRate: hitRate,
+      range: 0,
+      dishes: [{} as IDishFE]
     };
     obj.categories.pop();
     obj.products.pop();

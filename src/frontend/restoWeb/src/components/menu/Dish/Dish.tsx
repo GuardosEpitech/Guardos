@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import { deleteDish } from "@src/services/dishCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
-import { IDishFE } from "@src/model/dishInterfaces";
+import { IDishFE } from "../../../../../../shared/models/dishInterfaces";
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 

@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { addNewProduct } from "@src/services/productCalls";
 import { getAllResto } from "@src/services/restoCalls";
 import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
-  from "@src/model/restaurantInterfaces";
+  from "../../../../../../shared/models/restaurantInterfaces";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 

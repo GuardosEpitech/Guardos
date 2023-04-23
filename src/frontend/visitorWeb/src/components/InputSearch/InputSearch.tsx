@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
 import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
-import { IFilterObject } from "@src/filter/filter";
+import { ISearchCommunication } from "../../../../../shared/models/communicationInterfaces";
 
 const theme = createTheme({
   palette: {
@@ -56,7 +56,7 @@ const InputSearch = (props: any) => {
   }
 
   function sendButtonData(name: string, location: string) {
-    const inter: IFilterObject = {
+    const inter: ISearchCommunication = {
       name: name,
       location: location
     }

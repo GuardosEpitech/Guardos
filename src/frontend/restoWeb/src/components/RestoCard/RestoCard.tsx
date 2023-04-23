@@ -5,7 +5,8 @@ import { Grid, Paper } from "@mui/material";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PlaceIcon from "@mui/icons-material/Place";
 
-import { IRestaurantFrontEnd } from "@src/model/restaurantInterfaces";
+import { IRestaurantFrontEnd }
+  from "../../../../../shared/models/restaurantInterfaces";
 import { deleteResto } from "@src/services/restoCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
 import Rating from "@src/components/RestoCard/Rating/Rating";

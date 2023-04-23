@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-import { ICategoryFE } from '../models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../models/dishInterfaces';
+import { ICategoryFE } from '../../../shared/models/categoryInterfaces';
+import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IDishesCommunication } from '../models/communicationInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
 

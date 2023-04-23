@@ -1,8 +1,7 @@
-import { IDishBE } from '../../../shared/models/dishInterfaces';
-import { ILocation } from '../../../shared/models/locationInterfaces';
-import { IMealType } from '../../../shared/models/mealTypeInterfaces';
-import { IOpeningHours, IProduct }
-  from '../../../shared/models/restaurantInterfaces';
+import { IDishBE } from './dishInterfaces';
+import { ILocation } from './locationInterfaces';
+import { IMealType } from './mealTypeInterfaces';
+import { IOpeningHours, IProduct } from './restaurantInterfaces';
 
 export interface IIngredientsCommunication {
   name?: string;

@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { Grid, Paper } from "@mui/material";
 import styles from "./RestoCard.module.scss";
 
-import { IRestaurantFrontEnd } from "@src/filter/filter";
+import { IRestaurantFrontEnd } from "../../../../../shared/models/restaurantInterfaces";
 import Rating from "@src/components/RestoCard/Rating/Rating";
 import placeholderImg from "@src/assets/placeholder.png";
 import { NavigateTo } from "@src/utils/NavigateTo";

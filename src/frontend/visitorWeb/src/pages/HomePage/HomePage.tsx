@@ -5,7 +5,8 @@ import InputSearch from "@src/components/InputSearch/InputSearch";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import MapButton from "@src/components/MapButton/MapButton";
 import Filter from "@src/components/Filter/Filter";
-import { IRestaurantFrontEnd, IFilterObject } from "@src/filter/filter";
+import { IRestaurantFrontEnd } from "../../../../../shared/models/restaurantInterfaces";
+import { ISearchCommunication } from "../../../../../shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
 
 const HomePage = () => {
@@ -37,13 +38,13 @@ const HomePage = () => {
   }, []);
 
   const updateRestoData = () => {
-    const inter: IFilterObject = { name: "" }
+    const inter: ISearchCommunication = { name: "" }
     getFilteredRestos(inter).then((res) => {
       setFilteredRestaurants(res);
     });
   }
 
-  async function handleFilterChange(obj: IFilterObject, check?: any) {
+  async function handleFilterChange(obj: ISearchCommunication, check?: any) {
     let location = inputFields[1];
     let nameSearch = inputFields[0];
     let rangeSearch = rangeValue;
@@ -94,7 +95,7 @@ const HomePage = () => {
       }
     }
 
-    const inter: IFilterObject = {
+    const inter: ISearchCommunication = {
       range: rangeSearch,
       rating: [min, max],
       name: nameSearch,

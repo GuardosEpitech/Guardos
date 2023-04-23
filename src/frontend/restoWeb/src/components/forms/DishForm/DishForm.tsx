@@ -13,8 +13,9 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { getAllProducts } from "@src/services/productCalls";
 import { addNewDish, editDish } from "@src/services/dishCalls";
-import { IProduct, IRestaurantFrontEnd } from "@src/model/restaurantInterfaces";
-import { IDishFE } from "@src/model/dishInterfaces";
+import { IProduct, IRestaurantFrontEnd }
+  from "../../../../../../shared/models/restaurantInterfaces";
+import { IDishFE } from "../../../../../../shared/models/dishInterfaces";
 import { getAllResto } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import placeholderImg from "@src/assets/placeholder.png";
@@ -97,10 +98,10 @@ const DishForm = (props: IDishFormProps) => {
         description: dishDescription,
         price: price,
         products: dishProducts,
-        allergens: selectAllergene.join(","),
+        allergens: selectAllergene,
         category: {
           foodGroup: selectCategory[0],
-          extraGroup: "",
+          extraGroup: [],
           menuGroup: selectCategory[0]
         },
         resto: restoName[i]

@@ -5,7 +5,7 @@ import { Grid, Paper } from "@mui/material";
 import AllergenTags from "@src/components/menu/AllergenTags/AllergenTags";
 import { deleteProduct } from "@src/services/productCalls";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
-import { IProduct } from "@src/model/restaurantInterfaces";
+import { IProduct } from "../../../../../shared/models/restaurantInterfaces";
 import styles from "./ProductCard.module.scss";
 
 interface IProductCardProps {

@@ -8,7 +8,8 @@ import Header from "@src/components/Header/Header";
 import PlaceIcon from "@mui/icons-material/Place";
 import { List, ListItem } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { ICategories, IDishFE } from "@src/filter/filter";
+import { ICategories } from "../../../../../shared/models/categoryInterfaces";
+import { IDishFE } from "../../../../../shared/models/dishInterfaces";
 
 const theme = createTheme({
   palette: {
@@ -52,7 +53,7 @@ const MenuPage = () => {
                         dishName={dish.name}
                         dishAllergens={dish.allergens}
                         dishDescription={dish.description}
-                        options={dish.category.extraGroup}
+                        options={dish.category.extraGroup.join(", ")}
                         imageSrc={dish.pictures[0]}
                         price={dish.price}
                       />

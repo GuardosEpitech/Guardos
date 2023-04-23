@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 
 import {
-  IOpeningHours, IProducts, IRestaurantBackEnd,
-  IRestaurantFrontEnd, restaurantSchema
-} from '../models/restaurantInterfaces';
-import { ICategories } from '../models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../models/dishInterfaces';
-import { IMealType } from '../models/mealTypeInterfaces';
-import { ILocation } from '../models/locationInterfaces';
+  IOpeningHours, IProduct, IRestaurantBackEnd,
+  IRestaurantFrontEnd
+} from '../../../shared/models/restaurantInterfaces';
+import { restaurantSchema } from '../models/restaurantInterfaces';
+import { ICategories } from '../../../shared/models/categoryInterfaces';
+import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { IMealType } from '../../../shared/models/mealTypeInterfaces';
+import { ILocation } from '../../../shared/models/locationInterfaces';
 import { IRestaurantCommunication } from '../models/communicationInterfaces';
 
 function createBackEndObj(restaurant: IRestaurantBackEnd) {
@@ -21,7 +22,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     phoneNumber: restaurant.phoneNumber,
     pictures: restaurant.pictures,
     openingHours: [{} as IOpeningHours],
-    products: [{} as IProducts],
+    products: [{} as IProduct],
     dishes: [{} as IDishBE],
     location: {} as ILocation,
     mealType: [{} as IMealType],
@@ -86,11 +87,13 @@ function createRestaurantObjFe(
     ratingCount: restaurant.ratingCount,
     pictures: restaurant.pictures,
     openingHours: [{} as IOpeningHours],
-    products: [{} as IProducts],
+    products: [{} as IProduct],
     id: restaurant.id,
     phoneNumber: restaurant.phoneNumber,
     categories: [{} as ICategories],
+    dishes: [{} as IDishFE],
     location: restaurant.location,
+    range: 0,
   };
   obj.categories.pop();
   obj.products.pop();
@@ -149,7 +152,7 @@ export async function getRestaurantByName(restaurantName: string) {
     openingHours: rest.openingHours as [IOpeningHours],
     phoneNumber: rest.phoneNumber,
     pictures: rest.pictures as [string],
-    products: rest.products as [IProducts],
+    products: rest.products as [IProduct],
     rating: rest.rating,
     ratingCount: rest.ratingCount,
     website: rest.website
@@ -175,7 +178,7 @@ export async function getAllRestaurants() {
       openingHours: restaurant.openingHours as [IOpeningHours],
       phoneNumber: restaurant.phoneNumber,
       pictures: restaurant.pictures as [string],
-      products: restaurant.products as [IProducts],
+      products: restaurant.products as [IProduct],
       rating: restaurant.rating,
       ratingCount: restaurant.ratingCount,
       website: restaurant.website
@@ -255,7 +258,7 @@ export async function changeRestaurant(
   return newRest;
 }
 
-export async function addRestoProduct(product: IProducts, restoName: string) {
+export async function addRestoProduct(product: IProduct, restoName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
     { name: restoName },
