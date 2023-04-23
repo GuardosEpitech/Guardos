@@ -1,0 +1,43 @@
+.Popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.PopupText {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.PopupButtons {
+    margin-top: 20px;
+}
+
+.PopupButton {
+    padding: 8px 16px;
+    margin: 0 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.PopupButton:hover {
+    background-color: #d0d0d0;
+}
+
+.PopupButton:last-child {
+    background-color: #f44336;
+    color: white;
+}
+
+.PopupButton:last-child:hover {
+    background-color: #d32f2f;
+}
