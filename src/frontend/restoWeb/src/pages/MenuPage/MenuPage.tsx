@@ -8,7 +8,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import Category from "@src/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
 import Header from "@src/components/dumpComponents/Header/Header";
-import Layout from "@src/components/dumpComponents/Layout/Layout";
+import Layout from "../../../../../shared/components/Layout/Layout";
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
 import { ICategories } from "../../../../../shared/models/categoryInterfaces";

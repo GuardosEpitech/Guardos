@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "@mui/material";
 
-import styles from "@src/components/Layout/Layout.module.scss";
+import styles from "src/shared/components/Layout/Layout.module.scss";
 
 interface ILayoutProps {
   children: React.ReactNode;

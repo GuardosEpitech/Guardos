@@ -6,7 +6,7 @@ import { getAllResto } from "@src/services/restoCalls";
 import {IRestaurantFrontEnd}
   from "../../../../../shared/models/restaurantInterfaces";
 import Header from "@src/components/dumpComponents/Header/Header";
-import Layout from "@src/components/dumpComponents/Layout/Layout";
+import Layout from "../../../../../shared/components/Layout/Layout";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import styles from "./HomePage.module.scss";
 import SuccessAlert

@@ -1,7 +1,7 @@
 import React from "react";
 
 import Header from "@src/components/dumpComponents/Header/Header";
-import Layout from "@src/components/dumpComponents/Layout/Layout";
+import Layout from "../../../../../shared/components/Layout/Layout";
 import ProductForm from "@src/components/forms/ProductForm/ProductForm";
 import styles from "@src/pages/AddProductPage/AddProductPage.module.scss";
 

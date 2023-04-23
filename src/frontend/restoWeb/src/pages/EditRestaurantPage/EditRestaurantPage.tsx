@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import Header from "@src/components/dumpComponents/Header/Header";
-import Layout from "@src/components/dumpComponents/Layout/Layout";
+import Layout from "../../../../../shared/components/Layout/Layout";
 import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
 import styles
