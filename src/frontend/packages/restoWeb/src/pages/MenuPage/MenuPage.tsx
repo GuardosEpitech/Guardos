@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { List, ListItem } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
 
-import Category from "@src/components/menu/Category/Category";
+import Category from "shared/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
 import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from 'shared/components/Layout/Layout';

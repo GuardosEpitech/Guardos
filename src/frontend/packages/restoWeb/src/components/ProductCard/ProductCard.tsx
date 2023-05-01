@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Grid, Paper } from "@mui/material";
-import AllergenTags from "@src/components/menu/AllergenTags/AllergenTags";
+import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
 import { deleteProduct } from "@src/services/productCalls";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import { IProduct } from "shared/models/restaurantInterfaces";

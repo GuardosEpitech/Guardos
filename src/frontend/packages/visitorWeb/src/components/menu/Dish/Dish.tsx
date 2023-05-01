@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, Paper } from "@mui/material";
 
 import styles from "@src/components/menu/Dish/Dish.module.scss";
-import AllergenTags from "@src/components/menu/AllergenTags/AllergenTags";
+import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
 import placeholderImg from "@src/assets/placeholder.png";
 
 interface IDishProps {
