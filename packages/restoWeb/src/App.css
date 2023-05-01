@@ -1,0 +1,10 @@
+@import "general.scss";
+
+h1 {
+  margin: 0;
+}
+
+.App {
+  background: #fafafa;
+  min-height: 100vh;
+}
