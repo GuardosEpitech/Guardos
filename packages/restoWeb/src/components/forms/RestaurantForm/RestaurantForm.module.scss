@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
+
+.FormControlMargin {
+  margin: 1.5rem 0.8rem;
+  align-items: center;
+}
+
+.ImageDimensions {
+  width: 100%;
+  height: auto;
+  max-height: 25rem;
+  max-width: 15rem;
+  object-fit: cover;
+  margin: auto;
+  display: flex;
+}
+
+.FieldMarginLeft {
+  padding-left: 0.4rem;
+}
+
+.FieldMarginRight {
+  padding-right: 0.4rem;
+}
+
+.ImageFlex {
+  display: flex !important;
+}
+
+.TextNextToImageField {
+  padding-left: 1rem;
+}
+
+.GridSpaceTop {
+  margin-top: 1.5rem;
+}
+
+.SaveBtn {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  margin-top: 1rem !important;
+}
+
+.DayDisplay {
+  margin-bottom: 1rem;
+  color: #ac2a37;
+}
