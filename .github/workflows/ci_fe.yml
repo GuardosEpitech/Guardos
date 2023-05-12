@@ -21,6 +21,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: package-lock.json
     - run: npm ci
     - run: ./packages/visitorWeb/npm ci:testtest
     - uses: romeovs/lcov-reporter-action@v0.2.16
