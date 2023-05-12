@@ -20,8 +20,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 'packages\visitorWeb\package.json'
+        cache: 'npm''
     - run: npm ci
     - run: ./packages/visitorWeb/npm ci:testtest
     - uses: romeovs/lcov-reporter-action@v0.2.16
