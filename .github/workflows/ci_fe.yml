@@ -23,8 +23,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: cd ./packages/visitorWeb 
-    - run: npm ci:test
     - run: ls
+    - run: npm ci:test
     - uses: romeovs/lcov-reporter-action@v0.2.16
       with:
         lcov-file: ./coverage/lcov.info
