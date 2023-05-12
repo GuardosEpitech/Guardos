@@ -22,7 +22,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: ./packages/visitorWeb/npm ci:test
+    - run: cd ./packages/visitorWeb 
+    - run: npm ci:test
     - uses: romeovs/lcov-reporter-action@v0.2.16
       with:
         lcov-file: ./coverage/lcov.info
