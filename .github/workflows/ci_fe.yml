@@ -22,11 +22,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install -g lerna
     - run: npm --prefix ./packages/shared install
-    - run: npm --prefix ./packages/VisitorWeb/ install
+    - run: npm --prefix ./packages/VisitorWeb install
     - run: npm ci
-    - run: npm --prefix ./packages/visitorWeb/ run ci:test
+    - run: npm --prefix ./packages/visitorWeb run ci:test
     - uses: romeovs/lcov-reporter-action@v0.2.16
       with:
         lcov-file: ./coverage/lcov.info
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    
