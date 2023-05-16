@@ -20,7 +20,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+    - run: npm install -g lerna
+    - run: npm --prefix ./packages/shared install
+    - run: npm --prefix ./packages/backend/ install
     - run: npm ci
     - run: npm --prefix ./packages/backend/ run ci:test
     - uses: romeovs/lcov-reporter-action@v0.2.16
