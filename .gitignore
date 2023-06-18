@@ -1,3 +1,5 @@
 node_modules/
 package-lock.json
 packages/visitorWeb/coverage
+dist/
+.idea/

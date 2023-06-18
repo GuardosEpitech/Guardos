@@ -8,6 +8,7 @@ import styles from "./RestoCard.module.scss";
 
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import Rating from "@src/components/RestoCard/Rating/Rating";
+import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
 import placeholderImg from "@src/assets/placeholder.png";
 import { NavigateTo } from "@src/utils/NavigateTo";
 
@@ -47,6 +48,7 @@ interface IRestoCardProps {
 const RestoCard = (props: IRestoCardProps) => {
   const navigate = useNavigate();
   const [extended, setExtended] = useState(false);
+  const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
   const { name, rating, description, categories, ratingCount } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
@@ -92,6 +94,13 @@ const RestoCard = (props: IRestoCardProps) => {
               <Button
                 className={styles.RestoBtn}
                 variant="contained"
+                onClick={() => setIsDetailPageOpen(true)}
+              >
+                Details
+              </Button>
+              <Button
+                className={styles.RestoBtn}
+                variant="contained"
                 onClick={() => NavigateTo("/menu", navigate, {
                   menu: categories,
                   restoName: name,
@@ -104,6 +113,7 @@ const RestoCard = (props: IRestoCardProps) => {
           </div>
         </Grid>
       </Grid>
+      {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)} />}
     </Paper>
   );
 };
