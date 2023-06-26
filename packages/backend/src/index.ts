@@ -29,7 +29,7 @@ async function main() {
     });
   }
 
-  app.use('/', basicApiIngredients);
+  app.use('/', basicApiIngredients); // why we have two times basicApiIngredients?
   app.use('/api/products', products);
   app.use('/api/dishes', dishes);
   app.use('/api/restaurants', restaurants);
