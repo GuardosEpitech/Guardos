@@ -1,4 +1,4 @@
-import React  from "react";
+import React, { useEffect } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -6,7 +6,8 @@ import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import { ISearchCommunication } from "shared/models/communicationInterfaces";
+import { IFilterObject } from "shared/models/filterInterfaces";
+import axios from 'axios';
 import styles from "./Filter.module.scss";
 
 const GlobalStyle = () => {
@@ -65,11 +66,15 @@ interface allergen {
 }
 
 interface FilterProps {
+  // eslint-disable-next-line
   onChange: Function,
+  // eslint-disable-next-line
   onRangeChange: Function
 }
 
 const Filter = (props: FilterProps) => {
+  const baseUrl = 'http://localhost:8081/api/user/allergens';
+
   const [states, setStates] = React.useState([
     { name: "oneStar", value: true },
     { name: "twoStar", value: true },
@@ -90,9 +95,12 @@ const Filter = (props: FilterProps) => {
     { name: "eggs", value: false, colorButton: "primary" }
   ]);
 
-  const handleClick = (name: string) => {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
+  const handleClick = async (name: string) => {
     const allergensCopy = [...allergens];
     const allergenListChanged = [];
+    const user = localStorage.getItem('user');
 
     allergens.map((state, index) => {
       if (name === state.name) {
@@ -111,8 +119,25 @@ const Filter = (props: FilterProps) => {
         allergenListChanged.push(allergensCopy[i].name);
       }
     }
-    const inter: ISearchCommunication = {
+    const inter: IFilterObject = {
       allergenList: allergenListChanged
+    }
+
+    if (user !== null) {
+      const dataStorage = JSON.stringify({
+        username: JSON.parse(user).username,
+        allergens: JSON.stringify(allergenListChanged)
+      });
+      localStorage.setItem('allergens', JSON.stringify(allergenListChanged));
+
+      const response = await axios({
+        method: 'POST',
+        url: baseUrl + '/update',
+        data: dataStorage,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+      });
     }
 
     props.onChange(inter, allergensCopy);
@@ -147,7 +172,7 @@ const Filter = (props: FilterProps) => {
         categoriesSelected.push(statesCopy[i].name);
       }
     }
-    const inter: ISearchCommunication = {
+    const inter: IFilterObject = {
       rating: [min, max],
       categories: categoriesSelected
     }
@@ -156,11 +181,51 @@ const Filter = (props: FilterProps) => {
   }
 
   function onChangeRange(event: any) {
-    const inter: ISearchCommunication = {
+    const inter: IFilterObject = {
       range: event.target.value
     }
     props.onRangeChange(inter);
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = localStorage.getItem('user');
+      const dataStorage = JSON.stringify({
+        username: JSON.parse(user).username
+      });
+
+      const response = await axios({
+        method: 'POST',
+        url: baseUrl + '/get',
+        data: dataStorage,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+      });
+      
+      const allergensCopy = [...allergens];
+
+      if (response.data.allergens) {
+        allergens.map((state, index) => {
+          response.data.allergens.map((stateAllergens:string, indexAllergens:number) => {
+            if (stateAllergens === state.name) {
+              allergensCopy[index].value = !allergensCopy[index].value;
+              if (allergensCopy[index].colorButton == "primary") {
+                allergensCopy[index].colorButton = "secondary";
+              } else {
+                allergensCopy[index].colorButton = "primary";
+              }
+            }
+          })
+        });
+        setAllergens(allergensCopy);
+      }
+      setIsLoaded(true);
+    }
+    if (!isLoaded) {
+      fetchData().catch(console.error);
+    }
+  });
 
   return (
     <div className={styles.RectFilter}>
@@ -272,9 +337,10 @@ const Filter = (props: FilterProps) => {
           </div>
           <div>
             <Stack direction="row" spacing={1}>
-              {allergens.map((allergen, index) => {
+              {allergens.map((allergen) => {
                 return (
-                  <ThemeProvider key={index} theme={GlobalStyle()}>
+                    // eslint-disable-next-line react/jsx-key
+                  <ThemeProvider theme={GlobalStyle()}>
                     <Chip
                       label={allergen.name}
                       color={allergen.colorButton}
