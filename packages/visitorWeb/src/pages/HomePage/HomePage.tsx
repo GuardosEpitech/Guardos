@@ -71,8 +71,8 @@ const HomePage = () => {
 
     let min = 0;
     let max = 0;
-    let categoriesSelected = [];
-    let allergenListChanged = [];
+    const categoriesSelected = [];
+    const allergenListChanged = [];
 
     for (let i = 0; i < 5; i++) {
       if (buttons[i].value == true) {
