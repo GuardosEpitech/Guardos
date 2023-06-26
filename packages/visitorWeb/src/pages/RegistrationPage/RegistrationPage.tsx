@@ -27,7 +27,7 @@ const Register = () => {
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = 'http://localhost:8081/api/register/';
+  const baseUrl = 'http://165.232.71.55:81//api/register/';
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;

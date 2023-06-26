@@ -73,7 +73,7 @@ interface FilterProps {
 }
 
 const Filter = (props: FilterProps) => {
-  const baseUrl = 'http://localhost:8081/api/user/allergens';
+  const baseUrl = 'http://165.232.71.55:81//api/user/allergens';
 
   const [states, setStates] = React.useState([
     { name: "oneStar", value: true },

@@ -22,7 +22,7 @@ const Login = () => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = 'http://localhost:8081/api/login/';
+  const baseUrl = 'http://165.232.71.55:81//api/login/';
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
