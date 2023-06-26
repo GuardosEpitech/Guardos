@@ -28,12 +28,6 @@ WORKDIR /app/packages/backend
 # Install dependencies backend
 RUN npm install
 
-# Set the working directory to /app/packages/restoWeb
-WORKDIR /app/packages/restoWeb
-
-# Install dependencies restoWeb
-RUN npm install
-
 # Set the working directory to /app/packages/visitorWeb
 WORKDIR /app/packages/visitorWeb
 
@@ -41,7 +35,7 @@ WORKDIR /app/packages/visitorWeb
 RUN npm install
 
 # Expose ports 8080, 8081, and 8082
-EXPOSE 8080 8081 8082
+EXPOSE 8082 8081
 
 # Run multiple commands using a shell script
 COPY start.sh /app/
