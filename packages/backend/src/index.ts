@@ -5,7 +5,7 @@ import express from 'express';
 import filter from './routes/filter';
 import register from './routes/register';
 import login from './routes/login';
-import user from './routes/user';
+// import user from './routes/user';
 import logger from 'morgan';
 import path = require('path');
 
@@ -24,7 +24,7 @@ async function main() {
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(cors({ origin: String('http://localhost:8080') }));
+  app.use(cors({ origin: String('http://localhost:8082') }));
 
   if (await connectDataBase() === SUCCEED) {
     app.listen(port, () => {
@@ -40,7 +40,7 @@ async function main() {
   app.use('/api/filter', filter);
   app.use('/api/register', register);
   app.use('/api/login', login);
-  app.use('/api/user', user);
+  // app.use('/api/user', user);
 
   // catch 404 and forward to error handler
   app.use(function (next: any) { /* eslint-disable-line */
