@@ -15,7 +15,7 @@ const MVPRouter = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/menu" element={<MenuPage />} />
-        <Route path="map" element={<MapPage />} />
+        <Route path="/map" element={<MapPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
