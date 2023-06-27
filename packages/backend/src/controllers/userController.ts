@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import {userSchema}
+import { userSchema }
   from '../models/userInterface';
 
-export async function addUser(username: string, 
+export async function addUser(username: string,
   email: string, password: string) {
 
   const errorArray = [false, false];
@@ -31,12 +31,12 @@ export async function addUser(username: string,
   return errorArray;
 }
 
-export async function loginUser(username: string, 
+export async function loginUser(username: string,
   password: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.find();
   for (const elem of userData) {
-    if ((elem.username === username || 
+    if ((elem.username === username ||
       elem.email === username) && elem.password === password) {
       return true;
     }
@@ -46,13 +46,14 @@ export async function loginUser(username: string,
 
 export async function getAllergens(email: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.findOne({email: email})
+  const userData = await UserSchema.findOne({ email: email })
     .exec();
   return userData;
 }
 
 export async function updateAllergens(email: string, allergens: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.findOneAndUpdate({email: email}, {allergens: JSON.parse(allergens)}, {new: true});
+  const userData = await UserSchema.findOneAndUpdate({ email: email },
+    { allergens: JSON.parse(allergens) }, { new: true });
   return userData;
 }
