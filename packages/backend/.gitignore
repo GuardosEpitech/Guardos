@@ -1,1 +1,4 @@
 .env
+coverage
+.nyc_output
+cypress/videos

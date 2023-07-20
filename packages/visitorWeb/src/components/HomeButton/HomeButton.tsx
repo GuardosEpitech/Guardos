@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./MapButton.module.scss";
+import styles from "./HomeButton.module.scss";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { useNavigate } from "react-router-dom";
 
-const MapBtn = () => {
+const MapBackBtn = () => {
   return createTheme({
     typography: {
       button: {
@@ -31,20 +31,17 @@ const MapBtn = () => {
   });
 };
 
-const MapButton = () => {
+const BackButton = () => {
   const navigate = useNavigate();
   return (
     <div className={styles.DivRect}>
-      <ThemeProvider theme={MapBtn()}>
-        <Button
-          variant="contained"
-          sx={{ width: "15.44rem" }}
-          onClick={() => NavigateTo("/map", navigate)}>
-          Go To Map View
+      <ThemeProvider theme={MapBackBtn()}>
+        <Button variant="contained" sx={{ width: "15.44rem" }} onClick={() => NavigateTo("/", navigate)}>
+          Go To List View
         </Button>
       </ThemeProvider>
     </div>
   );
 };
 
-export default MapButton;
+export default BackButton;

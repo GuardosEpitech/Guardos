@@ -18,13 +18,19 @@ import restaurants from './routes/restaurants';
 async function main() {
   const app = express();
   const port = 8081;
+  const allowedOrigins = ['http://localhost:8082', 'http://localhost:8080'];
 
   app.use(logger('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(cors({ origin: String('http://localhost:8080') }));
+
+  app.use(
+    cors({
+      origin: allowedOrigins,
+    })
+  );
 
   if (await connectDataBase() === SUCCEED) {
     app.listen(port, () => {
