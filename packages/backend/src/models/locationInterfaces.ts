@@ -4,6 +4,6 @@ export interface ILocation {
   postalCode: string,
   country: string;
   city: string;
-  latitude: string;
+  latidude: string;
   longitude: string;
 }
