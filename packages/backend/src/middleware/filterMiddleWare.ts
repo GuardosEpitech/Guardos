@@ -99,6 +99,7 @@ export const handleFilterRequest =
     }
     return result;
   };
+
 export const getSelectedFilterReq =
   async function (filters: ISearchCommunication) {
     const filter = new Filter();

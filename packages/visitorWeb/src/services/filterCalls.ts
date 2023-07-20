@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'http://165.232.71.55:81//api/filter/';
-const selectedURL = 'http://165.232.71.55:81//api/filter/filteredlist';
+const baseUrl = 'http://localhost:8081/api/filter/';
+const selectedURL = 'http://localhost:8081/api/filter/filteredlist';
 
 export const getFilteredRestos = async (body: any) => {
     try {

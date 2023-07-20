@@ -36,7 +36,9 @@ const MapButton = () => {
   return (
     <div className={styles.DivRect}>
       <ThemeProvider theme={MapBtn()}>
-        <Button variant="contained" sx={{ width: "15.44rem" }}
+        <Button
+          variant="contained"
+          sx={{ width: "15.44rem" }}
           onClick={() => NavigateTo("/map", navigate)}>
           Go To Map View
         </Button>

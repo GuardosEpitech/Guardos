@@ -53,7 +53,10 @@ export async function getAllergens(email: string) {
 
 export async function updateAllergens(email: string, allergens: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.findOneAndUpdate({ email: email },
-    { allergens: JSON.parse(allergens) }, { new: true });
+  const userData = await UserSchema
+    .findOneAndUpdate({ email: email }, {
+      allergens: JSON.
+        parse(allergens)
+    }, { new: true });
   return userData;
 }
