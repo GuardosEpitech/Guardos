@@ -15,6 +15,7 @@ const theme = createTheme({
 
 interface AutoCompleteProps {
   data: Array<string>,
+  // eslint-disable-next-line
   onChange: Function
 }
 

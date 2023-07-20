@@ -30,11 +30,11 @@ Docker Compose
 
 1. Clone the repo
    ```sh
-   git clone git@github.com:GuardosEpitech/Guardos.git 'Guardos'
+   git clone git@github.com:Guardos-Epitech/Guardos-dev.git 'Guardos-dev'
    ```
 2. Go to the repo location
    ```sh
-   cd Guardos
+   cd Guardos-dev
    ```
 3. Build and run the Docker containers
    ```sh
