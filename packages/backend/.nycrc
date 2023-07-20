@@ -1,0 +1,20 @@
+{
+    "extension": [
+        ".ts"
+    ],
+    "require": [
+        "ts-node/register"
+    ],
+    "reporter": [
+        "html",
+        "text-summary"
+    ],
+    "exclude": [
+        "node_modules",
+        "cypress",
+        "coverage",
+        "**/*.spec.ts"
+    ],
+    "all": true,
+    "extends": "@istanbuljs/nyc-config-typescript"
+}
