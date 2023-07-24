@@ -171,7 +171,7 @@ export async function getAllRestaurants() {
       description: restaurant.description,
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
-      id: 0,
+      id: restaurant.id,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name,

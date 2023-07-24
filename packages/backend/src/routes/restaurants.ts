@@ -6,6 +6,8 @@ import {
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
+import { addProductsFromRestaurantToOwnDB }
+  from '../controllers/productsController';
 
 const router = express.Router();
 
@@ -27,6 +29,7 @@ router.get('/:name', async (req, res) => {
 router.post('/', async (req, res) => {
   const maxID = await findMaxIndexRestaurants();
   const restaurant = await createNewRestaurant(req.body, maxID + 1);
+  await addProductsFromRestaurantToOwnDB(restaurant.id);
   return res.status(200)
     .send(restaurant);
 });
@@ -47,6 +50,7 @@ router.put('/:name', async (req, res) => {
     return res.status(404)
       .send('Coudnt find restaurant named ' + req.params.name);
   const answer = await changeRestaurant(req.body, req.params.name);
+  await addProductsFromRestaurantToOwnDB(answer.id);
   return res.status(200)
     .send(answer);
 });
