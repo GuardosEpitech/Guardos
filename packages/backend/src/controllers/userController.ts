@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { userSchema }
   from '../models/userInterface';
+import { AES, enc } from 'crypto-js';
 
 export async function addUser(username: string,
   email: string, password: string) {
@@ -10,7 +11,7 @@ export async function addUser(username: string,
   const upload = new UserSchema({
     username: username,
     email: email,
-    password: password,
+    password: AES.encrypt(password, 'Guardos').toString(),
     allergens: []
   });
   const existingUsername = await UserSchema.findOne({ username: username })
@@ -35,9 +36,10 @@ export async function loginUser(username: string,
   password: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.find();
+
   for (const elem of userData) {
-    if ((elem.username === username ||
-      elem.email === username) && elem.password === password) {
+    if ((elem.username === username || 
+      elem.email === username) && AES.decrypt(elem.password, 'Guardos').toString(enc.Utf8) === password) {
       return true;
     }
   }
