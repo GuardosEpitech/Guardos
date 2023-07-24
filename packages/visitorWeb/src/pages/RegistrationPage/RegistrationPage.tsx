@@ -52,7 +52,9 @@ const Register = () => {
         email: user.email
       });
 
-      if (!isValidPassword(user.password)) {
+      const validPassword = !isValidPassword(user.password);
+
+      if (validPassword) {
         setErrorPassword(true);
       } else {
         setErrorPassword(false);
@@ -68,7 +70,7 @@ const Register = () => {
         setErrorUsername(false);
       }
 
-      if (errorEmail || errorPassword || errorUsername) {
+      if (errorEmail || validPassword || errorUsername) {
         return;
       }
 
