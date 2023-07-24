@@ -1,7 +1,9 @@
-const registerCodeCoverageTask = require('@cypress/code-coverage/task');
+// cypress/plugins/index.js
+const browserify = require('@cypress/browserify-preprocessor');
 
 module.exports = (on, config) => {
-    registerCodeCoverageTask(on, config);
-    equire('@cypress/code-coverage/task')(on, config);
+    const options = browserify.defaultOptions;
+    options.browserifyOptions.plugin.unshift(['tsify']);
+    on('file:preprocessor', browserify(options));
     return config;
 };

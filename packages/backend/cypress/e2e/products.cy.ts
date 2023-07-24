@@ -25,7 +25,7 @@ describe('BE Product Test', () => {
   });
 
   // Test for The old stone house Restaurant Products
-  it('should return all products stored for The old stone house Restaurant', () => {
+  it('should return all products stored for TheOldStoneHouseRestaurant', () => {
     cy.request({
       method: 'GET',
       url: 'http://localhost:8081/api/products/The old stone house Restaurant'

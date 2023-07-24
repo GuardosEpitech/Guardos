@@ -11,7 +11,8 @@ export async function addUser(username: string,
   const upload = new UserSchema({
     username: username,
     email: email,
-    password: AES.encrypt(password, 'Guardos').toString(),
+    password: AES.encrypt(password, 'Guardos')
+      .toString(),
     allergens: []
   });
   const existingUsername = await UserSchema.findOne({ username: username })
@@ -38,8 +39,10 @@ export async function loginUser(username: string,
   const userData = await UserSchema.find();
 
   for (const elem of userData) {
-    if ((elem.username === username || 
-      elem.email === username) && AES.decrypt(elem.password, 'Guardos').toString(enc.Utf8) === password) {
+    if ((elem.username === username ||
+      elem.email === username) &&
+      AES.decrypt(elem.password, 'Guardos')
+        .toString(enc.Utf8) === password) {
       return true;
     }
   }
