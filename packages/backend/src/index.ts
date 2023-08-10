@@ -21,8 +21,7 @@ async function main() {
   const app = express();
   const port = 8081;
   dotenv.config();
-  const allowedOrigins = [`${process.env.allowedConnectionsVW}`, 
-    `${process.env.allowedConnectionsRW}`];
+  const allowedOrigins = [`${process.env.allowedVW}`, `${process.env.allowedRW}`];
 
   app.use(logger('dev'));
   app.use(express.json());
