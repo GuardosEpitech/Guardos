@@ -19,9 +19,8 @@ import restaurants from './routes/restaurants';
 
 async function main() {
   const app = express();
-  const port = 8081;
   dotenv.config();
-  const allowedOrigins = [`${process.env.allowedVW}`, `${process.env.allowedRW}`];
+  const allowedOrigins = [`${process.env.allowedVW}${process.env.PORTVW}`, `${process.env.allowedRW}${process.env.PORTRW}`];
 
   app.use(logger('dev'));
   app.use(express.json());
@@ -36,8 +35,8 @@ async function main() {
   );
 
   if (await connectDataBase() === SUCCEED) {
-    app.listen(port, () => {
-      return console.log(`Backend is listening at http://localhost:${port}`);
+    app.listen(process.env.PORTBE, () => {
+      return console.log(`Backend is listening at http://localhost:${process.env.PORTBE}`);
     });
   }
 

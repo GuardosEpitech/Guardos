@@ -73,7 +73,7 @@ interface FilterProps {
 }
 
 const Filter = (props: FilterProps) => {
-  const baseUrl = `${process.env.DB_HOST}/api/user/allergen`;
+  const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/user/allergen`;
 
   const [states, setStates] = React.useState([
     { name: "oneStar", value: true },

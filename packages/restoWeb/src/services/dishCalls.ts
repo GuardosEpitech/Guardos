@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = `${process.env.DB_HOST}/api/dishes/`;
+const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/dishes/`;
 
 export const getAllDishes = async () => {
   try {

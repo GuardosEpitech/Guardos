@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IProduct } from "shared/models/restaurantInterfaces";
 
-const baseUrl = `${process.env.DB_HOST}/`;
+const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/`;
 
 export const getAllRestoProducts = async (restoName: string) => {
   try {

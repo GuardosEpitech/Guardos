@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = `${process.env.DB_HOST}/api/restaurants/`;
+const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/restaurants/`;
 
 export const getAllResto = async () => {
   try {
