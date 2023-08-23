@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import Dish from "@src/components/menu/Dish/Dish";
 import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
-import { getAllDishes } from "@src/services/dishCalls";
+import {getAllDishes} from "@src/services/dishCalls";
 import Header from "@src/components/dumpComponents/Header/Header";
 import {IDishFE} from "shared/models/dishInterfaces";
 import Layout from 'shared/components/Layout/Layout';
@@ -27,24 +27,38 @@ const DishesPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header/>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>My dishes</span>
       </div>
       <Layout>
-        {dishData.map((dish, index) => {
-          return (
-            <Dish
-              key={dish.name + index}
-              dish={dish}
-              onUpdate={updateDishData}
-              editable
-            />
-          );
-        })}
+        {dishData.length === 0 ?
+          (<div>
+            <span className={styles.ErrorHeader}>
+              Oops, looks like you dont have any dishes yet!
+            </span>
+            <br/>
+            <br/>
+            <br/>
+            <span className={styles.ErrorText}>
+              Add your first dish by clicking <a href="/addDish">here</a>.
+            </span>
+          </div>)
+          :
+          (dishData.map((dish, index) => {
+            return (
+              <Dish
+                key={dish.name + index}
+                dish={dish}
+                onUpdate={updateDishData}
+                editable
+              />
+            );
+          })
+          )}
       </Layout>
-      <FixedBtn title="Add dish" redirect="/addDish" />
-      <SuccessAlert />
+      <FixedBtn title="Add dish" redirect="/addDish"/>
+      <SuccessAlert/>
     </div>
   );
 };
