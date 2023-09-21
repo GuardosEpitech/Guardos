@@ -1,6 +1,7 @@
 import React  from "react";
 
 import styled from "styled-components";
+import styles from "./Popup.module.scss";
 
 type PopupProps = {
     message: string;
@@ -16,6 +17,7 @@ const PopupContainer = styled.div`
   width: 300px;
   height: 150px;
   background-color: white;
+  outline: #6d071a solid 2px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -37,7 +39,7 @@ export const Popup: React.FC<PopupProps> = (
   { message, onConfirm, onCancel }) => {
   return (
     <PopupContainer>
-      <div>{message}</div>
+      <div className={styles.PopupText} >{message}</div>
       <div>
         <PopupButton onClick={onConfirm}>Confirm</PopupButton>
         <PopupButton onClick={onCancel}>Cancel</PopupButton>
