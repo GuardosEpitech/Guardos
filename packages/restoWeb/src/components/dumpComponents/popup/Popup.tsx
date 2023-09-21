@@ -2,6 +2,7 @@ import React  from "react";
 
 import styles from "./Popup.module.scss";
 import styled from "styled-components";
+import styles from "./Popup.module.scss";
 
 type PopupProps = {
     message: string;
