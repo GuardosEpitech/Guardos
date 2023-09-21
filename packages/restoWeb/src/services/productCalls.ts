@@ -20,7 +20,7 @@ export const getAllProducts = async () => {
   try {
     const response = await axios({
       method: "GET",
-      url: baseUrl,
+      url: baseUrl + "api/products" + "/",
     });
     return response.data;
   } catch (error) {
@@ -32,7 +32,7 @@ export const getAllProducts = async () => {
 export const addNewProduct = async (product: IProduct, restoName: string) => {
   try {
     const response = await axios({
-      url: baseUrl,
+      url: baseUrl + "api/products/" + restoName,
       method: "POST",
       data: JSON.stringify({
         name: product.name,
@@ -54,7 +54,7 @@ export const addNewProduct = async (product: IProduct, restoName: string) => {
 export const deleteProduct = async (product: any) => {
   try {
     const response = await axios({
-      url: baseUrl,
+      url: baseUrl + "api/products/" + product.name,
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
