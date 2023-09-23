@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 import {
   Autocomplete,
@@ -10,14 +10,14 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { getAllProducts } from "@src/services/productCalls";
-import { addNewDish, editDish } from "@src/services/dishCalls";
-import { IProduct, IRestaurantFrontEnd }
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {getAllProducts} from "@src/services/productCalls";
+import {addNewDish, editDish} from "@src/services/dishCalls";
+import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
-import { IDishFE } from "shared/models/dishInterfaces";
-import { getAllResto } from "@src/services/restoCalls";
-import { NavigateTo } from "@src/utils/NavigateTo";
+import {IDishFE} from "shared/models/dishInterfaces";
+import {getAllResto} from "@src/services/restoCalls";
+import {NavigateTo} from "@src/utils/NavigateTo";
 import placeholderImg from "@src/assets/placeholder.png";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
 
@@ -61,10 +61,22 @@ interface IDishFormProps {
 
 const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  let { dishName, dishProducts, dishDescription, price,
-    selectCategory, selectAllergene, restoName } = props;
+  const [dish, setDish] = useState<string>(props.dishName || "");
+  const [dishPrice, setDishPrice] =
+    useState<string>(props.price?.toString() || "");
+  const [dishProd, setDishProd] = useState<string[]>(props.dishProducts || []);
+  const [dishCategory, setDishCategory] =
+    useState<string[]>(props.selectCategory || []);
+  const [dishResto, setDishResto] = useState<string[]>(props.restoName || []);
+  const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
+  const [invalidPrice, setInvalidPrice] = useState<boolean>(false);
+  const [invalidResto, setInvalidResto] = useState<boolean>(false);
+  const [invalidProducts, setInvalidProducts] = useState<boolean>(false);
+  const [invalidCategory, setInvalidCategory] = useState<boolean>(false);
+
+  let {dishDescription, selectAllergene} = props;
   const imageSrc = props.imageSrc &&
-    props.imageSrc.length !== 0 ? props.imageSrc : placeholderImg;
+  props.imageSrc.length !== 0 ? props.imageSrc : placeholderImg;
   const [productListTest, setProductListTest] = useState<Array<string>>([]);
   const [restoList, setRestoList] = useState<Array<string>>([]);
   let allRestoNames: string[] = [];
@@ -91,20 +103,56 @@ const DishForm = (props: IDishFormProps) => {
       });
   }, []);
 
+  function validateRequiredFields() {
+    let invalidFields = false;
+    if (dish === undefined || dish === "") {
+      setInvalidDishname(true);
+      invalidFields = true;
+    }
+    if (dishProd === undefined || dishProd.length === 0) {
+      setInvalidProducts(true);
+      invalidFields = true;
+    }
+    if (dishPrice === undefined || dishPrice === "") {
+      setInvalidPrice(true);
+      invalidFields = true;
+    }
+    if (dishCategory === undefined || dishCategory.length === 0) {
+      setInvalidCategory(true);
+      invalidFields = true;
+    }
+    if (dishResto === undefined || dishResto.length === 0) {
+      setInvalidResto(true);
+      invalidFields = true;
+    }
+
+    return !invalidFields;
+  }
+
   async function sendRequestAndGoBack() {
-    for (let i = 0; i < restoName.length; i++) {
+    setInvalidDishname(false);
+    setInvalidPrice(false);
+    setInvalidResto(false);
+    setInvalidProducts(false);
+    setInvalidCategory(false);
+    if (!validateRequiredFields()) {
+      return;
+    }
+
+    for (let i = 0; i < dishResto.length; i++) {
       dishList[i] = {
-        name: dishName,
+        name: dish,
         description: dishDescription,
-        price: price,
-        products: dishProducts,
+        price: parseFloat(parseFloat(dishPrice)
+          .toFixed(2)),
+        products: dishProd,
         allergens: selectAllergene,
         category: {
-          foodGroup: selectCategory[0],
+          foodGroup: dishCategory[0],
           extraGroup: [],
-          menuGroup: selectCategory[0]
+          menuGroup: dishCategory[0]
         },
-        resto: restoName[i]
+        resto: dishResto[i]
       };
     }
 
@@ -117,15 +165,15 @@ const DishForm = (props: IDishFormProps) => {
         await editDish(dishList[i].resto, dishList[i]);
       }
     }
-    return NavigateTo("/dishes", navigate, { successfulForm: true });
+    return NavigateTo("/dishes", navigate, {successfulForm: true});
   }
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+    <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
       <Grid
         className={styles.GridSpaceTop}
         container
-        columns={{ xs: 4, sm: 8, md: 12 }}
+        columns={{xs: 4, sm: 8, md: 12}}
       >
         <Grid item xs={4} sm={2} md={3}>
           <img
@@ -142,7 +190,7 @@ const DishForm = (props: IDishFormProps) => {
                   component="label"
                 >
                   Change Image
-                  <input hidden accept="image/*" multiple type="file" />
+                  <input hidden accept="image/*" multiple type="file"/>
                 </Button>
                 <Button
                   className={styles.FormControlMargin}
@@ -150,7 +198,7 @@ const DishForm = (props: IDishFormProps) => {
                   component="label"
                 >
                   Delete Image
-                  <input hidden accept="image/*" multiple type="file" />
+                  <input hidden accept="image/*" multiple type="file"/>
                 </Button>
               </ThemeProvider>
             </FormControl>
@@ -159,18 +207,21 @@ const DishForm = (props: IDishFormProps) => {
         <Grid className={styles.TextNextToImageField} item xs={4} sm={6} md={9}>
           <Grid
             container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
+            spacing={{xs: 2, md: 3}}
+            columns={{xs: 4, sm: 8, md: 12}}
           >
             <Grid item xs={4} sm={5} md={8} className={styles.FieldMarginRight}>
               <FormControl fullWidth>
                 <TextField
+                  required
                   label="Name"
-                  defaultValue={dishName}
+                  error={invalidDishname}
+                  helperText={invalidDishname ? "Name is required" : ""}
+                  defaultValue={dish}
                   id="component-outlined"
                   fullWidth
                   onChange={(e) => {
-                    dishName = e.target.value;
+                    setDish(e.target.value);
                   }}
                 />
               </FormControl>
@@ -178,12 +229,18 @@ const DishForm = (props: IDishFormProps) => {
             <Grid item xs={4} sm={3} md={4} className={styles.FieldMarginLeft}>
               <FormControl fullWidth>
                 <TextField
+                  required
                   label="Price"
                   id="outlined-end-adornment"
+                  error={invalidPrice}
+                  helperText={invalidPrice ? "Price is required" : ""}
                   fullWidth
-                  defaultValue={price?.toFixed(2)}
+                  value={dishPrice}
                   onChange={(e) => {
-                    price = parseInt(e.target.value);
+                    const regex = /^-?\d+(?:[.,]\d*?)?$/;
+                    if (e.target.value === "" || regex.test(e.target.value)) {
+                      setDishPrice(e.target.value);
+                    }
                   }}
                   InputProps={{
                     endAdornment:
@@ -213,13 +270,20 @@ const DishForm = (props: IDishFormProps) => {
                 id="tags-outlined"
                 options={productListTest}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={dishProducts}
+                defaultValue={dishProd}
                 filterSelectedOptions
                 onChange={(e, value) => {
-                  dishProducts = value.map((product: string) => product);
+                  setDishProd(value.map((product: string) => product));
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Products" />
+                  <TextField
+                    {...params}
+                    label="Products"
+                    required
+                    error={invalidProducts}
+                    helperText={invalidProducts ?
+                      "Please select at least one product" : null}
+                  />
                 )}
               />
             </Grid>
@@ -248,15 +312,19 @@ const DishForm = (props: IDishFormProps) => {
                 id="tags-outlined"
                 options={suggestions}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={selectCategory}
+                defaultValue={dishCategory}
                 filterSelectedOptions
                 onChange={(e, value) => {
-                  selectCategory = value.map((product: string) => product);
+                  setDishCategory(value.map((product: string) => product));
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Food Category"
+                    required
+                    error={invalidCategory}
+                    helperText={invalidCategory ?
+                      "Please select at least one category" : null}
                   />
                 )}
               />
@@ -267,15 +335,20 @@ const DishForm = (props: IDishFormProps) => {
                 id="tags-outlined"
                 options={restoList}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={restoName}
+                defaultValue={dishResto}
                 filterSelectedOptions
                 onChange={(e, value) => {
-                  restoName = value.map((restoNameVar: string) => restoNameVar);
+                  setDishResto(value.map((restoNameVar: string) =>
+                    restoNameVar));
                 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Restaurant"
+                    required
+                    error={invalidResto}
+                    helperText={invalidResto ?
+                      "Please select a restaurant" : ""}
                   />
                 )}
               />
@@ -287,7 +360,7 @@ const DishForm = (props: IDishFormProps) => {
         <Button
           className={styles.SaveBtn}
           variant="contained"
-          sx={{ width: "12.13rem" }}
+          sx={{width: "12.13rem"}}
           onClick={sendRequestAndGoBack}
         >
           Save
