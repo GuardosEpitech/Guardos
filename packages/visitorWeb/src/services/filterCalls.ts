@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8081/api/filter/';
-const selectedURL = 'http://localhost:8081/api/filter/filteredlist';
+const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/filter/`;
+const selectedURL = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/filter/filteredlist`;
 
 export const getFilteredRestos = async (body: any) => {
     try {

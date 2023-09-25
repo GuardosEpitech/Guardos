@@ -22,7 +22,7 @@ const Login = () => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = 'http://localhost:8081/api/login/';
+  const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

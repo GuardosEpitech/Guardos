@@ -7,6 +7,8 @@ import register from './routes/register';
 import login from './routes/login';
 import user from './routes/user';
 import logger from 'morgan';
+import * as process from 'process';
+import * as dotenv from 'dotenv';
 import path = require('path');
 
 import basicApiIngredients from './routes/ingredients';
@@ -17,8 +19,8 @@ import restaurants from './routes/restaurants';
 
 async function main() {
   const app = express();
-  const port = 8081;
-  const allowedOrigins = ['http://localhost:8082', 'http://localhost:8080'];
+  dotenv.config();
+  const allowedOrigins = [`${process.env.allowedVW}${process.env.PORTVW}`, `${process.env.allowedRW}${process.env.PORTRW}`];
 
   app.use(logger('dev'));
   app.use(express.json());
@@ -33,8 +35,8 @@ async function main() {
   );
 
   if (await connectDataBase() === SUCCEED) {
-    app.listen(port, () => {
-      return console.log(`Backend is listening at http://localhost:${port}`);
+    app.listen(process.env.PORTBE, () => {
+      return console.log(`Backend is listening at http://localhost:${process.env.PORTBE}`);
     });
   }
 
