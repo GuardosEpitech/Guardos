@@ -25,7 +25,7 @@ describe('BE Product Test', () => {
   });
 
   // Test for The old stone house Restaurant Products
-  it('should return all products stored for The old stone house Restaurant', () => {
+  it('should return all products stored for TheOldStoneHouseRestaurant', () => {
     cy.request({
       method: 'GET',
       url: 'http://localhost:8081/api/products/The old stone house Restaurant'
@@ -34,5 +34,33 @@ describe('BE Product Test', () => {
         expect(response.status).to.eq(200);
         expect((response.body)).to.be.an('array');
       });
+  });
+
+  it('should add a Product to Burger King', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/products/Burger King',
+      body: {
+        name: 'TestProdBE',
+        allergens: 'lactose',
+        ingredients: 'milk'
+      }
+    })
+    .then((response) => {
+      expect(response.status).to.eq(200);
+      //expect(response.body.name).to.eq('TestProdBE');
+      //expect(response.body.allergens).to.eq('lactose');
+      //expect(response.body.ingredients).to.eq('milk');
+    });
+  });
+
+  it('should delete a Product from Burger King', () => {
+    cy.request({
+      method: 'DELETE',
+      url: 'http://localhost:8081/api/products/TestProdBE'
+    })
+    .then((response) => {
+      expect(response.status).to.eq(200);
+    });
   });
 });
