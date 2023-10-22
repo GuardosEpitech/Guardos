@@ -4,8 +4,8 @@ import {
   addRestoProduct,
   getAllRestoProducts, getRestaurantByName
 } from '../controllers/restaurantController';
-import { createOrUpdateProduct, deleteProductByName,
-  getAllProducts } from '../controllers/productsController';
+import { changeProductByName, createOrUpdateProduct, deleteProductByName,
+  getAllProducts, getProductByName } from '../controllers/productsController';
 
 const router = express.Router();
 
@@ -39,6 +39,17 @@ router.delete('/:name', async (req, res) => {
       .send('Product deleted successfully');
   return res.status(404)
     .send('Product not found');
+});
+
+router.put('/:name', async (req, res) => {
+  console.log("yep");
+  if (!await getProductByName(req.body.name)) {
+    return res.status(404)
+      .send('Coundt find dish named ' + req.body.name);
+  }
+  const dish = await changeProductByName(req.body);
+  return res.status(200)
+    .send(dish);
 });
 
 export default router;

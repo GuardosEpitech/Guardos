@@ -44,6 +44,7 @@ const ProductsPage = () => {
               index={index}
               product={product}
               onUpdate={updateProductData}
+              editable
             />
           ))}
         </Grid>
