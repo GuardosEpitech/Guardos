@@ -167,11 +167,15 @@ export async function deleteProductByName(productName: string) {
 
 export async function updateProduct(product: IProductBE, oldName: string) {
   const Product = mongoose.model('Product', productSchema);
-  return Product.updateOne(product, {name: oldName});
+  return Product.findOneAndUpdate(
+    { name: oldName },
+    product,
+    { new: true }
+  );
 }
 
-export async function changeProductByName(product: IProductBE) {
-  const oldProduct = await getProductByName(product.name);
+export async function changeProductByName(product: IProductBE, oldProductsName:string) {
+  const oldProduct = await getProductByName(oldProductsName);
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
     id: oldProduct.id,

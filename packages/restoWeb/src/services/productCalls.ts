@@ -69,11 +69,10 @@ export const deleteProduct = async (product: any) => {
   }
 };
 
-export const editProduct = async (product: IProductFE) => {
-  console.log(product);
+export const editProduct = async (product: IProductFE, originalProductName: string) => {
   try {
     const response = await axios({
-      url: baseUrl + "api/products/" + product.name,
+      url: baseUrl + "api/products/" + originalProductName,
       method: "PUT",
       data: JSON.stringify(product),
       headers: {

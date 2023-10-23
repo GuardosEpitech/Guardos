@@ -18,19 +18,15 @@ const EditProductPage = () => {
   const { product } = useLocation().state as IEditProductPageProps;
   const { name, id, allergens, ingredients, restaurantId }
     = product;
-  const [restoNameList, setRestoNameList] = useState<Array<IRestoName>>([]);
+  const [restoNameList, setRestoNameList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isLoading, setIsLoading] = useState(true);
-  let restoNameListTemp = [] as IRestoName[];
+  let restoNameListTemp = [] as IRestaurantFrontEnd[];
 
   useEffect(() => {
     getAllResto()
       .then((res) => {
-        for (let i = 0; i < res.length; i++) {
-          if (restaurantId?.includes(i)) {
-            restoNameListTemp = [...restoNameListTemp, {name: res[i].name}];
-          }
-        }
-        setRestoNameList(restoNameListTemp);
+        const newFilteredList = res.filter((option: IRestaurantFrontEnd) => restaurantId.includes(option.id));
+        setRestoNameList(newFilteredList);
       });
       setTimeout(() => {
         setIsLoading(false);
@@ -51,7 +47,7 @@ const EditProductPage = () => {
             productName={name}
             productIngredients={ingredients}
             productAllergens={allergens}
-            productRestaurantNames={restoNameList}
+            productRestaurant={restoNameList}
             productRestaurantIds={restaurantId}
             editable
           />

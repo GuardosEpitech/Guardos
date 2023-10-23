@@ -52,22 +52,29 @@ interface IDishFormProps {
   productName?: string;
   productIngredients?: string[];
   productAllergens?: string[];
-  productRestaurantNames?: IRestoName[];
+  productRestaurant?: IRestaurantFrontEnd[];
   productRestaurantIds?: number[];
   editable?: boolean;
 }
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  let { productName, productIngredients, productAllergens, productRestaurantNames, productRestaurantIds, editable } = props;
+  let { productName, productIngredients, productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
+  const [isInputEmpty, setIsInputEmpty] = useState(false);
+  const originalName = productName;
   let restoNameListTemp = [] as IRestoName[];
   let selectedResto: string[] = [];
 
   useEffect(() => {
     getAllResto()
       .then((res) => {
-        setRestoList(res);
+        if (editable) {
+          const newFilteredList = res.filter((option: IRestaurantFrontEnd) => !productRestaurantIds.includes(option.id));
+          setRestoList(newFilteredList);
+        } else {
+          setRestoList(res);
+        }
         restoNameListTemp = res.map((restaurant: IRestaurantFrontEnd) =>
           ({ name: restaurant.name }));
       });
@@ -85,6 +92,9 @@ const ProductForm = (props: IDishFormProps) => {
   );
 
   async function sendRequestAndGoBack() {
+    if (isInputEmpty) {
+      return;
+    }
     const product: IProduct = {
       name: productName,
       ingredients: productIngredients,
@@ -99,7 +109,7 @@ const ProductForm = (props: IDishFormProps) => {
         restaurantId: productRestaurantIds,
         id: 0
       };
-      await editProduct(product);
+      await editProduct(product, originalName);
     } else {
       for (let i = 0; i < selectedResto.length; i++) {
         await addNewProduct(product, selectedResto[i]);
@@ -107,6 +117,14 @@ const ProductForm = (props: IDishFormProps) => {
     }
     return NavigateTo("/products", navigate, { successfulForm: true });
   }
+
+  const handleInputChange = (event:any) => {
+    const value = event.target.value;
+    productName = value;
+    
+    // Check if the input is empty
+    setIsInputEmpty(value.trim() === '');
+  };
 
   return (
     <Container maxWidth={"md"}>
@@ -124,9 +142,9 @@ const ProductForm = (props: IDishFormProps) => {
                 defaultValue={productName}
                 id="component-outlined"
                 fullWidth
-                onChange={(e) => {
-                  productName = e.target.value;
-                }}
+                onChange={handleInputChange}
+                error={isInputEmpty}
+                helperText={isInputEmpty ? 'Input cannot be empty' : ''}
               />
             </FormControl>
           </Grid>
@@ -156,12 +174,13 @@ const ProductForm = (props: IDishFormProps) => {
               id="tags-outlined"
               options={restoList}
               getOptionLabel={(option) =>
-                (option ? (option as IRestoName).name : "")}
-              defaultValue={productRestaurantNames}
+                (option ? (option as IRestaurantFrontEnd).name : "")}
+              defaultValue={productRestaurant}
               filterSelectedOptions
               onChange={(e, value) => {
-                selectedResto = value.map((restoNameVar: IRestoName) =>
+                selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
+                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.id);
               }}
               renderInput={(params) => (
                 <TextField

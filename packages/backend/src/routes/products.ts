@@ -42,14 +42,13 @@ router.delete('/:name', async (req, res) => {
 });
 
 router.put('/:name', async (req, res) => {
-  console.log("yep");
-  if (!await getProductByName(req.body.name)) {
+  if (!await getProductByName(req.params.name)) {
     return res.status(404)
-      .send('Coundt find dish named ' + req.body.name);
+      .send('Coundt find product named ' + req.params.name);
   }
-  const dish = await changeProductByName(req.body);
+  const product = await changeProductByName(req.body, req.params.name);
   return res.status(200)
-    .send(dish);
+    .send(product);
 });
 
 export default router;
