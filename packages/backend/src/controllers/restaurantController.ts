@@ -165,13 +165,13 @@ export async function getAllRestaurants() {
   const restaurants = await Restaurant.find();
   const answer: [IRestaurantFrontEnd] = [{} as IRestaurantFrontEnd];
   answer.pop();
-
+  
   for (const restaurant of await restaurants) {
     const restaurantBE = createBackEndObj({
       description: restaurant.description,
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
-      id: 0,
+      id: restaurant._id,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name,

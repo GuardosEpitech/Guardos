@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import {productSchema} from '../models/productsInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 import {IProduct} from '../../../shared/models/restaurantInterfaces';
+import {IProductBE} from '../../../shared/models/productInterfaces';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -127,6 +128,16 @@ export async function addProductsToDB(restaurantId: number, product: IProduct) {
   }
 }
 
+export async function getProductByName(productName: string):Promise<IProductBE> {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    return await Product.findOne({name: productName});
+  } catch (error) {
+    console.error('Error while fetching all products: ', error);
+    return null;
+  }
+}
+
 export async function getAllProducts() {
   try {
     const Product = mongoose.model('Product', productSchema);
@@ -152,4 +163,26 @@ export async function deleteProductByName(productName: string) {
     console.error('Error while deleting the product: ', error);
     return false;
   }
+}
+
+export async function updateProduct(product: IProductBE, oldName: string) {
+  const Product = mongoose.model('Product', productSchema);
+  return Product.findOneAndUpdate(
+    { name: oldName },
+    product,
+    { new: true }
+  );
+}
+
+export async function changeProductByName(product: IProductBE, oldProductsName:string) {
+  const oldProduct = await getProductByName(oldProductsName);
+  const newProduct: IProductBE = {
+    name: product.name ? product.name : oldProduct.name,
+    id: oldProduct.id,
+    allergens: product.allergens ? product.allergens : oldProduct.allergens,
+    ingredients: product.ingredients ? product.ingredients : oldProduct.ingredients,
+    restaurantId: product.restaurantId ? product.restaurantId : oldProduct.restaurantId,
+  };
+  await updateProduct(product, oldProduct.name);
+  return newProduct;
 }

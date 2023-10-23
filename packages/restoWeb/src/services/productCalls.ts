@@ -1,5 +1,6 @@
 import axios from "axios";
 import { IProduct } from "shared/models/restaurantInterfaces";
+import { IProductFE } from "shared/models/productInterfaces";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/`;
 
@@ -65,5 +66,22 @@ export const deleteProduct = async (product: any) => {
   } catch (error) {
     console.error("Error deleting product:", error);
     throw new Error("Failed to delete product");
+  }
+};
+
+export const editProduct = async (product: IProductFE, originalProductName: string) => {
+  try {
+    const response = await axios({
+      url: baseUrl + "api/products/" + originalProductName,
+      method: "PUT",
+      data: JSON.stringify(product),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error editing product:", error);
+    throw new Error("Failed to edit product");
   }
 };

@@ -12,10 +12,13 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { addNewProduct } from "@src/services/productCalls";
+import { addNewProduct, editProduct } from "@src/services/productCalls";
 import { getAllResto } from "@src/services/restoCalls";
+import { getAllIngredients } from "@src/services/ingredientsCalls";
 import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
   from "shared/models/restaurantInterfaces";
+import { IProductFE }
+  from "shared/models/productInterfaces";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 
@@ -48,20 +51,31 @@ const PageBtn = () => {
 interface IDishFormProps {
   productName?: string;
   productIngredients?: string[];
+  productAllergens?: string[];
+  productRestaurant?: IRestaurantFrontEnd[];
+  productRestaurantIds?: number[];
+  editable?: boolean;
 }
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  let { productName, productIngredients } = props;
+  let { productName, productIngredients, productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
-  let restoNameList = [] as IRestoName[];
+  const [isInputEmpty, setIsInputEmpty] = useState(false);
+  const originalName = productName;
+  let restoNameListTemp = [] as IRestoName[];
   let selectedResto: string[] = [];
 
   useEffect(() => {
     getAllResto()
       .then((res) => {
-        setRestoList(res);
-        restoNameList = restoList.map((restaurant) =>
+        if (editable) {
+          const newFilteredList = res.filter((option: IRestaurantFrontEnd) => !productRestaurantIds.includes(option.id));
+          setRestoList(newFilteredList);
+        } else {
+          setRestoList(res);
+        }
+        restoNameListTemp = res.map((restaurant: IRestaurantFrontEnd) =>
           ({ name: restaurant.name }));
       });
   }, []);
@@ -78,17 +92,39 @@ const ProductForm = (props: IDishFormProps) => {
   );
 
   async function sendRequestAndGoBack() {
+    if (isInputEmpty) {
+      return;
+    }
     const product: IProduct = {
       name: productName,
       ingredients: productIngredients,
       allergens: []
     };
 
-    for (let i = 0; i < selectedResto.length; i++) {
-      await addNewProduct(product, selectedResto[i]);
+    if (editable) {
+      const product: IProductFE = {
+        name: productName,
+        ingredients: productIngredients,
+        allergens: [],
+        restaurantId: productRestaurantIds,
+        id: 0
+      };
+      await editProduct(product, originalName);
+    } else {
+      for (let i = 0; i < selectedResto.length; i++) {
+        await addNewProduct(product, selectedResto[i]);
+      }
     }
     return NavigateTo("/products", navigate, { successfulForm: true });
   }
+
+  const handleInputChange = (event:any) => {
+    const value = event.target.value;
+    productName = value;
+    
+    // Check if the input is empty
+    setIsInputEmpty(value.trim() === '');
+  };
 
   return (
     <Container maxWidth={"md"}>
@@ -106,9 +142,9 @@ const ProductForm = (props: IDishFormProps) => {
                 defaultValue={productName}
                 id="component-outlined"
                 fullWidth
-                onChange={(e) => {
-                  productName = e.target.value;
-                }}
+                onChange={handleInputChange}
+                error={isInputEmpty}
+                helperText={isInputEmpty ? 'Input cannot be empty' : ''}
               />
             </FormControl>
           </Grid>
@@ -138,12 +174,13 @@ const ProductForm = (props: IDishFormProps) => {
               id="tags-outlined"
               options={restoList}
               getOptionLabel={(option) =>
-                (option ? (option as IRestoName).name : "")}
-              defaultValue={restoNameList}
+                (option ? (option as IRestaurantFrontEnd).name : "")}
+              defaultValue={productRestaurant}
               filterSelectedOptions
               onChange={(e, value) => {
-                selectedResto = value.map((restoNameVar: IRestoName) =>
+                selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
+                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.id);
               }}
               renderInput={(params) => (
                 <TextField
