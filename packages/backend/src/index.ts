@@ -6,6 +6,7 @@ import filter from './routes/filter';
 import register from './routes/register';
 import login from './routes/login';
 import user from './routes/user';
+import userResto from './routes/userRestaurants';
 import logger from 'morgan';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
@@ -50,6 +51,7 @@ async function main() {
   app.use('/api/register', register);
   app.use('/api/login', login);
   app.use('/api/user', user);
+  app.use('/api/userRestaurants', userResto);
 
   // catch 404 and forward to error handler
   app.use(function (next: any) { /* eslint-disable-line */

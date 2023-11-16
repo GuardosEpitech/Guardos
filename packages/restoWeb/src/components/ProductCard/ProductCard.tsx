@@ -33,6 +33,7 @@ const ProductCard = (props: IProductCardProps) => {
   async function getOnDelete() {
     await deleteProduct(product);
     if (onUpdate) {
+      setShowPopup(false);
       await onUpdate();
     }
   }
