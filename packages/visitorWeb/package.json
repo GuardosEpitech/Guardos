@@ -34,7 +34,7 @@
     "watch": "webpack --watch",
     "serve": "webpack serve",
     "ci:test": "cross-env react-scripts test --coverage --passWithNoTests",
-    "test": "react-scripts test"
+    "test": "cypress run"
   },
   "eslintConfig": {
     "extends": [

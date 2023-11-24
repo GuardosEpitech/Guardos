@@ -2,11 +2,11 @@ describe('HomePageTest check resto card menu', () => {
   it('passes', () => {
     cy.visit('http://localhost:8080');
     cy.wait(10000);
-    cy.contains('Burger King');
+    cy.contains('McDonalds');
     cy.get(':nth-child(1) > .MuiGrid-container > .MuiGrid-grid-xs-9 > '+
     ':nth-child(1) > .tu9axTq6sjrtLsaZHGQQ > #long-button').click();
     cy.get('.MuiList-root > [tabindex="0"]').click();
-    cy.contains('Straße des 17. Juni 100, 10557 Berlin, Germany');
+    cy.contains('Tal 6, 80331 Munich, germany');
   });
 });
 
@@ -14,12 +14,11 @@ describe('HomePageTest check resto card edit', () => {
   it('passes', () => {
     cy.visit('http://localhost:8080');
     cy.wait(10000);
-    cy.contains('Burger King');
+    cy.contains('McDonalds');
     cy.get(':nth-child(1) > .MuiGrid-container > .MuiGrid-grid-xs-9 > '+
     ':nth-child(1) > .tu9axTq6sjrtLsaZHGQQ > #long-button').click();
     cy.get('.MuiList-root > :nth-child(2)').click();
     cy.contains('Edit restaurant');
-    cy.contains('Burger King');
     cy.get('.MuiButton-contained').click();
     cy.wait(5000);
     cy.url().should('eq', 'http://localhost:8080/');

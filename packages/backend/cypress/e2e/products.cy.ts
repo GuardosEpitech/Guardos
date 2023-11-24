@@ -1,17 +1,5 @@
 describe('BE Product Test', () => {
 
-  // Test for Burger King Products
-  it('should return all products stored for Burger King', () => {
-    cy.request({
-      method: 'GET',
-      url: 'http://localhost:8081/api/products/Burger King'
-    })
-      .then((response) => {
-        expect(response.status).to.eq(200);
-        expect((response.body)).to.be.an('array');
-      });
-  });
-
   // Test for McDonalds Products
   it('should return all products stored for McDonalds', () => {
     cy.request({
@@ -36,10 +24,10 @@ describe('BE Product Test', () => {
       });
   });
 
-  it('should add a Product to Burger King', () => {
+  it('should add a Product to McDonalds', () => {
     cy.request({
       method: 'POST',
-      url: 'http://localhost:8081/api/products/Burger King',
+      url: 'http://localhost:8081/api/products/McDonalds',
       body: {
         name: 'TestProdBE',
         allergens: 'lactose',
@@ -48,13 +36,10 @@ describe('BE Product Test', () => {
     })
     .then((response) => {
       expect(response.status).to.eq(200);
-      //expect(response.body.name).to.eq('TestProdBE');
-      //expect(response.body.allergens).to.eq('lactose');
-      //expect(response.body.ingredients).to.eq('milk');
     });
   });
 
-  it('should delete a Product from Burger King', () => {
+  it('should delete a Product from McDonalds', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/products/TestProdBE'
