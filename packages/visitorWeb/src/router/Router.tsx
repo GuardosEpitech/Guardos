@@ -6,6 +6,7 @@ import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
 import MapPage from "@src/pages/MapPage";
 import ScrollToTop from "shared/components/ScrollToTop/ScrollToTop";
+import ContactPage from "@src/pages/ContactPage/ContactPage";
 
 const MVPRouter = () => {
   return (
@@ -17,6 +18,7 @@ const MVPRouter = () => {
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </BrowserRouter>
   );
