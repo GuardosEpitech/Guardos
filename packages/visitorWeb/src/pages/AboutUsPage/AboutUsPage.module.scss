@@ -23,6 +23,7 @@
 
   @media (max-width: 768px) {
     height: auto;
+    background-size: 100% 100%;
   }
 }
 
@@ -33,12 +34,20 @@
 
   button {
     margin: 0 10px;
-    padding: 15px 20px; /* Adjust the padding for height and width */
-    font-size: 18px; /* Adjust the font size */
+    padding: 15px 20px;
+    font-size: 18px;
     background-color: #6d071a;
     color: #fff;
     border: none;
     cursor: pointer;
+
+    @media (max-width: 594px) {
+      margin-bottom: 25px;
+    }
+  }
+
+  @media (max-width: 594px) {
+    flex-direction: column;
   }
 }
 
@@ -91,8 +100,8 @@
       border-radius: 50%;
       background: url(../../assets/logo.png);
       background-size: cover;
-      margin-right: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      transform: translate(1.2%, 8.4%);
     }
   
     p 
@@ -142,7 +151,7 @@
       
     .teammember 
     {
-      margin-right: 20px;
+      padding: 20px;
       margin-bottom: 20px;
 
       @media (max-width: 768px) 
@@ -253,6 +262,3 @@
     }
   }
 }
-
-  
-  
