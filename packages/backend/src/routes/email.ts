@@ -11,21 +11,18 @@ router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
-    // Replace these values with your Outlook SMTP server information
     const smtpConfig = {
       host: 'smtp.office365.com',
       port: 587,
-      secure: false, // false for STARTTLS, true for TLS
+      secure: false, 
       auth: {
-        user: process.env.SMTP_USER,  // Your Outlook email address
-        pass: process.env.SMTP_PASS,           // Your Outlook email password or app password
+        user: process.env.SMTP_USER, 
+        pass: process.env.SMTP_PASS,
       },
     } as nodemailer.TransportOptions;
 
-    // Create a Nodemailer transporter
     const transporter = nodemailer.createTransport(smtpConfig);
 
-    // Define the email options
     const mailOptions: nodemailer.SendMailOptions = {
       from: process.env.SMTP_USER,
       to: process.env.SMTP_USER,
@@ -33,10 +30,8 @@ router.post('/', async (req, res) => {
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     };
 
-    // Send the email
     await transporter.sendMail(mailOptions);
 
-    // Send a success response to the client
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
