@@ -6,6 +6,7 @@ import filter from './routes/filter';
 import register from './routes/register';
 import login from './routes/login';
 import user from './routes/user';
+import images from './routes/images';
 import logger from 'morgan';
 import * as process from 'process';
 import * as dotenv from 'dotenv';
@@ -16,6 +17,7 @@ import { connectDataBase, SUCCEED } from './controllers/connectDataBase';
 import dishes from './routes/dishes';
 import products from './routes/products';
 import restaurants from './routes/restaurants';
+import email from './routes/email';
 
 async function main() {
   const app = express();
@@ -50,7 +52,9 @@ async function main() {
   app.use('/api/register', register);
   app.use('/api/login', login);
   app.use('/api/user', user);
-
+  app.use('/api/sendEmail', email);
+  app.use('/api/images', images);
+  
   // catch 404 and forward to error handler
   app.use(function (next: any) { /* eslint-disable-line */
     next(createError(404));

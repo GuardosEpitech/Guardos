@@ -43,7 +43,7 @@ const Header = () => {
       <span className={styles.NavTitle}>My Account</span>
       <img className={styles.LogoImg} src={logo} alt="Logo" onClick={() => NavigateTo('/', navigate, {})} />
       <span className={styles.NavTitle} onClick={() => NavigateTo('/about-us', navigate, {})}>About Us ?</span>
-      <span className={styles.NavTitle}>Contact Us</span>
+      <span className={styles.NavTitle} onClick={() => NavigateTo('/contact', navigate, {})}>Contact Us</span>
     </div>
   );
 };
