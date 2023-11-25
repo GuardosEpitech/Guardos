@@ -63,18 +63,20 @@ const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
   const [dish, setDish] = useState<string>(props.dishName || "");
   const [dishPrice, setDishPrice] =
-    useState<string>(props.price?.toString() || "");
+      useState<string>(props.price?.toString() || "");
   const [dishProd, setDishProd] = useState<string[]>(props.dishProducts || []);
   const [dishCategory, setDishCategory] =
-    useState<string[]>(props.selectCategory || []);
+      useState<string[]>(props.selectCategory || []);
   const [dishResto, setDishResto] = useState<string[]>(props.restoName || []);
   const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
   const [invalidPrice, setInvalidPrice] = useState<boolean>(false);
   const [invalidResto, setInvalidResto] = useState<boolean>(false);
   const [invalidProducts, setInvalidProducts] = useState<boolean>(false);
   const [invalidCategory, setInvalidCategory] = useState<boolean>(false);
-
-  let {dishDescription, selectAllergene} = props;
+  const [dishDescription, setDishDescription] =
+      useState(props.dishDescription || "");
+  const [selectAllergene, setSelectAllergene] =
+      useState<string[]>(props.selectAllergene || []);
   const imageSrc = props.imageSrc &&
   props.imageSrc.length !== 0 ? props.imageSrc : placeholderImg;
   const [productListTest, setProductListTest] = useState<Array<string>>([]);
@@ -189,7 +191,7 @@ const DishForm = (props: IDishFormProps) => {
                   variant="outlined"
                   component="label"
                 >
-                  Change Image
+                    Change Image
                   <input hidden accept="image/*" multiple type="file"/>
                 </Button>
                 <Button
@@ -197,7 +199,7 @@ const DishForm = (props: IDishFormProps) => {
                   variant="text"
                   component="label"
                 >
-                  Delete Image
+                    Delete Image
                   <input hidden accept="image/*" multiple type="file"/>
                 </Button>
               </ThemeProvider>
@@ -244,9 +246,9 @@ const DishForm = (props: IDishFormProps) => {
                   }}
                   InputProps={{
                     endAdornment:
-                      <InputAdornment position="end">
-                        €
-                      </InputAdornment>
+                            <InputAdornment position="end">
+                              €
+                            </InputAdornment>
                   }}
                 />
               </FormControl>
@@ -258,9 +260,7 @@ const DishForm = (props: IDishFormProps) => {
                   label="Description"
                   defaultValue={dishDescription}
                   multiline
-                  onChange={(e) => {
-                    dishDescription = e.target.value;
-                  }}
+                  onChange={(e) => setDishDescription(e.target.value)}
                 />
               </FormControl>
             </Grid>
@@ -295,9 +295,8 @@ const DishForm = (props: IDishFormProps) => {
                 getOptionLabel={(option) => (option ? (option as string) : "")}
                 defaultValue={selectAllergene}
                 filterSelectedOptions
-                onChange={(e, value) => {
-                  selectAllergene = value.map((allergene: string) => allergene);
-                }}
+                onChange={(e, value) => setSelectAllergene(
+                  value.map((allergene: string) => allergene))}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -363,7 +362,7 @@ const DishForm = (props: IDishFormProps) => {
           sx={{width: "12.13rem"}}
           onClick={sendRequestAndGoBack}
         >
-          Save
+            Save
         </Button>
       </ThemeProvider>
     </Box>
