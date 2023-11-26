@@ -16,12 +16,12 @@ describe('BE Resto Test', () => {
     it('should return a specific restaurant', () => {
         cy.request({
             method: 'GET',
-            url: 'http://localhost:8081/api/restaurants/Burger King'
+            url: 'http://localhost:8081/api/restaurants/McDonalds'
         })
         .then((response) => {
             expect(response.status).to.eq(200);
             expect(response.body).to.be.an('Object');
-            expect(response.body.name).to.eq('Burger King');
+            expect(response.body.name).to.eq('McDonalds');
         });
     });
 
@@ -76,4 +76,4 @@ describe('BE Resto Test', () => {
             // expect(response.body).to.be.an('string');
         });
     });
-})
+});
