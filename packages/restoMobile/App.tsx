@@ -1,8 +1,8 @@
 import React from "react";
-import MyStack from "./Router";
+import MyTabs from "./Router";
 
 const App = () => {
-  return <MyStack />;
+  return <MyTabs />;
 };
 
 export default App;
