@@ -1,5 +1,6 @@
 import {checkIfRestaurantExists} from './restaurantMiddleWare';
 import {Request} from 'express';
+import {checkIfDishExists, checkIfExtraExists} from './dishesMiddelWare';
 
 export async function errorHandlingImage(_req: Request) {
   const restaurantName: string = _req.body.restaurant;
@@ -11,6 +12,8 @@ export async function errorHandlingImage(_req: Request) {
   const filename: string = _req.body.image.filename;
   const contentType: string = _req.body.image.contentType;
   const size: number = _req.body.image.size;
+  const dishName: string = _req.body.dish;
+  const extraName: string = _req.body.extra;
 
   if (!base64)
     return 'Post Images failed: base64 missing';
@@ -20,5 +23,13 @@ export async function errorHandlingImage(_req: Request) {
     return 'Post Images failed: contentType missing';
   if (size === undefined || size === null || isNaN(Number(size))) {
     return 'Post Images failed: size missing or not a number';
+  }
+  if (dishName) {
+    if (await checkIfDishExists(restaurantName, dishName) === false)
+      return 'Post Images failed: Dish does not exist';
+  }
+  if (extraName) {
+    if (await checkIfExtraExists(restaurantName, extraName) === false)
+      return 'Post Images failed: Extra does not exist';
   }
 }

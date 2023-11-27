@@ -5,6 +5,7 @@ import {
   saveImageToDB, linkImageToRestaurantDish, linkImageToRestaurantExtra
 } from '../controllers/imageController';
 import {errorHandlingImage} from '../middleware/imagesMiddleWare';
+
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
@@ -14,8 +15,6 @@ router.get('/', async (_req, res) => {
 
 router.post('/', async (_req, res) => {
   try {
-    // TODO: require also restaurant to be able to save images --> store image id as ref to restaurant
-    //const restaurantName: string = _req.body.restaurantName;
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
     const error: string = await errorHandlingImage(_req);
