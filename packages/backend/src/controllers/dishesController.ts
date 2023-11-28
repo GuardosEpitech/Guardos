@@ -24,26 +24,29 @@ export async function getAllDishes() {
   for (const rest of restaurants) {
     for (const dish of rest.dishes) {
       const dishFE: IDishFE = {
-        name: dish.name,
-        description: dish.description,
-        price: dish.price,
+        name: dish.name as string,
+        description: dish.description as string,
+        price: dish.price as number,
         pictures: [''],
+        picturesId: [],
         allergens: [''],
         category: {} as ICategoryFE,
-        resto: rest.name,
-        products: dish.products
+        resto: rest.name as string,
+        products: dish.products as string[],
       };
       dishFE.pictures.pop();
       dishFE.allergens.pop();
-      dishFE.category.foodGroup = dish.category.foodGroup;
-      dishFE.category.extraGroup = dish.category.extraGroup;
-      dishFE.category.menuGroup = dish.category.menuGroup;
+      dishFE.picturesId?.pop();
+
+      dishFE.category.foodGroup = dish.category.foodGroup as string;
+      dishFE.category.extraGroup = dish.category.extraGroup as string[];
+      dishFE.category.menuGroup = dish.category.menuGroup as string;
       for (const pict of dish.pictures) {
-        dishFE.pictures.push(pict);
+        dishFE.pictures.push(pict as string);
       }
 
       for (const allergen of dish.allergens) {
-        dishFE.allergens.push(allergen);
+        dishFE.allergens.push(allergen as string);
       }
 
       dishes.push(dishFE);
@@ -110,10 +113,11 @@ export async function changeDishByName(
   const oldDish = await getDishByName(restaurantName, dish.name);
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
-    name: dish.name ? dish.name : oldDish.name,
+    name: dish.name ? dish.name : oldDish.name as string,
     id: 6, // TODO: change that
-    description: dish.description ? dish.description : oldDish.description,
-    price: dish.price ? dish.price : oldDish.price,
+    description: dish.description ?
+      dish.description : oldDish.description as string,
+    price: dish.price ? dish.price : oldDish.price as number,
     products: dish.products ? dish.products : oldDish.products as [string],
     pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
     allergens: dish.allergens ? dish.allergens as [string] :

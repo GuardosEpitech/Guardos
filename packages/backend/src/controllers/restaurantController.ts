@@ -21,6 +21,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     ratingCount: restaurant.ratingCount,
     phoneNumber: restaurant.phoneNumber,
     pictures: restaurant.pictures,
+    picturesId: restaurant.picturesId,
     openingHours: [{} as IOpeningHours],
     products: [{} as IProduct],
     dishes: [{} as IDishBE],
@@ -42,6 +43,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       description: dish.description,
       products: dish.products,
       pictures: dish.pictures,
+      picturesId: dish.picturesId,
       price: dish.price,
       allergens: dish.allergens,
       category: dish.category
@@ -68,6 +70,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       products: extra.products,
       price: extra.price,
       pictures: extra.pictures,
+      picturesId: extra.picturesId,
       allergens: extra.allergens,
       category: extra.category
     };
@@ -86,6 +89,7 @@ function createRestaurantObjFe(
     rating: restaurant.rating,
     ratingCount: restaurant.ratingCount,
     pictures: restaurant.pictures,
+    picturesId: restaurant.picturesId,
     openingHours: [{} as IOpeningHours],
     products: [{} as IProduct],
     id: restaurant.id,
@@ -119,6 +123,7 @@ function createRestaurantObjFe(
           description: dish.description,
           price: dish.price,
           pictures: dish.pictures,
+          picturesId: dish.picturesId,
           allergens: dish.allergens,
           category: {
             foodGroup: dish.category.foodGroup,
@@ -142,20 +147,21 @@ export async function getRestaurantByName(restaurantName: string) {
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
-    description: rest.description,
+    description: rest.description as string,
     dishes: rest.dishes as [IDishBE],
     extras: rest.extras as unknown as [IDishBE],
     id: rest.id,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
-    name: rest.name,
+    name: rest.name as string,
     openingHours: rest.openingHours as [IOpeningHours],
-    phoneNumber: rest.phoneNumber,
+    phoneNumber: rest.phoneNumber as string,
     pictures: rest.pictures as [string],
+    picturesId: rest.picturesId as [number],
     products: rest.products as [IProduct],
-    rating: rest.rating,
-    ratingCount: rest.ratingCount,
-    website: rest.website
+    rating: rest.rating as number,
+    ratingCount: rest.ratingCount as number,
+    website: rest.website as string
   });
   return createRestaurantObjFe(restaurantBE);
 }
@@ -168,20 +174,21 @@ export async function getAllRestaurants() {
   
   for (const restaurant of await restaurants) {
     const restaurantBE = createBackEndObj({
-      description: restaurant.description,
+      description: restaurant.description as string,
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
-      id: restaurant._id,
+      id: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
-      name: restaurant.name,
+      name: restaurant.name as string,
       openingHours: restaurant.openingHours as [IOpeningHours],
-      phoneNumber: restaurant.phoneNumber,
+      phoneNumber: restaurant.phoneNumber as string,
       pictures: restaurant.pictures as [string],
+      picturesId: restaurant.picturesId as [number],
       products: restaurant.products as [IProduct],
-      rating: restaurant.rating,
-      ratingCount: restaurant.ratingCount,
-      website: restaurant.website
+      rating: restaurant.rating as number,
+      ratingCount: restaurant.ratingCount as number,
+      website: restaurant.website as string
     });
     answer.push(createRestaurantObjFe(restaurantBE));
   }
@@ -201,6 +208,7 @@ export async function createNewRestaurant(
     description: obj.description ? obj.description : 'default description',
     dishes: obj.dishes ? obj.dishes : [],
     pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
+    picturesId: obj.picturesId ? obj.picturesId : [0],
     openingHours: obj.openingHours ? obj.openingHours : [
       { open: '11:00', close: '22:00', day: 0 }],
     location: obj.location ? obj.location : {},
@@ -248,6 +256,8 @@ export async function changeRestaurant(
     phoneNumber: restaurant.phoneNumber
       ? restaurant.phoneNumber : oldRest.phoneNumber,
     pictures: restaurant.pictures ? restaurant.pictures : oldRest.pictures,
+    picturesId: restaurant.picturesId
+      ? restaurant.picturesId : oldRest.picturesId,
     products: restaurant.products ? restaurant.products : oldRest.products,
     rating: oldRest.rating,
     ratingCount: oldRest.ratingCount,

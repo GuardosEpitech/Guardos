@@ -30,6 +30,7 @@ export interface IRestaurantCommunication {
   website?: string;
   openingHours?: IOpeningHours[];
   pictures?: string[];
+  picturesId?: number[];
   description?: string;
   dishes?: IDishBE[];
   location?: ILocation;

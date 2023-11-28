@@ -14,6 +14,10 @@ export const restaurantSchema = new mongoose.Schema({
     day: Number,
   }],
   pictures: [String],
+  picturesId: {
+    type: [Number],
+    required: false
+  },
   description: String,
   dishes: [{
     _id: Number,
@@ -21,6 +25,10 @@ export const restaurantSchema = new mongoose.Schema({
     description: String,
     products: [String],
     pictures: [String],
+    picturesId: {
+      type: [Number],
+      required: false
+    },
     price: Number,
     allergens: [String],
     category: {
@@ -47,6 +55,10 @@ export const restaurantSchema = new mongoose.Schema({
     description: String,
     price: Number,
     pictures: [String],
+    picturesId: {
+      type: [Number],
+      required: false
+    },
     allergens: [String],
     products: [String],
     category: {
