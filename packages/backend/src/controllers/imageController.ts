@@ -1,4 +1,4 @@
-import Image from '../models/imageInterfaces';
+import Image, {IImage} from '../models/imageInterfaces';
 import mongoose from 'mongoose';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 
@@ -31,6 +31,16 @@ export async function saveImageToDB(
   return 'success';
 }
 
+export async function deleteImageFromDB(id: number) {
+  try {
+    await Image.deleteOne({_id: id});
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+  return 'success';
+}
+
 export function getLatestID(): Promise<number | null> {
   return new Promise((resolve, reject) => {
     Image.findOne()
@@ -55,7 +65,24 @@ export async function getImageById(id: number) {
       .exec();
   } catch (e) {
     console.error(e);
-    return e;
+    return null;
+  }
+}
+
+export async function changeImageById(id: number, imageNew: IImage) {
+  try {
+    const imageOld = await getImageById(id);
+    imageOld.filename = imageNew.filename;
+    imageOld.contentType = imageNew.contentType;
+    imageOld.size = imageNew.size;
+    imageOld.uploadDate = new Date();
+    imageOld.base64 = imageNew.base64;
+
+    await imageOld.save();
+    return imageOld;
+  } catch (e) {
+    console.error(e);
+    return null;
   }
 }
 
@@ -69,7 +96,25 @@ export async function linkImageToRestaurant(
     }
     rest.picturesId.push(imageId);
     await rest.save();
-    console.log('Image added to restaurant');
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+}
+
+export async function unlinkImageFromRestaurant(
+  restaurantName: string, imageId: number) {
+  try {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+    const restaurant = await Restaurant.findOne({name: restaurantName});
+    if (!restaurant) {
+      return null;
+    }
+    const index = restaurant.picturesId.indexOf(imageId);
+    if (index > -1) {
+      restaurant.picturesId.splice(index, 1);
+      await restaurant.save();
+    }
   } catch (e) {
     console.error(e);
     return e;
@@ -90,7 +135,33 @@ export async function linkImageToRestaurantDish(
     }
     dish.picturesId.push(imageId);
     await rest.save();
-    console.log('Image added to restaurant dish');
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+}
+
+export async function unlinkImageFromRestaurantDish(
+  restaurantName: string, dishName: string, imageId: number) {
+  try {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+    const restaurant = await Restaurant.findOne({name: restaurantName});
+    if (!restaurant) {
+      console.error('Restaurant not found');
+      return null;
+    }
+    
+    const dish = restaurant.dishes.find(d => d.name === dishName);
+    if (!dish) {
+      console.error('Dish not found');
+      return null;
+    }
+    
+    const index = dish.picturesId.indexOf(imageId);
+    if (index > -1) {
+      dish.picturesId.splice(index, 1);
+      await restaurant.save();
+    }
   } catch (e) {
     console.error(e);
     return e;
@@ -101,19 +172,53 @@ export async function linkImageToRestaurantExtra(
   restaurantName: string, extraName: string, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const rest = await Restaurant.findOne({name: restaurantName});
-    if (!rest) {
+    const restaurant = await Restaurant.findOne({name: restaurantName});
+    if (!restaurant) {
+      console.error('Restaurant not found');
       return null;
     }
-    const extra = rest.extras.find((e) => e.name === extraName);
+
+    const extra = restaurant.extras.find(e => e.name === extraName);
     if (!extra) {
+      console.error('Extra not found');
       return null;
     }
-    extra.picturesId.push(imageId);
-    await rest.save();
-    console.log('Image added to restaurant extra');
+
+    const index = extra.picturesId.indexOf(imageId);
+    if (index > -1) {
+      extra.picturesId.splice(index, 1);
+      await restaurant.save();
+    }
   } catch (e) {
     console.error(e);
     return e;
   }
 }
+
+export async function unlinkImageFromRestaurantExtra(
+  restaurantName: string, extraName: string, imageId: number) {
+  try {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+    const restaurant = await Restaurant.findOne({name: restaurantName});
+    if (!restaurant) {
+      console.error('Restaurant not found');
+      return null;
+    }
+
+    const extra = restaurant.extras.find(e => e.name === extraName);
+    if (!extra) {
+      console.error('Extra not found');
+      return null;
+    }
+
+    const index = extra.picturesId.indexOf(imageId);
+    if (index > -1) {
+      extra.picturesId.splice(index, 1);
+      await restaurant.save();
+    }
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+}
+
