@@ -2,7 +2,7 @@ describe('DishesPageTest check dish card', () => {
     it('passes', () => {
         cy.visit('http://localhost:8080/dishes');
         cy.wait(15000);
-        cy.contains("Ben & Jerry's Chocolate Fudge Brownie");
+        cy.contains("MCMuffin");
     });
 });
 
@@ -39,7 +39,7 @@ describe('DishesPageTest edit dish card', () => {
         cy.visit('http://localhost:8080/dishes');
         cy.wait(5000);
         cy.contains('TestDish123');
-        cy.get('.MuiPaper-root').eq(2).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
+        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
         cy.contains('Edit').click();
         cy.wait(5000);
         cy.get('.MuiGrid-grid-sm-8').eq(0).find('.MuiFormControl-root > .MuiFormControl-root >' + 
@@ -56,12 +56,10 @@ describe('DishesPageTest delete dish card', () => {
         cy.visit('http://localhost:8080/dishes');
         cy.wait(5000);
         cy.contains('TestDish123');
-        cy.get('.MuiPaper-root').eq(2).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
+        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
         cy.contains('Delete').click();
         cy.get('.MuiBackdrop-root').click();
-        cy.wait(2000);
-        cy.get('.MuiPaper-root').eq(2).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > .sc-aXZVg > div').find('.sc-gEvEer').eq(0).click();
-        //cy.contains('Confirm').click();
+        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > .sc-aXZVg > div > .sc-gEvEer').eq(0).click();
         cy.wait(10000);
         cy.contains('TestDish123').should('not.exist');
     });
