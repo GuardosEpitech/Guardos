@@ -7,6 +7,7 @@ import register from './routes/register';
 import login from './routes/login';
 import user from './routes/user';
 import images from './routes/images';
+import logout from './routes/logout';
 import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
@@ -43,6 +44,7 @@ async function main() {
       return console.log(`Backend is listening at http://localhost:${process.env.PORTBE}`);
     });
 
+    app.use('/api/logout', logout);
     app.use('/api/products', products);
     app.use('/api/dishes', dishes);
     app.use('/api/restaurants', restaurants);
