@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./AboutUsPage.module.scss";
-import Header from "@src/components/Header/Header";
 import josi from "@src/assets/profile/josi.png";
 import gylian from "@src/assets/profile/gylian.png";
 import mark from "@src/assets/profile/mark.png";
@@ -75,7 +74,6 @@ const AboutUsPage = () => {
   const [activeSection, setActiveSection] = useState('introduction');
     return (
         <div>
-            <Header />
             <div className={styles.aboutuscontainer}>
               <div className={styles.navigation}>
                 <button onClick={() => setActiveSection('introduction')}>Introduction</button>

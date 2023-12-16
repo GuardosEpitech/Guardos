@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import styles from "./HomePage.module.scss";
-import Header from "@src/components/Header/Header";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import MapButton from "@src/components/MapButton/MapButton";
@@ -109,7 +108,6 @@ const HomePage = () => {
   // until here -> more dynamic
   return (
     <div>
-      <Header />
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>What are you looking for ?</span>
         <InputSearch onChange={handleFilterChange} />

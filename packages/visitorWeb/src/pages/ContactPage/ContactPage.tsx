@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ContactPage.module.scss";
-import Header from "@src/components/Header/Header";
 import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
@@ -63,7 +62,6 @@ const ContactPage = () => {
 
     return (
         <div>
-            <Header />
             <section className={styles.contact}>
                 <div className={styles.content}>
                     <h2>Contact Us</h2>
