@@ -11,6 +11,8 @@ import LoginScreen from './src/pages/ProfileScreen/Login';
 
 import AddPage from './src/pages/AddPage/AddPage';
 import QRCodeEngin from './src/pages/QRCodeEngin/QRCodeEngin';
+import AddProductScreen from './src/pages/AddProductScreen/AddProductScreen';
+import EditProductPage from './src/pages/EditProductPage/EditProductPage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,7 +46,7 @@ const MyTabs = () => {
         <Tab.Screen name="Scanning" component={MyStack} />
         <Tab.Screen name="My Restaurants" component={MyRestaurantsScreen} />
         <Tab.Screen name="My Dishes" component={MyDishesScreen} />
-        <Tab.Screen name="My Products" component={MyProductsScreen} />
+        <Tab.Screen name="My Products" component={MyProductStack} />
         <Tab.Screen name="Login" component={LoginScreen} />
       </Tab.Navigator>
     </NavigationContainer>
@@ -63,6 +65,28 @@ const MyStack = () => {
         name="QRCodeEngin"
         component={QRCodeEngin}
         options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MyProductStack = () => {
+  return (
+    <Stack.Navigator>
+       <Stack.Screen
+        name="MyProductsScreen"
+        component={MyProductsScreen}
+        options={{ headerShown: false}}
+      />
+      <Stack.Screen 
+        name="AddProductScreen" 
+        component={AddProductScreen}
+        options={{ headerShown: false}}
+      />
+      <Stack.Screen 
+        name="EditProductPage" 
+        component={EditProductPage}
+        options={{ headerShown: false}}
       />
     </Stack.Navigator>
   );
