@@ -7,7 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MyRestaurantsScreen from './src/pages/MyRestaurantsScreen/MyRestaurantsScreen';
 import MyDishesScreen from './src/pages/MyDishesScreen/MyDishesScreen';
 import MyProductsScreen from './src/pages/MyProductsScreen/MyProductsScreen';
-import LoginScreen from './src/pages/ProfileScreen/Login';
+import LoginScreen from './src/pages/ProfileScreen/Login/Login';
+import Register from "./src/pages/ProfileScreen/Register/Register";
 
 import AddPage from './src/pages/AddPage/AddPage';
 import QRCodeEngin from './src/pages/QRCodeEngin/QRCodeEngin';
@@ -48,6 +49,7 @@ const MyTabs = () => {
         <Tab.Screen name="My Dishes" component={MyDishesScreen} />
         <Tab.Screen name="My Products" component={MyProductStack} />
         <Tab.Screen name="Login" component={LoginScreen} />
+        <Tab.Screen name="Register" component={Register} />
       </Tab.Navigator>
     </NavigationContainer>
   );
