@@ -58,7 +58,7 @@ interface IDishFormProps {
   selectAllergene?: string[];
   restoName?: string[];
 }
-
+// TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
   const [dish, setDish] = useState<string>(props.dishName || "");

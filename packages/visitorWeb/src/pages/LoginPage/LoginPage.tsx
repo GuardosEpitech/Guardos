@@ -4,7 +4,6 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
-import Header from "@src/components/Header/Header";
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 
@@ -64,7 +63,6 @@ const Login = () => {
 
   return (
     <>
-      <Header />
       <Layout>
         <div className={styles.loginForm}>
           <h2>Login</h2>

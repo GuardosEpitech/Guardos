@@ -14,5 +14,5 @@ export async function findMaxIndexRestaurants() {
     .sort({ _id: -1 })
     .limit(1);
   if (restaurants.length === 0) return 0;
-  return restaurants[0]._id;
+  return restaurants[0]._id as number;
 }

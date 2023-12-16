@@ -7,7 +7,6 @@ import PlaceIcon from "@mui/icons-material/Place";
 
 import Category from "shared/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
-import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
@@ -32,7 +31,6 @@ const MenuPage = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.RectOnImg}>
         <List>
           <ListItem>

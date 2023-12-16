@@ -28,7 +28,7 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     const answer = await loginUserResto(data.username, data.password);
 
     if (answer) {
-      return res.status(200).send(data);
+      return res.status(200).send(answer);
     } else {
       return res.status(403)
         .send('Invalid Access');

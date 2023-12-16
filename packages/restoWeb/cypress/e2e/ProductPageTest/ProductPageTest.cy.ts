@@ -2,7 +2,7 @@ describe('ProductPageTest check products', () => {
     it('passes', () => {
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
-        cy.contains('Test Ingredient');
+        cy.contains('Test');
     });
 });
 
@@ -27,14 +27,31 @@ describe('ProductPageTest add new product', () => {
     });
 });
 
+describe('ProductPageTest edit product', () => {
+    it('passes', () => {
+        cy.visit('http://localhost:8080/products');
+        cy.wait(5000);
+        cy.contains('CypressTestProduct');
+        cy.get('.MuiGrid-root:last > .MuiPaper-root > .FaDRfOJflgeQlItznTpw > div > #long-button').click();
+        cy.contains('Edit').click();
+        cy.get('.MuiGrid-grid-sm-8').eq(1)
+        .find('.MuiAutocomplete-root > .MuiFormControl-root > .MuiInputBase-root > #tags-outlined')
+        .type('{downarrow}{downarrow}{enter}');
+        cy.wait(1000);
+        cy.get('.MuiButton-contained').click();
+        cy.contains('This is a success message!');
+    });
+});
+
 describe('ProductPageTest remove product', () => {
     it('passes', () => {
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
         cy.contains('CypressTestProduct');
-        cy.get('.MuiGrid-root:last > .MuiPaper-root > .FaDRfOJflgeQlItznTpw > .MuiSvgIcon-root').click();
-        cy.wait(1000);
-        cy.get('.MuiGrid-root:last > .MuiPaper-root > .FaDRfOJflgeQlItznTpw >.sc-aXZVg > div').eq(1).get('.sc-gEvEer').eq(0).click();
+        cy.get('.MuiGrid-root:last > .MuiPaper-root > .FaDRfOJflgeQlItznTpw > div > #long-button').click();
+        cy.contains('Delete').click();
+        cy.get('.MuiBackdrop-root').click();
+        cy.contains('Confirm').click();
         cy.wait(2000);
         cy.contains('CypressTestProduct').should('not.exist');
     });

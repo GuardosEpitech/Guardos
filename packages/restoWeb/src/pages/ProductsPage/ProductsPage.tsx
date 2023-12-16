@@ -4,7 +4,6 @@ import { Grid } from "@mui/material";
 
 import FixedBtn from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
 import { getAllProducts } from "@src/services/productCalls";
-import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from 'shared/components/Layout/Layout';
 import ProductCard from "@src/components/ProductCard/ProductCard";
 import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
@@ -28,7 +27,6 @@ const ProductsPage = () => {
 
   return (
     <div>
-      <Header />
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>My products</span>
       </div>
