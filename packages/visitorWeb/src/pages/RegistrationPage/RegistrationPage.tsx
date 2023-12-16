@@ -5,7 +5,6 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
-import Header from "@src/components/Header/Header";
 import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
 
@@ -111,7 +110,6 @@ const Register = () => {
 
   return (
     <>
-      <Header />
       <Layout>
         <div className={styles.registerForm}>
           <h2>Register</h2>

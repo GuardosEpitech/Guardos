@@ -4,7 +4,6 @@ import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 import Dish from "@src/components/menu/Dish/Dish";
 import Category from "shared/components/menu/Category/Category";
 import Layout from "shared/components/Layout/Layout";
-import Header from "@src/components/Header/Header";
 import PlaceIcon from "@mui/icons-material/Place";
 import { List, ListItem } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -24,7 +23,6 @@ const MenuPage = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.RectOnImg}>
         <List>
           <ListItem>
