@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-import Header from "@src/components/dumpComponents/Header/Header";
 import Layout from 'shared/components/Layout/Layout';
 import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
@@ -33,7 +32,6 @@ const EditRestaurantPage = () => {
 
   return (
     <div>
-      <Header />
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>Edit restaurant</span>
       </div>

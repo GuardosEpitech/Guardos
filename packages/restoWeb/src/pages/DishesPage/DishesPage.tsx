@@ -4,7 +4,6 @@ import Dish from "@src/components/menu/Dish/Dish";
 import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
 import {getAllDishes} from "@src/services/dishCalls";
-import Header from "@src/components/dumpComponents/Header/Header";
 import {IDishFE} from "shared/models/dishInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
@@ -27,7 +26,6 @@ const DishesPage = () => {
 
   return (
     <div>
-      <Header/>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>My dishes</span>
       </div>
