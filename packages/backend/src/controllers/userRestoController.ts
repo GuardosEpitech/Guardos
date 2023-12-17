@@ -47,8 +47,29 @@ export async function loginUserResto(username: string,
       elem.email === username) &&
       AES.decrypt(elem.password, 'GuardosResto')
         .toString(enc.Utf8) === password) {
+      const token = elem.username ? elem.username : elem.email;
+      
+      return AES.encrypt(token + password, 'GuardosResto')
+        .toString();
+    }
+  }
+  return false;
+}
+
+export async function logoutUserResto(token: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema.find();
+
+  for (const elem of userData) {
+    let tokenToCheck = elem.username ? elem.username : elem.email;
+    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
+    .toString(enc.Utf8);
+
+    if (AES.decrypt(token, 'GuardosResto')
+        .toString(enc.Utf8) === tokenToCheck) {
       return true;
     }
   }
+
   return false;
 }
