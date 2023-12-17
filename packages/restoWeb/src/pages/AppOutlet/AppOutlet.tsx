@@ -1,11 +1,15 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import styles from "./AppOutlet.module.scss";
+import Header from "@src/components/dumpComponents/Header/Header";
 
 const AppOutlet = () => {
   return (
-    <>
-      <Outlet />
+    <div className={styles.ParentElement}>
+      <div className={styles.ContentElement}>
+        <Header/>
+        <Outlet />
+      </div>
       <div className={styles.Container}>
         <div className={styles.TextContainer}>
           <h2 className={styles.ContactTitle}>Contact:</h2>
@@ -16,7 +20,7 @@ const AppOutlet = () => {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

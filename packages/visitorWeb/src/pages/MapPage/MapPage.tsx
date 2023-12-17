@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import styles from "@src/pages/MapPage/MapPage.module.scss";
-import Header from "@src/components/Header/Header";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import BackButton from '@src/components/HomeButton/HomeButton';
 import Filter from "@src/components/Filter/Filter";
@@ -108,7 +107,6 @@ const MapPage = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>What are you looking for ?</span>
         <InputSearch onChange={handleFilterChange} />

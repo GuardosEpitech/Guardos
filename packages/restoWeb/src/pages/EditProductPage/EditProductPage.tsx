@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import ProductForm from "@src/components/forms/ProductForm/ProductForm";
-import Header from "@src/components/dumpComponents/Header/Header";
 import { IProductFE } from "shared/models/productInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/EditProductPage/EditProductPage.module.scss";
@@ -35,7 +34,6 @@ const EditProductPage = () => {
 
   return (
     <div>
-      <Header />
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>Edit product</span>
       </div>
