@@ -1,5 +1,6 @@
 export interface IProductBE {
   name: string;
+  userID: number;
   id: number;
   allergens: string[];
   ingredients: string[];
@@ -8,6 +9,7 @@ export interface IProductBE {
 
 export interface IProductFE {
   name: string;
+  userID: number;
   id: number;
   allergens: string[];
   ingredients: string[];
