@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 //Database structure for restaurants
 export const restaurantSchema = new mongoose.Schema({
   _id: Number,
+  userID: Number,
   name: String,
   phoneNumber: String,
   rating: Number,

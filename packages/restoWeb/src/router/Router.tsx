@@ -13,6 +13,8 @@ import HomePage from "@src/pages/HomePage";
 import MenuPage from "@src/pages/MenuPage";
 import ProductsPage from "@src/pages/ProductsPage";
 import ScrollToTop from "@src/components/ScrollToTop/ScrollToTop";
+import RegistrationPage from "@src/pages/RegistrationPage";
+import LoginPage from "@src/pages/LoginPage";
 
 const MVPRouter = () => {
   return (
@@ -24,6 +26,8 @@ const MVPRouter = () => {
           <Route path="addProduct" element={<AddProductPage />} />
           <Route path="addResto" element={<AddRestaurantPage />} />
           <Route path="dishes" element={<DishesPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegistrationPage />} />
           <Route path="editDish" element={<EditDishPage />} />
           <Route path="editProduct" element={<EditProductPage />} />
           <Route path="editResto" element={<EditRestaurantPage />} />

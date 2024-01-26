@@ -8,16 +8,17 @@ export async function addUserResto(username: string,
 
   const errorArray = [false, false];
   const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  console.log(username);
-  console.log(email);
-  console.log(password);
+  let lastrecord = await UserRestoSchema.findOne({}).sort({ uid: -1 }).exec();
+  const highestUid = lastrecord ? lastrecord.uid + 1 : 0
+
   const upload = new UserRestoSchema({
+    uid: highestUid,
     username: username,
     email: email,
     password: AES.encrypt(password, 'GuardosResto')
       .toString(),
     isActive: false,
-    restaurants: []
+    restaurantIDs: []
   });
   const existingUsername = await UserRestoSchema.findOne({ username: username })
     .exec();
@@ -71,5 +72,22 @@ export async function logoutUserResto(token: string) {
     }
   }
 
+  return false;
+}
+
+export async function getUserIdResto(token: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema.find();
+
+  for (const elem of userData) {
+    let tokenToCheck = elem.username ? elem.username : elem.email;
+    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
+    .toString(enc.Utf8);
+
+    if (AES.decrypt(token, 'GuardosResto')
+        .toString(enc.Utf8) === tokenToCheck) {
+      return elem.uid;
+    }
+  }
   return false;
 }
