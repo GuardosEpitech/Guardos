@@ -15,6 +15,23 @@ export const getAllDishes = async () => {
   }
 };
 
+export const getDishesByUser = async (userToken: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      params: {key: userToken},
+      url: baseUrl + 'user/dish',
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all dishes from user:", error);
+    throw new Error("Failed to fetch all dishes from user");
+  }
+};
+
 export const addNewDish = async (restoName: string, body: any) => {
   try {
     const response = await axios({

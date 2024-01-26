@@ -7,6 +7,7 @@ import {
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
 import {checkIfRestaurantExists} from '../middleware/restaurantMiddleWare';
+import {getUserIdResto} from '../controllers/userRestoController';
 
 const router = express.Router();
 
