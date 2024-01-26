@@ -104,6 +104,7 @@ const ProductForm = (props: IDishFormProps) => {
     if (editable) {
       const product: IProductFE = {
         name: productName,
+        userID: 0,
         ingredients: productIngredients,
         allergens: [],
         restaurantId: productRestaurantIds,
