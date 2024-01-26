@@ -61,3 +61,20 @@ export const deleteResto = async (restoName: string) => {
     throw new Error("Failed to delete restaurant");
   }
 };
+
+export const getAllRestaurantsByUser = async (body: any) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'user/resto',
+      params: body,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all restaurants:", error);
+    throw new Error("Failed to fetch all restaurants");
+  }
+};

@@ -21,6 +21,7 @@ export default class Filter {
       const obj = this.createBackEndObj({
         id: elem.id,
         name: elem.name,
+        userID: elem.userID,
         description: elem.description,
         rating: elem.rating,
         ratingCount: elem.ratingCount,
@@ -48,6 +49,7 @@ export default class Filter {
 
     const restaurantBE: IRestaurantBackEnd = {
       name: restaurant.name,
+      userID: restaurant.userID,
       description: restaurant.description,
       id: restaurant.id,
       website: restaurant.website,
@@ -121,6 +123,7 @@ export default class Filter {
     const obj: IRestaurantFrontEnd = {
       name: restaurant.name,
       website: restaurant.website,
+      userID: restaurant.userID,
       description: restaurant.description,
       rating: restaurant.rating,
       ratingCount: restaurant.ratingCount,
