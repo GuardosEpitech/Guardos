@@ -40,8 +40,13 @@ const Header = () => {
           </a>
         )}
       </span>
-      <span className={styles.NavTitle}>My Account</span>
-      <img className={styles.LogoImg} src={logo} alt="Logo" onClick={() => NavigateTo('/', navigate, {})} />
+      { loggedIn && (
+          <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>My Account</span>
+        )
+      }
+      <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+        <div className={styles.logo}></div>
+      </div>
       <span className={styles.NavTitle} onClick={() => NavigateTo('/about-us', navigate, {})}>About Us ?</span>
       <span className={styles.NavTitle} onClick={() => NavigateTo('/contact', navigate, {})}>Contact Us</span>
     </div>

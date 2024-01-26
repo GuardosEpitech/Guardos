@@ -87,21 +87,28 @@
     color: #6d071a;
   }
   
-  .logocontainer 
+  .descriptionContainer 
   {
     display: flex;
     align-items: center;
     flex-direction: column;
-  
-    .logo 
-    {
+
+    .logoContainer {
       width: 250px;
       height: 250px;
       border-radius: 50%;
-      background: url(../../assets/logo.png);
-      background-size: cover;
+      overflow: hidden;
+      position: relative;
       margin-bottom: 30px;
-      transform: translate(1.2%, 8.4%);
+      background-color: white;
+
+      .logo {
+        width: 100%;
+        height: 100%;
+        background: url(../../assets/logo.png) center/cover no-repeat;
+        background-position: 2px 6px;
+      }
+
     }
   
     p 
