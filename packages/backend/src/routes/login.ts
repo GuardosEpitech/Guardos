@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
-import { loginUser } from '../controllers/userController';
+import {getUserId, loginUser} from '../controllers/userController';
 import { loginUserResto, getUserIdResto } from '../controllers/userRestoController';
 
 const router = express.Router();
@@ -19,6 +19,21 @@ router.post('/', async function (req: Request, res: Response) {
   } catch (error) {
     return res.status(500)
       .send('An error occurred while processing your request');
+  }
+});
+
+router.get('/checkIn', async function (req: Request, res: Response) {
+  try {
+    const userToken = String(req.query.key);;
+    const answer = await getUserId(userToken);
+
+    if (answer !== false) {
+      return res.sendStatus(200);
+    } else {
+      return res.sendStatus(400);
+    }
+  } catch (error) {
+    return res.send('An error occurred while processing your request');
   }
 });
 

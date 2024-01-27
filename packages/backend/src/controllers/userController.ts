@@ -6,9 +6,15 @@ import { AES, enc } from 'crypto-js';
 export async function addUser(username: string,
   email: string, password: string) {
 
-  const errorArray = [false, false];
   const UserSchema = mongoose.model('User', userSchema, 'User');
+  const lastRecord = await UserSchema.findOne({})
+    .sort({ uid: -1 })
+    .exec();
+  const highestUid = lastRecord ? lastRecord.uid + 1 : 0;
+
+  const errorArray = [false, false];
   const upload = new UserSchema({
+    uid: highestUid,
     username: username,
     email: email,
     password: AES.encrypt(password, 'Guardos')
@@ -62,4 +68,21 @@ export async function updateAllergens(email: string, allergens: string) {
         parse(allergens)
     }, { new: true });
   return userData;
+}
+
+export async function getUserId(token: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema.find();
+
+  for (const elem of userData) {
+    let tokenToCheck = elem.username ? elem.username : elem.email;
+    tokenToCheck += AES.decrypt(elem.password, 'Guardos')
+      .toString(enc.Utf8);
+
+    if (AES.decrypt(token, 'Guardos')
+      .toString(enc.Utf8) === tokenToCheck) {
+      return elem.uid;
+    }
+  }
+  return false;
 }

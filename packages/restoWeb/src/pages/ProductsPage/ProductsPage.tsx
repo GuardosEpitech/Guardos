@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 
 import FixedBtn from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
-import { getAllProducts } from "@src/services/productCalls";
+import {getProductsByUser} from "@src/services/productCalls";
 import Layout from 'shared/components/Layout/Layout';
 import ProductCard from "@src/components/ProductCard/ProductCard";
 import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
@@ -19,7 +19,9 @@ const ProductsPage = () => {
   }, []);
 
   const updateProductData = () => {
-    getAllProducts()
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+    getProductsByUser(userToken)
       .then((res) => {
         setProductData(res);
       });

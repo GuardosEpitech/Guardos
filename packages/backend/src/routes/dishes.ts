@@ -2,11 +2,12 @@ import * as express from 'express';
 
 import {
   changeDishByName, createNewDish, deleteDishByName,
-  getAllDishes, getDishByName, getDishesByRestaurantName
+  getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
 import {checkIfRestaurantExists} from '../middleware/restaurantMiddleWare';
+import {getUserIdResto} from '../controllers/userRestoController';
 
 const router = express.Router();
 
@@ -14,6 +15,32 @@ router.get('/', async (_req, res) => {
   const dishes = await getAllDishes();
   return res.status(200)
     .send(dishes);
+});
+
+router.get('/user/dish', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    const dishes = await getDishByUser(userID);
+
+    // Return 200 OK with the restaurant data
+    return res.status(200)
+      .send(dishes);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in '/user/dish' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 router.get('/:name', async (req, res) => {

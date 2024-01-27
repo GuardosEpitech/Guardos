@@ -28,8 +28,14 @@ export async function createOrUpdateProduct(product: IProduct,
   restaurantId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    const existingProduct = await Product.findOne({ name: product.name });
+    const existingProduct = await Product.findOne({name: product.name});
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+    const restaurant = await Restaurant.findById(restaurantId);
 
+    if (!restaurant) {
+      console.log(`Restaurant with ID: ${restaurantId} not found`);
+      return;
+    }
     if (!existingProduct) {
       const maxProductIdResult = await getMaxProductId();
       if (maxProductIdResult === null) {
@@ -38,6 +44,7 @@ export async function createOrUpdateProduct(product: IProduct,
       }
       const newProduct = new Product({
         _id: maxProductIdResult,
+        userID: restaurant.userID,
         name: product.name,
         allergens: product.allergens,
         ingredients: product.ingredients,
@@ -73,6 +80,7 @@ export async function addProductsFromRestaurantToOwnDB(restaurantId: number) {
         }
         const newProduct = new Product({
           _id: maxProductId,
+          userID: restaurant.userID,
           name: product.name,
           allergens: product.allergens,
           ingredients: product.ingredients,
@@ -112,6 +120,7 @@ export async function addProductsToDB(restaurantId: number, product: IProduct) {
       }
       const newProduct = new Product({
         _id: maxProductId,
+        userID: restaurant.userID,
         name: product.name,
         allergens: product.allergens,
         ingredients: product.ingredients,
@@ -135,6 +144,16 @@ export async function getProductByName(productName: string):Promise<IProductBE> 
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return null;
+  }
+}
+
+export async function getProductsByUser(loggedInUserId: number) {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    return await Product.find({userID: loggedInUserId});
+  } catch (error) {
+    console.error('Error while fetching all products: ', error);
+    return [];
   }
 }
 
@@ -178,10 +197,13 @@ export async function changeProductByName(product: IProductBE, oldProductsName:s
   const oldProduct = await getProductByName(oldProductsName);
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
+    userID: product.userID,
     id: oldProduct.id,
     allergens: product.allergens ? product.allergens : oldProduct.allergens,
-    ingredients: product.ingredients ? product.ingredients : oldProduct.ingredients,
-    restaurantId: product.restaurantId ? product.restaurantId : oldProduct.restaurantId,
+    ingredients: product.ingredients ? product.ingredients :
+      oldProduct.ingredients,
+    restaurantId: product.restaurantId ? product.restaurantId :
+      oldProduct.restaurantId,
   };
   await updateProduct(product, oldProduct.name);
   return newProduct;

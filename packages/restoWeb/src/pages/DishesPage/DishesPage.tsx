@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import Dish from "@src/components/menu/Dish/Dish";
 import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
-import {getAllDishes} from "@src/services/dishCalls";
+import {getDishesByUser} from "@src/services/dishCalls";
 import {IDishFE} from "shared/models/dishInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
@@ -18,7 +18,9 @@ const DishesPage = () => {
   }, []);
 
   const updateDishData = () => {
-    getAllDishes()
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+    getDishesByUser(userToken)
       .then((res) => {
         setDishData(res);
       });
