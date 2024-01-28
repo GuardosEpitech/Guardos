@@ -86,8 +86,10 @@ const AboutUsPage = () => {
                 activeSection === 'introduction' && (
                   <div className={styles.aboutussection}>
                     <h2>About Us</h2>
-                    <div className={styles.logocontainer}>
-                      <div className={styles.logo}></div>
+                    <div className={styles.descriptionContainer}>
+                      <div className={styles.logoContainer}>
+                        <div className={styles.logo}></div>
+                      </div>
                       <p>
                         {description}
                         <br />
