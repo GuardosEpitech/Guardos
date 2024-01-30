@@ -23,6 +23,10 @@ export async function getDishByUser(loggedInUserId: number) {
   const dishes: IDishFE[] = [];
   for (const rest of restaurants) {
     for (const dish of rest.dishes) {
+      // prevent parsing empty objects - name is always mandatory
+      if (!dish.name) {
+        continue;
+      }
       const dishFE: IDishFE = {
         name: dish.name as string,
         description: dish.description as string,
@@ -38,15 +42,21 @@ export async function getDishByUser(loggedInUserId: number) {
       dishFE.allergens.pop();
       dishFE.picturesId?.pop();
 
-      dishFE.category.foodGroup = dish.category.foodGroup as string;
-      dishFE.category.extraGroup = dish.category.extraGroup as string[];
-      dishFE.category.menuGroup = dish.category.menuGroup as string;
-      for (const pict of dish.pictures) {
-        dishFE.pictures.push(pict as string);
+      dishFE.category = dishFE.category = dishFE.category ? dishFE.category : {
+        menuGroup: '',
+        foodGroup: '',
+        extraGroup: [''],
+      };
+      if (dish.pictures) {
+        for (const pict of dish.pictures) {
+          dishFE.pictures.push(pict as string);
+        }
       }
 
-      for (const allergen of dish.allergens) {
-        dishFE.allergens.push(allergen as string);
+      if (dish.allergens) {
+        for (const allergen of dish.allergens) {
+          dishFE.allergens.push(allergen as string);
+        }
       }
 
       dishes.push(dishFE);
