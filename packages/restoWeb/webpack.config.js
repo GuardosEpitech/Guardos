@@ -20,6 +20,7 @@ const config = {
   devServer: {
     open: true,
     host: "0.0.0.0",
+    allowedHosts: ["all"], // HUGE SECURITY RISK --> WE HAVE TO CHANGE THIS SOMEHOW
     port: 8080,
     historyApiFallback: true
   },
