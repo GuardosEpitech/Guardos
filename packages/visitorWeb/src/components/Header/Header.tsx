@@ -47,8 +47,7 @@ const Header = () => {
       <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
         <div className={styles.logo}></div>
       </div>
-      <span className={styles.NavTitle} onClick={() => NavigateTo('/about-us', navigate, {})}>About Us ?</span>
-      <span className={styles.NavTitle} onClick={() => NavigateTo('/contact', navigate, {})}>Contact Us</span>
+      <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>Welcome to Guardos</span>
     </div>
   );
 };
