@@ -29,7 +29,8 @@ router.get('/checkIn', async function (req: Request, res: Response) {
     const answer = await getUserId(userToken);
 
     if (answer !== false) {
-      return res.sendStatus(200);
+      return res.status(200)
+        .send({uID: answer});
     } else {
       return res.sendStatus(400);
     }
@@ -58,9 +59,9 @@ router.get('/restoWeb/checkIn', async function (req: Request, res: Response) {
   try {
     const userToken = String(req.query.key);
     const answer = await getUserIdResto(userToken);
-
     if (answer !== false) {
-      return res.sendStatus(200);
+      return res.status(200)
+        .send({uID: answer});
     } else {
       return res.sendStatus(400);
     }
