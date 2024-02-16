@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import {getUserId, loginUser} from '../controllers/userController';
-import { loginUserResto, getUserIdResto } from '../controllers/userRestoController';
+import { loginUserResto, getUserIdResto }
+  from '../controllers/userRestoController';
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.post('/', async function (req: Request, res: Response) {
 
 router.get('/checkIn', async function (req: Request, res: Response) {
   try {
-    const userToken = String(req.query.key);;
+    const userToken = String(req.query.key);
     const answer = await getUserId(userToken);
 
     if (answer !== false) {
@@ -43,7 +44,8 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     const answer = await loginUserResto(data.username, data.password);
 
     if (answer !== false) {
-      return res.status(200).send(answer);
+      return res.status(200)
+        .send(answer);
     } else {
       return res.send('Invalid Access');
     }
@@ -54,7 +56,7 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
 
 router.get('/restoWeb/checkIn', async function (req: Request, res: Response) {
   try {
-    const userToken = String(req.query.key);;
+    const userToken = String(req.query.key);
     const answer = await getUserIdResto(userToken);
 
     if (answer !== false) {
