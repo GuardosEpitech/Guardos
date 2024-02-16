@@ -8,6 +8,7 @@ import login from './routes/login';
 import user from './routes/user';
 import images from './routes/images';
 import logout from './routes/logout';
+import deleteUser from './routes/deleteUsers';
 import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
@@ -55,6 +56,7 @@ async function main() {
     app.use('/api/user', user);
     app.use('/api/images', images);
     app.use('/api/sendEmail', email);
+    app.use('/api/delete/', deleteUser);
   }
 
   app.use(function (_req, _res, next) {

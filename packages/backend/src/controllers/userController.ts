@@ -86,3 +86,13 @@ export async function getUserId(token: string) {
   }
   return false;
 }
+
+export async function deleteUser(uID: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+
+  const answer = await UserSchema.findOneAndDelete({ uid: parseInt(uID) });
+  if (answer) {
+    return answer;
+  }
+  return false;
+}
