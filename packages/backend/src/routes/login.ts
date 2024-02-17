@@ -1,7 +1,8 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import {getUserId, loginUser} from '../controllers/userController';
-import { loginUserResto, getUserIdResto } from '../controllers/userRestoController';
+import { loginUserResto, getUserIdResto }
+  from '../controllers/userRestoController';
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ router.post('/', async function (req: Request, res: Response) {
     const data = req.body;
     const answer = await loginUser(data.username, data.password);
 
-    if (answer) {
+    if (answer !== false) {
       return res.send(data);
     } else {
       return res.status(403)

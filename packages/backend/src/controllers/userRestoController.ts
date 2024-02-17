@@ -1,15 +1,16 @@
 import mongoose from 'mongoose';
-import { userRestoSchema }
+import {userRestoSchema}
   from '../models/userRestaurantInterfaces';
-import { AES, enc } from 'crypto-js';
+import {AES, enc} from 'crypto-js';
 
 export async function addUserResto(username: string,
   email: string, password: string) {
 
   const errorArray = [false, false];
   const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  let lastrecord = await UserRestoSchema.findOne({}).sort({ uid: -1 }).exec();
-  const highestUid = lastrecord ? lastrecord.uid + 1 : 0
+  let lastrecord = await UserRestoSchema.findOne({}).sort({uid: -1})
+    .exec();
+  const highestUid = lastrecord ? lastrecord.uid as number + 1 : 0;
 
   const upload = new UserRestoSchema({
     uid: highestUid,
@@ -20,9 +21,9 @@ export async function addUserResto(username: string,
     isActive: false,
     restaurantIDs: []
   });
-  const existingUsername = await UserRestoSchema.findOne({ username: username })
+  const existingUsername = await UserRestoSchema.findOne({username: username})
     .exec();
-  const existingEmail = await UserRestoSchema.findOne({ email: email })
+  const existingEmail = await UserRestoSchema.findOne({email: email})
     .exec();
 
   if (existingEmail) {
@@ -45,11 +46,11 @@ export async function loginUserResto(username: string,
 
   for (const elem of userData) {
     if ((elem.username === username ||
-      elem.email === username) &&
-      AES.decrypt(elem.password, 'GuardosResto')
+        elem.email === username) &&
+      AES.decrypt(elem.password as string, 'GuardosResto')
         .toString(enc.Utf8) === password) {
       const token = elem.username ? elem.username : elem.email;
-      
+
       return AES.encrypt(token + password, 'GuardosResto')
         .toString();
     }
@@ -63,11 +64,11 @@ export async function logoutUserResto(token: string) {
 
   for (const elem of userData) {
     let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
-    .toString(enc.Utf8);
+    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
+      .toString(enc.Utf8);
 
     if (AES.decrypt(token, 'GuardosResto')
-        .toString(enc.Utf8) === tokenToCheck) {
+      .toString(enc.Utf8) === tokenToCheck) {
       return true;
     }
   }
@@ -81,11 +82,11 @@ export async function getUserIdResto(token: string) {
 
   for (const elem of userData) {
     let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
-    .toString(enc.Utf8);
+    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
+      .toString(enc.Utf8);
 
     if (AES.decrypt(token, 'GuardosResto')
-        .toString(enc.Utf8) === tokenToCheck) {
+      .toString(enc.Utf8) === tokenToCheck) {
       return elem.uid;
     }
   }

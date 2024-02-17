@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./Header.module.scss";
-import logo from "@src/assets/logo.png";
+import {checkIfVisitorTokenIsValid} from "restoweb/src/services/userCalls";
 
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -11,20 +11,36 @@ const Header = () => {
   const navigate = useNavigate();
   
   function logoutUser() {
+    const event = new Event('loggedOut');
     localStorage.removeItem('user');
     setLoggedIn(false);
+    document.dispatchEvent(event);
     NavigateTo('/', navigate, {})
   }
 
-  useEffect(() => {
-    const userData = localStorage.getItem('user');
+  const checkUserToken = async () => {
+    try {
+      const userToken = localStorage.getItem('user');
 
-    if (userData !== null) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-      localStorage.removeItem('user');
+      if (userToken === null) {
+        setLoggedIn(false);
+        return;
+      }
+      const isUserTokenValid = await checkIfVisitorTokenIsValid({ key: userToken });
+
+      if (isUserTokenValid === 'OK') {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+        localStorage.removeItem('user');
+      }
+    } catch (error) {
+      console.error('Error fetching login data:', error);
     }
+  };
+
+  useEffect(() => {
+    checkUserToken();
   }, []);
 
   return (

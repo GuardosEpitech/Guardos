@@ -18,6 +18,7 @@ import dishes from './routes/dishes';
 import products from './routes/products';
 import restaurants from './routes/restaurants';
 import email from './routes/email';
+import visitorProfile from './routes/visitorProfile';
 
 async function main() {
   const app = express();
@@ -55,6 +56,7 @@ async function main() {
     app.use('/api/user', user);
     app.use('/api/images', images);
     app.use('/api/sendEmail', email);
+    app.use('/api/profile', visitorProfile);
   }
 
   app.use(function (_req, _res, next) {
