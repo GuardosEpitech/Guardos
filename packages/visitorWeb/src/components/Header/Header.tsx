@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./Header.module.scss";
-import {checkIfVisitorTokenIsValid} from "restoweb/src/services/userCalls";
+import {checkIfVisitorTokenIsValid} from "@src/services/userCalls";
 
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,7 +28,7 @@ const Header = () => {
       }
       const isUserTokenValid = await checkIfVisitorTokenIsValid({ key: userToken });
 
-      if (isUserTokenValid === 'OK') {
+      if (isUserTokenValid) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
@@ -41,7 +41,7 @@ const Header = () => {
 
   useEffect(() => {
     checkUserToken();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className={styles.BackgroundRect}>
