@@ -1,0 +1,78 @@
+.testimonials__container {
+  width: 45%;
+  min-height: 300px;
+  padding-bottom: 4rem;
+}
+
+.client__avatar {
+  width: 6rem;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+
+   img {
+    display: block;
+    width: 96px;
+    object-fit: cover;
+   }
+}
+
+.testimonials {
+  background: #4caf50;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 2rem;
+  user-select: none; /* to not allow user to select the text */
+  min-height: 350px;
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
+  
+  p {
+    padding-top: 16px;
+  }
+}
+
+.client_review {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 300;
+  display: block;
+  width: 80%;
+  margin: 0.8rem auto 0;
+}
+
+.swiper-pagination-clickable .swiper-pagination-bullet-active {
+  background: #4db5ff;
+}
+
+.sectionTestimonials {
+  padding-top: 32px;
+}
+
+
+/* ======media queries for tablets(medium devices) =========*/
+
+@media screen and (max-width: 1400px) {
+  .testimonials__container {
+    width: 60%;
+  }
+}
+
+/* ======media queries for tablets(medium devices) =========*/
+
+@media screen and (max-width: 1024px) {
+  .testimonials__container {
+    width: 90%;
+  }
+}
+
+/* ======media queries for mobile(small devices) =========*/
+
+@media screen and (max-width: 600px) {
+  .testimonials__container {
+    width: 86%;
+  }
+  .client_review {
+    width: 86%;
+  }
+}

@@ -1,14 +1,16 @@
 import mongoose from 'mongoose';
-import {userRestoSchema}
+import { userRestoSchema }
   from '../models/userRestaurantInterfaces';
-import {AES, enc} from 'crypto-js';
+import { AES, enc } from 'crypto-js';
 
 export async function addUserResto(username: string,
   email: string, password: string) {
 
   const errorArray = [false, false];
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  let lastrecord = await UserRestoSchema.findOne({}).sort({uid: -1})
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const lastrecord = await UserRestoSchema.findOne({})
+    .sort({ uid: -1 })
     .exec();
   const highestUid = lastrecord ? lastrecord.uid as number + 1 : 0;
 
@@ -21,9 +23,9 @@ export async function addUserResto(username: string,
     isActive: false,
     restaurantIDs: []
   });
-  const existingUsername = await UserRestoSchema.findOne({username: username})
+  const existingUsername = await UserRestoSchema.findOne({ username: username })
     .exec();
-  const existingEmail = await UserRestoSchema.findOne({email: email})
+  const existingEmail = await UserRestoSchema.findOne({ email: email })
     .exec();
 
   if (existingEmail) {
@@ -41,12 +43,13 @@ export async function addUserResto(username: string,
 
 export async function loginUserResto(username: string,
   password: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
   const userData = await UserRestoSchema.find();
 
   for (const elem of userData) {
     if ((elem.username === username ||
-        elem.email === username) &&
+      elem.email === username) &&
       AES.decrypt(elem.password as string, 'GuardosResto')
         .toString(enc.Utf8) === password) {
       const token = elem.username ? elem.username : elem.email;
@@ -59,7 +62,8 @@ export async function loginUserResto(username: string,
 }
 
 export async function logoutUserResto(token: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
   const userData = await UserRestoSchema.find();
 
   for (const elem of userData) {
@@ -77,7 +81,8 @@ export async function logoutUserResto(token: string) {
 }
 
 export async function getUserIdResto(token: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
   const userData = await UserRestoSchema.find();
 
   for (const elem of userData) {
@@ -89,6 +94,16 @@ export async function getUserIdResto(token: string) {
       .toString(enc.Utf8) === tokenToCheck) {
       return elem.uid;
     }
+  }
+  return false;
+}
+
+export async function deleteUserResto(uID: string) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOneAndDelete({ uid: parseInt(uID) });
+  if (answer) {
+    return answer;
   }
   return false;
 }
