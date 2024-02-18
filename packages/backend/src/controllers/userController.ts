@@ -79,13 +79,20 @@ export async function getProfileDetails(userId: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.findOne({uid: userId});
   const inter: IProfileCommunication = {
-    username: userData.username as string,
-    email: userData.email as string,
-    city: userData.city as string,
-    allergens: userData.allergens as string[],
-    savedFilter: userData.savedFilter as [ISearchCommunication],
-    profilePicId: userData.profilePicId as number,
-    preferredLanguage: userData.preferredLanguage as string
+    username: userData.username === undefined ? ''
+      : userData.username as string,
+    email: userData.email === undefined ? ''
+      : userData.email as string,
+    city: userData.city === undefined ? ''
+      : userData.city as string,
+    allergens: userData.allergens === undefined ? []
+      : userData.allergens as string[],
+    savedFilter: userData.savedFilter === undefined ? [{}]
+      : userData.savedFilter as [ISearchCommunication],
+    profilePicId: userData.profilePicId === undefined ? null
+      : userData.profilePicId as number,
+    preferredLanguage: userData.preferredLanguage === undefined ? ''
+      : userData.preferredLanguage as string
   };
   return inter;
 }
@@ -157,7 +164,7 @@ export async function addSavedFilter(userId: number,
 }
 
 export async function editSavedFilter(userId: number, filterId: number,
-  updatedFields: Partial<ISearchCommunication>) {
+  updatedFields: ISearchCommunication) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   return UserSchema.findOneAndUpdate(
     {uid: userId, 'savedFilter._id': filterId},
@@ -179,7 +186,7 @@ export async function addProfilePicture(userId: number, pictureId: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   return UserSchema.findOneAndUpdate(
     { uid: userId },
-    { $push: { profilePicId: pictureId } },
+    { $set: { profilePicId: pictureId } },
     { new: true }
   );
 }
@@ -197,7 +204,7 @@ export async function deleteProfilePicture(userId: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   return UserSchema.findOneAndUpdate(
     { uid: userId },
-    { $unset: { savedFilter: 1 } },
+    { $unset: { profilePicId: 1 } },
     { new: true }
   );
 }

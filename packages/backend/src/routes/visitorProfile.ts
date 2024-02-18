@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = getProfileDetails(userID);
+    const profileDetails = await getProfileDetails(userID);
     return res.status(200)
       .send(profileDetails);
   } catch (error) {
@@ -49,7 +49,7 @@ router.put('/', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = updateProfileDetails(userID, updateFields);
+    const profileDetails = await updateProfileDetails(userID, updateFields);
     return res.status(200)
       .send(profileDetails);
   } catch (error) {
@@ -75,7 +75,7 @@ router.put('/password', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = updatePassword(userID, oldPassword, newPassword);
+    const profileDetails = await updatePassword(userID, oldPassword, newPassword);
     return res.status(200)
       .send(profileDetails);
   } catch (error) {
@@ -100,9 +100,9 @@ router.post('/filter', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = addSavedFilter(userID, filter);
+    const profileDetails = await addSavedFilter(userID, filter);
     return res.status(200)
-      .send(profileDetails);
+      .send(profileDetails.savedFilter);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in POST '/api/profile/filter' route:", error);
@@ -126,9 +126,13 @@ router.put('/filter', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = editSavedFilter(userID, filterId, updateFields);
+    const profileDetails = await editSavedFilter(userID, filterId, updateFields);
+    if (profileDetails === null) {
+      return res.status(404)
+        .send({error: 'Filter with that id not found'});
+    }
     return res.status(200)
-      .send(profileDetails);
+      .send(profileDetails.savedFilter);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in PUT '/api/profile/filter' route:", error);
@@ -151,9 +155,13 @@ router.delete('/filter', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = deleteSavedFilter(userID, filterId);
+    const profileDetails = await deleteSavedFilter(userID, filterId);
+    if (profileDetails === null) {
+      return res.status(404)
+        .send({error: 'Filter with that id not found'});
+    }
     return res.status(200)
-      .send(profileDetails);
+      .send(profileDetails.savedFilter);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in DELETE '/api/profile/filter' route:", error);
@@ -176,9 +184,9 @@ router.post('/image', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = addProfilePicture(userID, pictureId);
+    await addProfilePicture(userID, pictureId);
     return res.status(200)
-      .send(profileDetails);
+      .send(true);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in POST '/api/profile/image' route:", error);
@@ -201,9 +209,9 @@ router.put('/image', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = editProfilePicture(userID, pictureId);
+    await editProfilePicture(userID, pictureId);
     return res.status(200)
-      .send(profileDetails);
+      .send(true);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in PUT '/api/profile/image' route:", error);
@@ -225,9 +233,9 @@ router.delete('/image', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = deleteProfilePicture(userID);
+    await deleteProfilePicture(userID);
     return res.status(200)
-      .send(profileDetails);
+      .send(true);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in DELETE '/api/profile/image' route:", error);
