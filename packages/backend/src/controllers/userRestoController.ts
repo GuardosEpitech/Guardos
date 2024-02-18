@@ -107,3 +107,60 @@ export async function deleteUserResto(uID: string) {
   }
   return false;
 }
+
+export async function getUserInfoResto(token: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema.find();
+
+  for (const elem of userData) {
+    let tokenToCheck = elem.username ? elem.username : elem.email;
+    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
+      .toString(enc.Utf8);
+
+    if (AES.decrypt(token, 'GuardosResto')
+      .toString(enc.Utf8) === tokenToCheck) {
+      return { 
+        username: elem.username, 
+        email: elem.email,
+        location: elem.location
+      };
+    }
+  }
+  return null;
+}
+
+export async function updateUserResto(
+  token: string, newUsername?: string, newEmail?: string, newLocation?: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  
+  // Find the user based on the token
+  const userID = await getUserIdResto(token);
+  console.log(userID);
+  const user = await UserRestoSchema.findOne({uid: userID});
+  if (!user) {
+    throw new Error('User not found');
+  }
+  
+  // Update the username or email if provided
+  if (newUsername) {
+    user.username = newUsername;
+  }
+  
+  if (newEmail) {
+    user.email = newEmail;
+  }
+
+  if (newLocation) {
+    console.log(newLocation);
+    user.location = newLocation;
+  }
+
+  // Save the updated user object
+  await user.save();
+
+  const updatedToken = await loginUserResto(user.username || user.email, 
+    AES.decrypt(user.password, 'GuardosResto').toString(enc.Utf8));
+  
+  // Return the updated token
+  return updatedToken;
+}
