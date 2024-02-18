@@ -19,6 +19,7 @@ import { addNewResto, editResto } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import placeholderImg from "@src/assets/profile-placeholder.png";
 import styles from "./RestaurantForm.module.scss";
+import { IAddRestoRequest, IAddResto } from "shared/models/restaurantInterfaces";
 
 const PageBtn = () => {
   return createTheme({
@@ -141,7 +142,12 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   }
 
   async function sendRequestAndGoBack() {
-    const resto = {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+    const resto: IAddResto = {
       name: restaurantName,
       phoneNumber: phone,
       description: description,
@@ -149,15 +155,20 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       openingHours: openingHours,
       location: {
         streetName: street,
-        streetNumber: streetNumber,
+        streetNumber: streetNumber.toString(),
         postalCode: postalCode,
         city: city,
-        country: country
+        country: country,
+        latitude: "0",
+        longitude: "0",
       }
     };
-
+    const data: IAddRestoRequest  = {
+      userToken: userToken,
+      resto: resto,
+    };
     if (props.add) {
-      await addNewResto(resto);
+      await addNewResto(data);
     } else {
       await editResto(origRestoName, resto);
     }

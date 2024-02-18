@@ -31,7 +31,13 @@ router.get('/:name', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const maxID = await findMaxIndexRestaurants();
-  const restaurant = await createNewRestaurant(req.body, maxID + 1);
+  const { userToken, resto } = req.body;
+  const userID = await getUserIdResto(userToken);
+  if (userID === false) {
+    // If user ID is not found, return 404 Not Found
+    return res.status(404).send({ error: 'User not found' });
+  }
+  const restaurant = await createNewRestaurant(resto, userID, maxID + 1);
   await addProductsFromRestaurantToOwnDB(restaurant.id);
   return res.status(200)
     .send(restaurant);
