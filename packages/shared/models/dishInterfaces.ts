@@ -23,3 +23,9 @@ export interface IDishFE {
   resto: string;
   products: string[];
 }
+
+export interface IAddDish {
+  userToken: string;
+  resto: string;
+  dish: IDishFE;
+}

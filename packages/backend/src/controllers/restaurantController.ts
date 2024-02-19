@@ -134,7 +134,7 @@ function createRestaurantObjFe(
             menuGroup: dish.category.menuGroup
           },
           resto: restaurant.name,
-          products: dish.products
+          products: dish.products,
         };
         categories.dishes.push(dishObj);
         obj.dishes.push(dishObj);
@@ -232,12 +232,12 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
 }
 
 export async function createNewRestaurant(
-  obj: IRestaurantCommunication, id: number) {
+  obj: IRestaurantCommunication, userID: number, id: number) {
   const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
   const upload = new RestaurantSchema({
     _id: id,
     name: obj.name,
-    userID: 0,
+    userID: userID,
     phoneNumber: obj.phoneNumber ? obj.phoneNumber : '+1000000000',
     website: obj.website ? obj.website : 'www.default.de',
     rating: 0,

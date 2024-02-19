@@ -11,8 +11,9 @@ router.post('/', async function (req: Request, res: Response) {
     const data = req.body;
     const answer = await loginUser(data.username, data.password);
 
-    if (answer) {
-      return res.send(data);
+    if (answer !== false) {
+      return res.status(200)
+        .send(answer);
     } else {
       return res.status(403)
         .send('Invalid Access');
@@ -35,7 +36,8 @@ router.get('/checkIn', async function (req: Request, res: Response) {
       return res.sendStatus(400);
     }
   } catch (error) {
-    return res.send('An error occurred while processing your request');
+    return res.status(500)
+      .send('An error occurred while processing your request');
   }
 });
 
@@ -66,7 +68,8 @@ router.get('/restoWeb/checkIn', async function (req: Request, res: Response) {
       return res.sendStatus(400);
     }
   } catch (error) {
-    return res.send('An error occurred while processing your request');
+    return res.status(500)
+      .send('An error occurred while processing your request');
   }
 });
 

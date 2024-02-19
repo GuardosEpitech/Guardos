@@ -32,8 +32,7 @@ const Header = () => {
         return;
       }
       const isUserTokenValid = await checkIfTokenIsValid({ key: userToken });
-
-      if (isUserTokenValid === 'OK') {
+      if (isUserTokenValid) {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);

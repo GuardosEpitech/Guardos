@@ -8,4 +8,9 @@ export const userRestoSchema = new mongoose.Schema({
   password: String,
   isActive: Boolean,
   restaurantIDs: [Number],
+  profilePicId: {
+    type: [Number],
+    required: false
+  },
+  preferredLanguage: String,
 });
