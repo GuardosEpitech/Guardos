@@ -27,7 +27,7 @@ router.get('/user/dish', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    const dishes = await getDishByUser(userID);
+    const dishes = await getDishByUser(userID as number);
     // Return 200 OK with the restaurant data
     return res.status(200)
       .send(dishes);
@@ -68,9 +68,10 @@ router.post('/:name', async (req, res) => {
   const userID = await getUserIdResto(userToken);
   if (userID === false) {
     // If user ID is not found, return 404 Not Found
-    return res.status(404).send({ error: 'User not found' });
+    return res.status(404)
+      .send({ error: 'User not found' });
   }
-  const newDish = await createNewDish(resto, dish, userID);
+  const newDish = await createNewDish(resto, dish, userID as number);
   return res.status(200)
     .send(newDish);
 });
