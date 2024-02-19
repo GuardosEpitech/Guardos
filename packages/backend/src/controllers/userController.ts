@@ -96,3 +96,16 @@ export async function deleteUser(uID: string) {
   }
   return false;
 }
+
+export async function doesUserExist(username: string, email: string) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOne({
+    username: username, 
+    email: email
+  });
+  if (answer) {
+    return true;
+  }
+  return false;
+}

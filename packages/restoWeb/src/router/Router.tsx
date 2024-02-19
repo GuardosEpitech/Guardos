@@ -15,6 +15,7 @@ import ProductsPage from "@src/pages/ProductsPage";
 import ScrollToTop from "@src/components/ScrollToTop/ScrollToTop";
 import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
+import ResetPassword from "@src/pages/ResetPasswordPage";
 
 const MVPRouter = () => {
   return (
@@ -34,6 +35,7 @@ const MVPRouter = () => {
           <Route path="products" element={<ProductsPage />} />
           <Route path="menu" element={<MenuPage />} />
           <Route path="/" element={<HomePage />}></Route>
+          <Route path="/account-recovery" element={<ResetPassword />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
