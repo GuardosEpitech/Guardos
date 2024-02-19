@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './ResetPassword.module.scss';
 import { 
     checkIfVisitorUserExist 
-} from '@src/services/user1Calls';
+} from '@src/services/userCalls';
 
 interface ResetPasswordProps {}
 
