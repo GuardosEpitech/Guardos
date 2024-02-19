@@ -27,9 +27,7 @@ router.get('/user/dish', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-
     const dishes = await getDishByUser(userID as number);
-
     // Return 200 OK with the restaurant data
     return res.status(200)
       .send(dishes);
@@ -54,21 +52,28 @@ router.get('/:name', async (req, res) => {
 });
 
 router.post('/:name', async (req, res) => {
+  const { userToken, resto, dish } = req.body;
   if (!await checkIfRestaurantExists(req.params.name)) {
     return res.status(404)
       .send('Coudnt find restaurant named ' + req.params.name);
   }
-  if (!checkIfNameExists(req.body)) {
+  if (!checkIfNameExists(dish)) {
     return res.status(404)
       .send('Name is missing');
   }
-  if (await getDishByName(req.params.name, req.body.name)) {
+  if (await getDishByName(resto, dish)) {
     return res.status(404)
       .send('There is already a dish with the name ' + req.body.name);
   }
-  const dish = await createNewDish(req.params.name, req.body);
+  const userID = await getUserIdResto(userToken);
+  if (userID === false) {
+    // If user ID is not found, return 404 Not Found
+    return res.status(404)
+      .send({ error: 'User not found' });
+  }
+  const newDish = await createNewDish(resto, dish, userID as number);
   return res.status(200)
-    .send(dish);
+    .send(newDish);
 });
 
 router.delete('/:name', async (req, res) => {

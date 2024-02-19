@@ -70,3 +70,17 @@ export interface IRestaurantBackEnd {
   extras: IDishBE[];
   products: IProduct[];
 }
+
+export interface IAddResto {
+  name: string;
+  phoneNumber: string;
+  description: string;
+  website: string;
+  openingHours: IOpeningHours[];
+  location: ILocation;
+};
+
+export interface IAddRestoRequest {
+  userToken: string;
+  resto: IAddResto;
+}

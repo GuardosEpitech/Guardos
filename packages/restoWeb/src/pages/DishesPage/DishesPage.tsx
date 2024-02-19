@@ -20,7 +20,7 @@ const DishesPage = () => {
   const updateDishData = () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
-    getDishesByUser(userToken)
+    getDishesByUser({ key: userToken })
       .then((res) => {
         setDishData(res);
       });

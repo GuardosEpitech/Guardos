@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IAddDish } from "shared/models/dishInterfaces";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/dishes/`;
 
@@ -15,12 +16,12 @@ export const getAllDishes = async () => {
   }
 };
 
-export const getDishesByUser = async (userToken: string) => {
+export const getDishesByUser = async (body: any) => {
   try {
     const response = await axios({
       method: "GET",
-      params: {key: userToken},
       url: baseUrl + 'user/dish',
+      params: body,
       headers: {
         "content-type": "application/json",
       },
@@ -32,10 +33,10 @@ export const getDishesByUser = async (userToken: string) => {
   }
 };
 
-export const addNewDish = async (restoName: string, body: any) => {
+export const addNewDish = async (body: IAddDish) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + body.resto,
       method: "POST",
       data: JSON.stringify(body),
       headers: {
