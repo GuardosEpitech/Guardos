@@ -254,9 +254,8 @@ export async function deleteUser(uID: string) {
 }
 
 export async function doesUserExist(username: string, email: string) {
-  const UserRestoSchema = mongoose
-    .model('UserResto', userSchema, 'UserResto');
-  const answer = await UserRestoSchema.findOne({
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const answer = await UserSchema.findOne({
     username: username, 
     email: email
   });

@@ -27,9 +27,9 @@ export const checkIfVisitorTokenIsValid = async (body: any) => {
 export const checkIfVisitorUserExist = async (body: any) => {
   try {
     const response = await axios({
-      method: "GET",
+      method: "POST",
       url: baseUrl1 + 'userVisitorExist',
-      params: body,
+      data: body,
       headers: {
         "content-type": "application/json",
       },
