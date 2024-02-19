@@ -10,7 +10,6 @@ import { addProductsFromRestaurantToOwnDB }
   from '../controllers/productsController';
 import { getUserIdResto }
   from '../controllers/userRestoController';
-  
 
 const router = express.Router();
 
@@ -31,12 +30,19 @@ router.get('/:name', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const maxID = await findMaxIndexRestaurants();
-  const restaurant = await createNewRestaurant(req.body, maxID + 1);
+  const { userToken, resto } = req.body;
+  const userID = await getUserIdResto(userToken);
+  if (userID === false) {
+    // If user ID is not found, return 404 Not Found
+    return res.status(404)
+      .send({ error: 'User not found' });
+  }
+  const restaurant = await createNewRestaurant(
+    resto, userID as number, maxID + 1);
   await addProductsFromRestaurantToOwnDB(restaurant.id);
   return res.status(200)
     .send(restaurant);
 });
-
 
 router.get('/user/resto', async (req, res) => {
   try {
@@ -45,22 +51,24 @@ router.get('/user/resto', async (req, res) => {
     
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
-      return res.status(404).send({ error: 'User not found' });
+      return res.status(404)
+        .send({ error: 'User not found' });
     }
     
-    const restaurant = await getAllUserRestaurants(userID);
+    const restaurant = await getAllUserRestaurants(userID as number);
     
     // Return 200 OK with the restaurant data
-    return res.status(200).send(restaurant);
+    return res.status(200)
+      .send(restaurant);
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in '/user/resto' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
-    return res.status(500).send({ error: 'Internal Server Error' });
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
   }
 });
-
 
 router.delete('/:name', async (req, res) => {
   const restaurant = await getRestaurantByName(req.params.name);
@@ -82,4 +90,5 @@ router.put('/:name', async (req, res) => {
   return res.status(200)
     .send(answer);
 });
+
 export default router;

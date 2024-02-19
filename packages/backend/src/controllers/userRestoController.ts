@@ -12,7 +12,7 @@ export async function addUserResto(username: string,
   const lastrecord = await UserRestoSchema.findOne({})
     .sort({ uid: -1 })
     .exec();
-  const highestUid = lastrecord ? lastrecord.uid + 1 : 0;
+  const highestUid = lastrecord ? lastrecord.uid as number + 1 : 0;
 
   const upload = new UserRestoSchema({
     uid: highestUid,
@@ -50,10 +50,10 @@ export async function loginUserResto(username: string,
   for (const elem of userData) {
     if ((elem.username === username ||
       elem.email === username) &&
-      AES.decrypt(elem.password, 'GuardosResto')
+      AES.decrypt(elem.password as string, 'GuardosResto')
         .toString(enc.Utf8) === password) {
       const token = elem.username ? elem.username : elem.email;
-      
+
       return AES.encrypt(token + password, 'GuardosResto')
         .toString();
     }
@@ -68,7 +68,7 @@ export async function logoutUserResto(token: string) {
 
   for (const elem of userData) {
     let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
+    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
       .toString(enc.Utf8);
 
     if (AES.decrypt(token, 'GuardosResto')
@@ -87,7 +87,7 @@ export async function getUserIdResto(token: string) {
 
   for (const elem of userData) {
     let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password, 'GuardosResto')
+    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
       .toString(enc.Utf8);
 
     if (AES.decrypt(token, 'GuardosResto')

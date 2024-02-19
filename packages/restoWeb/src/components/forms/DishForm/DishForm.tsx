@@ -11,12 +11,12 @@ import {
   TextField,
 } from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-import {getAllProducts} from "@src/services/productCalls";
+import {getProductsByUser} from "@src/services/productCalls";
 import {addNewDish, editDish} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
-import {IDishFE} from "shared/models/dishInterfaces";
-import {getAllResto} from "@src/services/restoCalls";
+import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
+import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
 import placeholderImg from "@src/assets/placeholder.png";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
@@ -90,7 +90,8 @@ const DishForm = (props: IDishFormProps) => {
   const dishList: IDishFE[] = [];
 
   useEffect(() => {
-    getAllProducts()
+    const userToken = localStorage.getItem('user');
+    getProductsByUser(userToken)
       .then((res) => {
         allDishProd = res.map((item: IProduct) => item.name);
         setProductListTest(allDishProd);
@@ -98,7 +99,8 @@ const DishForm = (props: IDishFormProps) => {
   }, []);
 
   useEffect(() => {
-    getAllResto()
+    const userToken = localStorage.getItem('user');
+    getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         allRestoNames = res.map((item: IRestaurantFrontEnd) => item.name);
         setRestoList(allRestoNames);
@@ -140,7 +142,11 @@ const DishForm = (props: IDishFormProps) => {
     if (!validateRequiredFields()) {
       return;
     }
-
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
     for (let i = 0; i < dishResto.length; i++) {
       dishList[i] = {
         name: dish,
@@ -154,13 +160,18 @@ const DishForm = (props: IDishFormProps) => {
           extraGroup: [],
           menuGroup: dishCategory[0]
         },
-        resto: dishResto[i]
+        resto: dishResto[i],
       };
     }
 
     if (props.add) {
       for (let i = 0; i < dishList.length; i++) {
-        await addNewDish(dishList[i].resto, dishList[i]);
+        const data: IAddDish = {
+          userToken: userToken,
+          resto: dishList[i].resto,
+          dish: dishList[i],
+        }
+        await addNewDish(data);
       }
     } else {
       for (let i = 0; i < dishList.length; i++) {

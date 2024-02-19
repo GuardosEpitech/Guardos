@@ -22,6 +22,7 @@ export interface IDishesCommunication {
     foodGroup: string,
     extraGroup: string[],
   },
+  userID: number;
 }
 
 export interface IRestaurantCommunication {
@@ -37,6 +38,7 @@ export interface IRestaurantCommunication {
   mealType?: IMealType[];
   extras?: IDishBE[];
   products?: IProduct[];
+  userToken: string;
 }
 
 //Communication object for BE and FE
@@ -48,4 +50,14 @@ export interface ISearchCommunication {
   location?: string;
   categories?: string[];
   allergenList?: string[];
+}
+
+export interface IProfileCommunication {
+  username: string;
+  email: string;
+  city: string;
+  allergens: string[];
+  savedFilter: [ISearchCommunication];
+  profilePicId: number;
+  preferredLanguage: string;
 }
