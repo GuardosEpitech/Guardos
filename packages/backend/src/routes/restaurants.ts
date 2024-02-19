@@ -10,7 +10,6 @@ import { addProductsFromRestaurantToOwnDB }
   from '../controllers/productsController';
 import { getUserIdResto }
   from '../controllers/userRestoController';
-  
 
 const router = express.Router();
 
@@ -43,7 +42,6 @@ router.post('/', async (req, res) => {
     .send(restaurant);
 });
 
-
 router.get('/user/resto', async (req, res) => {
   try {
     const userToken = String(req.query.key);
@@ -54,7 +52,7 @@ router.get('/user/resto', async (req, res) => {
       return res.status(404).send({ error: 'User not found' });
     }
     
-    const restaurant = await getAllUserRestaurants(userID);
+    const restaurant = await getAllUserRestaurants(userID as number);
     
     // Return 200 OK with the restaurant data
     return res.status(200).send(restaurant);
@@ -66,7 +64,6 @@ router.get('/user/resto', async (req, res) => {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 });
-
 
 router.delete('/:name', async (req, res) => {
   const restaurant = await getRestaurantByName(req.params.name);
@@ -88,4 +85,5 @@ router.put('/:name', async (req, res) => {
   return res.status(200)
     .send(answer);
 });
+
 export default router;

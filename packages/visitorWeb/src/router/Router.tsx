@@ -9,6 +9,7 @@ import ContactPage from "@src/pages/ContactPage/ContactPage";
 import AboutUsPage from "@src/pages/AboutUsPage/AboutUsPage";
 import AppOutlet from "@src/pages/AppOutlet";
 import MyAccountPage from "@src/pages/MyAccountPage";
+import IntroPage from "@src/pages/IntroPage";
 
 const MVPRouter = () => {
   return (
@@ -16,6 +17,7 @@ const MVPRouter = () => {
       <Routes>
         <Route element={<AppOutlet />}>
           <Route path="/my-account" element={<MyAccountPage />} />
+          <Route path="/intropage" element={<IntroPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/menu" element={<MenuPage />} />

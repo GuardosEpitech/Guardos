@@ -28,7 +28,6 @@ router.get('/user/dish', async (req, res) => {
         .send({ error: 'User not found' });
     }
     const dishes = await getDishByUser(userID);
-
     // Return 200 OK with the restaurant data
     return res.status(200)
       .send(dishes);

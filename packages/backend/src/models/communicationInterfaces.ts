@@ -51,3 +51,13 @@ export interface ISearchCommunication {
   categories?: string[];
   allergenList?: string[];
 }
+
+export interface IProfileCommunication {
+  username: string;
+  email: string;
+  city: string;
+  allergens: string[];
+  savedFilter: [ISearchCommunication];
+  profilePicId: number;
+  preferredLanguage: string;
+}
