@@ -13,7 +13,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [error, setError] = useState('');
 
   const isValidEmail = (value: string) => {
-    // Regular expression for validating email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value);
   };
