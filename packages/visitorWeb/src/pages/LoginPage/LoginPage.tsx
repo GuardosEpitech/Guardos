@@ -44,7 +44,7 @@ const Login = () => {
         setErrorForm(true);
         localStorage.removeItem('user');
       } else {
-        localStorage.setItem('user', JSON.stringify('isSet'));
+        localStorage.setItem('user', response.data);
         setErrorForm(false);
         NavigateTo("/", navigate, {
           loginName: user.username

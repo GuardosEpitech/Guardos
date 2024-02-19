@@ -20,6 +20,7 @@ export const restaurantSchema = new mongoose.Schema({
     required: false
   },
   description: String,
+  menuDesign: String,
   dishes: [{
     _id: Number,
     name: String,
