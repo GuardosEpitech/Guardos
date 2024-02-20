@@ -116,14 +116,12 @@ export async function updateRestoProfileDetails(userId: number,
       defaultMenuDesign: updateFields.defaultMenuDesign,
       preferredLanguage: updateFields.preferredLanguage,
     }, { new: true });
-  const inter: IRestoProfileCommunication = {
-    username: userData.username as string,
-    email: userData.email as string,
-    profilePicId: userData.profilePicId as number[],
-    defaultMenuDesign: updateFields.defaultMenuDesign as string,
-    preferredLanguage: userData.preferredLanguage as string
-  };
-  return inter;
+  const token = userData.username ? userData.username : userData.email;
+
+  return AES.encrypt(token +
+    AES.decrypt(userData.password as string, 'GuardosResto')
+      .toString(enc.Utf8), 'GuardosResto')
+    .toString();
 }
 
 export async function updateRestoPassword(userId: number, password: string,
@@ -152,7 +150,12 @@ export async function updateRestoPassword(userId: number, password: string,
       .toString();
     await userData.save();
 
-    return true;
+    const token = userData.username ? userData.username : userData.email;
+
+    return AES.encrypt(token +
+      AES.decrypt(userData.password as string, 'GuardosResto')
+        .toString(enc.Utf8), 'GuardosResto')
+      .toString();
   } catch (error) {
     console.error(error);
     throw error;
@@ -200,6 +203,8 @@ export async function getUserIdResto(token: string) {
     tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
       .toString(enc.Utf8);
 
+    console.log('tokencheck: ' + token + ', password: ' + elem.password);
+    console.log(tokenToCheck);
     if (AES.decrypt(token, 'GuardosResto')
       .toString(enc.Utf8) === tokenToCheck) {
       return elem.uid;

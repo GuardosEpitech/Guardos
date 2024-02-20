@@ -1,0 +1,166 @@
+@import "../../general";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
+
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+}
+
+.MyAccountPage h1 {
+  text-align: center;
+  color: #333;
+  padding-bottom: 10px;
+}
+
+.MyAccountPage div {
+  margin-bottom: 15px;
+}
+
+.MyAccountPage label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.InputField,
+.MyAccountPage select,
+.MyAccountPage button
+{
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.MyAccountPage ul {
+  list-style: none;
+  padding: 0;
+}
+
+.MyAccountPage li {
+  margin-bottom: 10px;
+}
+
+.MyAccountPage strong {
+  color: #333;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.profileSection {
+  flex: 1;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profileImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
+.selectInput {
+  div {
+    margin-bottom: 0;
+  }
+}
+
+.dropdownToggle {
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.dropdownToggle:hover {
+  background-color: #2980b9;
+}
+
+.dropdownBgColorExtended {
+  background: #f2f2f2;
+  padding: 1rem;
+}
+
+.dropdownBgColorCollapsed {
+  background: white;
+}
+
+.passwordChangeDropdown {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.passwordChangeDropdown label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.passwordChangeDropdown input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.passwordChangeStatus {
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.success {
+  color: #4caf50;
+  background-color: #e8f5e9;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffcdd2;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.saveButton:hover {
+  background-color: #45a049;
+}
+
+@media (min-width: 768px) {
+  .MyAccountPage {
+    display: flex;
+  }
+}

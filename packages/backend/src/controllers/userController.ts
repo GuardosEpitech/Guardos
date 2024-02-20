@@ -109,16 +109,13 @@ export async function updateProfileDetails(userId: number,
       allergens: updateFields.allergens,
       preferredLanguage: updateFields.preferredLanguage,
     }, { new: true });
-  const inter: IProfileCommunication = {
-    username: userData.username as string,
-    email: userData.email as string,
-    city: userData.city as string,
-    allergens: userData.allergens as string[],
-    savedFilter: userData.savedFilter as [ISearchCommunication],
-    profilePicId: userData.profilePicId as number,
-    preferredLanguage: userData.preferredLanguage as string
-  };
-  return inter;
+
+  // return the updated token
+  const token = userData.username ? userData.username : userData.email;
+  return AES.encrypt(token +
+    AES.decrypt(userData.password as string, 'Guardos')
+      .toString(enc.Utf8), 'Guardos')
+    .toString();
 }
 
 export async function updatePassword(userId: number, password: string,
@@ -145,7 +142,12 @@ export async function updatePassword(userId: number, password: string,
       .toString();
     await userData.save();
 
-    return true;
+    // return the updated token
+    const token = userData.username ? userData.username : userData.email;
+    return AES.encrypt(token +
+      AES.decrypt(userData.password as string, 'Guardos')
+        .toString(enc.Utf8), 'Guardos')
+      .toString();
   } catch (error) {
     console.error(error);
     throw error;
