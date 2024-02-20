@@ -1,6 +1,6 @@
 import React from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
+import {defaultDishImage, defaultRestoImage} from 'shared/assets/placeholderImageBase64';
 
 import {
   Box,
@@ -24,7 +24,7 @@ import { IAddRestoRequest, IAddResto }
 import { IimageInterface } from "shared/models/imageInterface";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
-import {addImage, deleteImageRestaurant, getImages}
+import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 
 const PageBtn = () => {
@@ -107,7 +107,6 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   let openingHours = props.openingHours ? props.openingHours : [];
   const pictures: IimageInterface[] = [];
   const origRestoName = restaurantName;
-  const File: File = null;
 
   async function callToImages() {
     if (props.picturesId.length > 0) {
@@ -221,7 +220,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
         console.log(base64);
-        addImage(restaurantName, file.name, file.type, file.size, result)
+        addImageResto(restaurantName, file.name, file.type, file.size, result)
           .then(r => {
             displayImageFromBase64(result, "restoImg");
           });
@@ -232,6 +231,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   function handeFileDelete() {
     if (picturesId.length > 0) {
       deleteImageRestaurant(picturesId[0], restaurantName);
+      displayImageFromBase64(defaultRestoImage, "restoImg");
     }
   }
 

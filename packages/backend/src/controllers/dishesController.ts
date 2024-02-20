@@ -59,6 +59,12 @@ export async function getDishByUser(loggedInUserId: number) {
         }
       }
 
+      if (dish.picturesId) {
+        for (const pictId of dish.picturesId) {
+          dishFE.picturesId.push(pictId as number);
+        }
+      }
+
       dishes.push(dishFE);
     }
   }

@@ -8,6 +8,11 @@ import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
+import {getImages} from "@src/services/callImages";
+import { IimageInterface } from "shared/models/imageInterface";
+import { defaultDishImage } from "shared/assets/placeholderImageBase64";
+import {convertImageToBase64, displayImageFromBase64}
+  from "shared/utils/imageConverter";
 
 interface IEditableDishProps {
   dish: IDishFE;
@@ -21,9 +26,10 @@ const Dish = (props: IEditableDishProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, dish, editable } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price, pictures } = dish;
-  const imgStr = `${pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
+  const { name, description, price } = dish;
   const priceStr = `${price.toFixed(2)} €`;
+  let picturesId: number[] = [];
+  const pictures: IimageInterface[] = [];
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
@@ -45,6 +51,40 @@ const Dish = (props: IEditableDishProps) => {
       setShowPopup(false);
     }
   }
+
+  async function callToImages() {
+    if (dish.picturesId.length > 0) {
+      picturesId = dish.picturesId;
+      const answer = await getImages(picturesId);
+      for (let i = 0; i < answer.length; i++) {
+        pictures.push({
+          "base64": answer[i].base64,
+          "contentType": answer[i].contentType,
+          "filename": answer[i].filename,
+          "size": answer[i].size,
+          "uploadDate": answer[i].uploadDate,
+          "id": answer[i].id,
+        });
+        console.log("Image found: " + dish.name);
+      }
+    } else {
+      pictures.push({
+        "base64": defaultDishImage,
+        "contentType": "png",
+        "filename": "placeholderResto.png",
+        "size": 0,
+        "uploadDate": "0",
+        "id": 0,
+      });
+    }
+  }
+
+  callToImages()
+    .then(() => {
+      for (let i = 0; i < pictures.length; i++) {
+        displayImageFromBase64(pictures[i].base64, dish.name+"abc");
+      }
+    });
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
@@ -83,8 +123,8 @@ const Dish = (props: IEditableDishProps) => {
           </Grid>
           <Grid item className={styles.FlexParent}>
             <img
-              src={imgStr}
-              alt="new"
+              id={dish.name}
+              alt="DishPicture"
               className={styles.ImageDimensions}
             />
           </Grid>
@@ -161,7 +201,7 @@ const Dish = (props: IEditableDishProps) => {
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
-            {<img src={imgStr} alt="new" className={styles.ImageDimensions} />}
+            {<img id={dish.name+"abc"} alt="new" className={styles.ImageDimensions} />}
           </Grid>
         </Grid>
       </div>
