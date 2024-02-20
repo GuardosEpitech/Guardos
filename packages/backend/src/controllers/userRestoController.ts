@@ -133,15 +133,12 @@ export async function updateUserResto(
   token: string, newUsername?: string, newEmail?: string, newLocation?: string) {
   const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
   
-  // Find the user based on the token
   const userID = await getUserIdResto(token);
   console.log(userID);
   const user = await UserRestoSchema.findOne({uid: userID});
   if (!user) {
     throw new Error('User not found');
   }
-  
-  // Update the username or email if provided
   if (newUsername) {
     user.username = newUsername;
   }
@@ -155,12 +152,9 @@ export async function updateUserResto(
     user.location = newLocation;
   }
 
-  // Save the updated user object
   await user.save();
 
   const updatedToken = await loginUserResto(user.username || user.email, 
     AES.decrypt(user.password, 'GuardosResto').toString(enc.Utf8));
-  
-  // Return the updated token
   return updatedToken;
 }
