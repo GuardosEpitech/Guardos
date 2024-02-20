@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 import {
   Box,
@@ -17,9 +17,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { addNewResto, editResto } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
-import placeholderImg from "@src/assets/profile-placeholder.png";
 import styles from "./RestaurantForm.module.scss";
-import { IAddRestoRequest, IAddResto } from "shared/models/restaurantInterfaces";
+import { IAddRestoRequest, IAddResto }
+  from "shared/models/restaurantInterfaces";
+import { IimageInterface } from "shared/models/imageInterface";
+import {convertImageToBase64, displayImageFromBase64}
+  from "shared/utils/imageConverter";
+import {addImage, deleteImageRestaurant, getImages} from "@src/services/callImages";
 
 const PageBtn = () => {
   return createTheme({
@@ -66,6 +70,7 @@ interface IRestaurantFormProps {
   add?: boolean;
   openingHours?: IOpeningHours[];
   website?: string;
+  picturesId?: number[];
 }
 
 interface IDay {
@@ -94,14 +99,36 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     country,
     description,
     phone,
-    website
+    website,
+    picturesId
   } = props;
   let openingHours = props.openingHours ? props.openingHours : [];
+  const pictures: IimageInterface[] = [];
   const origRestoName = restaurantName;
-  const imageSrc =
-    props.imageSrc && props.imageSrc.length !== 0
-      ? props.imageSrc
-      : placeholderImg;
+  const File: File = null;
+
+  async function callToImages() {
+    if (props.picturesId) {
+      picturesId = props.picturesId;
+      const answer = await getImages(picturesId);
+      for (let i = 0; i < answer.length; i++) {
+        pictures.push({
+          "base64": answer[i].base64,
+          "contentType": answer[i].contentType,
+          "filename": answer[i].filename,
+          "size": answer[i].size,
+          "uploadDate": answer[i].uploadDate,
+          "id": answer[i].id,
+        });
+      }
+    }
+  }
+  callToImages()
+    .then(() => {
+      for (let i = 0; i < pictures.length; i++) {
+        displayImageFromBase64(pictures[i].base64, "restoImg");
+      }
+    });
 
   function addTimeOpen(data: IOpeningHours) {
     if (Array.isArray(openingHours)) {
@@ -175,6 +202,27 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     return NavigateTo("/", navigate, { successfulForm: true });
   }
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const base64 = convertImageToBase64(file);
+      base64.then((result) => {
+        console.log(base64);
+        addImage(restaurantName, file.name, file.type, file.size, result)
+          .then(r => {
+            displayImageFromBase64(result, "restoImg");
+          });
+      });
+    }
+  };
+
+  function handeFileDelete() {
+    console.log("Delete image");
+    console.log(picturesId);
+    console.log(restaurantName);
+    deleteImageRestaurant(picturesId[0], restaurantName);
+  }
+
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap" }}>
       <Grid
@@ -183,9 +231,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={4} sm={2} md={3}>
-          <img
+          <img 
+            id={"restoImg"}
             className={styles.ImageDimensions}
-            src={imageSrc}
             alt="Resto Img"
           />
           <div className={styles.FormControlMargin}>
@@ -197,15 +245,20 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   component="label"
                 >
                   Change Image
-                  <input hidden accept="image/*" multiple type="file" />
+                  <input
+                    hidden
+                    accept="image/*"
+                    multiple
+                    type="file"
+                    onChange={handleFileChange} />
                 </Button>
                 <Button
                   className={styles.FormControlMargin}
                   variant="text"
                   component="label"
+                  onClick={handeFileDelete}
                 >
                   Delete Image
-                  <input hidden accept="image/*" multiple type="file" />
                 </Button>
               </ThemeProvider>
             </FormControl>

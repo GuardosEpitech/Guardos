@@ -10,12 +10,11 @@ export const convertImageToBase64 = (file: File): Promise<string> => {
   });
 };
 
-export const convertBase64ToImage = (base64: string)
-    : Promise<HTMLImageElement> => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = (error) => reject(error);
-    img.src = base64;
-  });
+export const displayImageFromBase64 = (base64ImageString: string, imgElementId: string) => {
+  const imgElement = document.getElementById(imgElementId) as HTMLImageElement;
+  if (!imgElement) {
+    console.error('Image element not found');
+    return;
+  }
+  imgElement.src = base64ImageString;
 };

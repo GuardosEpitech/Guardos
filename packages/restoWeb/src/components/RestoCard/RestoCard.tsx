@@ -108,7 +108,8 @@ const RestoCard = (props: IRestoCardProps) => {
                         postalCode: resto.location.postalCode,
                         city: resto.location.city,
                         country: resto.location.country,
-                        description: resto.description
+                        description: resto.description,
+                        picturesId: resto.picturesId
                       }
                     }
                   ]}

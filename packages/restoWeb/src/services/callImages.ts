@@ -18,10 +18,13 @@ export const getImage = async (imageId: number) => {
 
 export const getImages = async (imageIds: number[]) => {
   try {
+    const dataObject = { imageIds: imageIds };
     const response = await axios({
+      headers: {
+        "content-type": "application/json",
+      },
       method: "GET",
-      url: baseUrl,
-      data: JSON.stringify({ imageIds: imageIds }),
+      url: baseUrl+"?imageIds="+imageIds,
     });
     return response.data;
   } catch (error) {
@@ -29,3 +32,50 @@ export const getImages = async (imageIds: number[]) => {
     throw new Error("Failed to fetch images");
   }
 };
+
+export const addImage = async (restaurantName: string, 
+  imageName: string, contentType: string, size: number, base64: string) => {
+  try {
+    const body = {
+      restaurant: restaurantName,
+      image: {
+        filename: imageName,
+        contentType: contentType,
+        size: size,
+        base64: base64,
+      },
+    };
+    const response = await axios({
+      url: baseUrl,
+      method: "POST",
+      data: body,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding image:", error);
+    throw new Error("Failed to add image");
+  }
+};
+
+export const deleteImageRestaurant = 
+    async (imageId: number, restaurantName: string) => {
+      try {
+        const body = {
+          restaurant: restaurantName,
+          imageId: imageId
+        };
+        const response = await axios({
+          url: baseUrl,
+          method: "DELETE",
+          data: body,
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error deleting image:", error);
+        throw new Error("Failed to delete image");
+      }
+    };
+
