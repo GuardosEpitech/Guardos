@@ -21,8 +21,9 @@ const router = express.Router();
 // get image by id or by id array
 router.get('/', async (_req, res) => {
   try {
-    const imageId: number = _req.body.imageId;
-    const imageIds: number[] = _req.body.imageIds;
+    const imageId = _req.query.imageId ? _req.query.imageId : null;
+    const imageIds = _req.query.imageIds ?
+      _req.query.imageIds : null;
 
     if (!imageIds && !imageId) {
       return res.status(404)
@@ -34,7 +35,7 @@ router.get('/', async (_req, res) => {
         return res.status(404)
           .send('Get Images failed: imageId missing or not a number');
       }
-      const image = await getImageById(imageId);
+      const image = await getImageById(Number(imageId));
       if (image) {
         return res.status(200)
           .send(image);
@@ -44,14 +45,17 @@ router.get('/', async (_req, res) => {
       }
     }
 
+    const imageIdsArray = imageIds.toString()
+      .split(',');
+
     // if imageIds
     const images = [];
-    for (const id of imageIds) {
+    for (const id of imageIdsArray) {
       if (isNaN(Number(id))) {
         return res.status(404)
           .send('Get Images failed: imageId missing or not a number');
       }
-      const image = await getImageById(id);
+      const image = await getImageById(Number(id));
       if (image) {
         images.push(image);
       }
