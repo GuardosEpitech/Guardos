@@ -1,5 +1,6 @@
 import React from "react";
 import {useLocation, useNavigate} from "react-router-dom";
+import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
 
 import {
   Box,
@@ -23,7 +24,8 @@ import { IAddRestoRequest, IAddResto }
 import { IimageInterface } from "shared/models/imageInterface";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
-import {addImage, deleteImageRestaurant, getImages} from "@src/services/callImages";
+import {addImage, deleteImageRestaurant, getImages}
+  from "@src/services/callImages";
 
 const PageBtn = () => {
   return createTheme({
@@ -108,7 +110,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const File: File = null;
 
   async function callToImages() {
-    if (props.picturesId) {
+    if (props.picturesId.length > 0) {
       picturesId = props.picturesId;
       const answer = await getImages(picturesId);
       for (let i = 0; i < answer.length; i++) {
@@ -121,8 +123,19 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           "id": answer[i].id,
         });
       }
+    } else {
+      console.log("No images found");
+      pictures.push({
+        "base64": defaultRestoImage,
+        "contentType": "png",
+        "filename": "placeholderResto.png",
+        "size": 0,
+        "uploadDate": "0",
+        "id": 0,
+      });
     }
   }
+  
   callToImages()
     .then(() => {
       for (let i = 0; i < pictures.length; i++) {
@@ -217,10 +230,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   };
 
   function handeFileDelete() {
-    console.log("Delete image");
-    console.log(picturesId);
-    console.log(restaurantName);
-    deleteImageRestaurant(picturesId[0], restaurantName);
+    if (picturesId.length > 0) {
+      deleteImageRestaurant(picturesId[0], restaurantName);
+    }
   }
 
   return (

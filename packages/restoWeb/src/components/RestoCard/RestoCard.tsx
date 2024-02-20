@@ -12,6 +12,10 @@ import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
 import Rating from "@src/components/RestoCard/Rating/Rating";
 import styles from "./RestoCard.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
+import {getImages} from "@src/services/callImages";
+import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
+import { IimageInterface } from "shared/models/imageInterface";
+import { displayImageFromBase64} from "shared/utils/imageConverter";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -39,6 +43,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, resto, editable } = props;
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
+  const pictures: IimageInterface[] = [];
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
     `, ${resto.location.postalCode} ${resto.location.city}` +
@@ -62,13 +67,49 @@ const RestoCard = (props: IRestoCardProps) => {
     await onUpdate();
   }
 
+  async function callToImages() {
+    let picturesId;
+    if (resto.picturesId.length > 0) {
+      picturesId = resto.picturesId;
+      const answer = await getImages(picturesId);
+      for (let i = 0; i < answer.length; i++) {
+        pictures.push({
+          "base64": answer[i].base64,
+          "contentType": answer[i].contentType,
+          "filename": answer[i].filename,
+          "size": answer[i].size,
+          "uploadDate": answer[i].uploadDate,
+          "id": answer[i].id,
+        });
+      }
+    } else {
+      console.log("No images found");
+      pictures.push({
+        "base64": defaultRestoImage,
+        "contentType": "png",
+        "filename": "placeholderResto.png",
+        "size": 0,
+        "uploadDate": "0",
+        "id": 0,
+      });
+    }
+  }
+  
+  callToImages()
+    .then(() => {
+      for (let i = 0; i < pictures.length; i++) {
+        displayImageFromBase64(pictures[i].base64, "restoImage"+resto.name);
+        console.log(resto.name);
+      }
+    });
+
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={3} className={styles.GridItemImage}>
           {
             <img
-              src={imgStr}
+              id={"restoImage"+resto.name}
               alt={resto.name}
               className={styles.ImageDimensions}
             />
