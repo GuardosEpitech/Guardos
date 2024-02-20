@@ -19,8 +19,8 @@ export const getProfileDetails = async (token: string) => {
       return null;
     }
   } catch (error) {
-    console.error("Error fetching the Users:", error);
-    throw new Error("Error fetching the Users");
+    console.error("Error fetching the User Details:", error);
+    throw new Error("Error fetching the User Details");
   }
 };
 
@@ -41,8 +41,8 @@ export const editProfileDetails = async (token: string, body: any) => {
       return false;
     }
   } catch (error) {
-    console.error("Error fetching the Users:", error);
-    throw new Error("Error fetching the Users");
+    console.error("Error editing the User Details:", error);
+    throw new Error("Error editing the User Details");
   }
 };
 
@@ -67,7 +67,7 @@ export const changePassword = async (token: string, oldPassword: string,
       return false;
     }
   } catch (error) {
-    console.error("Error fetching the Users:", error);
-    throw new Error("Error fetching the Users");
+    console.error("Error changing the password of the Users:", error);
+    throw new Error("Error changing the password of the Users");
   }
 };

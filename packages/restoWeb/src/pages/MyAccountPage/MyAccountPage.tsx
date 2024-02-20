@@ -114,7 +114,6 @@ const MyAccountPage = () => {
       return;
     }
     const res = await changePassword(userToken, oldPassword, newPassword);
-    console.log("res: " + res);
     if (!res) {
       setErrorForm(true);
       setPasswordChangeStatus("failed");
