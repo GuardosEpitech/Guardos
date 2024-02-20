@@ -143,7 +143,6 @@ export async function updatePassword(userId: number, password: string,
     // Update the password
     userData.password = AES.encrypt(newPassword, 'Guardos')
       .toString();
-    console.log('new password ' + userData.password);
     await userData.save();
 
     return true;

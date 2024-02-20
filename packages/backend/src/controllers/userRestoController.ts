@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { userRestoSchema }
   from '../models/userRestaurantInterfaces';
 import { AES, enc } from 'crypto-js';
+import { IRestoProfileCommunication } from '../models/communicationInterfaces';
 
 export async function addUserResto(username: string,
   email: string, password: string) {
@@ -21,7 +22,10 @@ export async function addUserResto(username: string,
     password: AES.encrypt(password, 'GuardosResto')
       .toString(),
     isActive: false,
-    restaurantIDs: []
+    restaurantIDs: [],
+    profilePicId: [],
+    defaultMenuDesign: 'default',
+    preferredLanguage: '',
   });
   const existingUsername = await UserRestoSchema.findOne({ username: username })
     .exec();
@@ -78,6 +82,112 @@ export async function logoutUserResto(token: string) {
   }
 
   return false;
+}
+
+export async function getRestoProfileDetails(userId: number) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema.findOne({uid: userId});
+
+  const inter: IRestoProfileCommunication = {
+    username: userData.username === undefined ? ''
+      : userData.username as string,
+    email: userData.email === undefined ? ''
+      : userData.email as string,
+    profilePicId: userData.profilePicId === undefined ? []
+      : userData.profilePicId as number[],
+    defaultMenuDesign: userData.defaultMenuDesign ?
+      userData.defaultMenuDesign as string : '',
+    preferredLanguage: userData.preferredLanguage === undefined ? ''
+      : userData.preferredLanguage as string
+  };
+  return inter;
+}
+
+// update username, email, preferred language
+export async function updateRestoProfileDetails(userId: number,
+  updateFields: Partial<IRestoProfileCommunication>) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema
+    .findOneAndUpdate({ uid: userId }, {
+      username: updateFields.username,
+      email: updateFields.email,
+      defaultMenuDesign: updateFields.defaultMenuDesign,
+      preferredLanguage: updateFields.preferredLanguage,
+    }, { new: true });
+  const inter: IRestoProfileCommunication = {
+    username: userData.username as string,
+    email: userData.email as string,
+    profilePicId: userData.profilePicId as number[],
+    defaultMenuDesign: updateFields.defaultMenuDesign as string,
+    preferredLanguage: userData.preferredLanguage as string
+  };
+  return inter;
+}
+
+export async function updateRestoPassword(userId: number, password: string,
+  newPassword: string) {
+  try {
+    const UserRestoSchema =
+      mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.findOne({ uid: userId });
+
+    if (!userData) {
+      // User not found
+      return false;
+    }
+
+    // Decrypt stored password and compare with the provided password
+    const decryptedPassword = AES
+      .decrypt(userData.password as string,'GuardosResto')
+      .toString(enc.Utf8);
+    if (decryptedPassword !== password) {
+      // Incorrect current password
+      return false;
+    }
+
+    // Update the password
+    userData.password = AES.encrypt(newPassword, 'GuardosResto')
+      .toString();
+    await userData.save();
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function addRestoProfilePic(userId: number, pictureId: number) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  return UserRestoSchema.findOneAndUpdate(
+    { uid: userId },
+    { $push: { profilePicId: pictureId } },
+    { new: true }
+  );
+}
+
+export async function editRestoProfilePic(userId: number, oldPictureId: number,
+  newPictureId: number) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  return UserRestoSchema.findOneAndUpdate(
+    { uid: userId, profilePicId: oldPictureId },
+    { $set: { 'profilePicId.$': newPictureId } },
+    { new: true }
+  );
+}
+
+export async function deleteRestoProfilePic(userId: number, pictureId: number) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  return UserRestoSchema.findOneAndUpdate(
+    { uid: userId },
+    { $pull: { profilePicId: pictureId } },
+    { new: true }
+  );
 }
 
 export async function getUserIdResto(token: string) {

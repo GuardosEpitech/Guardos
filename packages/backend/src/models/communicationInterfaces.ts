@@ -59,3 +59,11 @@ export interface IProfileCommunication {
   profilePicId: number;
   preferredLanguage: string;
 }
+
+export interface IRestoProfileCommunication {
+  username: string;
+  email: string;
+  profilePicId: number[];
+  defaultMenuDesign: string;
+  preferredLanguage: string;
+}
