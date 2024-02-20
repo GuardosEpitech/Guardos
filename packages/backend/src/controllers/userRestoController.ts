@@ -134,7 +134,6 @@ export async function updateUserResto(
   const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
   
   const userID = await getUserIdResto(token);
-  console.log(userID);
   const user = await UserRestoSchema.findOne({uid: userID});
   if (!user) {
     throw new Error('User not found');
@@ -148,7 +147,6 @@ export async function updateUserResto(
   }
 
   if (newLocation) {
-    console.log(newLocation);
     user.location = newLocation;
   }
 
