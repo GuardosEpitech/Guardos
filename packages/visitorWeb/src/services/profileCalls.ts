@@ -72,6 +72,49 @@ export const changeVisitorPassword = async (token: string, oldPassword: string,
   }
 };
 
+export const getSavedFilters = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'filter',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error saving filter:", error);
+    throw new Error("Error saving filter");
+  }
+};
+
+export const getSavedFilter = async (token: string, filterName: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'filter/id',
+      params: {key: token},
+      data: {filterName: filterName},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error saving filter:", error);
+    throw new Error("Error saving filter");
+  }
+};
+
 export const addSavedFilter = async (token: string, body: any) => {
   try {
     const response = await axios({
@@ -116,13 +159,13 @@ export const editSavedFilter = async (token: string, body: any) => {
   }
 };
 
-export const deleteSavedFilter = async (token: string, filterId: number) => {
+export const deleteSavedFilter = async (token: string, filterName: string) => {
   try {
     const response = await axios({
       method: "DELETE",
       url: baseUrl + 'filter',
       params: {key: token},
-      data: {filterId: filterId},
+      data: {filterName: filterName},
       headers: {
         "content-type": "application/json",
       },

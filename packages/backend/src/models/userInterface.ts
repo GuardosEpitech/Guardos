@@ -10,6 +10,7 @@ export const userSchema = new mongoose.Schema({
   allergens: [String],
   // ISearchCommunication
   savedFilter: [{
+    filterName: String,
     range: Number,
     rating: [Number],
     name: String,

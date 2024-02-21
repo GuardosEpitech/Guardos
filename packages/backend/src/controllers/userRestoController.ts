@@ -203,8 +203,6 @@ export async function getUserIdResto(token: string) {
     tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
       .toString(enc.Utf8);
 
-    console.log('tokencheck: ' + token + ', password: ' + elem.password);
-    console.log(tokenToCheck);
     if (AES.decrypt(token, 'GuardosResto')
       .toString(enc.Utf8) === tokenToCheck) {
       return elem.uid;
