@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { ICategoryFE } from '../../../shared/models/categoryInterfaces';
 import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IDishesCommunication } from '../models/communicationInterfaces';
-import { restaurantSchema } from '../models/restaurantInterfaces';
+import { restaurantSchema, IMealType } from '../models/restaurantInterfaces';
 import {getAllUserRestaurants} from './restaurantController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
@@ -114,6 +114,29 @@ async function deleteDish(restaurantName: string, dishName: string) {
 
 async function createDish(restaurantName: string, dish: IDishesCommunication) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const { category } = dish;
+  const menuGroup: string = category.menuGroup;
+  const restaurant: { mealType?: IMealType[] } | null = 
+  await Restaurant.findOne({ name: restaurantName });
+  const mealTypes: IMealType[] = restaurant?.mealType || [];
+  const existingMealType = mealTypes
+    .find((mealType) => mealType.name === menuGroup);
+  if (!existingMealType) {
+    let newMealType: IMealType;
+    if (mealTypes.length === 0) {
+      newMealType = { _id: 1, name: menuGroup, sortId: 1 };
+    } else {
+      const highestSortId = 
+      Math.max(...mealTypes.map((mealType) => mealType.sortId));
+      const newSortId = highestSortId + 1;
+      newMealType = { _id: newSortId, name: menuGroup, sortId: newSortId };
+    }
+    await Restaurant.findOneAndUpdate(
+      { name: restaurantName },
+      { $push: { mealType: newMealType } },
+      { new: true }
+    );
+  }
   return Restaurant.findOneAndUpdate(
     { name: restaurantName },
     { $push: { dishes: dish } },
@@ -122,7 +145,7 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
 }
 
 export async function createNewDish(
-  restaurantName: string, dishCom: IDishesCommunication) {
+  restaurantName: string, dishCom: IDishesCommunication, userID: number) {
   const dish: IDishesCommunication = {
     name: dishCom.name,
     description: dishCom.description ? dishCom.description : '',
@@ -135,6 +158,7 @@ export async function createNewDish(
       foodGroup: '',
       extraGroup: [''],
     },
+    userID: userID,
   };
   await createDish(restaurantName, dish);
   return dish;

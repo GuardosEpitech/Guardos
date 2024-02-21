@@ -21,6 +21,7 @@ import { IProductFE }
   from "shared/models/productInterfaces";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
+import { getAllRestaurantsByUser } from "@src/services/restoCalls";
 
 const PageBtn = () => {
   return createTheme({
@@ -67,7 +68,8 @@ const ProductForm = (props: IDishFormProps) => {
   let selectedResto: string[] = [];
 
   useEffect(() => {
-    getAllResto()
+    const userToken = localStorage.getItem('user');
+    getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         if (editable) {
           const newFilteredList = res.filter((option: IRestaurantFrontEnd) => !productRestaurantIds.includes(option.id));
