@@ -5,7 +5,7 @@ import {
   addProfilePicture,
   addSavedFilter, deleteProfilePicture, deleteSavedFilter,
   editProfilePicture, editSavedFilter,
-  getProfileDetails,
+  getProfileDetails, getSavedFilter, getSavedFilters,
   getUserId,
   updatePassword,
   updateProfileDetails
@@ -88,16 +88,75 @@ router.put('/password', async (req, res) => {
   }
 });
 
-router.post('/filter', async (req, res) => {
+router.get('/filter', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
-    const filter = req.body;
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
+    }
+
+    const profileDetails = await getSavedFilters(userID);
+    return res.status(200)
+      .send(profileDetails);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in Get '/api/profile/filter' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/filter/id', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    const filterName = req.body.filterName;
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    const profileDetails = await getSavedFilter(userID, filterName);
+    if (profileDetails === null) {
+      return res.status(404)
+        .send({error: 'Filter with that name not found'});
+    }
+    return res.status(200)
+      .send(profileDetails);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in Get '/api/profile/filter/id' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.post('/filter', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    const filter = req.body;
+    const filterName = filter.filterName;
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    if (filterName === null || filterName === '' ||
+      (await getSavedFilter(userID, filterName)) !== undefined) {
+      return res.send('Invalid name or filterName already exists.');
     }
 
     const profileDetails = await addSavedFilter(userID, filter);
@@ -117,8 +176,8 @@ router.put('/filter', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
-    const filterId = req.body.filterId;
-    const updateFields = req.body.updateFields;
+    const updateFields = req.body;
+    const filterName = updateFields.filterName;
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
@@ -126,10 +185,10 @@ router.put('/filter', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = await editSavedFilter(userID, filterId, updateFields);
+    const profileDetails = await editSavedFilter(userID, filterName, updateFields);
     if (profileDetails === null) {
       return res.status(404)
-        .send({error: 'Filter with that id not found'});
+        .send({error: 'Filter with that name not found'});
     }
     return res.status(200)
       .send(profileDetails.savedFilter);
@@ -147,7 +206,7 @@ router.delete('/filter', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
-    const filterId = req.body.filterId;
+    const filterName = req.body.filterName;
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
@@ -155,7 +214,7 @@ router.delete('/filter', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const profileDetails = await deleteSavedFilter(userID, filterId);
+    const profileDetails = await deleteSavedFilter(userID, filterName);
     if (profileDetails === null) {
       return res.status(404)
         .send({error: 'Filter with that id not found'});
