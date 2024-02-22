@@ -43,6 +43,14 @@ body {
   cursor: pointer;
 }
 
+.deleteButton {
+  background-color: #6d071a !important;
+}
+
+.deleteButton:hover {
+  background-color: brown !important;
+}
+
 .MyAccountPage button:hover {
   background-color: #45a049;
 }

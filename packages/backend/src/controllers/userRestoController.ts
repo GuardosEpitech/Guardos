@@ -98,10 +98,10 @@ export async function getUserIdResto(token: string) {
   return false;
 }
 
-export async function deleteUserResto(uID: string) {
+export async function deleteUserResto(userId: number) {
   const UserRestoSchema = mongoose
     .model('UserResto', userRestoSchema, 'UserResto');
-  const answer = await UserRestoSchema.findOneAndDelete({ uid: parseInt(uID) });
+  const answer = await UserRestoSchema.findOneAndDelete({ uid: userId });
   if (answer) {
     return answer;
   }
