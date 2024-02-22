@@ -1,79 +1,105 @@
+import * as dotenv from 'dotenv';
+import * as process from 'process';
+import {AES} from 'crypto-js';
+
 describe('BE Resto Test', () => {
+  const getUserToken = () => {
+    dotenv.config();
+    return AES.encrypt(process.env.testUser +
+          process.env.testUserPassword, 'GuardosResto')
+      .toString();
+  };
+  const userToken = getUserToken();
 
-    // Test for all restaurants
-    it('should return all restaurants', () => {
-        cy.request({
-            method: 'GET',
-            url: 'http://localhost:8081/api/restaurants'
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            expect((response.body)).to.be.an('array');
-        });
-    });
+  // Test for all restaurants
+  it('should return all restaurants', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8081/api/restaurants'
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect((response.body)).to.be.an('array');
+      });
+  });
 
-    // Test for a specific restaurant
-    it('should return a specific restaurant', () => {
-        cy.request({
-            method: 'GET',
-            url: 'http://localhost:8081/api/restaurants/McDonalds'
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            expect(response.body).to.be.an('Object');
-            expect(response.body.name).to.eq('McDonalds');
-        });
-    });
+  // Test for a specific restaurant
+  it('should return a specific restaurant', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8081/api/restaurants/McDonalds'
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('Object');
+        expect(response.body.name).to.eq('McDonalds');
+      });
+  });
 
-    // Test to add restaurant
-    it('should add a restaurant', () => {
-        cy.request({
-            method: 'POST',
-            url: 'http://localhost:8081/api/restaurants',
-            body: {
-                    name: 'test restaurant',
-                    phoneNumber: '123456789',
-                    website: 'www.test.com'
-            }
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            expect(response.body).to.be.an('Object');
-            expect(response.body.name).to.eq('test restaurant');
-            expect(response.body.phoneNumber).to.eq('123456789');
-            expect(response.body.website).to.eq('www.test.com');
-        });
-    });
+  it('should return all restaurants of user', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8081/api/restaurants/user/resto',
+      params: {key: userToken}
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect((response.body)).to.be.an('array');
+      });
+  });
 
-    // Test to edit restaurant
-    it('should edit a restaurant', () => {
-        cy.request({
-            method: 'PUT',
-            url: 'http://localhost:8081/api/restaurants/test restaurant',
-            body: {
-                    name: 'test restaurant',
-                    phoneNumber: '987654321',
-                    website: 'www.test123.com'
-            }
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            expect(response.body).to.be.an('Object');
-            expect(response.body.name).to.eq('test restaurant');
-            expect(response.body.phoneNumber).to.eq('987654321');
-            expect(response.body.website).to.eq('www.test123.com');
-        });
-    });
+  // Test to add restaurant
+  it('should add a restaurant', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/restaurants',
+      body: {
+        userToken: userToken,
+        resto: {
+          name: 'test restaurant',
+          phoneNumber: '123456789',
+          website: 'www.test.com'
+        }
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('Object');
+        expect(response.body.name).to.eq('test restaurant');
+        expect(response.body.phoneNumber).to.eq('123456789');
+        expect(response.body.website).to.eq('www.test.com');
+      });
+  });
 
-    // Test to delete restaurant
-    it('should delete a restaurant', () => {
-        cy.request({
-            method: 'DELETE',
-            url: 'http://localhost:8081/api/restaurants/test restaurant'
-        })
-        .then((response) => {
-            expect(response.status).to.eq(200);
-            // expect(response.body).to.be.an('string');
-        });
-    });
+  // Test to edit restaurant
+  it('should edit a restaurant', () => {
+    cy.request({
+      method: 'PUT',
+      url: 'http://localhost:8081/api/restaurants/test restaurant',
+      body: {
+        name: 'test restaurant',
+        phoneNumber: '987654321',
+        website: 'www.test123.com'
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('Object');
+        expect(response.body.name).to.eq('test restaurant');
+        expect(response.body.phoneNumber).to.eq('987654321');
+        expect(response.body.website).to.eq('www.test123.com');
+      });
+  });
+
+  // Test to delete restaurant
+  it('should delete a restaurant', () => {
+    cy.request({
+      method: 'DELETE',
+      url: 'http://localhost:8081/api/restaurants/test restaurant'
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        // expect(response.body).to.be.an('string');
+      });
+  });
 });

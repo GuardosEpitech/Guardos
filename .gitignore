@@ -3,3 +3,5 @@ package-lock.json
 packages/visitorWeb/coverage
 dist/
 .idea/
+screenshots/
+videos/
