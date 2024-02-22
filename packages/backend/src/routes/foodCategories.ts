@@ -2,7 +2,8 @@ import * as express from 'express';
 import {
   getFoodCategoriesBasedOnRestaurant,
   createFoodCategorie,
-  deleteFoodCategorieByID
+  deleteFoodCategorieByID,
+  updateFoodCategorie
 } from '../controllers/foodCategoriesController';
 import { checkIfRestaurantExistsWithId } from '../middleware/restaurantMiddleWare';
 
@@ -17,6 +18,30 @@ router.get('/', async (req, res) => {
   
   return res.status(200)
     .send(foodCategories);
+});
+
+router.put('/', async (req, res) => {
+  try {
+    if (!await checkIfRestaurantExistsWithId(req.body.restaurantId)) {
+      return res.status(400)
+        .send('No Restaurant with the provided Id was found');
+    }
+
+    if (req.body.foodCategorie.name === '') {
+      return res.status(400)
+        .send('No Food Categorie Name was given');
+    }
+
+    const foodCategorie = await updateFoodCategorie(req.body.foodCategorie, req.body.foodCategorieID);
+    if (foodCategorie) {
+      return res.status(200)
+        .send(foodCategorie);
+    }
+  } catch (e) {
+    console.error(e);
+    return res.status(404)
+      .send('Put Food Categorie failed');
+  }
 });
 
 router.post('/', async (req, res) => {
