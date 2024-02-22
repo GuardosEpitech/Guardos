@@ -20,6 +20,7 @@ const theme = createTheme({
 
 const MenuPage = () => {
   const { menu, restoName, address } = useLocation().state;
+  console.log(menu);
 
   return (
     <>

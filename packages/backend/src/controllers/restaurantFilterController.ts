@@ -80,6 +80,7 @@ export default class Filter {
         description: dish.description,
         products: dish.products,
         pictures: dish.pictures,
+        picturesId: dish.picturesId,
         price: dish.price,
         allergens: dish.allergens,
         category: dish.category
