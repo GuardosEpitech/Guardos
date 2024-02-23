@@ -1,6 +1,6 @@
-import React from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {defaultDishImage, defaultRestoImage} from 'shared/assets/placeholderImageBase64';
+import {useNavigate} from "react-router-dom";
+import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
+import React, { useEffect, useState } from "react";
 
 import {
   Box,
@@ -102,45 +102,51 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     description,
     phone,
     website,
+    // eslint-disable-next-line prefer-const
     picturesId
   } = props;
   let openingHours = props.openingHours ? props.openingHours : [];
-  const pictures: IimageInterface[] = [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const origRestoName = restaurantName;
 
-  async function callToImages() {
-    if (props.picturesId.length > 0) {
-      picturesId = props.picturesId;
-      const answer = await getImages(picturesId);
-      for (let i = 0; i < answer.length; i++) {
-        pictures.push({
-          "base64": answer[i].base64,
-          "contentType": answer[i].contentType,
-          "filename": answer[i].filename,
-          "size": answer[i].size,
-          "uploadDate": answer[i].uploadDate,
-          "id": answer[i].id,
-        });
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (props.picturesId && props.picturesId.length > 0) {
+        try {
+          const answer = await getImages(props.picturesId);
+          const fetchedPictures = answer.map((image: any) => ({
+            base64: image.base64,
+            contentType: image.contentType,
+            filename: image.filename,
+            size: image.size,
+            uploadDate: image.uploadDate,
+            id: image.id,
+          }));
+          setPictures(fetchedPictures);
+        } catch (error) {
+          setPictures([{
+            base64: defaultRestoImage,
+            contentType: "png",
+            filename: "placeholderResto.png",
+            size: 0,
+            uploadDate: "0",
+            id: 0,
+          }]);
+        }
+      } else {
+        setPictures([{
+          base64: defaultRestoImage,
+          contentType: "png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
       }
-    } else {
-      console.log("No images found");
-      pictures.push({
-        "base64": defaultRestoImage,
-        "contentType": "png",
-        "filename": "placeholderResto.png",
-        "size": 0,
-        "uploadDate": "0",
-        "id": 0,
-      });
-    }
-  }
-  
-  callToImages()
-    .then(() => {
-      for (let i = 0; i < pictures.length; i++) {
-        displayImageFromBase64(pictures[i].base64, "restoImg");
-      }
-    });
+    };
+
+    fetchImages();
+  }, [props.picturesId]);
 
   function addTimeOpen(data: IOpeningHours) {
     if (Array.isArray(openingHours)) {
@@ -219,10 +225,15 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const file = event.target.files[0];
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
-        console.log(base64);
         addImageResto(restaurantName, file.name, file.type, file.size, result)
           .then(r => {
-            displayImageFromBase64(result, "restoImg");
+            setPictures([{ base64: result, contentType: file.type,
+              filename: file.name, size: file.size, uploadDate: "0", id: r }]);
+            if (picturesId.length > 0) {
+              deleteImageRestaurant(picturesId[0], restaurantName);
+              picturesId.shift();
+            }
+            picturesId.push(r);
           });
       });
     }
@@ -232,6 +243,14 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     if (picturesId.length > 0) {
       deleteImageRestaurant(picturesId[0], restaurantName);
       displayImageFromBase64(defaultRestoImage, "restoImg");
+      setPictures([{
+        base64: defaultRestoImage,
+        contentType: "png",
+        filename: "placeholderResto.png",
+        size: 0,
+        uploadDate: "0",
+        id: 0,
+      }]);
     }
   }
 
@@ -243,11 +262,13 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         <Grid item xs={4} sm={2} md={3}>
-          <img 
-            id={"restoImg"}
+          {pictures.length > 0 &&
+          <img
+            src={pictures[0].base64}
+            alt="Restaurant Image"
             className={styles.ImageDimensions}
-            alt="Resto Img"
           />
+          }
           <div className={styles.FormControlMargin}>
             <FormControl className={styles.ImageFlex}>
               <ThemeProvider theme={PageBtn()}>
@@ -262,7 +283,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     accept="image/*"
                     multiple
                     type="file"
-                    onChange={handleFileChange} />
+                    onChange={handleFileChange}/>
                 </Button>
                 <Button
                   className={styles.FormControlMargin}
@@ -280,8 +301,8 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         <Grid className={styles.TextNextToImageField} item xs={4} sm={6} md={9}>
           <Grid
             container
-            spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
+            spacing={{xs: 2, md: 3}}
+            columns={{xs: 4, sm: 8, md: 12}}
           >
             <Grid item xs={4} sm={5} md={8} className={styles.FieldMarginRight}>
               <FormControl fullWidth>

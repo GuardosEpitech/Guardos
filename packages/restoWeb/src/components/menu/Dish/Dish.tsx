@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import { Grid, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,11 +11,10 @@ import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import {getImages} from "@src/services/callImages";
 import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
-import {convertImageToBase64, displayImageFromBase64}
-  from "shared/utils/imageConverter";
 
 interface IEditableDishProps {
   dish: IDishFE;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   onUpdate?: Function;
   imageSrc?: string;
   editable?: boolean;
@@ -28,8 +27,8 @@ const Dish = (props: IEditableDishProps) => {
   const options = dish.category.extraGroup;
   const { name, description, price } = dish;
   const priceStr = `${price.toFixed(2)} €`;
-  let picturesId: number[] = [];
-  const pictures: IimageInterface[] = [];
+  const picturesId: number[] = [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
@@ -52,39 +51,45 @@ const Dish = (props: IEditableDishProps) => {
     }
   }
 
-  async function callToImages() {
-    if (dish.picturesId.length > 0) {
-      picturesId = dish.picturesId;
-      const answer = await getImages(picturesId);
-      for (let i = 0; i < answer.length; i++) {
-        pictures.push({
-          "base64": answer[i].base64,
-          "contentType": answer[i].contentType,
-          "filename": answer[i].filename,
-          "size": answer[i].size,
-          "uploadDate": answer[i].uploadDate,
-          "id": answer[i].id,
-        });
-        console.log("Image found: " + dish.name);
+  useEffect(() => {
+    const loadImages = async () => {
+      if (dish.picturesId && dish.picturesId.length > 0) {
+        try {
+          const answer = await getImages(dish.picturesId);
+          // @ts-ignore
+          setPictures(answer.map((img) => ({
+            base64: img.base64,
+            contentType: img.contentType,
+            filename: img.filename,
+            size: img.size,
+            uploadDate: img.uploadDate,
+            id: img.id,
+          })));
+        } catch (error) {
+          console.error("Failed to load images", error);
+          setPictures([{
+            base64: defaultDishImage,
+            contentType: "image/png",
+            filename: "placeholder.png",
+            size: 0,
+            uploadDate: "",
+            id: 0,
+          }]);
+        }
+      } else {
+        setPictures([{
+          base64: defaultDishImage,
+          contentType: "image/png",
+          filename: "placeholder.png",
+          size: 0,
+          uploadDate: "",
+          id: 0,
+        }]);
       }
-    } else {
-      pictures.push({
-        "base64": defaultDishImage,
-        "contentType": "png",
-        "filename": "placeholderResto.png",
-        "size": 0,
-        "uploadDate": "0",
-        "id": 0,
-      });
-    }
-  }
+    };
 
-  callToImages()
-    .then(() => {
-      for (let i = 0; i < pictures.length; i++) {
-        displayImageFromBase64(pictures[i].base64, dish.name+"abc");
-      }
-    });
+    loadImages();
+  }, [dish.picturesId]);
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
@@ -123,8 +128,8 @@ const Dish = (props: IEditableDishProps) => {
           </Grid>
           <Grid item className={styles.FlexParent}>
             <img
-              id={dish.name}
-              alt="DishPicture"
+              src={pictures[0]?.base64 || defaultDishImage}
+              alt={name}
               className={styles.ImageDimensions}
             />
           </Grid>
@@ -201,7 +206,11 @@ const Dish = (props: IEditableDishProps) => {
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
-            {<img id={dish.name+"abc"} alt="new" className={styles.ImageDimensions} />}
+            {<img
+              src={pictures[0]?.base64 || defaultDishImage}
+              alt={name}
+              className={styles.ImageDimensions}
+            />}
           </Grid>
         </Grid>
       </div>

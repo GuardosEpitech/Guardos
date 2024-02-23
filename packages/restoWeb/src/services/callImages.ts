@@ -18,7 +18,6 @@ export const getImage = async (imageId: number) => {
 
 export const getImages = async (imageIds: number[]) => {
   try {
-    const dataObject = { imageIds: imageIds };
     const response = await axios({
       headers: {
         "content-type": "application/json",
@@ -75,7 +74,6 @@ export const deleteImageRestaurant =
         return response.data;
       } catch (error) {
         console.error("Error deleting image:", error);
-        throw new Error("Failed to delete image");
       }
     };
 

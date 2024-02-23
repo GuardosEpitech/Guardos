@@ -19,13 +19,13 @@ import {IProduct, IRestaurantFrontEnd}
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
 import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
-import placeholderImg from "@src/assets/placeholder.png";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
-import {addImageDish, addImageResto, deleteImageDish, deleteImageRestaurant, getImages}
+import {addImageDish, deleteImageDish, getImages}
   from "@src/services/callImages";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
-import {defaultDishImage} from 'shared/assets/placeholderImageBase64';
+import {defaultDishImage, defaultRestoImage}
+  from 'shared/assets/placeholderImageBase64';
 
 const PageBtn = () => {
   return createTheme({
@@ -84,8 +84,6 @@ const DishForm = (props: IDishFormProps) => {
       useState(props.dishDescription || "");
   const [selectAllergene, setSelectAllergene] =
       useState<string[]>(props.selectAllergene || []);
-  const imageSrc = props.imageSrc &&
-  props.imageSrc.length !== 0 ? props.imageSrc : placeholderImg;
   const [productListTest, setProductListTest] = useState<Array<string>>([]);
   const [restoList, setRestoList] = useState<Array<string>>([]);
   let allRestoNames: string[] = [];
@@ -95,8 +93,8 @@ const DishForm = (props: IDishFormProps) => {
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
     "Nuts", "Peanuts", "Sesame seeds", "Soya", "Sulphur dioxide", "Lactose"];
   const dishList: IDishFE[] = [];
-  const pictures: IimageInterface[] = [];
   const picturesId: number[] = props.picturesId || [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -190,40 +188,45 @@ const DishForm = (props: IDishFormProps) => {
     return NavigateTo("/dishes", navigate, {successfulForm: true});
   }
 
-  async function callToImages() {
-    console.log("PicturesId: ", picturesId);
-    if (picturesId.length > 0) {
-      const answer = await getImages(picturesId);
-      for (let i = 0; i < answer.length; i++) {
-        pictures.push({
-          "base64": answer[i].base64,
-          "contentType": answer[i].contentType,
-          "filename": answer[i].filename,
-          "size": answer[i].size,
-          "uploadDate": answer[i].uploadDate,
-          "id": answer[i].id,
-        });
+  useEffect(() => {
+    const loadImages = async () => {
+      if (picturesId.length > 0) {
+        try {
+          const answer = await getImages(picturesId);
+          //@ts-ignore
+          setPictures(answer.map((img) => ({
+            base64: img.base64,
+            contentType: img.contentType,
+            filename: img.filename,
+            size: img.size,
+            uploadDate: img.uploadDate,
+            id: img.id,
+          })));
+        } catch (error) {
+          console.error("Failed to load images", error);
+          setPictures([{
+            base64: defaultDishImage,
+            contentType: "image/png",
+            filename: "placeholder.png",
+            size: 0,
+            uploadDate: "",
+            id: 0,
+          }]);
+        }
+      } else {
+        setPictures([{
+          base64: defaultDishImage,
+          contentType: "image/png",
+          filename: "placeholder.png",
+          size: 0,
+          uploadDate: "",
+          id: 0,
+        }]);
       }
-    } else {
-      console.log("No images found");
-      pictures.push({
-        "base64": defaultDishImage,
-        "contentType": "png",
-        "filename": "placeholderResto.png",
-        "size": 0,
-        "uploadDate": "0",
-        "id": 0,
-      });
-    }
-  }
+    };
 
-  callToImages()
-    .then(() => {
-      console.log(pictures);
-      for (let i = 0; i < pictures.length; i++) {
-        displayImageFromBase64(pictures[i].base64, "DishImg");
-      }
-    });
+    loadImages();
+  }, [picturesId]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -235,7 +238,14 @@ const DishForm = (props: IDishFormProps) => {
             addImageDish(dishResto[i], dish, file.name,
               file.type, file.size, result)
               .then(r => {
-                displayImageFromBase64(result, "DishImg");
+                setPictures([{ base64: result, contentType: file.type,
+                  filename: file.name, size: file.size,
+                  uploadDate: "0", id: r }]);
+                if (picturesId.length > 0) {
+                  deleteImageDish(picturesId[0], dishResto[i], dish);
+                  picturesId.shift();
+                }
+                picturesId.push(r);
               });
           }
         }
@@ -247,6 +257,14 @@ const DishForm = (props: IDishFormProps) => {
     if (picturesId.length > 0) {
       deleteImageDish(picturesId[0], dishResto[0], dish);
       displayImageFromBase64(defaultDishImage, "DishImg");
+      setPictures([{
+        base64: defaultRestoImage,
+        contentType: "png",
+        filename: "placeholderResto.png",
+        size: 0,
+        uploadDate: "0",
+        id: 0,
+      }]);
     }
     else {
       console.log("No image to delete");
@@ -262,7 +280,7 @@ const DishForm = (props: IDishFormProps) => {
       >
         <Grid item xs={4} sm={2} md={3}>
           <img 
-            id={"DishImg"}
+            src={pictures.length > 0 ? pictures[0].base64 : defaultDishImage}
             className={styles.ImageDimensions}
             alt="Resto Img"
           />
