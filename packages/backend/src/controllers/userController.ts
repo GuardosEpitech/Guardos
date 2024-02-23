@@ -109,16 +109,13 @@ export async function updateProfileDetails(userId: number,
       allergens: updateFields.allergens,
       preferredLanguage: updateFields.preferredLanguage,
     }, { new: true });
-  const inter: IProfileCommunication = {
-    username: userData.username as string,
-    email: userData.email as string,
-    city: userData.city as string,
-    allergens: userData.allergens as string[],
-    savedFilter: userData.savedFilter as [ISearchCommunication],
-    profilePicId: userData.profilePicId as number,
-    preferredLanguage: userData.preferredLanguage as string
-  };
-  return inter;
+
+  // return the updated token
+  const token = userData.username ? userData.username : userData.email;
+  return AES.encrypt(token +
+    AES.decrypt(userData.password as string, 'Guardos')
+      .toString(enc.Utf8), 'Guardos')
+    .toString();
 }
 
 export async function updatePassword(userId: number, password: string,
@@ -143,14 +140,31 @@ export async function updatePassword(userId: number, password: string,
     // Update the password
     userData.password = AES.encrypt(newPassword, 'Guardos')
       .toString();
-    console.log('new password ' + userData.password);
     await userData.save();
 
-    return true;
+    // return the updated token
+    const token = userData.username ? userData.username : userData.email;
+    return AES.encrypt(token +
+      AES.decrypt(userData.password as string, 'Guardos')
+        .toString(enc.Utf8), 'Guardos')
+      .toString();
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+export async function getSavedFilter(userId: number, filterName: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema.findOne({uid: userId});
+  return userData.savedFilter.find((savedFilter) =>
+    savedFilter.filterName === filterName);
+}
+
+export async function getSavedFilters(userId: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema.findOne({uid: userId});
+  return userData.savedFilter;
 }
 
 export async function addSavedFilter(userId: number,
@@ -163,21 +177,21 @@ export async function addSavedFilter(userId: number,
   );
 }
 
-export async function editSavedFilter(userId: number, filterId: number,
+export async function editSavedFilter(userId: number, filterName: string,
   updatedFields: ISearchCommunication) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   return UserSchema.findOneAndUpdate(
-    {uid: userId, 'savedFilter._id': filterId},
+    {uid: userId, 'savedFilter.filterName': filterName},
     {$set: {'savedFilter.$': updatedFields}},
     {new: true}
   );
 }
 
-export async function deleteSavedFilter(userId: number, filterId: number) {
+export async function deleteSavedFilter(userId: number, filterName: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   return UserSchema.findOneAndUpdate(
     {uid: userId},
-    {$pull: {savedFilter: {_id: filterId}}},
+    {$pull: {savedFilter: {filterName: filterName}}},
     {new: true}
   );
 }

@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import TextField from "@mui/material/TextField";
 import FormControl from '@mui/material/FormControl';
 
 import styles from "./MyAccountPage.module.scss";
-import {changeVisitorPassword, editVisitorProfileDetails, getVisitorProfileDetails} from "@src/services/profileCalls";
-import TextField from "@mui/material/TextField";
+import {changePassword, editProfileDetails, getProfileDetails}
+  from "@src/services/profileCalls";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [city, setCity] = useState('');
-  const [picture, setPicture] = useState(null);
-  const [watchedRestaurants, setWatchedRestaurants] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [picture, setPicture] = useState('');
+  const [menuDesign, setMenuDesign] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('');
 
   const [oldPassword, setOldPassword] = useState('');
@@ -27,7 +26,6 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
 
-
   useEffect(() => {
     fetchProfileData();
   }, []);
@@ -35,16 +33,13 @@ const MyAccountPage = () => {
   const fetchProfileData = () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
-    getVisitorProfileDetails(userToken)
+    getProfileDetails(userToken)
       .then((res) => {
         setEmail(res.email);
         setName(res.username);
-        setCity(res.city);
-        setSelectedOptions(res.allergens);
         setPicture(res.profilePicId);
+        setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage);
-        console.log(preferredLanguage);
-        console.log(res);
       });
   };
 
@@ -60,22 +55,12 @@ const MyAccountPage = () => {
     setName(e.target.value);
   };
 
-  const handleCityChange = (e : any) => {
-    setCity(e.target.value);
+  const handleMenuDesignChange = (event : any) => {
+    setMenuDesign(event.target.value);
   };
 
-  const handleSelectChange = (event : any) => {
-    setSelectedOptions(event.target.value);
-  };
-
-  const handleLanguageChange = (event : any) => {
-    setPreferredLanguage(event.target.value);
-  };
-
-  const handleAddRestaurant = () => {
-    // Add the watched restaurant to the list
-
-    //setWatchedRestaurants((prevRestaurants) => [newRestaurant, ...prevRestaurants]);
+  const handleLanguageChange = (e: any) => {
+    setPreferredLanguage(e.target.value);
   };
 
   const handleOldPasswordChange = (e: any) => {
@@ -108,7 +93,6 @@ const MyAccountPage = () => {
     );
   }
 
-
   const handleSavePassword = async () => {
     setPwError(false);
     setSamePwError(false);
@@ -129,7 +113,7 @@ const MyAccountPage = () => {
     if (userToken === null) {
       return;
     }
-    const res = await changeVisitorPassword(userToken, oldPassword, newPassword);
+    const res = await changePassword(userToken, oldPassword, newPassword);
     if (!res) {
       setErrorForm(true);
       setPasswordChangeStatus("failed");
@@ -146,11 +130,10 @@ const MyAccountPage = () => {
       setDataChangeStatus("failed");
       return;
     }
-    const res = await editVisitorProfileDetails(userToken, {
+    const res = await editProfileDetails(userToken, {
       username: name,
       email: email,
-      city: city,
-      allergens: selectedOptions,
+      defaultMenuDesign: menuDesign,
       preferredLanguage: preferredLanguage
     });
 
@@ -200,29 +183,20 @@ const MyAccountPage = () => {
           <label>Name:</label>
           <input className={styles.InputField} type="text" value={name} onChange={handleNameChange} required/>
         </div>
-        <div>
-          <label>City:</label>
-          <input className={styles.InputField} type="text" value={city} onChange={handleCityChange} />
-        </div>
-        <div>
-        <FormControl fullWidth className={styles.allergenInput}>
-          <InputLabel id="allergens-label">Allergens</InputLabel>
+        <FormControl fullWidth className={styles.selectInput}>
+          <InputLabel id="menu-design-label">Menu Design</InputLabel>
           <Select
-            labelId="allergens-label"
-            id="allergens"
-            multiple
-            value={selectedOptions}
-            onChange={handleSelectChange}
-            label="Allergens"
+            labelId="menu-design-label"
+            id="menu-design"
+            value={menuDesign}
+            onChange={handleMenuDesignChange}
+            label="Menu Design"
           >
-            {['peanut', 'gluten', 'dairy'].map((allergen) => (
-              <MenuItem key={allergen} value={allergen} selected={selectedOptions.includes(allergen)}>
-                {allergen}
-              </MenuItem>
-            ))}
+            <MenuItem value="default">Default</MenuItem>
+            <MenuItem value="fast-food">Fast Food</MenuItem>
+            <MenuItem value="pizzeria">Pizzeria</MenuItem>
           </Select>
         </FormControl>
-        </div>
         <FormControl fullWidth className={styles.selectInput}>
           <InputLabel id="langauge-label">Preferred Language</InputLabel>
           <Select
@@ -232,9 +206,9 @@ const MyAccountPage = () => {
             onChange={handleLanguageChange}
             label="Language"
           >
-            <MenuItem value="en" selected={preferredLanguage === 'en'}>English</MenuItem>
-            <MenuItem value="de" selected={preferredLanguage === 'de'}>Deutsch</MenuItem>
-            <MenuItem value="fr" selected={preferredLanguage === 'fr'}>Francais</MenuItem>
+            <MenuItem value="en">English</MenuItem>
+            <MenuItem value="de">Deutsch</MenuItem>
+            <MenuItem value="fr">Francais</MenuItem>
           </Select>
         </FormControl>
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
@@ -301,16 +275,6 @@ const MyAccountPage = () => {
             Save Changes
           </button>
         </div>
-      </div>
-      <div className={styles.restaurantSection}>
-        <h1>Last Watched Restaurants</h1>
-        <ul>
-          {watchedRestaurants.map((restaurant, index) => (
-            <li key={index}>
-              <strong>{restaurant.name}</strong> - {restaurant.date}
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
