@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
+import { Container, Divider } from '@mui/material';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
+import FacebookLogo from '../../assets/Facebook.png';
+import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 
@@ -23,6 +26,15 @@ const Login = () => {
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
 
+  const handleFacebookLogin = () => {
+    // Implement Facebook login logic here
+    alert('Redirecting to Facebook login');
+  };
+
+  const handleGoogleLogin = () => {
+    // Implement Google login logic here
+    alert('Redirecting to Google login');
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,6 +109,26 @@ const Login = () => {
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Don't you have an account yet? Register yourself <a className={styles.registerLink} onClick={() => NavigateTo('/register', navigate, {})}>here</a>.
             </p>
+            <Container sx={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
+              <Divider sx={{ width: '40%', marginY: '20px' }} />
+              <span>Or</span>
+              <Divider sx={{ width: '40%', marginY: '20px' }} />
+            </Container>
+            <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '25px', justifyContent: 'space-around' }}>
+              <img
+                src={FacebookLogo}
+                alt="Facebook Logo"
+                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                onClick={handleFacebookLogin}
+              />
+              <div className={styles.dividerLogos}></div>
+              <img
+                src={GoogleLogo}
+                alt="Google Logo"
+                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                onClick={handleGoogleLogin}
+              />
+            </Container>
           </form>
         </div>
       </Layout>
