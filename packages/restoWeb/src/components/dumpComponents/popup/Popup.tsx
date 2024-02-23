@@ -41,8 +41,8 @@ export const Popup: React.FC<PopupProps> = (
     <PopupContainer>
       <div className={styles.PopupText} >{message}</div>
       <div>
-        {/* <PopupButton onClick={onConfirm}>Confirm</PopupButton>
-        <PopupButton onClick={onCancel}>Cancel</PopupButton> */}
+        <PopupButton onClick={onConfirm}>Confirm</PopupButton>
+        <PopupButton onClick={onCancel}>Cancel</PopupButton>
       </div>
     </PopupContainer>
   );
