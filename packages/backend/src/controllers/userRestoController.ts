@@ -220,3 +220,16 @@ export async function deleteUserResto(uID: string) {
   }
   return false;
 }
+
+export async function doesUserRestoExist(username: string, email: string) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOne({
+    username: username, 
+    email: email
+  });
+  if (answer) {
+    return true;
+  }
+  return false;
+}

@@ -266,3 +266,15 @@ export async function deleteUser(uID: string) {
   }
   return false;
 }
+
+export async function doesUserExist(username: string, email: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const answer = await UserSchema.findOne({
+    username: username, 
+    email: email
+  });
+  if (answer) {
+    return true;
+  }
+  return false;
+}
