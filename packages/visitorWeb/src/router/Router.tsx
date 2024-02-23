@@ -10,6 +10,7 @@ import AboutUsPage from "@src/pages/AboutUsPage/AboutUsPage";
 import AppOutlet from "@src/pages/AppOutlet";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import IntroPage from "@src/pages/IntroPage";
+import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
 
 const MVPRouter = () => {
   return (
@@ -25,6 +26,7 @@ const MVPRouter = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/account-recovery" element={<ResetPassword />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
