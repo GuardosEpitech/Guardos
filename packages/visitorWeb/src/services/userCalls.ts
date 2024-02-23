@@ -6,7 +6,7 @@ export const checkIfVisitorTokenIsValid = async (body: any) => {
   try {
     const response = await axios({
       method: "GET",
-      url: baseUrl + '/checkIn',
+      url: baseUrl + 'checkIn',
       params: body,
       headers: {
         "content-type": "application/json",

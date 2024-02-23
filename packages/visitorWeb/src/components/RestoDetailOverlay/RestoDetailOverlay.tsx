@@ -59,7 +59,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
     categories,
     openingHours,
     phoneNumber,
-    website
+    website,
   } = props.restaurant;
   const {streetName, streetNumber, postalCode, city, country} = location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
@@ -75,7 +75,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
         <Grid item xs={3} className={styles.GridItemImage}>
           <div>
             {pictures.length > 0 && (
-              <img src={pictures[0]} alt={name} className={styles.ImageDimensions}/>
+              <img id={"restoImagedetails"+props.restaurant.name} alt={name} className={styles.ImageDimensions}/>
             )}
           </div>
           {openingHours.length > 0 && (<div>

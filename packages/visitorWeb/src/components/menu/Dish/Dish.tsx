@@ -1,27 +1,55 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Grid, Paper } from "@mui/material";
 
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
-import placeholderImg from "@src/assets/placeholder.png";
+import {IimageInterface} from "shared/models/imageInterface";
+import {getImages} from "@src/services/imageCalls";
+import {defaultDishImage} from "shared/assets/placeholderImageBase64";
+import {displayImageFromBase64} from "shared/utils/imageConverter";
 
 interface IDishProps {
   dishName: string;
   dishAllergens: string[];
   dishDescription: string;
   options?: string;
-  imageSrc: string;
+  picturesId: number[];
   price: number;
 }
 
 const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
-  const { dishName, dishAllergens, dishDescription, options, price } = props;
-  const imageSrc =
-    props.imageSrc?.length > 0
-      ? props.imageSrc
-      : placeholderImg;
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const { dishName, dishAllergens, dishDescription, options, price, picturesId } = props;
   const priceStr = `${price.toFixed(2)} €`;
+
+  useEffect(() => {
+    async function fetchImages() {
+      if (picturesId.length > 0) {
+        const fetchedImages = await getImages(picturesId);
+        // @ts-ignore
+        setPictures(fetchedImages.map(img => ({
+          base64: img.base64,
+          contentType: img.contentType,
+          filename: img.filename,
+          size: img.size,
+          uploadDate: img.uploadDate,
+          id: img.id,
+        })));
+      } else {
+        setPictures([{
+          base64: defaultDishImage,
+          contentType: "image/png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
+      }
+    }
+
+    fetchImages();
+  }, [picturesId]);
 
   return (
     <Paper
@@ -42,11 +70,10 @@ const Dish = (props: IDishProps) => {
             {extended && <AllergenTags dishAllergens={dishAllergens} />}
           </Grid>
           <Grid item className={styles.FlexParent}>
-            <img
-              src={imageSrc}
-              className={styles.ImageDimensions}
-              alt={dishName}
-            />
+            {pictures.map((picture, index) => (
+                <img key={index} src={`${picture.base64}`}
+                     alt={`Dish Image ${index}`} className={styles.ImageDimensions} />
+            ))}
           </Grid>
           <Grid item xs={12} className={styles.GridItemDescription}>
             <p
@@ -101,13 +128,10 @@ const Dish = (props: IDishProps) => {
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
-            {imageSrc && (
-              <img
-                src={imageSrc}
-                alt={dishName}
-                className={styles.ImageDimensions}
-              />
-            )}
+            {pictures.map((picture, index) => (
+                <img key={index} src={`${picture.base64}`}
+                     alt={`Dish Image ${index}`} className={styles.ImageDimensions} />
+            ))}
           </Grid>
         </Grid>
       </div>
