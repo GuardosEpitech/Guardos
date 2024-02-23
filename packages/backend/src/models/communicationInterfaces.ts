@@ -44,6 +44,7 @@ export interface IRestaurantCommunication {
 //Communication object for BE and FE
 //This is the object that is sent to the backend from the frontend
 export interface ISearchCommunication {
+  filterName?: string;
   range?: number;
   rating?: number[]; //2 float rating lowest and highest
   name?: string;
@@ -59,5 +60,13 @@ export interface IProfileCommunication {
   allergens: string[];
   savedFilter: [ISearchCommunication];
   profilePicId: number;
+  preferredLanguage: string;
+}
+
+export interface IRestoProfileCommunication {
+  username: string;
+  email: string;
+  profilePicId: number[];
+  defaultMenuDesign: string;
   preferredLanguage: string;
 }

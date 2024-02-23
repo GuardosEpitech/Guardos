@@ -49,11 +49,17 @@
 }
 
 .DivAller {
+  flex: fit-content;
   margin-top: 1rem;
 }
 
 .DivTitleAller {
   margin-bottom: 2rem;
+}
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
 }
 
 .DivFilter {
@@ -69,4 +75,12 @@
 
 .DivSlider {
   margin-top: 1rem;
+}
+
+.allergenChips {
+  display: block!important;
+}
+
+.chip {
+  margin-bottom: 0.4rem!important;
 }

@@ -20,6 +20,7 @@ import products from './routes/products';
 import restaurants from './routes/restaurants';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
+import restoProfile from './routes/restoProfile';
 
 async function main() {
   const app = express();
@@ -59,6 +60,7 @@ async function main() {
     app.use('/api/sendEmail', email);
     app.use('/api/delete/', deleteUser);
     app.use('/api/profile', visitorProfile);
+    app.use('/api/profile/resto', restoProfile);
   }
 
   app.use(function (_req, _res, next) {

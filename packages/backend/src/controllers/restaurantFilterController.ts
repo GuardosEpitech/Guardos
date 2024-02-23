@@ -253,7 +253,7 @@ export default class Filter {
       for (const searchedWord of lookingFor) {
         // Check if name of restaurant contains searched word --> return RestaurantObj with 100% hitRate
         // stop if finding name directly
-        if (restaurant.name.toLowerCase()
+        if (restaurant.name && restaurant.name.toLowerCase()
           .includes(searchedWord.toLowerCase())) {
           results.push(this.createRestaurantObjFe(
             restaurant as IRestaurantBackEnd, 100));
@@ -271,6 +271,9 @@ export default class Filter {
             found = true;
           }
           // Check if foodGroup of the dish contains searched word --> calculate hitRate
+          if (!dish.category.foodGroup) {
+            break;
+          }
           for (const group of dish.category.foodGroup.split(',')) {
             if (found)
               break;
@@ -334,7 +337,8 @@ export default class Filter {
         // stop if finding category directly
         let hitRate = 0;
         for (const category of restaurant.dishes) {
-          if (category.category.foodGroup.toLowerCase()
+          if (category.category.foodGroup && category.category.foodGroup
+            .toLowerCase()
             .includes(searchedWord.toLowerCase())) {
             count++;
             max = restaurant.dishes.length;
