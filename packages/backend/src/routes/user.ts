@@ -39,7 +39,6 @@ router.post('/userRestoExist', async function (req: Request, res: Response) {
     const answer = await doesUserRestoExist(data.username, data.email);
     return res.send(answer);
   } catch (error) {
-    console.log(error);
     return res.status(500)
       .send('An error occurred while processing your request');
   }
@@ -51,7 +50,6 @@ router.post('/userVisitorExist', async function (req: Request, res: Response) {
     const answer = await doesUserExist(data.username, data.email);
     return res.send(answer);
   } catch (error) {
-    console.log(error);
     return res.status(500)
       .send('An error occurred while processing your request');
   }
