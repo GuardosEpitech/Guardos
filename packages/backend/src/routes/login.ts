@@ -50,7 +50,7 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
       return res.status(200)
         .send(answer);
     } else {
-      return res.send('Invalid Access');
+      return res.status(403).send('Invalid Access');
     }
   } catch (error) {
     return res.send('An error occurred while processing your request');
