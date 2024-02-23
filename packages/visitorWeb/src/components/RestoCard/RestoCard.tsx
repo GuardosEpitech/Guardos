@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -11,7 +11,6 @@ import Rating from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
-import {displayImageFromBase64} from "shared/utils/imageConverter";
 import {IimageInterface} from "../../../../shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
 
@@ -55,57 +54,43 @@ const RestoCard = (props: IRestoCardProps) => {
   const { name, rating, description, categories, ratingCount, picturesId } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
-  const pictures: IimageInterface[] = [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
 
-  async function callToImages() {
-    let picturesId;
-    if (props.resto.picturesId.length > 0) {
-      picturesId = props.resto.picturesId;
-      const answer = await getImages(picturesId);
-      for (let i = 0; i < answer.length; i++) {
-        pictures.push({
-          "base64": answer[i].base64,
-          "contentType": answer[i].contentType,
-          "filename": answer[i].filename,
-          "size": answer[i].size,
-          "uploadDate": answer[i].uploadDate,
-          "id": answer[i].id,
-        });
+  useEffect(() => {
+    async function fetchImages() {
+      if (picturesId.length > 0) {
+        const fetchedImages = await getImages(picturesId);
+        setPictures(fetchedImages);
+      } else {
+        setPictures([{
+          base64: defaultRestoImage,
+          contentType: "image/png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
       }
-    } else {
-      pictures.push({
-        "base64": defaultRestoImage,
-        "contentType": "png",
-        "filename": "placeholderResto.png",
-        "size": 0,
-        "uploadDate": "0",
-        "id": 0,
-      });
     }
-  }
 
-  callToImages()
-      .then(() => {
-        for (let i = 0; i < pictures.length; i++) {
-          displayImageFromBase64(pictures[i].base64, "restoImage"+props.resto.name);
-          displayImageFromBase64(pictures[i].base64, "restoImagedetails"+props.resto.name);
-        }
-      });
+    fetchImages();
+  }, [picturesId]);
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={3} className={styles.GridItemImage}>
-          {pictures && (
-            <img
-              id={"restoImage"+props.resto.name}
-              alt={name}
-              className={styles.ImageDimensions}
-            />
-          )}
+          {pictures.length > 0 &&
+              <img
+                  key={pictures[0].id+name}
+                  src={pictures[0].base64}
+                  alt={name}
+                  className={styles.ImageDimensions}
+              />
+          }
         </Grid>
 
         <Grid item xs={9} className={styles.GridItem}>
@@ -150,7 +135,8 @@ const RestoCard = (props: IRestoCardProps) => {
           </div>
         </Grid>
       </Grid>
-      {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)} />}
+      {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)}
+                                               pictureBase64={pictures[0].base64} />}
     </Paper>
   );
 };
