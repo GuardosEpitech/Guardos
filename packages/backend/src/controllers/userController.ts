@@ -257,10 +257,10 @@ export async function getUserId(token: string) {
   return false;
 }
 
-export async function deleteUser(uID: string) {
+export async function deleteUser(userId: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
 
-  const answer = await UserSchema.findOneAndDelete({ uid: parseInt(uID) });
+  const answer = await UserSchema.findOneAndDelete({ uid: userId });
   if (answer) {
     return answer;
   }
