@@ -261,42 +261,44 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         container
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
-        <Grid item xs={4} sm={2} md={3}>
-          {pictures.length > 0 &&
+        {!props.add && (
+          <Grid item xs={4} sm={2} md={3}>
+            {pictures.length > 0 &&
           <img
             src={pictures[0].base64}
             alt="Restaurant Image"
             className={styles.ImageDimensions}
           />
-          }
-          <div className={styles.FormControlMargin}>
-            <FormControl className={styles.ImageFlex}>
-              <ThemeProvider theme={PageBtn()}>
-                <Button
-                  className={styles.FormControlMargin}
-                  variant="outlined"
-                  component="label"
-                >
+            }
+            <div className={styles.FormControlMargin}>
+              <FormControl className={styles.ImageFlex}>
+                <ThemeProvider theme={PageBtn()}>
+                  <Button
+                    className={styles.FormControlMargin}
+                    variant="outlined"
+                    component="label"
+                  >
                   Change Image
-                  <input
-                    hidden
-                    accept="image/*"
-                    multiple
-                    type="file"
-                    onChange={handleFileChange}/>
-                </Button>
-                <Button
-                  className={styles.FormControlMargin}
-                  variant="text"
-                  component="label"
-                  onClick={handeFileDelete}
-                >
+                    <input
+                      hidden
+                      accept="image/*"
+                      multiple
+                      type="file"
+                      onChange={handleFileChange}/>
+                  </Button>
+                  <Button
+                    className={styles.FormControlMargin}
+                    variant="text"
+                    component="label"
+                    onClick={handeFileDelete}
+                  >
                   Delete Image
-                </Button>
-              </ThemeProvider>
-            </FormControl>
-          </div>
-        </Grid>
+                  </Button>
+                </ThemeProvider>
+              </FormControl>
+            </div>
+          </Grid>
+        )}
 
         <Grid className={styles.TextNextToImageField} item xs={4} sm={6} md={9}>
           <Grid
