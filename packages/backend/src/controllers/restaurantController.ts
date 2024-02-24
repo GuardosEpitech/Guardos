@@ -120,26 +120,27 @@ function createRestaurantObjFe(
     categories.dishes.pop();
     obj.dishes.pop();
     for (const dish of restaurant.dishes) {
-      if (dish.category.menuGroup === x.name) {
-        const dishObj: IDishFE = {
-          name: dish.name,
-          description: dish.description,
-          price: dish.price,
-          pictures: dish.pictures,
-          picturesId: dish.picturesId,
-          allergens: dish.allergens,
-          category: {
-            foodGroup: dish.category.foodGroup,
-            extraGroup: dish.category.extraGroup,
-            menuGroup: dish.category.menuGroup
-          },
-          resto: restaurant.name,
-          products: dish.products,
-        };
-        categories.dishes.push(dishObj);
-        obj.dishes.push(dishObj);
-      }
+      // fix to get all dishes ?!? !?!??!?!??!!?! investigate later TODO: !!!
+      //      if (dish.category.menuGroup === x.name) {
+      const dishObj: IDishFE = {
+        name: dish.name,
+        description: dish.description,
+        price: dish.price,
+        pictures: dish.pictures,
+        picturesId: dish.picturesId,
+        allergens: dish.allergens,
+        category: {
+          foodGroup: dish.category.foodGroup,
+          extraGroup: dish.category.extraGroup,
+          menuGroup: dish.category.menuGroup
+        },
+        resto: restaurant.name,
+        products: dish.products,
+      };
+      categories.dishes.push(dishObj);
+      obj.dishes.push(dishObj);
     }
+    //}
     obj.categories.push(categories);
   }
   return obj;

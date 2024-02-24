@@ -52,8 +52,8 @@ const MenuPage = () => {
                         dishAllergens={dish.allergens}
                         dishDescription={dish.description}
                         options={dish.category.extraGroup.join(", ")}
-                        imageSrc={dish.pictures[0]}
                         price={dish.price}
+                        picturesId={dish.picturesId}
                       />
                     )
                   })}
