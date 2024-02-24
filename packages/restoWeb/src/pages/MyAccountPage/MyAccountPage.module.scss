@@ -26,7 +26,8 @@ body {
 
 .InputField,
 .MyAccountPage select,
-.MyAccountPage button {
+.MyAccountPage button
+{
   width: 100%;
   padding: 10px;
   margin-top: 5px;
@@ -35,18 +36,6 @@ body {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-}
-
-.MyAccountPage button {
-  cursor: pointer;
-}
-
-.deleteButton {
-  background-color: #6d071a !important;
-}
-
-.deleteButton:hover {
-  background-color: brown !important;
 }
 
 .MyAccountPage ul {
@@ -76,16 +65,6 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.restaurantSection {
-  flex: 1;
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 .profileImage {
   width: 100px;
   height: 100px;
@@ -93,7 +72,7 @@ body {
   margin-top: 10px;
 }
 
-.allergenInput {
+.selectInput {
   div {
     margin-bottom: 0;
   }
@@ -183,10 +162,5 @@ body {
 @media (min-width: 768px) {
   .MyAccountPage {
     display: flex;
-  }
-
-  .profileSection,
-  .restaurantsSection {
-    margin-right: 20px;
   }
 }

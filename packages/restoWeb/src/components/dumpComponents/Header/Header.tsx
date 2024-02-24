@@ -75,6 +75,15 @@ const Header = () => {
           </a>
         )}
       </span>
+      { loggedIn
+        &&
+          <span
+              className={styles.NavTitle}
+              onClick={() => NavigateTo("/account", navigate)}
+          >
+          My Account
+        </span>
+      }
       { loggedIn 
         &&
         <span
