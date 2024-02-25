@@ -1,5 +1,6 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate }
+  from "react-router-dom";
 
 import AddDishPage from "@src/pages/AddDishPage";
 import AppOutlet from "@src/pages/AppOutlet/AppOutlet";
@@ -19,9 +20,32 @@ import ResetPassword from "@src/pages/ResetPasswordPage";
 import MyAccountPage from "@src/pages/MyAccountPage";
 
 const MVPRouter = () => {
+  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
+  const userToken = localStorage.getItem('user');
+
+  const checkUserToken = () => {
+    if (userToken === null) {
+      setIsUserTokenSet(false);
+      return;
+    }
+    setIsUserTokenSet(true);
+  };
+  useEffect(() => {
+    checkUserToken();
+  }, [isUserTokenSet, userToken]);
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {isUserTokenSet === false && window.location.pathname !== '/register'
+        && window.location.pathname !== '/account-recovery' && (
+        <Navigate to="login" />
+      )}
+      {isUserTokenSet === true && (window.location.pathname === '/register'
+      || window.location.pathname === '/account-recovery' ||
+      window.location.pathname === '/login'
+      ) && (
+        <Navigate to="/" />
+      )}
       <Routes>
         <Route element={<AppOutlet />}>
           <Route path="addDish" element={<AddDishPage />} />
