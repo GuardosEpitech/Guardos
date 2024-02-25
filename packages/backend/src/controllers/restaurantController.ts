@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 import {
   IOpeningHours, IProduct, IRestaurantBackEnd,
-  IRestaurantFrontEnd
+  IRestaurantFrontEnd,
+  IReview
 } from '../../../shared/models/restaurantInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 import {ICategories} from '../../../shared/models/categoryInterfaces';
@@ -10,6 +11,7 @@ import {IDishBE, IDishFE} from '../../../shared/models/dishInterfaces';
 import {IMealType} from '../../../shared/models/mealTypeInterfaces';
 import {ILocation} from '../../../shared/models/locationInterfaces';
 import {IRestaurantCommunication} from '../models/communicationInterfaces';
+import { v4 as uuidv4 } from 'uuid';
 
 function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
@@ -346,4 +348,57 @@ export async function getAllRestoProducts(restoName: string) {
   const rest = await Restaurant.findOne({name: restoName});
   if (!rest) return null;
   return rest.products;
+}
+
+export async function getAllRestoReviews(restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({name: restoName});
+  if (!rest) return null;
+  return rest.reviews;
+}
+
+export async function addRestoReview(review: IReview, restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  review.date = new Date();
+  review._id = uuidv4();
+  return Restaurant.findOneAndUpdate(
+    {name: restoName},
+    {$push: {reviews: review}},
+    {new: true}
+  );
+}
+
+export async function deleteRestoReview(reviewId: string, restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  return Restaurant.findOneAndUpdate(
+    { name: restoName },
+    { $pull: { reviews: { _id: reviewId } } },
+    { new: true }
+  );
+}
+
+export async function modifyRestoReview(
+  reviewId: string, modifiedFields: any, restoName: string
+) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+  // Check if modifiedFields is empty or undefined
+  if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
+    // If modifiedFields is not provided, return the original review
+    return Restaurant.findOne({ name: restoName });
+  }
+
+  // Construct the update query to update only provided fields
+  const updateQuery: any = {};
+  for (const key in modifiedFields) {
+    // Use type assertion here
+    updateQuery[`reviews.$.${key}` as keyof IReview] = modifiedFields[key];
+  }
+
+  // Execute the update operation
+  return Restaurant.findOneAndUpdate(
+    { name: restoName, 'reviews._id': reviewId },
+    { $set: updateQuery },
+    { new: true }
+  );
 }
