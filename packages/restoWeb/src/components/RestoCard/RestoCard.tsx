@@ -53,7 +53,6 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   const handleDeleteClick = (e: any) => {
-    e.stopPropagation();
     setShowPopup(true);
   };
 
