@@ -23,9 +23,11 @@ const MVPRouter = () => {
     }
     setIsUserTokenSet(true);
   };
+
   useEffect(() => {
     checkUserToken();
   }, [isUserTokenSet, userToken]);
+
   return (
     <BrowserRouter>
       {isUserTokenSet === false && window.location.pathname !== '/register'

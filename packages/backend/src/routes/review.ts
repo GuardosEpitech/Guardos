@@ -17,7 +17,8 @@ router.get('/restaurants/:restoName', async (req, res) => {
       return res.status(404)
         .json({ message: 'Reviews not found' });
     }
-    res.json(reviews);
+    return res.status(200)
+      .send(reviews);
   } catch (error) {
     console.error(error);
     res.status(500)
@@ -31,8 +32,6 @@ router.post('/restaurants/:restoName', async (req, res) => {
     const { restoName } = req.params;
     const review = req.body;
     const newReview = await addRestoReview(review, restoName);
-    console.log('revaiuzhiaduaiduahdiazdhiazduhzadiuhiew');
-    console.log(newReview);
     return res.status(200)
       .send(newReview);
   } catch (error) {
@@ -48,7 +47,8 @@ router.delete('/restaurants/:restoName/:reviewId', async (
   try {
     const { restoName, reviewId } = req.params;
     const result = await deleteRestoReview(reviewId, restoName);
-    res.json(result);
+    return res.status(200)
+      .send(result);
   } catch (error) {
     console.error(error);
     res.status(500)
@@ -63,7 +63,8 @@ router.put('/restaurants/:restoName/:reviewId', async (
     const { restoName, reviewId } = req.params;
     const modifiedReview = req.body;
     const result = await modifyRestoReview(reviewId, modifiedReview, restoName);
-    res.json(result);
+    return res.status(200)
+      .send(result);
   } catch (error) {
     console.error(error);
     res.status(500)

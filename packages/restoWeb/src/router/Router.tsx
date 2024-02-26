@@ -30,9 +30,11 @@ const MVPRouter = () => {
     }
     setIsUserTokenSet(true);
   };
+
   useEffect(() => {
     checkUserToken();
   }, [isUserTokenSet, userToken]);
+
   return (
     <BrowserRouter>
       <ScrollToTop />

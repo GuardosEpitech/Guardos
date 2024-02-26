@@ -63,6 +63,7 @@ const Header = () => {
           <a onClick={() => {
             setIsLogInSite(true);
           }}
+          className={styles.NavTitleLogIn}
           href="/login"
           >
             Login
