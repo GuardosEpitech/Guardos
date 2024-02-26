@@ -272,7 +272,7 @@ export async function createNewRestaurant(
     description: obj.description ? obj.description : 'default description',
     dishes: obj.dishes ? obj.dishes : [],
     pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
-    picturesId: obj.picturesId ? obj.picturesId : [0],
+    picturesId: obj.picturesId ? obj.picturesId : [],
     openingHours: obj.openingHours ? obj.openingHours : [
       {open: '11:00', close: '22:00', day: 0}],
     location: obj.location ? obj.location : {},
