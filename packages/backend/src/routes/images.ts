@@ -17,7 +17,7 @@ import {
   errorHandlingImageDelete
 } from '../middleware/imagesMiddleWare';
 import {addRestoProfilePic, getUserIdResto} from '../controllers/userRestoController';
-import {getUserId} from '../controllers/userController';
+import {addProfilePicture, getUserId} from '../controllers/userController';
 
 const router = express.Router();
 // get image by id or by id array
@@ -77,14 +77,27 @@ router.post('/', async (_req, res) => {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
     const token = _req.body.token ? _req.body.token : null;
-    
+
     if (token !== null) {
-      console.log('Token: ' + token);
       let userID = await getUserIdResto(token);
-      console.log('UserID: ' + userID);
+
       if (userID === false) {
-        console.log('looking here');
         userID = await getUserId(token);
+        if (userID === false) {
+          return res.status(404)
+            .send('Post Images failed: User not found');
+        }
+        await saveImageToDB(
+          _req.body.image.filename,
+          _req.body.image.contentType,
+          _req.body.image.size,
+          _req.body.image.base64);
+
+        const id: number = await getLatestID();
+        await addProfilePicture(parseInt(userID as string), id);
+
+        return res.status(200)
+          .send('Post Images for User successfully');
       }
       if (userID === false) {
         return res.status(404)
