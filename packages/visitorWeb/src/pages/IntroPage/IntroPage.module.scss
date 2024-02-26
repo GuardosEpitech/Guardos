@@ -94,6 +94,24 @@
   text-align: center;
 }
 
+.whatIsGuardos {
+  padding: 24px;
+  justify-content: center;
+  text-align: center;
+  border-radius: 2rem;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 350px;
+}
+
+.whatIsGuardosContainer {
+  padding-top: 24px;
+}
+
+.textBox {
+  max-width: 50%;
+}
+
 .getStartedButton {
   margin-top: 24px !important;
   background-color: #6D071A !important;
@@ -117,6 +135,14 @@
 .fullHeight {
   min-height: 100vh;
   width: 100%;
+}
+
+.timelineOfProject {
+  padding-bottom: 24px;
+
+  .containerHeadline {
+    padding-bottom: 24px;
+  }
 }
 
 @media (max-width: 1020px) {

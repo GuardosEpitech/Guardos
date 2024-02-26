@@ -120,26 +120,27 @@ function createRestaurantObjFe(
     categories.dishes.pop();
     obj.dishes.pop();
     for (const dish of restaurant.dishes) {
-      if (dish.category.menuGroup === x.name) {
-        const dishObj: IDishFE = {
-          name: dish.name,
-          description: dish.description,
-          price: dish.price,
-          pictures: dish.pictures,
-          picturesId: dish.picturesId,
-          allergens: dish.allergens,
-          category: {
-            foodGroup: dish.category.foodGroup,
-            extraGroup: dish.category.extraGroup,
-            menuGroup: dish.category.menuGroup
-          },
-          resto: restaurant.name,
-          products: dish.products,
-        };
-        categories.dishes.push(dishObj);
-        obj.dishes.push(dishObj);
-      }
+      // fix to get all dishes ?!? !?!??!?!??!!?! investigate later TODO: !!!
+      //      if (dish.category.menuGroup === x.name) {
+      const dishObj: IDishFE = {
+        name: dish.name,
+        description: dish.description,
+        price: dish.price,
+        pictures: dish.pictures,
+        picturesId: dish.picturesId,
+        allergens: dish.allergens,
+        category: {
+          foodGroup: dish.category.foodGroup,
+          extraGroup: dish.category.extraGroup,
+          menuGroup: dish.category.menuGroup
+        },
+        resto: restaurant.name,
+        products: dish.products,
+      };
+      categories.dishes.push(dishObj);
+      obj.dishes.push(dishObj);
     }
+    //}
     obj.categories.push(categories);
   }
   return obj;
@@ -148,6 +149,32 @@ function createRestaurantObjFe(
 export async function getRestaurantByName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({name: restaurantName});
+  if (!rest) return null;
+
+  const restaurantBE = createBackEndObj({
+    description: rest.description as string,
+    dishes: rest.dishes as [IDishBE],
+    extras: rest.extras as unknown as [IDishBE],
+    id: rest.id,
+    userID: rest.userID as number,
+    location: rest.location as ILocation,
+    mealType: rest.mealType as [IMealType],
+    name: rest.name as string,
+    openingHours: rest.openingHours as [IOpeningHours],
+    phoneNumber: rest.phoneNumber as string,
+    pictures: rest.pictures as [string],
+    picturesId: rest.picturesId as [number],
+    products: rest.products as [IProduct],
+    rating: rest.rating as number,
+    ratingCount: rest.ratingCount as number,
+    website: rest.website as string
+  });
+  return createRestaurantObjFe(restaurantBE);
+}
+
+export async function getRestaurantByID(restaurantID: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({_id: restaurantID});
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
@@ -245,7 +272,7 @@ export async function createNewRestaurant(
     description: obj.description ? obj.description : 'default description',
     dishes: obj.dishes ? obj.dishes : [],
     pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
-    picturesId: obj.picturesId ? obj.picturesId : [0],
+    picturesId: obj.picturesId ? obj.picturesId : [],
     openingHours: obj.openingHours ? obj.openingHours : [
       {open: '11:00', close: '22:00', day: 0}],
     location: obj.location ? obj.location : {},
