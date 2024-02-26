@@ -258,7 +258,7 @@ const DishForm = (props: IDishFormProps) => {
       deleteImageDish(picturesId[0], dishResto[0], dish);
       displayImageFromBase64(defaultDishImage, "DishImg");
       setPictures([{
-        base64: defaultRestoImage,
+        base64: defaultDishImage,
         contentType: "png",
         filename: "placeholderResto.png",
         size: 0,
