@@ -57,8 +57,8 @@ export async function loginUserResto(username: string,
       AES.decrypt(elem.password as string, 'GuardosResto')
         .toString(enc.Utf8) === password) {
       const token = elem.username ? elem.username : elem.email;
-
-      return AES.encrypt(token + password, 'GuardosResto')
+      const tokenToReturn = token + password;
+      return AES.encrypt(JSON.stringify({tokenToReturn}), 'GuardosResto')
         .toString();
     }
   }

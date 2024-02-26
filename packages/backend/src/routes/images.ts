@@ -16,6 +16,8 @@ import {
   errorHandlingImageChange,
   errorHandlingImageDelete
 } from '../middleware/imagesMiddleWare';
+import {addRestoProfilePic, getUserIdResto} from '../controllers/userRestoController';
+import {getUserId} from '../controllers/userController';
 
 const router = express.Router();
 // get image by id or by id array
@@ -74,12 +76,33 @@ router.post('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
-    const token = String(_req.query.key);
-
+    const token = _req.body.token ? _req.body.token : null;
     if (token !== null) {
       console.log('Token: ' + token);
-      return res.status(200).send('TEST');
+      let userID = await getUserIdResto(token);
+      console.log('UserID: ' + userID);
+      if (userID === false) {
+        console.log('looking here');
+        userID = await getUserId(token);
+      }
+      if (userID === false) {
+        return res.status(404)
+          .send('Post Images failed: User not found');
+      }
+
+      await saveImageToDB(
+        _req.body.image.filename,
+        _req.body.image.contentType,
+        _req.body.image.size,
+        _req.body.image.base64);
+
+      const id: number = await getLatestID();
+      console.log('ID: ' + userID);
+      await addRestoProfilePic(parseInt(userID as string), id);
+      return res.status(200)
+        .send('Post Images for User successfully');
     }
+
     const error: string = await errorHandlingImage(_req);
     if (error) {
       return res.status(404)
@@ -110,18 +133,6 @@ router.post('/', async (_req, res) => {
       await linkImageToRestaurantExtra(_req.body.restaurant, extraName, id);
       return res.status(200)
         .send('Post Images for extra successfully');
-    }
-    
-    if (token) {
-      await saveImageToDB(
-        _req.body.image.filename,
-        _req.body.image.contentType,
-        _req.body.image.size,
-        _req.body.image.base64);
-      //const id: number = await getLatestID();
-      // Todo add function to link image to user
-      return res.status(200)
-        .send('Post Images for user successfully');
     }
 
     await saveImageToDB(
