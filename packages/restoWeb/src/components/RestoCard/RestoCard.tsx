@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import EditIcon from "@mui/icons-material/Edit";
 import { Grid, Paper } from "@mui/material";
@@ -43,7 +43,8 @@ const RestoCard = (props: IRestoCardProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, resto, editable } = props;
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
-  const pictures: IimageInterface[] = [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
     `, ${resto.location.postalCode} ${resto.location.city}` +
@@ -67,41 +68,36 @@ const RestoCard = (props: IRestoCardProps) => {
     await onUpdate();
   }
 
-  async function callToImages() {
-    let picturesId;
-    if (resto.picturesId.length > 0) {
-      picturesId = resto.picturesId;
-      const answer = await getImages(picturesId);
-      for (let i = 0; i < answer.length; i++) {
-        pictures.push({
-          "base64": answer[i].base64,
-          "contentType": answer[i].contentType,
-          "filename": answer[i].filename,
-          "size": answer[i].size,
-          "uploadDate": answer[i].uploadDate,
-          "id": answer[i].id,
-        });
+  useEffect(() => {
+    async function callToImages() {
+      if (resto.picturesId.length > 0) {
+        const picturesId = resto.picturesId;
+        const answer = await getImages(picturesId);
+        // @ts-ignore
+        const loadedPictures = answer.map((img) => ({
+          base64: img.base64,
+          contentType: img.contentType,
+          filename: img.filename,
+          size: img.size,
+          uploadDate: img.uploadDate,
+          id: img._id,
+        }));
+        setPictures(loadedPictures);
+      } else {
+        console.log("No images found");
+        setPictures([{
+          base64: defaultRestoImage,
+          contentType: "png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
       }
-    } else {
-      console.log("No images found");
-      pictures.push({
-        "base64": defaultRestoImage,
-        "contentType": "png",
-        "filename": "placeholderResto.png",
-        "size": 0,
-        "uploadDate": "0",
-        "id": 0,
-      });
     }
-  }
-  
-  callToImages()
-    .then(() => {
-      for (let i = 0; i < pictures.length; i++) {
-        displayImageFromBase64(pictures[i].base64, "restoImage"+resto.name);
-        console.log(resto.name);
-      }
-    });
+
+    callToImages();
+  }, [resto.picturesId]);
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
@@ -109,7 +105,7 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={3} className={styles.GridItemImage}>
           {
             <img
-              id={"restoImage"+resto.name}
+              src={pictures.length > 0 ? pictures[0].base64 : defaultRestoImage}
               alt={resto.name}
               className={styles.ImageDimensions}
             />
