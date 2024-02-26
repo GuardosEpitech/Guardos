@@ -16,6 +16,7 @@ interface IEditRestaurantPageProps {
   city: string;
   country: string;
   description: string;
+  picturesId: number[];
 }
 
 const EditRestaurantPage = () => {
@@ -27,7 +28,8 @@ const EditRestaurantPage = () => {
     postalCode,
     city,
     country,
-    description
+    description,
+    picturesId
   } = useLocation().state as IEditRestaurantPageProps;
 
   return (
@@ -45,6 +47,7 @@ const EditRestaurantPage = () => {
           city={city}
           country={country}
           description={description}
+          picturesId={picturesId}
         />
       </Layout>
     </div>

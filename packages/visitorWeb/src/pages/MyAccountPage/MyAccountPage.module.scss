@@ -24,7 +24,7 @@ body {
   color: #333;
 }
 
-.MyAccountPage input,
+.InputField,
 .MyAccountPage select,
 .MyAccountPage button {
   width: 100%;
@@ -38,13 +38,16 @@ body {
 }
 
 .MyAccountPage button {
-  background-color: #4caf50;
-  color: #fff;
   cursor: pointer;
 }
 
-.MyAccountPage button:hover {
-  background-color: #45a049;
+.deleteButton {
+  background-color: #6d071a !important;
+  color: #fff !important;
+}
+
+.deleteButton:hover {
+  background-color: brown !important;
 }
 
 .MyAccountPage ul {
@@ -58,6 +61,10 @@ body {
 
 .MyAccountPage strong {
   color: #333;
+}
+
+.fullWidth {
+  width: 100%;
 }
 
 .profileSection {
@@ -89,8 +96,89 @@ body {
 
 .allergenInput {
   div {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
+}
+
+.dropdownToggle {
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.dropdownToggle:hover {
+  background-color: #2980b9;
+}
+
+.dropdownBgColorExtended {
+  background: #f2f2f2;
+  padding: 1rem;
+}
+
+.dropdownBgColorCollapsed {
+  background: white;
+}
+
+.passwordChangeDropdown {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.passwordChangeDropdown label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.passwordChangeDropdown input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.passwordChangeStatus {
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.success {
+  color: #4caf50;
+  background-color: #e8f5e9;
+}
+
+.error {
+  color: #d32f2f;
+  background-color: #ffcdd2;
+}
+
+.saveButton {
+  background-color: #4caf50;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.saveButton:hover {
+  background-color: #45a049;
 }
 
 @media (min-width: 768px) {

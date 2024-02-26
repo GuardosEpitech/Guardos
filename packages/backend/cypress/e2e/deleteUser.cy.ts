@@ -1,13 +1,13 @@
 describe('BE delete Users Test:', () => {
   const uID = 99; // save after creating user
 
-  it('delete user with unvalid uID', () => {
+  it('delete user with unvalid token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/',
-      body: {
-        uID: -99,
+      params: {
+        key: 'invalid token',
       },
     })
       .then((response) => {
@@ -16,13 +16,13 @@ describe('BE delete Users Test:', () => {
       });
   });
 
-  it('delete userResto with unvalid uID', () => {
+  it('delete userResto with unvalid token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/resto/',
-      body: {
-        uID: -99,
+      params: {
+        key: 'invalid token',
       },
     })
       .then((response) => {
@@ -31,7 +31,7 @@ describe('BE delete Users Test:', () => {
       });
   });
 
-  it('delete user without body', () => {
+  it('delete user without token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
@@ -43,7 +43,7 @@ describe('BE delete Users Test:', () => {
       });
   });
 
-  it('delete userResto without body', () => {
+  it('delete userResto without token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
@@ -55,6 +55,7 @@ describe('BE delete Users Test:', () => {
       });
   });
 
+  // TODO: get valid token somehow
   it('delete user successfully', () => {
     cy.request({
       method: 'DELETE',
@@ -68,6 +69,7 @@ describe('BE delete Users Test:', () => {
       });
   });
 
+  // TODO: get valid token somehow
   it('delete userResto successfully', () => {
     cy.request({
       method: 'DELETE',

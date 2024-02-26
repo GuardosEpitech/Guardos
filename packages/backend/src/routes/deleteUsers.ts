@@ -1,18 +1,22 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
-import {deleteUser} from '../controllers/userController';
-import {deleteUserResto} from '../controllers/userRestoController';
+import {deleteUser, getUserId} from '../controllers/userController';
+import {deleteUserResto, getUserIdResto}
+  from '../controllers/userRestoController';
 
 const router = express.Router();
 
 router.delete('/', async function (req: Request, res: Response) {
   try {
-    const data = req.body;
-    if (data.uID === undefined) {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(400)
-        .send('Invalid Access');
+        .send({ error: 'Invalid Access' });
     }
-    const answer = await deleteUser(data.uID);
+    const answer = await deleteUser(userID);
     if (answer) {
       return res.status(200)
         .send(answer);
@@ -27,12 +31,16 @@ router.delete('/', async function (req: Request, res: Response) {
 
 router.delete('/resto', async function (req: Request, res: Response) {
   try {
-    const data = req.body;
-    if (data.uID === undefined) {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(400)
-        .send('Invalid Access');
+        .send({ error: 'Invalid Access' });
     }
-    const answer = await deleteUserResto(data.uID);
+
+    const answer = await deleteUserResto(userID as number);
     if (answer) {
       return res.status(200)
         .send(answer);

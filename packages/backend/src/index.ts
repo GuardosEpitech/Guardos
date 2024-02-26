@@ -9,9 +9,11 @@ import user from './routes/user';
 import images from './routes/images';
 import logout from './routes/logout';
 import deleteUser from './routes/deleteUsers';
+import foodCategorie from './routes/foodCategories';
 import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
+import bodyParser from 'body-parser';
 
 import basicApiIngredients from './routes/ingredients';
 import { connectDataBase, SUCCEED } from './controllers/connectDataBase';
@@ -20,6 +22,7 @@ import products from './routes/products';
 import restaurants from './routes/restaurants';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
+import restoProfile from './routes/restoProfile';
 
 async function main() {
   const app = express();
@@ -28,8 +31,8 @@ async function main() {
   console.log('allowedOrigins', allowedOrigins);
 
   app.use(logger('dev'));
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true })); // for uploading images --> true
+  app.use(bodyParser.json({limit: '50mb'}));
+  app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
 
@@ -59,6 +62,8 @@ async function main() {
     app.use('/api/sendEmail', email);
     app.use('/api/delete/', deleteUser);
     app.use('/api/profile', visitorProfile);
+    app.use('/api/foodCategorie', foodCategorie);
+    app.use('/api/profile/resto', restoProfile);
   }
 
   app.use(function (_req, _res, next) {

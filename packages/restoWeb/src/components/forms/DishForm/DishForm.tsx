@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import { IimageInterface } from "shared/models/imageInterface";
 
 import {
   Autocomplete,
@@ -18,8 +19,13 @@ import {IProduct, IRestaurantFrontEnd}
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
 import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
-import placeholderImg from "@src/assets/placeholder.png";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
+import {addImageDish, deleteImageDish, getImages}
+  from "@src/services/callImages";
+import {convertImageToBase64, displayImageFromBase64}
+  from "shared/utils/imageConverter";
+import {defaultDishImage, defaultRestoImage}
+  from 'shared/assets/placeholderImageBase64';
 
 const PageBtn = () => {
   return createTheme({
@@ -57,6 +63,7 @@ interface IDishFormProps {
   selectCategory?: string[];
   selectAllergene?: string[];
   restoName?: string[];
+  picturesId?: number[];
 }
 // TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
@@ -77,8 +84,6 @@ const DishForm = (props: IDishFormProps) => {
       useState(props.dishDescription || "");
   const [selectAllergene, setSelectAllergene] =
       useState<string[]>(props.selectAllergene || []);
-  const imageSrc = props.imageSrc &&
-  props.imageSrc.length !== 0 ? props.imageSrc : placeholderImg;
   const [productListTest, setProductListTest] = useState<Array<string>>([]);
   const [restoList, setRestoList] = useState<Array<string>>([]);
   let allRestoNames: string[] = [];
@@ -88,6 +93,8 @@ const DishForm = (props: IDishFormProps) => {
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
     "Nuts", "Peanuts", "Sesame seeds", "Soya", "Sulphur dioxide", "Lactose"];
   const dishList: IDishFE[] = [];
+  const picturesId: number[] = props.picturesId || [];
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -170,7 +177,7 @@ const DishForm = (props: IDishFormProps) => {
           userToken: userToken,
           resto: dishList[i].resto,
           dish: dishList[i],
-        }
+        };
         await addNewDish(data);
       }
     } else {
@@ -181,6 +188,89 @@ const DishForm = (props: IDishFormProps) => {
     return NavigateTo("/dishes", navigate, {successfulForm: true});
   }
 
+  useEffect(() => {
+    const loadImages = async () => {
+      if (picturesId.length > 0) {
+        try {
+          const answer = await getImages(picturesId);
+          //@ts-ignore
+          setPictures(answer.map((img) => ({
+            base64: img.base64,
+            contentType: img.contentType,
+            filename: img.filename,
+            size: img.size,
+            uploadDate: img.uploadDate,
+            id: img.id,
+          })));
+        } catch (error) {
+          console.error("Failed to load images", error);
+          setPictures([{
+            base64: defaultDishImage,
+            contentType: "image/png",
+            filename: "placeholder.png",
+            size: 0,
+            uploadDate: "",
+            id: 0,
+          }]);
+        }
+      } else {
+        setPictures([{
+          base64: defaultDishImage,
+          contentType: "image/png",
+          filename: "placeholder.png",
+          size: 0,
+          uploadDate: "",
+          id: 0,
+        }]);
+      }
+    };
+
+    loadImages();
+  }, [picturesId]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const base64 = convertImageToBase64(file);
+      base64.then((result) => {
+        for (let i = 0; i < dishResto.length; i++) {
+          if (dishResto[i].length !== 0) {
+            addImageDish(dishResto[i], dish, file.name,
+              file.type, file.size, result)
+              .then(r => {
+                setPictures([{ base64: result, contentType: file.type,
+                  filename: file.name, size: file.size,
+                  uploadDate: "0", id: r }]);
+                if (picturesId.length > 0) {
+                  deleteImageDish(picturesId[0], dishResto[i], dish);
+                  picturesId.shift();
+                }
+                picturesId.push(r);
+              });
+          }
+        }
+      });
+    }
+  };
+
+  function handeFileDelete() {
+    if (picturesId.length > 0) {
+      deleteImageDish(picturesId[0], dishResto[0], dish);
+      displayImageFromBase64(defaultDishImage, "DishImg");
+      setPictures([{
+        base64: defaultRestoImage,
+        contentType: "png",
+        filename: "placeholderResto.png",
+        size: 0,
+        uploadDate: "0",
+        id: 0,
+      }]);
+    }
+    else {
+      console.log("No image to delete");
+    }
+  }
+
   return (
     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
       <Grid
@@ -188,35 +278,43 @@ const DishForm = (props: IDishFormProps) => {
         container
         columns={{xs: 4, sm: 8, md: 12}}
       >
-        <Grid item xs={4} sm={2} md={3}>
-          <img
-            className={styles.ImageDimensions}
-            src={imageSrc}
-            alt="Resto Img"
-          />
-          <div className={styles.FormControlMargin}>
-            <FormControl className={styles.ImageFlex}>
-              <ThemeProvider theme={PageBtn()}>
-                <Button
-                  className={styles.FormControlMargin}
-                  variant="outlined"
-                  component="label"
-                >
-                    Change Image
-                  <input hidden accept="image/*" multiple type="file"/>
-                </Button>
-                <Button
-                  className={styles.FormControlMargin}
-                  variant="text"
-                  component="label"
-                >
-                    Delete Image
-                  <input hidden accept="image/*" multiple type="file"/>
-                </Button>
-              </ThemeProvider>
-            </FormControl>
-          </div>
-        </Grid>
+        {/* left column with image only shows if not new dish*/}
+        {!props.add && (
+          <Grid item xs={4} sm={2} md={3}>
+            <img 
+              src={pictures.length > 0 ? pictures[0].base64 : defaultDishImage}
+              className={styles.ImageDimensions}
+              alt="Resto Img"
+            />
+            <div className={styles.FormControlMargin}>
+              <FormControl className={styles.ImageFlex}>
+                <ThemeProvider theme={PageBtn()}>
+                  <Button
+                    className={styles.FormControlMargin}
+                    variant="outlined"
+                    component="label"
+                  >
+                  Change Image
+                    <input
+                      hidden
+                      accept="image/*"
+                      multiple
+                      type="file"
+                      onChange={handleFileChange}/>
+                  </Button>
+                  <Button
+                    className={styles.FormControlMargin}
+                    variant="text"
+                    component="label"
+                    onClick={handeFileDelete}
+                  >
+                  Delete Image
+                  </Button>
+                </ThemeProvider>
+              </FormControl>
+            </div>
+          </Grid>
+        )}
         <Grid className={styles.TextNextToImageField} item xs={4} sm={6} md={9}>
           <Grid
             container

@@ -27,6 +27,7 @@ export default class Filter {
         ratingCount: elem.ratingCount,
         openingHours: elem.openingHours,
         pictures: elem.pictures,
+        picturesId: elem.picturesId,
         products: elem.products,
         website: elem.website,
         phoneNumber: elem.phoneNumber,
@@ -57,6 +58,7 @@ export default class Filter {
       ratingCount: restaurant.ratingCount,
       phoneNumber: restaurant.phoneNumber,
       pictures: restaurant.pictures,
+      picturesId: restaurant.picturesId,
       openingHours: [{} as IOpeningHours],
       products: [{} as IProduct],
       dishes: [{} as IDishBE],
@@ -78,6 +80,7 @@ export default class Filter {
         description: dish.description,
         products: dish.products,
         pictures: dish.pictures,
+        picturesId: dish.picturesId,
         price: dish.price,
         allergens: dish.allergens,
         category: dish.category
@@ -128,6 +131,7 @@ export default class Filter {
       rating: restaurant.rating,
       ratingCount: restaurant.ratingCount,
       pictures: restaurant.pictures,
+      picturesId: restaurant.picturesId,
       openingHours: [{} as IOpeningHours],
       products: [{} as IProduct],
       id: restaurant.id,
@@ -163,6 +167,7 @@ export default class Filter {
             description: dish.description,
             price: dish.price,
             pictures: dish.pictures,
+            picturesId: dish.picturesId,
             allergens: dish.allergens,
             category: {
               foodGroup: dish.category.foodGroup,
@@ -253,7 +258,7 @@ export default class Filter {
       for (const searchedWord of lookingFor) {
         // Check if name of restaurant contains searched word --> return RestaurantObj with 100% hitRate
         // stop if finding name directly
-        if (restaurant.name.toLowerCase()
+        if (restaurant.name && restaurant.name.toLowerCase()
           .includes(searchedWord.toLowerCase())) {
           results.push(this.createRestaurantObjFe(
             restaurant as IRestaurantBackEnd, 100));
@@ -271,6 +276,9 @@ export default class Filter {
             found = true;
           }
           // Check if foodGroup of the dish contains searched word --> calculate hitRate
+          if (!dish.category.foodGroup) {
+            break;
+          }
           for (const group of dish.category.foodGroup.split(',')) {
             if (found)
               break;
@@ -334,7 +342,8 @@ export default class Filter {
         // stop if finding category directly
         let hitRate = 0;
         for (const category of restaurant.dishes) {
-          if (category.category.foodGroup.toLowerCase()
+          if (category.category.foodGroup && category.category.foodGroup
+            .toLowerCase()
             .includes(searchedWord.toLowerCase())) {
             count++;
             max = restaurant.dishes.length;
