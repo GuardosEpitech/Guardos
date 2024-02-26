@@ -1,9 +1,9 @@
-import * as process from 'process';
-import * as dotenv from 'dotenv';
-
 describe('BE delete Users Test:', () => {
-  dotenv.config();
-  const uID = 99; // save after creating user
+  const testUser = 'newTestUser';
+  const testUserPassword = 'SomePassw0rd';
+  const testUserEmail = 'newTest@User.com';
+  let userToken = '';
+  let userRestoToken = '';
 
   // ------------------------ ADD USER ------------------------
 
@@ -12,7 +12,7 @@ describe('BE delete Users Test:', () => {
       method: 'POST',
       url: 'http://localhost:8081/api/register/',
       body: {
-        username: process.env.testUser,
+        username: 'gylian',
         email: 'unimportant',
         password: 'unimportant'
       },
@@ -20,7 +20,7 @@ describe('BE delete Users Test:', () => {
       .then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('array');
-        expect(response.body).to.deep.equal([true, false]);
+        expect(response.body).to.deep.equal([false, true]);
       });
   });
 
@@ -30,41 +30,7 @@ describe('BE delete Users Test:', () => {
       url: 'http://localhost:8081/api/register/',
       body: {
         username: 'unimportant',
-        email: process.env.testUserEmail,
-        password: 'unimportant'
-      },
-    })
-      .then((response) => {
-        expect(response.status).to.eq(200);
-        expect(response.body).to.be.an('array');
-        expect(response.body).to.deep.equal([false, true]);
-      });
-  });
-
-  it('register user successfully', () => {
-    cy.request({
-      method: 'POST',
-      url: 'http://localhost:8081/api/register/',
-      body: {
-        username: 'BE Test User',
-        email: 'testUser@web.de',
-        password: 'User123'
-      },
-    })
-      .then((response) => {
-        expect(response.status).to.eq(200);
-        expect(response.body).to.be.an('array');
-        expect(response.body).to.deep.equal([false, false]);
-      });
-  });
-
-  it('register resto user with existing username', () => {
-    cy.request({
-      method: 'POST',
-      url: 'http://localhost:8081/api/register/restoWeb',
-      body: {
-        username: process.env.testUser,
-        email: 'unimportant',
+        email: 'gylian@web.de',
         password: 'unimportant'
       },
     })
@@ -75,13 +41,31 @@ describe('BE delete Users Test:', () => {
       });
   });
 
-  it('register resto user with existing email', () => {
+  it('register user successfully', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/register/',
+      body: {
+        username: testUser,
+        email: testUserEmail,
+        password: testUserPassword
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('array');
+        expect(response.body).to.deep.equal([false, false]);
+        userToken = response.body;
+      });
+  });
+
+  it('register resto user with existing username', () => {
     cy.request({
       method: 'POST',
       url: 'http://localhost:8081/api/register/restoWeb',
       body: {
-        username: 'unimportant',
-        email: process.env.testUserEmail,
+        username: 'gylian',
+        email: 'unimportant',
         password: 'unimportant'
       },
     })
@@ -92,20 +76,38 @@ describe('BE delete Users Test:', () => {
       });
   });
 
+  it('register resto user with existing email', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/register/restoWeb',
+      body: {
+        username: 'unimportant',
+        email: 'gylian@web.de',
+        password: 'unimportant'
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('array');
+        expect(response.body).to.deep.equal([true, false]);
+      });
+  });
+
   it('register resto user successfully', () => {
     cy.request({
       method: 'POST',
       url: 'http://localhost:8081/api/register/restoWeb',
       body: {
-        username: 'BE Test User',
-        email: 'testUser@web.de',
-        password: 'User123'
+        username: testUser,
+        email: testUserEmail,
+        password: testUserPassword
       },
     })
       .then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('array');
         expect(response.body).to.deep.equal([false, false]);
+        userRestoToken = response.body;
       });
   });
 
@@ -116,8 +118,8 @@ describe('BE delete Users Test:', () => {
       failOnStatusCode: false,
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/',
-      body: {
-        uID: -99,
+      params: {
+        key: 'invalid',
       },
     })
       .then((response) => {
@@ -131,8 +133,8 @@ describe('BE delete Users Test:', () => {
       failOnStatusCode: false,
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/resto/',
-      body: {
-        uID: -99,
+      params: {
+        key: 'invalid',
       },
     })
       .then((response) => {
@@ -169,8 +171,8 @@ describe('BE delete Users Test:', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/',
-      body: {
-        uID: uID, // use existing userID
+      params: {
+        key: userToken,
       },
     })
       .then((response) => {
@@ -182,8 +184,8 @@ describe('BE delete Users Test:', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/delete/resto/',
-      body: {
-        uID: uID, // use existing userID
+      params: {
+        key: userRestoToken,
       },
     })
       .then((response) => {

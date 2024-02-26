@@ -15,18 +15,6 @@ export async function addUserResto(username: string,
     .exec();
   const highestUid = lastrecord ? lastrecord.uid as number + 1 : 0;
 
-  const upload = new UserRestoSchema({
-    uid: highestUid,
-    username: username,
-    email: email,
-    password: AES.encrypt(password, 'GuardosResto')
-      .toString(),
-    isActive: false,
-    restaurantIDs: [],
-    profilePicId: [],
-    defaultMenuDesign: 'default',
-    preferredLanguage: '',
-  });
   const existingUsername = await UserRestoSchema.findOne({ username: username })
     .exec();
   const existingEmail = await UserRestoSchema.findOne({ email: email })
@@ -40,8 +28,21 @@ export async function addUserResto(username: string,
   }
   if (errorArray.includes(true)) {
     return errorArray;
+  } else {
+    const upload = new UserRestoSchema({
+      uid: highestUid,
+      username: username,
+      email: email,
+      password: AES.encrypt(password, 'GuardosResto')
+        .toString(),
+      isActive: false,
+      restaurantIDs: [],
+      profilePicId: [],
+      defaultMenuDesign: 'default',
+      preferredLanguage: '',
+    });
+    await upload.save();
   }
-  await upload.save();
   return errorArray;
 }
 

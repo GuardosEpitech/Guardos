@@ -1,12 +1,12 @@
-import * as dotenv from 'dotenv';
-import * as process from 'process';
 import {AES} from 'crypto-js';
 
 describe('Dishes API Tests', () => {
+  const testUser = 'gylian';
+  const testUserPassword = 'gylianN1';
+  
   const getUserToken = () => {
-    dotenv.config();
-    return AES.encrypt(process.env.testUser +
-      process.env.testUserPassword, 'GuardosResto')
+    return AES.encrypt(testUser +
+      testUserPassword, 'GuardosResto')
       .toString();
   };
   const userToken = getUserToken();

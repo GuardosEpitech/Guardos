@@ -14,14 +14,6 @@ export async function addUser(username: string,
   const highestUid = lastRecord ? lastRecord.uid as number + 1 : 0;
 
   const errorArray = [false, false];
-  const upload = new UserSchema({
-    uid: highestUid,
-    username: username,
-    email: email,
-    password: AES.encrypt(password, 'Guardos')
-      .toString(),
-    allergens: []
-  });
   const existingUsername = await UserSchema.findOne({ username: username })
     .exec();
   const existingEmail = await UserSchema.findOne({ email: email })
@@ -35,8 +27,17 @@ export async function addUser(username: string,
   }
   if (errorArray.includes(true)) {
     return errorArray;
+  } else {
+    const upload = new UserSchema({
+      uid: highestUid,
+      username: username,
+      email: email,
+      password: AES.encrypt(password, 'Guardos')
+        .toString(),
+      allergens: []
+    });
+    await upload.save();
   }
-  await upload.save();
   return errorArray;
 }
 
@@ -97,7 +98,7 @@ export async function getProfileDetails(userId: number) {
   return inter;
 }
 
-// update username, email, allergens, preferred language
+// update username, email, city, allergens, preferred language
 export async function updateProfileDetails(userId: number,
   updateFields: Partial<IProfileCommunication>) {
   const UserSchema = mongoose.model('User', userSchema, 'User');

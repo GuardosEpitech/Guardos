@@ -1,10 +1,6 @@
-import * as process from 'process';
-import * as dotenv from 'dotenv';
-
 describe('User Routes', () => {
-  const username = process.env.testUser;
+  const username = 'gylian';
   const updatedAllergens = ['allergen1', 'allergen2'];
-  dotenv.config();
 
   it('should update allergens', () => {
     cy.request({

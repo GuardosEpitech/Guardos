@@ -1,18 +1,17 @@
-import * as process from 'process';
-import * as dotenv from 'dotenv';
 import {AES} from 'crypto-js';
 
 describe('BE login Users Test:', () => {
+  const testUser = 'gylian';
+  const testUserPassword = 'gylianN1';
+  
   const getUserToken = () => {
-    dotenv.config();
-    return AES.encrypt(process.env.testUser +
-      process.env.testUserPassword, 'Guardos')
+    return AES.encrypt(testUser +
+      testUserPassword, 'Guardos')
       .toString();
   };
   const getUserRestoToken = () => {
-    dotenv.config();
-    return AES.encrypt(process.env.testUser +
-      process.env.testUserPassword, 'GuardosResto')
+    return AES.encrypt(testUser +
+      testUserPassword, 'GuardosResto')
       .toString();
   };
 
@@ -40,8 +39,8 @@ describe('BE login Users Test:', () => {
       method: 'POST',
       url: 'http://localhost:8081/api/login/',
       body: {
-        username: process.env.testUser,
-        password: process.env.testUserPassword,
+        username: testUser,
+        password: testUserPassword,
       },
     })
       .then((response) => {
@@ -100,8 +99,8 @@ describe('BE login Users Test:', () => {
       method: 'POST',
       url: 'http://localhost:8081/api/login/restoWeb',
       body: {
-        username: process.env.testUser,
-        password: process.env.testUserPassword,
+        username: testUser,
+        password: testUserPassword,
       },
     })
       .then((response) => {
