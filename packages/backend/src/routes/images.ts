@@ -74,6 +74,12 @@ router.post('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
+    const token = String(_req.query.key);
+
+    if (token !== null) {
+      console.log('Token: ' + token);
+      return res.status(200).send('TEST');
+    }
     const error: string = await errorHandlingImage(_req);
     if (error) {
       return res.status(404)
@@ -104,6 +110,18 @@ router.post('/', async (_req, res) => {
       await linkImageToRestaurantExtra(_req.body.restaurant, extraName, id);
       return res.status(200)
         .send('Post Images for extra successfully');
+    }
+    
+    if (token) {
+      await saveImageToDB(
+        _req.body.image.filename,
+        _req.body.image.contentType,
+        _req.body.image.size,
+        _req.body.image.base64);
+      //const id: number = await getLatestID();
+      // Todo add function to link image to user
+      return res.status(200)
+        .send('Post Images for user successfully');
     }
 
     await saveImageToDB(
