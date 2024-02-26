@@ -77,6 +77,7 @@ router.post('/', async (_req, res) => {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
     const token = _req.body.token ? _req.body.token : null;
+    
     if (token !== null) {
       console.log('Token: ' + token);
       let userID = await getUserIdResto(token);
