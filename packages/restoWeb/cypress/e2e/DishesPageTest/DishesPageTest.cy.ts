@@ -1,13 +1,27 @@
+const login = (email:string) => {
+    cy.session(email, () => {
+        cy.viewport(1710, 948);
+        cy.visit('http://localhost:8080/login');
+        cy.wait(100);
+        cy.get('#\\:r0\\:').type(email);
+        cy.wait(100);
+        cy.get('#\\:r1\\:').type('TestTest1');
+        cy.get('.MuiButtonBase-root').click();
+        cy.wait(3000);
+    })
+}
+
 describe('DishesPageTest check dish card', () => {
     it('passes', () => {
+        login('test@web.de');
         cy.visit('http://localhost:8080/dishes');
-        cy.wait(15000);
-        cy.contains("MCMuffin");
+        cy.wait(5000);
     });
 });
 
 describe('DishesPageTest add dish card', () => {
     it('passes', () => {
+        login('test@web.de');
         cy.visit('http://localhost:8080/dishes');
         cy.wait(5000);
         cy.get('.MuiButton-contained').click();
@@ -36,12 +50,19 @@ describe('DishesPageTest add dish card', () => {
 
 describe('DishesPageTest edit dish card', () => {
     it('passes', () => {
+        login('test@web.de');
         cy.visit('http://localhost:8080/dishes');
         cy.wait(5000);
-        cy.contains('TestDish123');
-        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
-        cy.contains('Edit').click();
+
+        const genericSelector = '#root > div > div > div > div > div > div > div';
+        cy.get(genericSelector).contains('TestDish123').scrollIntoView().then($element => {
+            cy.wrap($element).parent().find('button#long-button').click({force: true});
+            cy.get('#basic-menu').should('be.visible').then(() => {
+                cy.get('#basic-menu > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper > ul > li:nth-child(1)').click();
+            });
+        });
         cy.wait(5000);
+
         cy.get('.MuiGrid-grid-sm-8').eq(0).find('.MuiFormControl-root > .MuiFormControl-root >' + 
         '.MuiInputBase-root > #outlined-multiline-flexible').type('cypress changed test description');
         cy.get('.MuiButton-contained').click();
@@ -53,14 +74,21 @@ describe('DishesPageTest edit dish card', () => {
 // delete dish
 describe('DishesPageTest delete dish card', () => {
     it('passes', () => {
+        login('test@web.de');
         cy.visit('http://localhost:8080/dishes');
         cy.wait(5000);
-        cy.contains('TestDish123');
-        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > div > #long-button').click();
-        cy.contains('Delete').click();
-        cy.get('.MuiBackdrop-root').click();
-        cy.get('.MuiPaper-root').eq(6).find('.YgFNULgWXmZsCGJKZc5g > .MuiGrid-root > .MuiGrid-root > .ZA6LF0zDIfuiCFc0tcNj > .sc-aXZVg > div > .sc-gEvEer').eq(0).click();
-        cy.wait(10000);
+
+        const genericSelector = '#root > div > div > div > div > div > div > div';
+        cy.get(genericSelector).contains('TestDish123').scrollIntoView().then($element => {
+            cy.wrap($element).parent().find('button#long-button').click({force: true});
+            cy.get('#basic-menu').should('be.visible').then(() => {
+                cy.get('#basic-menu > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.MuiMenu-paper.MuiMenu-paper.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper > ul > li:nth-child(2)').click();
+                cy.wait(1000);
+                cy.get('.MuiGrid-grid-xs-10 > .ZA6LF0zDIfuiCFc0tcNj > .sc-aXZVg > :nth-child(2) > :nth-child(1)').click({force: true});
+            });
+        });
+        cy.wait(5000);
         cy.contains('TestDish123').should('not.exist');
     });
 });
+
