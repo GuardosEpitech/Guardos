@@ -170,12 +170,35 @@ router.delete('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
+    const token = _req.body.token ? _req.body.token : null;
+
     const error: string = await errorHandlingImageDelete(_req);
     if (error) {
       console.log(error);
       return res.status(404)
         .send(error);
     }
+
+    if (token !== null) {
+      let userID = await getUserIdResto(token);
+
+      if (userID === false) {
+        userID = await getUserId(token);
+        if (userID === false) {
+          return res.status(404)
+            .send('Delere Images failed: User not found');
+        }
+        await addProfilePicture(parseInt(userID as string), _req.body.imageId);
+        await deleteImageFromDB(_req.body.imageId);
+        return res.status(200)
+          .send('Delete Images for User successfully');
+      }
+      await addRestoProfilePic(parseInt(userID as string), _req.body.imageId);
+      await deleteImageFromDB(_req.body.imageId);
+      return res.status(200)
+        .send('Delete Images for User successfully');
+    }
+
     if (dishName) {
       await unlinkImageFromRestaurantDish(
         _req.body.restaurant, _req.body.dish, _req.body.imageId);

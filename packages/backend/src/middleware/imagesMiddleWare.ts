@@ -41,11 +41,12 @@ export async function errorHandlingImageDelete(_req: Request) {
   const dishName: string = _req.body.dish;
   const extraName: string = _req.body.extra;
   const imageId: number = _req.body.imageId;
+  const token = _req.body.token ? _req.body.token : null;
 
-  if (!restaurantName)
+  if (!restaurantName && !token)
     return 'Delete Image failed: restaurantName is missing';
 
-  if (await checkIfRestaurantExists(restaurantName) === false) {
+  if (await checkIfRestaurantExists(restaurantName) === false && !token) {
     return 'Delete Images failed: Restaurant does not exist';
   }
 
