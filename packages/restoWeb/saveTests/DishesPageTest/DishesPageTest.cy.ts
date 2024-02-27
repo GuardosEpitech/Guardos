@@ -1,9 +1,9 @@
-import {login} from '../../fixtures/login';
+import {login} from '../../cypress/fixtures/login';
 
 describe('DishesPageTest check dish card', () => {
     it('passes', () => {
         login('test@web.de');
-        cy.visit('http://localhost:8080/dishes');
+        cy.visit('http://localhost:8082/dishes');
         cy.wait(5000);
     });
 });
@@ -11,7 +11,7 @@ describe('DishesPageTest check dish card', () => {
 describe('DishesPageTest add dish card', () => {
     it('passes', () => {
         login('test@web.de');
-        cy.visit('http://localhost:8080/dishes');
+        cy.visit('http://localhost:8082/dishes');
         cy.wait(5000);
         cy.get('.MuiButton-contained').click();
         cy.wait(1000);
@@ -40,7 +40,7 @@ describe('DishesPageTest add dish card', () => {
 describe('DishesPageTest edit dish card', () => {
     it('passes', () => {
         login('test@web.de');
-        cy.visit('http://localhost:8080/dishes');
+        cy.visit('http://localhost:8082/dishes');
         cy.wait(5000);
 
         const genericSelector = '#root > div > div > div > div > div > div > div';
@@ -64,7 +64,7 @@ describe('DishesPageTest edit dish card', () => {
 describe('DishesPageTest delete dish card', () => {
     it('passes', () => {
         login('test@web.de');
-        cy.visit('http://localhost:8080/dishes');
+        cy.visit('http://localhost:8082/dishes');
         cy.wait(5000);
 
         const genericSelector = '#root > div > div > div > div > div > div > div';

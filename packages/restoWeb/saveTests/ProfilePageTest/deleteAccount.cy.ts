@@ -1,7 +1,7 @@
 export const loginToDelete = (email:string) => {
   cy.session(email, () => {
     cy.viewport(1710, 948);
-    cy.visit('http://localhost:8080/login');
+    cy.visit('http://localhost:8082/login');
     cy.wait(100);
     cy.get('#\\:r0\\:').type(email);
     cy.wait(100);
@@ -14,8 +14,9 @@ export const loginToDelete = (email:string) => {
 
 describe('Delete Account Test', () => {
   it('should delete the user account', () => {
+    loginToDelete('');
     // Visit the My Account page
-    cy.visit('http://localhost:8080/account');
+    cy.visit('http://localhost:8082/account');
 
     cy.get('.b3PcCr0BwQwv3F0E3DMj').click();
 

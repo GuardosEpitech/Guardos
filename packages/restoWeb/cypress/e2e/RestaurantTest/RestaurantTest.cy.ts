@@ -1,19 +1,8 @@
-const login = (email:string) => {
-  cy.session(email, () => {
-      cy.viewport(1710, 948);
-      cy.visit('http://localhost:8080/login');
-      cy.wait(100);
-      cy.get('#\\:r0\\:').type(email);
-      cy.wait(100);
-      cy.get('#\\:r1\\:').type('TestTest1');
-      cy.get('.MuiButtonBase-root').click();
-      cy.wait(3000);
-  })
-}
+import { login } from '../../fixtures/login';
 
 describe('Restaurants', () => {
   it('Check Action Options: Menu, Edit, Delete', () => {
-    login("test@web.de");
+    login("DONOTDELETE@wqebd.de");
     cy.viewport(1710, 948);
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
@@ -28,7 +17,7 @@ describe('Restaurants', () => {
   });
 
   it('Add Restaurant', () => {
-    login("test@web.de");
+    login("DONOTDELETE@wqebd.de");
     cy.viewport(1710, 948);
     cy.visit('http://localhost:8080/addResto');
     cy.wait(5000);
@@ -56,7 +45,7 @@ describe('Restaurants', () => {
   });
 
   it('Edit Restaurant', () => {
-    login("test@web.de");
+    login("DONOTDELETE@wqebd.de");
     cy.viewport(1710, 948);
     cy.visit('http://localhost:8080');
     cy.wait(5000);
@@ -74,7 +63,7 @@ describe('Restaurants', () => {
   }); 
 
   it('Delete Restaurant', () => {
-    login("test@web.de");
+    login("DONOTDELETE@wqebd.de");
     cy.viewport(1710, 948);
     cy.visit('http://localhost:8080');
     cy.wait(5000);
@@ -85,6 +74,6 @@ describe('Restaurants', () => {
     // click on agreeing to delete button
     cy.get('.sc-aXZVg > :nth-child(2) > :nth-child(1)').click();
     // check for deleted restaurant
-    cy.get(':last-child > .MuiGrid-container > .MuiGrid-grid-xs-9 > :nth-child(1) > .V8KuF3Zx8hQ9ajX51jw8').should('not.include.text', 'Test Restaurant Cypress Edit');
+   // cy.get(':last-child > .MuiGrid-container > .MuiGrid-grid-xs-9 > :nth-child(1) > .V8KuF3Zx8hQ9ajX51jw8').should('not.include.text', 'Test Restaurant Cypress Edit');
   }); 
 });

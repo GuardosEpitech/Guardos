@@ -5,7 +5,7 @@ export const login = (email:string) => {
     cy.wait(100);
     cy.get('#\\:r0\\:').type(email);
     cy.wait(100);
-    cy.get('#\\:r1\\:').type('TestTest1');
+    cy.get('#\\:r1\\:').type('DONOTDELETe1.');
     cy.get('.MuiButtonBase-root').click();
     cy.wait(3000);
   });

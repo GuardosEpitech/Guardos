@@ -2,7 +2,7 @@ import {login} from '../../fixtures/login';
 
 describe('ProductPageTest check products', () => {
     it('passes', () => {
-        login('test@web.de');
+        login('DONOTDELETE@wqebd.de');
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
         cy.contains('Test');
@@ -11,7 +11,7 @@ describe('ProductPageTest check products', () => {
 
 describe('ProductPageTest add new product', () => {
     it('passes', () => {
-        login('test@web.de');
+        login('DONOTDELETE@wqebd.de');
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
         cy.get('.MuiButton-contained').click();
@@ -33,7 +33,7 @@ describe('ProductPageTest add new product', () => {
 
 describe('ProductPageTest edit product', () => {
     it('passes', () => {
-        login('test@web.de');
+        login('DONOTDELETE@wqebd.de');
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
         cy.contains('CypressTestProduct');
@@ -50,7 +50,7 @@ describe('ProductPageTest edit product', () => {
 
 describe('ProductPageTest remove product', () => {
     it('passes', () => {
-        login('test@web.de');
+        login('DONOTDELETE@wqebd.de');
         cy.visit('http://localhost:8080/products');
         cy.wait(5000);
         cy.contains('CypressTestProduct');

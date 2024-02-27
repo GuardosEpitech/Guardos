@@ -7,7 +7,7 @@ const testContent = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXUAAAF1CAYAA
 
 describe('ImageTest check default restaurant image', () => {
   it('First test', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
 
@@ -29,7 +29,7 @@ describe('ImageTest check default restaurant image', () => {
 
 describe('ImageTest change default restaurant image', () => {
   it('Change image from restaurant', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
 
@@ -49,7 +49,7 @@ describe('ImageTest change default restaurant image', () => {
 
 describe('ImageTest check restaurant image', () => {
   it('Check image from restaurant', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
 
@@ -73,7 +73,7 @@ describe('ImageTest check restaurant image', () => {
 
 describe('ImageTest delete test restaurant image', () => {
   it('delete image from restaurant', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
 
@@ -94,7 +94,7 @@ describe('ImageTest delete test restaurant image', () => {
 
 describe('ImageTest check default restaurant image', () => {
   it('Last test', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/');
     cy.wait(5000);
 

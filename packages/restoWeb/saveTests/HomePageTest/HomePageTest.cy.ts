@@ -1,6 +1,6 @@
 describe('HomePageTest check resto card menu', () => {
   it('passes', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8082');
     cy.wait(10000);
     cy.contains('McDonalds');
     cy.get(':nth-child(1) > .MuiGrid-container > .MuiGrid-grid-xs-9 > '+
@@ -12,7 +12,7 @@ describe('HomePageTest check resto card menu', () => {
 
 describe('HomePageTest check resto card edit', () => {
   it('passes', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8082');
     cy.wait(10000);
     cy.contains('McDonalds');
     cy.get(':nth-child(1) > .MuiGrid-container > .MuiGrid-grid-xs-9 > '+
@@ -21,14 +21,14 @@ describe('HomePageTest check resto card edit', () => {
     cy.contains('Edit restaurant');
     cy.get('.MuiButton-contained').click();
     cy.wait(5000);
-    cy.url().should('eq', 'http://localhost:8080/');
+    cy.url().should('eq', 'http://localhost:8082/');
     cy.contains('This is a success message!');
   });
 });
 
 describe('HomePageTest check resto add', () => {
   it('passes', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8082');
     cy.wait(10000);
     cy.get('.MuiButton-contained').click();
     cy.get('.MuiGrid-grid-sm-5 > .MuiFormControl-root > ' +
@@ -41,7 +41,7 @@ describe('HomePageTest check resto add', () => {
 
 describe('HomePageTest check resto delete', () => {
   it('passes', () => {
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8082');
     cy.wait(10000);
     cy.contains('Test128');
     cy.get('.MuiPaper-root:last > .MuiGrid-root > .MuiGrid-root > .ZBzxwzmuADcRDx0LwbIp > .tu9axTq6sjrtLsaZHGQQ > #long-button').click();

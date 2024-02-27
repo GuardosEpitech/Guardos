@@ -8,7 +8,7 @@ const testFile = 'test.png';
 
 describe('ImageTest check default dish image', () => {
   it('First test', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/dishes');
     cy.wait(5000);
 
@@ -30,7 +30,7 @@ describe('ImageTest check default dish image', () => {
 
 describe('ImageTest change default dish Image', () => {
   it('Change to test image', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/dishes');
     cy.wait(5000);
 
@@ -49,7 +49,7 @@ describe('ImageTest change default dish Image', () => {
 
 describe('ImageTest check test dish image', () => {
   it('Check if test image was applied', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/dishes');
     cy.wait(5000);
 
@@ -71,7 +71,7 @@ describe('ImageTest check test dish image', () => {
 
 describe('ImageTest delete Test dish Image', () => {
   it('delete image', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/dishes');
     cy.wait(3000);
 
@@ -91,7 +91,7 @@ describe('ImageTest delete Test dish Image', () => {
 
 describe('ImageTest check default dish image', () => {
   it('Last test', () => {
-    login('test@web.de');
+    login('DONOTDELETE@wqebd.de');
     cy.visit('http://localhost:8080/dishes');
     cy.wait(5000);
 
