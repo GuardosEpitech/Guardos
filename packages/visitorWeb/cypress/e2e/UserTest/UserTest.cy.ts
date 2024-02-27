@@ -62,7 +62,7 @@ describe('Edit Username', function() {
 })
 
 describe('Edit Location', function() {
-    it('should edit Location', function() {
+    it('passes', function() {
         cy.viewport(1710, 948);
         login('CypressTest1Changed', 'CypressTest1');
         cy.visit('http://localhost:8082/my-account');
@@ -142,8 +142,5 @@ describe('delete Account', function() {
         cy.get('.V3JgFjoBAN8BwxEGAGJx > .cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > .b3PcCr0BwQwv3F0E3DMj').click();
         cy.get('.MuiDialog-root > .MuiDialog-container > .MuiPaper-root > .MuiDialogActions-root > .MuiButtonBase-root:nth-child(2)').click();
         cy.url().should('eq', 'http://localhost:8082/');
-    })
-   
-   })
-   
-   
+    })   
+})
