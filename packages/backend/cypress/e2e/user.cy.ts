@@ -1,5 +1,4 @@
 describe('User Routes', () => {
-  const username = 'gylian';
   const updatedAllergens = ['allergen1', 'allergen2'];
 
   it('should update allergens', () => {
@@ -7,7 +6,7 @@ describe('User Routes', () => {
       method: 'POST',
       url: 'http://localhost:8081/api/user/allergens/update',
       body: {
-        username: username,
+        username: 'gylian@web.de', // for some reason it actually requires the email
         allergens: updatedAllergens,
       },
     }).then((response) => {

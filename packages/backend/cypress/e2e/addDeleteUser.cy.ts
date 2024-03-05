@@ -51,11 +51,10 @@ describe('BE delete Users Test:', () => {
         password: testUserPassword
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('array');
         expect(response.body).to.deep.equal([false, false]);
-        userToken = response.body;
       });
   });
 
@@ -103,77 +102,77 @@ describe('BE delete Users Test:', () => {
         password: testUserPassword
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('array');
         expect(response.body).to.deep.equal([false, false]);
-        userRestoToken = response.body;
+      });
+  });
+
+  // ------------------------ HELPER FOR TOKEN ------------------------
+
+  it('helper: get user token', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/login/',
+      body: {
+        username: testUser,
+        password: testUserPassword,
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('string');
+        userToken = encodeURI(response.body);
+      });
+  });
+
+  it('helper: get resto user token', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/login/restoWeb',
+      body: {
+        username: testUser,
+        password: testUserPassword,
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('string');
+        userRestoToken = encodeURI(response.body);
       });
   });
 
   // ------------------------ DELETE USER ------------------------
 
-  it('delete user with unvalid uID', () => {
+  it('delete user with invalid token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/',
-      params: {
-        key: 'invalid',
-      },
-    })
-      .then((response) => {
-        expect(response.status).to.eq(404);
-        expect(response.body).to.eq('Could not find the User to delete');
-      });
-  });
-
-  it('delete userResto with unvalid uID', () => {
-    cy.request({
-      failOnStatusCode: false,
-      method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/resto/',
-      params: {
-        key: 'invalid',
-      },
-    })
-      .then((response) => {
-        expect(response.status).to.eq(404);
-        expect(response.body).to.eq('Could not find the User to delete');
-      });
-  });
-
-  it('delete user without body', () => {
-    cy.request({
-      failOnStatusCode: false,
-      method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/',
+      url: 'http://localhost:8081/api/delete?key=invalid',
     })
       .then((response) => {
         expect(response.status).to.eq(400);
-        expect(response.body).to.eq('Invalid Access');
+        expect(response.body.error).to.eq('Invalid Access');
       });
   });
 
-  it('delete userResto without body', () => {
+  it('delete userResto with invalid token', () => {
     cy.request({
       failOnStatusCode: false,
       method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/resto/',
+      url: 'http://localhost:8081/api/delete/resto?key=invalid',
     })
       .then((response) => {
         expect(response.status).to.eq(400);
-        expect(response.body).to.eq('Invalid Access');
+        expect(response.body.error).to.eq('Invalid Access');
       });
   });
 
   it('delete user successfully', () => {
     cy.request({
       method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/',
-      params: {
-        key: userToken,
-      },
+      url: `http://localhost:8081/api/delete?key=${userToken}`,
     })
       .then((response) => {
         expect(response.status).to.eq(200);
@@ -183,14 +182,10 @@ describe('BE delete Users Test:', () => {
   it('delete userResto successfully', () => {
     cy.request({
       method: 'DELETE',
-      url: 'http://localhost:8081/api/delete/resto/',
-      params: {
-        key: userRestoToken,
-      },
+      url: `http://localhost:8081/api/delete/resto?key=${userRestoToken}`,
     })
       .then((response) => {
         expect(response.status).to.eq(200);
       });
   });
-
 });

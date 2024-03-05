@@ -1,15 +1,24 @@
-import {AES} from 'crypto-js';
-
 describe('BE Resto Test', () => {
   const testUser = 'gylian';
   const testUserPassword = 'gylianN1';
 
-  const getUserToken = () => {
-    return AES.encrypt(testUser +
-          testUserPassword, 'GuardosResto')
-      .toString();
-  };
-  const userToken = getUserToken();
+  let userRestoToken = '';
+
+  it('helper: get resto user token', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/login/restoWeb',
+      body: {
+        username: testUser,
+        password: testUserPassword,
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('string');
+        userRestoToken = encodeURI(response.body);
+      });
+  });
 
   // Test for all restaurants
   it('should return all restaurants', () => {
@@ -40,7 +49,7 @@ describe('BE Resto Test', () => {
     cy.request({
       method: 'GET',
       url: 'http://localhost:8081/api/restaurants/user/resto',
-      params: {key: userToken}
+      params: {key: userRestoToken}
     })
       .then((response) => {
         expect(response.status).to.eq(200);
@@ -54,7 +63,7 @@ describe('BE Resto Test', () => {
       method: 'POST',
       url: 'http://localhost:8081/api/restaurants',
       body: {
-        userToken: userToken,
+        userRestoToken: userRestoToken,
         resto: {
           name: 'test restaurant',
           phoneNumber: '123456789',

@@ -125,7 +125,7 @@ router.get('/filter/id', async (req, res) => {
     }
 
     const profileDetails = await getSavedFilter(userID, filterName);
-    if (profileDetails === null) {
+    if (profileDetails === false || profileDetails === null) {
       return res.status(404)
         .send({error: 'Filter with that name not found'});
     }
@@ -155,7 +155,7 @@ router.post('/filter', async (req, res) => {
     }
 
     if (filterName === null || filterName === '' ||
-      (await getSavedFilter(userID, filterName)) !== undefined) {
+      (await getSavedFilter(userID, filterName)) !== false) {
       return res.send('Invalid name or filterName already exists.');
     }
 
@@ -183,6 +183,12 @@ router.put('/filter', async (req, res) => {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
+    }
+
+    if (filterName === null || filterName === '' ||
+      (await getSavedFilter(userID, filterName)) === false) {
+      return res.status(404)
+        .send('Filter with that name not found.');
     }
 
     const profileDetails = await editSavedFilter(userID, filterName, updateFields);

@@ -1,22 +1,9 @@
-import {AES} from 'crypto-js';
-
 describe('BE login Users Test:', () => {
   const testUser = 'gylian';
   const testUserPassword = 'gylianN1';
-  
-  const getUserToken = () => {
-    return AES.encrypt(testUser +
-      testUserPassword, 'Guardos')
-      .toString();
-  };
-  const getUserRestoToken = () => {
-    return AES.encrypt(testUser +
-      testUserPassword, 'GuardosResto')
-      .toString();
-  };
 
-  const userToken = getUserToken();
-  const userRestoToken = getUserRestoToken();
+  let userToken = '';
+  let userRestoToken = '';
 
   it('login user with invalid credentials', () => {
     cy.request({
@@ -46,6 +33,7 @@ describe('BE login Users Test:', () => {
       .then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('string');
+        userToken = encodeURI(response.body);
       });
   });
 
@@ -106,6 +94,7 @@ describe('BE login Users Test:', () => {
       .then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.be.an('string');
+        userRestoToken = encodeURI(response.body);
       });
   });
 

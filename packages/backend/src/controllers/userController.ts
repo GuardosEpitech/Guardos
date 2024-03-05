@@ -126,7 +126,7 @@ export async function updatePassword(userId: number, password: string,
     const userData = await UserSchema.findOne({ uid: userId });
 
     if (!userData) {
-      // User not found
+      console.log('user not found');
       return false;
     }
 
@@ -134,7 +134,7 @@ export async function updatePassword(userId: number, password: string,
     const decryptedPassword = AES.decrypt(userData.password as string,'Guardos')
       .toString(enc.Utf8);
     if (decryptedPassword !== password) {
-      // Incorrect current password
+      console.log('wrong password');
       return false;
     }
 
@@ -158,14 +158,35 @@ export async function updatePassword(userId: number, password: string,
 export async function getSavedFilter(userId: number, filterName: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.findOne({uid: userId});
-  return userData.savedFilter.find((savedFilter) =>
+  const foundFilter = userData.savedFilter.find((savedFilter) =>
     savedFilter.filterName === filterName);
+  if (foundFilter === undefined) {
+    return false;
+  }
+  return {
+    filterName: foundFilter.filterName ? foundFilter.filterName : '',
+    range: foundFilter.range ? foundFilter.range : 100,
+    rating: foundFilter.rating ? foundFilter.rating : [1, 5],
+    name: foundFilter.name ? foundFilter.name : '',
+    location: foundFilter.location ? foundFilter.location : '',
+    categories: foundFilter.categories ? foundFilter.categories : [],
+    allergenList: foundFilter.allergenList ? foundFilter.allergenList : []
+  };
 }
 
 export async function getSavedFilters(userId: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.findOne({uid: userId});
-  return userData.savedFilter;
+  const savedFilters = userData.savedFilter;
+  return savedFilters.map(foundFilter => ({
+    filterName: foundFilter.filterName,
+    range: foundFilter.range,
+    rating: foundFilter.rating,
+    name: foundFilter.name,
+    location: foundFilter.location,
+    categories: foundFilter.categories,
+    allergenList: foundFilter.allergenList
+  }));
 }
 
 export async function addSavedFilter(userId: number,

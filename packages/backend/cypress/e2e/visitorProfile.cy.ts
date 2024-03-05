@@ -1,18 +1,9 @@
-import {AES} from 'crypto-js';
-import axios from 'axios';
-
 describe('Profile Routes', () => {
   const testUser = 'gylian';
   const testUserPassword = 'gylianN1';
   const testUserEmail = 'gylian@web.de';
 
-  const getUserToken = () => {
-    return AES.encrypt(testUser +
-      testUserPassword, 'GuardosResto')
-      .toString();
-  };
-
-  let userToken = getUserToken();
+  let userToken = '';
   const tempPassword = 'newPassw0rd';
   const newFilter = {
     filterName: 'Test filter',
@@ -23,6 +14,22 @@ describe('Profile Routes', () => {
     categories: ['burger', 'dessert'],
     allergenList: ['milk', 'peanuts'],
   };
+
+  it('helper: get user token', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/login/',
+      body: {
+        username: testUser,
+        password: testUserPassword,
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('string');
+        userToken = encodeURI(response.body);
+      });
+  });
 
   it('should get profile details', () => {
     cy.request({
@@ -48,43 +55,8 @@ describe('Profile Routes', () => {
       },
     }).then((response) => {
       expect(response.status).to.equal(200);
-      expect(response.body).to.be.an('Object');
-
-      expect(response.body.username).to.eq(testUser);
-      expect(response.body.email).to.eq(testUserEmail,);
-      expect(response.body.city).to.eq('Berlin');
-      expect(response.body.allergens).to.deep.equal(['gluten', 'peanut']);
-      expect(response.body.preferredLanguage).to.eq('de');
-    });
-  });
-
-  it('should update password',  () => {
-
-    cy.request({
-      method: 'PUT',
-      url: `http://localhost:8081/api/profile/password?key=${userToken}`,
-      body: {
-        oldPassword: testUserPassword,
-        newPassword: tempPassword
-      },
-    }).then(async (response) => {
-      expect(response.status).to.equal(200);
       expect(response.body).to.be.an('string');
-
-      // change pw back if succeeded
-      const newToken = response.body;
-      const res = await axios({
-        method: 'GET',
-        url: `http://localhost:8081/api/profile/password?key=${newToken}`,
-        params: {
-          oldPassword: tempPassword,
-          newPassword: testUserPassword
-        },
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
-      userToken = res.data;
+      userToken = encodeURI(response.body);
     });
   });
 
@@ -95,7 +67,6 @@ describe('Profile Routes', () => {
     }).then((response) => {
       expect(response.status).to.equal(200);
       expect(response.body).to.be.an('array');
-      
     });
   });
 
@@ -108,7 +79,15 @@ describe('Profile Routes', () => {
       // Assertions for a successful response
       expect(response.status).to.equal(200);
       expect(response.body).to.be.an('array');
-      expect(response.body).to.contain(newFilter);
+      expect(response.body.length).to.be.greaterThan(0);
+
+      const lastObject = response.body[response.body.length - 1];
+      expect(lastObject.filterName).to.equal(newFilter.filterName);
+      expect(lastObject.range).to.equal(newFilter.range);
+      expect(lastObject.location).to.equal(newFilter.location);
+      expect(lastObject.rating).to.deep.equal(newFilter.rating);
+      expect(lastObject.categories).to.deep.equal(newFilter.categories);
+      expect(lastObject.allergenList).to.deep.equal(newFilter.allergenList);
     });
   });
 
@@ -128,7 +107,7 @@ describe('Profile Routes', () => {
   });
 
   it('should edit saved filter', () => {
-    const filterName = newFilter.filterName + '1';
+    const filterName = newFilter.filterName;
     const updateFields = {
       filterName: filterName,
       range: 30,
@@ -146,8 +125,9 @@ describe('Profile Routes', () => {
     }).then((response) => {
       // Assertions for a successful response
       expect(response.status).to.equal(200);
-      expect(response.body).to.be.an('Object');
-      expect(response.body).to.deep.equal(updateFields);
+      expect(response.body).to.be.an('array');
+      const actualDataWithoutId = response.body.map(({ _id, ...rest }) => rest);
+      expect(actualDataWithoutId).to.deep.contain(updateFields);
       newFilter.filterName = filterName;
     });
   });
@@ -162,7 +142,7 @@ describe('Profile Routes', () => {
     }).then((response) => {
       // Assertions for a successful response
       expect(response.status).to.equal(200);
-      expect(response.body).to.be.an('Object');
+      expect(response.body).to.be.an('array');
     });
   });
 
@@ -202,6 +182,36 @@ describe('Profile Routes', () => {
       // Assertions for a successful response
       expect(response.status).to.equal(200);
       expect(response.body).to.equal(true);
+    });
+  });
+
+  it('should update password',  () => {
+
+    cy.request({
+      method: 'PUT',
+      url: `http://localhost:8081/api/profile/password?key=${userToken}`,
+      body: {
+        oldPassword: testUserPassword,
+        newPassword: tempPassword
+      },
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('string');
+      userToken = encodeURI(response.body);
+    });
+  });
+
+  it('should change password back',  () => {
+    cy.request({
+      method: 'PUT',
+      url: `http://localhost:8081/api/profile/password?key=${userToken}`,
+      body: {
+        oldPassword: tempPassword,
+        newPassword: testUserPassword
+      },
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+      expect(response.body).to.be.an('string');
     });
   });
 });

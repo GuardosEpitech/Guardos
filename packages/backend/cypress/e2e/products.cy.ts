@@ -1,22 +1,30 @@
-import {AES} from 'crypto-js';
-
 describe('BE Product Test', () => {
   const testUser = 'gylian';
   const testUserPassword = 'gylianN1';
 
-  const getUserToken = () => {
-    return AES.encrypt(testUser +
-      testUserPassword, 'GuardosResto')
-      .toString();
-  };
+  let userRestoToken = '';
 
-  const userToken = getUserToken();
+  it('helper: get resto user token', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/login/restoWeb',
+      body: {
+        username: testUser,
+        password: testUserPassword,
+      },
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.be.an('string');
+        userRestoToken = encodeURI(response.body);
+      });
+  });
 
-  // Test for McDonalds Products
-  it('should return all products stored for McDonalds', () => {
+  // Test for burgerme Products
+  it('should return all products stored for burgerme', () => {
     cy.request({
       method: 'GET',
-      url: 'http://localhost:8081/api/products/McDonalds'
+      url: 'http://localhost:8081/api/products/burgerme'
     })
       .then((response) => {
         expect(response.status).to.eq(200);
@@ -40,7 +48,7 @@ describe('BE Product Test', () => {
     cy.request({
       method: 'GET',
       url: 'http://localhost:8081/api/products/user/product',
-      params: {key: userToken}
+      params: {key: userRestoToken}
     })
       .then((response) => {
         expect(response.status).to.eq(200);
@@ -48,10 +56,10 @@ describe('BE Product Test', () => {
       });
   });
 
-  it('should add a Product to McDonalds', () => {
+  it('should add a Product to burgerme', () => {
     cy.request({
       method: 'POST',
-      url: 'http://localhost:8081/api/products/McDonalds',
+      url: 'http://localhost:8081/api/products/burgerme',
       body: {
         name: 'TestProdBE',
         allergens: 'lactose',
@@ -63,10 +71,11 @@ describe('BE Product Test', () => {
       });
   });
 
-  it('should edit a Product in McDonalds', () => {
+  // TODO: this asks for the product name instead of resto name as param (burgerme in url) - what is the expected behaviour right now?
+  it('should edit a Product in burgerme', () => {
     cy.request({
       method: 'PUT',
-      url: 'http://localhost:8081/api/products/McDonalds',
+      url: 'http://localhost:8081/api/products/burgerme',
       params: {
         name: 'TestProdBE',
         allergens: 'lactoseEdited',
@@ -81,7 +90,7 @@ describe('BE Product Test', () => {
       });
   });
 
-  it('should delete a Product from McDonalds', () => {
+  it('should delete a Product from burgerme', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/products/TestProdBE'
