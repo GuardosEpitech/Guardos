@@ -38,7 +38,7 @@ describe('Edit Email', function() {
        cy.viewport(1710, 948);
        login('CypressTest1', 'CypressTest1');
        cy.visit('http://localhost:8082/my-account');
-       cy.wait(1000);
+       cy.wait(2000);
        cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(3) > .t32YvAl3h5jpNxRDNa4l').click();
        cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(3) > .t32YvAl3h5jpNxRDNa4l').clear();
        cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(3) > .t32YvAl3h5jpNxRDNa4l').type('cypress1changed@email.com');
@@ -52,7 +52,7 @@ describe('Edit Username', function() {
         cy.viewport(1710, 948);
         login('CypressTest1', 'CypressTest1')
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(4) > .t32YvAl3h5jpNxRDNa4l').click();
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(4) > .t32YvAl3h5jpNxRDNa4l').clear();
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(4) > .t32YvAl3h5jpNxRDNa4l').type('CypressTest1Changed');
@@ -66,7 +66,7 @@ describe('Edit Location', function() {
         cy.viewport(1710, 948);
         login('CypressTest1Changed', 'CypressTest1');
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(5) > .t32YvAl3h5jpNxRDNa4l').click();
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(5) > .t32YvAl3h5jpNxRDNa4l').clear();
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(5) > .t32YvAl3h5jpNxRDNa4l').type('Berlin');
@@ -80,7 +80,7 @@ describe('Edit Allergens', function() {
         cy.viewport(1710, 948);
         login('CypressTest1Changed', 'CypressTest1');
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div:nth-child(6) > .MuiFormControl-root').click();
         cy.get('body > #menu- > .MuiPaper-root > .MuiList-root > .MuiButtonBase-root:nth-child(2)').click();
         cy.get('body > #menu- > .MuiBackdrop-root').click();
@@ -94,7 +94,7 @@ describe('Edit Language', function() {
         cy.viewport(1710, 948);
         login('CypressTest1Changed', 'CypressTest1');
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > .MuiFormControl-root').click();
         cy.get('body > #menu- > .MuiPaper-root > .MuiList-root > .MuiButtonBase-root:nth-child(1)').click();
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > div > .YBHP8vI2UcLjmVrRdulb').click();
@@ -107,7 +107,7 @@ describe('Edit Password', function() {
         cy.viewport(1710, 948);
         login('CypressTest1Changed', 'CypressTest1');
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > .FxtKjtchOY2HLiSS7znx > .N_XWBgnNrLmlpk0tKX9j').click();
         cy.get('.pSBeJcHhs0cgSHHFcWgF > div > .MuiFormControl-root:nth-child(1) > .MuiInputBase-root > .MuiInputBase-input').click();
         cy.get('.pSBeJcHhs0cgSHHFcWgF > div > .MuiFormControl-root:nth-child(1) > .MuiInputBase-root > .MuiInputBase-input').type('CypressTest1');
@@ -124,8 +124,12 @@ describe('Edit Password', function() {
 describe('Logout', () => {
     it('passes', () => {
         cy.viewport(1710, 948);
-        login('CypressTest1Changed', 'PasswordChange1');
-        cy.visit('http://localhost:8082/');
+        cy.visit('http://localhost:8082/login');
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(0).find('.MuiInputBase-root > .MuiInputBase-input').click();
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(0).find('.MuiInputBase-root > .MuiInputBase-input').type('CypressTest1Changed');
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(1).find('.MuiInputBase-root > .MuiInputBase-input').click();
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(1).find('.MuiInputBase-root > .MuiInputBase-input').type('PasswordChange1');
+        cy.get('.MuiContainer-root > .d5Iqr4Hr_KswpjgdaQ3C > .Ya4lhXp5Fb_4KVGtJDrV > form > .MuiButtonBase-root').click();
         cy.wait(1000);
         cy.contains('Logout');
         cy.get('.V3JgFjoBAN8BwxEGAGJx > .cCywpriAWfC5rZb8oRYj > .jgdtqJiol3q8AD6AO_6l > .BeRjX90Zejj_RRtK0TjB > a').click();
@@ -136,11 +140,18 @@ describe('Logout', () => {
 describe('delete Account', function() {
     it('passes', function() {
         cy.viewport(1710, 948);
-        login('CypressTest1Changed', 'PasswordChange1');
+        cy.visit('http://localhost:8082/login');
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(0).find('.MuiInputBase-root > .MuiInputBase-input').click();
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(0).find('.MuiInputBase-root > .MuiInputBase-input').type('CypressTest1Changed');
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(1).find('.MuiInputBase-root > .MuiInputBase-input').click();
+        cy.get('.Ya4lhXp5Fb_4KVGtJDrV > form > .MuiFormControl-root').eq(1).find('.MuiInputBase-root > .MuiInputBase-input').type('PasswordChange1');
+        cy.get('.MuiContainer-root > .d5Iqr4Hr_KswpjgdaQ3C > .Ya4lhXp5Fb_4KVGtJDrV > form > .MuiButtonBase-root').click();
         cy.visit('http://localhost:8082/my-account');
-        cy.wait(1000);
+        cy.wait(2000);
         cy.get('.V3JgFjoBAN8BwxEGAGJx > .cCywpriAWfC5rZb8oRYj > .TaiEAfjFHIDhYaEWbfjw > .h5fHkOb7xTDUuHKImbT7 > .b3PcCr0BwQwv3F0E3DMj').click();
+        cy.wait(1000);
         cy.get('.MuiDialog-root > .MuiDialog-container > .MuiPaper-root > .MuiDialogActions-root > .MuiButtonBase-root:nth-child(2)').click();
+        cy.wait(2000);
         cy.url().should('eq', 'http://localhost:8082/');
     })   
-})
+}) 
