@@ -1,9 +1,12 @@
 import mongoose from 'mongoose';
 
 import { ICategoryFE } from '../../../shared/models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IDishesCommunication } from '../models/communicationInterfaces';
-import { restaurantSchema, IMealType } from '../models/restaurantInterfaces';
+import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { IMealType } from '../../../shared/models/mealTypeInterfaces';
+import { IRestaurantBackEnd }
+  from '../../../shared/models/restaurantInterfaces';
+import { restaurantSchema } from '../models/restaurantInterfaces';
 import {getAllUserRestaurants} from './restaurantController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
@@ -29,6 +32,7 @@ export async function getDishByUser(loggedInUserId: number) {
       }
       const dishFE: IDishFE = {
         name: dish.name as string,
+        uid: dish.uid,
         description: dish.description as string,
         price: dish.price as number,
         pictures: [''],
@@ -79,6 +83,7 @@ export async function getAllDishes() {
     for (const dish of rest.dishes) {
       const dishFE: IDishFE = {
         name: dish.name as string,
+        uid: dish.uid as number,
         description: dish.description as string,
         price: dish.price as number,
         pictures: [''],
@@ -122,7 +127,7 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const { category } = dish;
   const menuGroup: string = category.menuGroup;
-  const restaurant: { mealType?: IMealType[] } | null = 
+  const restaurant: IRestaurantBackEnd | null =
   await Restaurant.findOne({ name: restaurantName });
   const mealTypes: IMealType[] = restaurant?.mealType || [];
   const existingMealType = mealTypes
@@ -130,18 +135,24 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
   if (!existingMealType) {
     let newMealType: IMealType;
     if (mealTypes.length === 0) {
-      newMealType = { _id: 1, name: menuGroup, sortId: 1 };
+      newMealType = { id: 1, name: menuGroup, sortId: 1 };
     } else {
       const highestSortId = 
       Math.max(...mealTypes.map((mealType) => mealType.sortId));
       const newSortId = highestSortId + 1;
-      newMealType = { _id: newSortId, name: menuGroup, sortId: newSortId };
+      newMealType = { id: newSortId, name: menuGroup, sortId: newSortId };
     }
     await Restaurant.findOneAndUpdate(
       { name: restaurantName },
       { $push: { mealType: newMealType } },
       { new: true }
     );
+
+    const dishes = restaurant?.dishes;
+    const highestDishId =
+      Math.max(...dishes.map((dish) => dish.uid));
+    const newDishId = highestDishId + 1;
+    dish.uid = newDishId;
   }
   return Restaurant.findOneAndUpdate(
     { name: restaurantName },
@@ -154,6 +165,7 @@ export async function createNewDish(
   restaurantName: string, dishCom: IDishesCommunication, userID: number) {
   const dish: IDishesCommunication = {
     name: dishCom.name,
+    uid: -1, // actual id will be retrieved in createDish method
     description: dishCom.description ? dishCom.description : '',
     price: dishCom.price ? dishCom.price : -1,
     products: dishCom.products ? dishCom.products : [''],
@@ -192,7 +204,7 @@ export async function changeDishByName(
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
-    id: 6, // TODO: change that
+    uid: oldDish.uid as number,
     description: dish.description ?
       dish.description : oldDish.description as string,
     price: dish.price ? dish.price : oldDish.price as number,

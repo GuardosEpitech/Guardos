@@ -55,6 +55,7 @@ const PageBtn = () => {
 
 interface IDishFormProps {
   dishName?: string;
+  dishUID: number;
   dishProducts?: string[];
   dishDescription?: string;
   imageSrc?: string;
@@ -157,6 +158,7 @@ const DishForm = (props: IDishFormProps) => {
     for (let i = 0; i < dishResto.length; i++) {
       dishList[i] = {
         name: dish,
+        uid: props.dishUID,
         description: dishDescription,
         price: parseFloat(parseFloat(dishPrice)
           .toFixed(2)),

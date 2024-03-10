@@ -15,7 +15,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
     name: restaurant.name,
     description: restaurant.description,
-    id: restaurant.id,
+    uid: restaurant.uid,
     userID: restaurant.userID,
     website: restaurant.website,
     rating: restaurant.rating,
@@ -36,10 +36,9 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
   restaurantBE.products.pop();
   restaurantBE.openingHours.pop();
 
-  let dishId = 0;
   for (const dish of restaurant.dishes) {
     const dishObj: IDishBE = {
-      id: dishId,
+      uid: dish.uid,
       name: dish.name,
       description: dish.description,
       products: dish.products,
@@ -49,7 +48,6 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: dish.allergens,
       category: dish.category
     };
-    dishId++;
     restaurantBE.dishes.push(dishObj);
   }
   for (const openingHoursElement of restaurant.openingHours) {
@@ -62,10 +60,9 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     restaurantBE.products.push(product);
   }
   restaurantBE.location = restaurant.location;
-  let extraId = 0;
   for (const extra of restaurant.extras) {
     const extraObj: IDishBE = {
-      id: extraId,
+      uid: extra.uid,
       name: extra.name,
       description: extra.description,
       products: extra.products,
@@ -75,7 +72,6 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: extra.allergens,
       category: extra.category
     };
-    extraId++;
     restaurantBE.extras.push(extraObj);
   }
   return restaurantBE;
@@ -85,6 +81,7 @@ function createRestaurantObjFe(
   restaurant: IRestaurantBackEnd) {
   const obj: IRestaurantFrontEnd = {
     name: restaurant.name,
+    uid: restaurant.uid,
     userID: restaurant.userID,
     website: restaurant.website,
     description: restaurant.description,
@@ -94,7 +91,6 @@ function createRestaurantObjFe(
     picturesId: restaurant.picturesId,
     openingHours: [{} as IOpeningHours],
     products: [{} as IProduct],
-    id: restaurant.id,
     phoneNumber: restaurant.phoneNumber,
     categories: [{} as ICategories],
     dishes: [{} as IDishFE],
@@ -124,6 +120,7 @@ function createRestaurantObjFe(
       //      if (dish.category.menuGroup === x.name) {
       const dishObj: IDishFE = {
         name: dish.name,
+        uid: dish.uid,
         description: dish.description,
         price: dish.price,
         pictures: dish.pictures,
@@ -155,7 +152,7 @@ export async function getRestaurantByName(restaurantName: string) {
     description: rest.description as string,
     dishes: rest.dishes as [IDishBE],
     extras: rest.extras as unknown as [IDishBE],
-    id: rest.id,
+    uid: rest._id as number,
     userID: rest.userID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
@@ -181,7 +178,7 @@ export async function getRestaurantByID(restaurantID: number) {
     description: rest.description as string,
     dishes: rest.dishes as [IDishBE],
     extras: rest.extras as unknown as [IDishBE],
-    id: rest.id,
+    uid: rest._id as number,
     userID: rest.userID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
@@ -210,7 +207,7 @@ export async function getAllRestaurants() {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
-      id: restaurant._id as number,
+      uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name as string,
@@ -240,7 +237,7 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
-      id: restaurant._id as number,
+      uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name as string,
@@ -312,7 +309,7 @@ export async function changeRestaurant(
     dishes: restaurant.dishes ?
       restaurant.dishes : oldRest.dishes,
     extras: restaurant.extras ? restaurant.extras : oldRest.extras,
-    id: oldRest.id,
+    uid: oldRest.uid,
     userID: oldRest.userID,
     location: restaurant.location ? restaurant.location : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,

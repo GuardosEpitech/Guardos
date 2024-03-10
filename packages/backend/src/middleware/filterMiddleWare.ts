@@ -83,7 +83,7 @@ export const handleFilterRequest =
           let hitrate = 0;
           for (const restaurants of tmpFilterObj.savedRestaurants) {
             for (const restaurant of restaurants) {
-              if (restaurant.id === (await result)[i].id) {
+              if (restaurant.uid === (await result)[i].uid) {
                 hitrate += restaurant.hitRate;
               }
             }
@@ -108,7 +108,7 @@ export const getSelectedFilterReq =
     const result: IRestaurantFrontEnd[] = [];
     for (const elem of restaurants) {
       const obj: IRestaurantBackEnd = {
-        id: elem.id,
+        uid: elem.uid,
         userID: elem.userID,
         name: elem.name,
         description: elem.description,

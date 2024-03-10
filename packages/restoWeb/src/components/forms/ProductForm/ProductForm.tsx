@@ -72,7 +72,8 @@ const ProductForm = (props: IDishFormProps) => {
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         if (editable) {
-          const newFilteredList = res.filter((option: IRestaurantFrontEnd) => !productRestaurantIds.includes(option.id));
+          const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
+            !productRestaurantIds.includes(option.uid));
           setRestoList(newFilteredList);
         } else {
           setRestoList(res);
@@ -183,7 +184,7 @@ const ProductForm = (props: IDishFormProps) => {
               onChange={(e, value) => {
                 selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
-                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.id);
+                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.uid);
               }}
               renderInput={(params) => (
                 <TextField
