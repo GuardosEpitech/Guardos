@@ -28,7 +28,7 @@ router.get('/checkIn', async function (req: Request, res: Response) {
   try {
     const userToken = String(req.query.key);
     const answer = await getUserId(userToken);
-
+    
     if (answer !== false) {
       return res.status(200)
         .send({uID: answer});
