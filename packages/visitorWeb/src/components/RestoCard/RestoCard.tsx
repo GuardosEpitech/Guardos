@@ -61,18 +61,20 @@ const RestoCard = (props: IRestoCardProps) => {
 
   useEffect(() => {
     async function fetchImages() {
-      if (picturesId.length > 0) {
-        const fetchedImages = await getImages(picturesId);
-        setPictures(fetchedImages);
-      } else {
-        setPictures([{
-          base64: defaultRestoImage,
-          contentType: "image/png",
-          filename: "placeholderResto.png",
-          size: 0,
-          uploadDate: "0",
-          id: 0,
-        }]);
+      if (picturesId) {
+        if (picturesId.length > 0) {
+          const fetchedImages = await getImages(picturesId);
+          setPictures(fetchedImages);
+        } else {
+          setPictures([{
+            base64: defaultRestoImage,
+            contentType: "image/png",
+            filename: "placeholderResto.png",
+            size: 0,
+            uploadDate: "0",
+            id: 0,
+          }]);
+        }
       }
     }
 

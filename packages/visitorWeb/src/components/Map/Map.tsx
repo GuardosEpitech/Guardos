@@ -198,6 +198,7 @@ const MapView = (props: MapProps) => {
   return (
     <>
       <div ref={mapElement} className={styles.map} id="map" />
+      {clickedFeature && (
       <div id="popup" className={styles.popup}>
         <a href="#" id="popup-closer" className="ol-popup-closer"></a>
         <div className="popover-content" id="popup-content"></div>
@@ -219,6 +220,7 @@ const MapView = (props: MapProps) => {
           </Button>
         </ThemeProvider>
       </div>
+      )}
     </>
   )
 };
