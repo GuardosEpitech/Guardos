@@ -82,6 +82,7 @@ const Dish = (props: IDishProps) => {
 
   return (
     <Paper
+      id="dish-card"
       className={styles.DishBox}
       elevation={3}
       onClick={() => setExtended(!extended)}
@@ -97,9 +98,9 @@ const Dish = (props: IDishProps) => {
               <h3 className={styles.DishTitle}>{dishName}</h3>
               <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
                 {isFavorite ? (
-                  <FavoriteIcon color="error" />
+                  <FavoriteIcon id="favourite" color="error" />
                 ) : (
-                  <FavoriteBorderIcon color="error" />
+                  <FavoriteBorderIcon id="no-favourite" color="error" />
                 )}
               </div>
             </div>
@@ -142,9 +143,9 @@ const Dish = (props: IDishProps) => {
               <h3 className={styles.DishTitle}>{dishName}</h3>
               <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
                 {isFavorite ? (
-                  <FavoriteIcon color="error" />
+                  <FavoriteIcon id="favourite" color="error" />
                 ) : (
-                  <FavoriteBorderIcon color="error" />
+                  <FavoriteBorderIcon id="no-favourite" color="error" />
                 )}
               </div>
             </div>

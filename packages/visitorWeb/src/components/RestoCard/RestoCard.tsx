@@ -101,7 +101,7 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   return (
-    <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
+    <Paper id="resto-card" className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={3} className={styles.GridItemImage}>
           {pictures.length > 0 &&
@@ -120,9 +120,9 @@ const RestoCard = (props: IRestoCardProps) => {
             <Rating restoRating={rating} restoRatingsCount={ratingCount} />
             <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
               {isFavorite ? (
-                <FavoriteIcon color="error" />
+                <FavoriteIcon id="favourite" color="error" />
               ) : (
-                <FavoriteBorderIcon color="error" />
+                <FavoriteBorderIcon id="no-favourite" color="error" />
               )}
             </div>
           </div>
