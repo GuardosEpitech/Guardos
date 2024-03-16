@@ -114,11 +114,10 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
     // Construct the recovery link with userToken and timeToken
     const recoveryLink = `${process.env.RESTO_SITE}/change-password?email=${email}&userToken=${userToken}&timeToken=${timeToken}`;
 
-    console.log(recoveryLink);
     const mailOptions: nodemailer.SendMailOptions = {
       from: process.env.SMTP_USER,
       to: email,
-      subject: `Guardos User Recovery Link`,
+      subject: `Guardos Restaurant User Recovery Link`,
       text: `Name: ${username}\nEmail: ${email}\nYour specific password recovery link: \n${recoveryLink}`,
       html: `<p>Name: ${username}</p>
          <p>Email: ${email}</p>
