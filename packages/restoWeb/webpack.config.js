@@ -19,7 +19,7 @@ const config = {
   },
   devServer: {
     open: true,
-    host: "127.0.0.1",
+    host: "0.0.0.0",
     https: true,
     allowedHosts: ["all"], // HUGE SECURITY RISK --> WE HAVE TO CHANGE THIS SOMEHOW
     port: 8080,
