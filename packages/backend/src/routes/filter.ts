@@ -35,9 +35,7 @@ router.post('/filteredlist', async function (req: Request, res: Response) {
 
 router.post('/newFilter', async function (req: Request, res: Response) {
   try {
-    console.log("received: " + req.body);
     const answer = await newfilterRestaurants(req.body);
-    console.log("send back: " + answer);
     return res.send(answer);
   } catch (error) {
     console.log(error);
