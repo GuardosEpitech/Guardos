@@ -54,6 +54,7 @@
 
 .DivMapBtn {
     margin-right: 1rem;
+    flex-shrink: 0;
 }
 
 .DivRect {
@@ -64,4 +65,13 @@
     justify-content: center;
     align-items: center;
     border-radius: 0.625rem;
+    flex-shrink: 0;
+    margin-left: 20px;
   }
+
+@media (min-width: 768px) {
+    .DivContent {
+        justify-content: flex-start; /* Adjust on larger screens */
+    }
+
+}
