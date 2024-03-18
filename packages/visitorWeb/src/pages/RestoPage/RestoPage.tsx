@@ -56,7 +56,7 @@ const RestoPage = () => {
     { name: "Pasta", value: false }
   ]);
   const [rating, setRating] = useState(0);
-  const [rangeValue, setRangeValue] = useState(100);
+  const [rangeValue, setRangeValue] = useState(0);
   const [filteredRestaurants, setFilteredRestaurants] = 
     useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = useState<Allergen[]>([
@@ -80,7 +80,7 @@ const RestoPage = () => {
     setInputFields(['', '']);
     setCategories(categories.map(category => ({ ...category, value: false })));
     setRating(0);
-    setRangeValue(100);
+    setRangeValue(0);
     setAllergens(allergens.map(allergen => 
       ({ ...allergen, value: false, colorButton: "primary" })));
   };
