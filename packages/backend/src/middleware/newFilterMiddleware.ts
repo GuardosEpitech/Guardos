@@ -52,7 +52,9 @@ export async function newfilterRestaurants
                 false;
             return !restaurant.dishes?.some(hasAllergen);
         });
-
+    
+    
+    
     const result: IRestaurantFrontEnd[] = 
         transformToIRestaurantFrontend(filteredRestaurants);
 
@@ -126,7 +128,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd): IRestaurantBackEnd {
         restaurantBE.extras.push(extraObj);
         extraId++;
     }
-
+    
     return restaurantBE;
 }
 
@@ -149,7 +151,6 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
         range: 0,
         dishes: []
     };
-
     for (const mealType of restaurant.mealType) {
         const category: ICategories = {
             name: mealType.name,
@@ -169,12 +170,13 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
                     resto: restaurant.name,
                     products: dish.products
                 };
+                obj.dishes.push(dishObj);
                 category.dishes.push(dishObj);
             }
         }
         obj.categories.push(category);
     }
-
+    
     return obj;
 }
 
