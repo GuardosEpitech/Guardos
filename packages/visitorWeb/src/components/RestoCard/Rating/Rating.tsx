@@ -1,10 +1,12 @@
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
-
+import { NavigateTo } from "@src/utils/NavigateTo";
 import StarIcon from '@mui/icons-material/Star';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const RatingColor = () => {
   return createTheme({
@@ -19,11 +21,13 @@ const RatingColor = () => {
 
 interface IRatingProps {
   restoRating: number,
-  restoRatingsCount: number
+  restoRatingsCount: number,
+  name: string
 }
 
-const Rating = ({ restoRating, restoRatingsCount }: IRatingProps) => {
+const Rating = ({ restoRating, restoRatingsCount, name }: IRatingProps) => {
   const fullRating = Math.floor(restoRating);
+  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={RatingColor}>
@@ -45,6 +49,18 @@ const Rating = ({ restoRating, restoRatingsCount }: IRatingProps) => {
       <span className={styles.RatingCount}>
         {restoRatingsCount}
       </span>
+      <a className={styles.AddReview} href="/addreview">Add a review</a>
+      <Button
+        className={styles.RestoBtn}
+        variant="contained"
+        onClick={() => NavigateTo("/menu", navigate, {
+          menu: categories,
+          restoName: name,
+          address: address,
+        })}
+      >
+        Menu
+      </Button>
     </ThemeProvider>
   );
 };

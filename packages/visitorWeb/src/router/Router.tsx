@@ -12,6 +12,7 @@ import MyAccountPage from "@src/pages/MyAccountPage";
 import IntroPage from "@src/pages/IntroPage";
 import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
+import RatingPage from "@src/pages/RatingPage";
 
 const MVPRouter = () => {
   return (
@@ -23,6 +24,7 @@ const MVPRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/menu" element={<MenuPage />} />
+          <Route path="/addreview" element={<RatingPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
