@@ -33,6 +33,24 @@ const ProductsPage = () => {
         <span className={styles.TitleSearch}>My products</span>
       </div>
       <Layout>
+        {productData.length === 0 ?
+        (
+          <div className={styles.ErrorContainer}>
+            <span className={styles.ErrorHeader}>
+              Oops, looks like you dont have any products yet!
+            </span>
+            <br/>
+            <br/>
+            <br/>
+            <span className={styles.ErrorText}>
+              Add your first product by clicking <a href="/addProduct">here</a>.
+            </span>
+            <br/>
+            <span className={styles.ErrorText}>
+              Be sure to <a href="/addResto">add</a> a restaurant first.
+            </span>
+          </div>
+        ) : (
         <Grid
           container
           spacing={{ xs: 1, sm: 2, md: 3 }}
@@ -48,6 +66,7 @@ const ProductsPage = () => {
             />
           ))}
         </Grid>
+        )}
       </Layout>
       <FixedBtn title="Add product" redirect="/addProduct" />
       <SuccessAlert />

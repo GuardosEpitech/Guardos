@@ -33,7 +33,7 @@ const DishesPage = () => {
       </div>
       <Layout>
         {dishData.length === 0 ?
-          (<div>
+          (<div className={styles.ErrorContainer}>
             <span className={styles.ErrorHeader}>
               Oops, looks like you dont have any dishes yet!
             </span>
@@ -42,6 +42,10 @@ const DishesPage = () => {
             <br/>
             <span className={styles.ErrorText}>
               Add your first dish by clicking <a href="/addDish">here</a>.
+            </span>
+            <br/>
+            <span className={styles.ErrorText}>
+              Be sure to <a href="/addResto">add</a> a restaurant first.
             </span>
           </div>)
           :
