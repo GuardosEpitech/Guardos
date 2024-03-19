@@ -9,7 +9,14 @@ import { List, ListItem } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ICategories } from "shared/models/categoryInterfaces";
 import { IDishFE } from "shared/models/dishInterfaces";
-import {getDishFavourites} from "@src/services/favourites";
+import {
+  addRestoAsFavourite,
+  deleteRestoFromFavourites,
+  getDishFavourites,
+  getRestoFavourites
+} from "@src/services/favourites";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const theme = createTheme({
   palette: {
@@ -22,9 +29,11 @@ const theme = createTheme({
 const MenuPage = () => {
   const { menu, restoName, restoID, address } = useLocation().state;
   const [isFavouriteDishs, setIsFavouriteDishs] = React.useState<Array<{ restoID: number, dish: IDishFE }>>([]);
+  const [isFavouriteResto, setIsFavouriteResto] = React.useState(false);
 
   useEffect(() => {
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
+    fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
   }, [])
 
   const fetchFavourites = async () => {
@@ -39,12 +48,48 @@ const MenuPage = () => {
     }
   };
 
+  const fetchFavouriteRestos = async () => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    try {
+      const favourites = await getRestoFavourites(userToken);
+      const favouriteRestoIds = favourites.map((fav: any) => fav.uid);
+      setIsFavouriteResto(favouriteRestoIds.includes(restoID));
+    } catch (error) {
+      console.error("Error fetching user favourites:", error);
+    }
+  };
+
+  const handleFavoriteClick = async (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevents the card click event from triggering
+
+    // Toggle the favorite status
+    setIsFavouriteResto((prevIsFavorite) => !prevIsFavorite);
+
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    if (!isFavouriteResto) {
+      await addRestoAsFavourite(userToken, restoID);
+    } else {
+      await deleteRestoFromFavourites(userToken, restoID);
+    }
+  };
+
   return (
     <>
       <div className={styles.RectOnImg}>
         <List>
           <ListItem>
             <h2 className={styles.RestaurantTitle}>{restoName}</h2>
+            <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              {isFavouriteResto ? (
+                <FavoriteIcon id="favourite-resto" color="error" />
+              ) : (
+                <FavoriteBorderIcon id="no-favourite-resto" color="error" />
+              )}
+            </div>
           </ListItem>
           <ListItem>
             <div className={styles.Address}>
