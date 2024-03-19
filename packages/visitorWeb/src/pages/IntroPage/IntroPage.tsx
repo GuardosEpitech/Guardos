@@ -259,6 +259,14 @@ const IntroPage = () => {
             </CardContent>
           </Card>
         </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Typography variant="body1">You need a new feature? </Typography>
+          <Button onClick={() => window.location.href = '/feature-request'}>
+          Just ask for it !
+          </Button>
+        </div>
+
       </div>
     </div>
   );
