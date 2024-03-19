@@ -368,13 +368,13 @@ const MyAccountPage = () => {
         {/* Tabs for Favorite Restaurants and Dishes */}
         <div className={styles.tabs}>
           <button
-            className={activeTab === "restaurants" ? styles.activeTab : ""}
+            className={activeTab === "restaurants" ? styles.activeTab : "none"}
             onClick={() => handleTabChange("restaurants")}
           >
             Favorite Restaurants
           </button>
           <button
-            className={activeTab === "dishes" ? styles.activeTab : ""}
+            className={activeTab === "dishes" ? styles.activeTab : "none"}
             onClick={() => handleTabChange("dishes")}
           >
             Favorite Dishes
