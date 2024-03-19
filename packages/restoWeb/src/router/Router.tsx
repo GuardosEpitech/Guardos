@@ -17,6 +17,7 @@ import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
 import ResetPassword from "@src/pages/ResetPasswordPage";
 import MyAccountPage from "@src/pages/MyAccountPage";
+import FeatureRequest from "@src/pages/FeatureRequest";
 
 const MVPRouter = () => {
   return (
@@ -37,7 +38,9 @@ const MVPRouter = () => {
           <Route path="products" element={<ProductsPage />} />
           <Route path="menu" element={<MenuPage />} />
           <Route path="/" element={<HomePage />}></Route>
-          <Route path="/account-recovery" element={<ResetPassword />}></Route>
+          <Route path="/account-recovery" element={<ResetPassword />} />
+          <Route path="/feature-request" element={<FeatureRequest />}> </Route>
+
         </Route>
       </Routes>
     </BrowserRouter>
