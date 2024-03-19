@@ -22,10 +22,10 @@ const RatingColor = () => {
 interface IRatingProps {
   restoRating: number,
   restoRatingsCount: number,
-  name: string
+  restoName: string
 }
 
-const Rating = ({ restoRating, restoRatingsCount, name }: IRatingProps) => {
+const Rating = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
   const fullRating = Math.floor(restoRating);
   const navigate = useNavigate();
 
@@ -49,17 +49,14 @@ const Rating = ({ restoRating, restoRatingsCount, name }: IRatingProps) => {
       <span className={styles.RatingCount}>
         {restoRatingsCount}
       </span>
-      <a className={styles.AddReview} href="/addreview">Add a review</a>
       <Button
-        className={styles.RestoBtn}
+        className={styles.AddReview}
         variant="contained"
-        onClick={() => NavigateTo("/menu", navigate, {
-          menu: categories,
-          restoName: name,
-          address: address,
+        onClick={() => NavigateTo("/addreview", navigate, {
+          restoName: restoName,
         })}
       >
-        Menu
+        add a review
       </Button>
     </ThemeProvider>
   );

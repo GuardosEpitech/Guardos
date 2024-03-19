@@ -19,9 +19,53 @@
   margin: 0;
 }
 
-.RestaurantAddress {
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.8rem;
-  color: #ffffff;
-  margin-left: 1rem;
+.Content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+
+.NoteContainer {
+  display: flex;
+  align-items: center;
+}
+
+.CommentContainer {
+  flex-direction: column;
+  justify-content: left;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.RatingSection {
+  justify-content: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.CardReview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  background-color: red;
+}
+
+.BtnSend {
+  background-color: #6d071a !important;
+  margin-top: 1.5rem !important;
+  width: 30%;
+}
+
+.SpanTitleComment {
+  margin-bottom: 1rem;
+}
+
+.SpanTitleRating {
+  margin-right: 1rem;
 }

@@ -103,7 +103,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             <Typography variant="h4" component="h2" className={styles.DishTitle}>
               {name}
             </Typography>
-            <Rating restoRating={rating} restoRatingsCount={ratingCount}/>
+            <Rating restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon/>

@@ -96,7 +96,7 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{name}</h3>
-            <Rating restoRating={rating} restoRatingsCount={ratingCount} />
+            <Rating restoRating={rating} restoRatingsCount={ratingCount} restoName={name} />
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />
