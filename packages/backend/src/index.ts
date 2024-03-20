@@ -23,6 +23,7 @@ import restaurants from './routes/restaurants';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
+import menu from './routes/menu';
 
 async function main() {
   const app = express();
@@ -53,6 +54,7 @@ async function main() {
     app.use('/api/products', products);
     app.use('/api/dishes', dishes);
     app.use('/api/restaurants', restaurants);
+    app.use('/api/menu', menu);
     app.use('/api/ingredients', basicApiIngredients);
     app.use('/api/filter', filter);
     app.use('/api/register', register);

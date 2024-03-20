@@ -17,6 +17,7 @@ export interface IDishFE {
   description: string;
   price: number;
   allergens: string[];
+  fitsPreference?: boolean;
   pictures?: string[];
   picturesId?: number[];
   category: ICategoryFE;
