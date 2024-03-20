@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 router.post('/create-checkout-session',
   async (req: express.Request, res: express.Response) => {
     try {
-      console.log(process.env.STRIPE_SECRET_KEY); // Debug: Schlüssel überprüfen
+      console.log(process.env.STRIPE_SECRET_KEY);
       const domainURL = req.body.domainURL;
 
       if (!domainURL) {
