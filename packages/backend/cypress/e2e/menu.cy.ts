@@ -33,7 +33,7 @@ describe('BE get menu by restoID and prevented allergenList', () => {
       url: 'http://localhost:8081/api/menu',
       body: {
         restoID: 1,
-        allergenList: ["milk"]
+        allergenList: ['milk']
       }
     })
       .then((response) => {
@@ -52,4 +52,4 @@ describe('BE get menu by restoID and prevented allergenList', () => {
         expect(doesAnyDishNotFitPreference).to.eq(true);
       });
   });
-})
+});
