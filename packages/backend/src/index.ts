@@ -9,6 +9,7 @@ import user from './routes/user';
 import images from './routes/images';
 import logout from './routes/logout';
 import deleteUser from './routes/deleteUsers';
+import payments from './routes/payments';
 import foodCategorie from './routes/foodCategories';
 import logger from 'morgan';
 import path = require('path');
@@ -64,6 +65,7 @@ async function main() {
     app.use('/api/profile', visitorProfile);
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
+    app.use('/api/payments', payments);
   }
 
   app.use(function (_req, _res, next) {
