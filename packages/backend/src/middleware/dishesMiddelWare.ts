@@ -27,6 +27,23 @@ export async function checkIfDishExists(
   }
 }
 
+export async function checkIfDishExistsByID(
+  restaurantID: number, dishID: number) {
+  try {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+    const restaurant = await Restaurant.findOne({_id: restaurantID});
+    if (!restaurant) {
+      console.log('Restaurant not found');
+      return false;
+    }
+    const dishExists = restaurant.dishes.some(dish => dish.uid === dishID);
+    return dishExists;
+  } catch (error) {
+    console.error('Error in checkIfDishExists:', error);
+    return false;
+  }
+}
+
 export async function checkIfExtraExists(
   restaurantName: string, extraName: string) {
   try {

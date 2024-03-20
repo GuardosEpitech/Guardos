@@ -86,7 +86,7 @@ router.put('/:name', async (req, res) => {
     return res.status(404)
       .send('Coudnt find restaurant named ' + req.params.name);
   const answer = await changeRestaurant(req.body, req.params.name);
-  await addProductsFromRestaurantToOwnDB(answer.id);
+  await addProductsFromRestaurantToOwnDB(answer.uid);
   return res.status(200)
     .send(answer);
 });

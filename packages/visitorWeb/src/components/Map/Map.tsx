@@ -95,7 +95,7 @@ const MapView = (props: MapProps) => {
           address:
             elem.location.streetName + ' ' + elem.location.streetNumber +
             ', ' + elem.location.postalCode + ' ' + elem.location.city,
-          index: elem.id,
+          index: elem.uid,
           objectR: elem,
           name: 'Marker',
         });

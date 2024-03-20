@@ -55,7 +55,7 @@ router.get('/:name', async (req, res) => {
 router.post('/:name', async (req, res) => {
   const restaurant = req.params.name;
   const restaurantId = await getRestaurantByName(restaurant);
-  const product = await createOrUpdateProduct(req.body, restaurantId.id);
+  const product = await createOrUpdateProduct(req.body, restaurantId.uid);
   await addRestoProduct(req.body, restaurant);
   return res.status(200)
     .send(product);

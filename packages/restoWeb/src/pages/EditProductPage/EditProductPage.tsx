@@ -24,12 +24,13 @@ const EditProductPage = () => {
   useEffect(() => {
     getAllResto()
       .then((res) => {
-        const newFilteredList = res.filter((option: IRestaurantFrontEnd) => restaurantId.includes(option.id));
+        const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
+          restaurantId.includes(option.uid));
         setRestoNameList(newFilteredList);
       });
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 700);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 700);
   }, []);
 
   return (
