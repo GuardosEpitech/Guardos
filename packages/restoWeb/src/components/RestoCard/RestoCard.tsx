@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import EditIcon from "@mui/icons-material/Edit";
 import { Grid, Paper } from "@mui/material";
@@ -12,6 +12,10 @@ import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
 import Rating from "@src/components/RestoCard/Rating/Rating";
 import styles from "./RestoCard.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
+import {getImages} from "@src/services/callImages";
+import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
+import { IimageInterface } from "shared/models/imageInterface";
+import { displayImageFromBase64} from "shared/utils/imageConverter";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -39,6 +43,8 @@ const RestoCard = (props: IRestoCardProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, resto, editable } = props;
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
     `, ${resto.location.postalCode} ${resto.location.city}` +
@@ -53,7 +59,6 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   const handleDeleteClick = (e: any) => {
-    e.stopPropagation();
     setShowPopup(true);
   };
 
@@ -62,13 +67,44 @@ const RestoCard = (props: IRestoCardProps) => {
     await onUpdate();
   }
 
+  useEffect(() => {
+    async function callToImages() {
+      if (resto.picturesId.length > 0) {
+        const picturesId = resto.picturesId;
+        const answer = await getImages(picturesId);
+        // @ts-ignore
+        const loadedPictures = answer.map((img) => ({
+          base64: img.base64,
+          contentType: img.contentType,
+          filename: img.filename,
+          size: img.size,
+          uploadDate: img.uploadDate,
+          id: img._id,
+        }));
+        setPictures(loadedPictures);
+      } else {
+        console.log("No images found");
+        setPictures([{
+          base64: defaultRestoImage,
+          contentType: "png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
+      }
+    }
+
+    callToImages();
+  }, [resto.picturesId]);
+
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={3} className={styles.GridItemImage}>
           {
             <img
-              src={imgStr}
+              src={pictures.length > 0 ? pictures[0].base64 : defaultRestoImage}
               alt={resto.name}
               className={styles.ImageDimensions}
             />
@@ -102,13 +138,14 @@ const RestoCard = (props: IRestoCardProps) => {
                       actionRedirect: "/editResto",
                       redirectProps: {
                         restoName: resto.name,
-                        phone: resto.name,
+                        phone: resto.phoneNumber,
                         street: resto.location.streetName,
                         streetNumber: resto.location.streetNumber,
                         postalCode: resto.location.postalCode,
                         city: resto.location.city,
                         country: resto.location.country,
-                        description: resto.description
+                        description: resto.description,
+                        picturesId: resto.picturesId
                       }
                     }
                   ]}

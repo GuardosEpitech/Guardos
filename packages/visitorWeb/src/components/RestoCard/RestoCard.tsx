@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PlaceIcon from "@mui/icons-material/Place";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from "@mui/material/Button";
 import { Grid, Paper } from "@mui/material";
 import styles from "./RestoCard.module.scss";
@@ -9,8 +11,11 @@ import styles from "./RestoCard.module.scss";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import Rating from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
-import placeholderImg from "@src/assets/placeholder.png";
 import { NavigateTo } from "@src/utils/NavigateTo";
+import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
+import {IimageInterface} from "../../../../shared/models/imageInterface";
+import {getImages} from "@src/services/imageCalls";
+import {addRestoAsFavourite, deleteRestoFromFavourites} from "@src/services/favourites";
 
 const PageBtn = () => {
   return createTheme({
@@ -41,6 +46,7 @@ const PageBtn = () => {
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd,
+  isFavourite: boolean,
   dataIndex: number,
   key: number,
 }
@@ -49,32 +55,76 @@ const RestoCard = (props: IRestoCardProps) => {
   const navigate = useNavigate();
   const [extended, setExtended] = useState(false);
   const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
-  const { name, rating, description, categories, ratingCount } = props.resto;
+  const [isFavorite, setIsFavorite] = useState(props.isFavourite);
+  const { name, rating, description, categories, ratingCount, picturesId } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
-  const imageSrc = props.resto.pictures[0] && props.resto.pictures[0].length != 0 ? props.resto.pictures[0] : placeholderImg;
-
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
 
+  useEffect(() => {
+    async function fetchImages() {
+      if (picturesId.length > 0) {
+        const fetchedImages = await getImages(picturesId);
+        setPictures(fetchedImages);
+      } else {
+        setPictures([{
+          base64: defaultRestoImage,
+          contentType: "image/png",
+          filename: "placeholderResto.png",
+          size: 0,
+          uploadDate: "0",
+          id: 0,
+        }]);
+      }
+    }
+
+    fetchImages();
+  }, [picturesId]);
+
+  const handleFavoriteClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevents the card click event from triggering
+
+    // Toggle the favorite status
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    if (!isFavorite) {
+      addRestoAsFavourite(userToken, props.resto.uid);
+    } else {
+      deleteRestoFromFavourites(userToken, props.resto.uid);
+    }
+  };
+
   return (
-    <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
+    <Paper id="resto-card" className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={3} className={styles.GridItemImage}>
-          {imageSrc && (
-            <img
-              src={imageSrc}
-              alt={name}
-              className={styles.ImageDimensions}
-            />
-          )}
+          {pictures.length > 0 &&
+              <img
+                  key={pictures[0].id+name}
+                  src={pictures[0].base64}
+                  alt={name}
+                  className={styles.ImageDimensions}
+              />
+          }
         </Grid>
 
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{name}</h3>
             <Rating restoRating={rating} restoRatingsCount={ratingCount} />
+            <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              {isFavorite ? (
+                <FavoriteIcon id="favourite" color="error" />
+              ) : (
+                <FavoriteBorderIcon id="no-favourite" color="error" />
+              )}
+            </div>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />
@@ -104,6 +154,7 @@ const RestoCard = (props: IRestoCardProps) => {
                 onClick={() => NavigateTo("/menu", navigate, {
                   menu: categories,
                   restoName: name,
+                  restoID: props.resto.uid,
                   address: address,
                 })}
               >
@@ -113,7 +164,8 @@ const RestoCard = (props: IRestoCardProps) => {
           </div>
         </Grid>
       </Grid>
-      {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)} />}
+      {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)}
+                                               pictureBase64={pictures[0].base64} />}
     </Paper>
   );
 };

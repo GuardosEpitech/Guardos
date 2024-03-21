@@ -11,6 +11,7 @@ import AppOutlet from "@src/pages/AppOutlet";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import IntroPage from "@src/pages/IntroPage";
 import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
+import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -52,6 +53,7 @@ const MVPRouter = () => {
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
+          <Route path="/change-password" element={<ChangePasswordPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

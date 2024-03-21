@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {NavigateTo} from "@src/utils/NavigateTo";
+import {useNavigate} from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -8,6 +10,13 @@ import FormControl from '@mui/material/FormControl';
 import styles from "./MyAccountPage.module.scss";
 import {changePassword, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
+import {deleteRestoAccount} from "@src/services/userCalls";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -25,6 +34,8 @@ const MyAccountPage = () => {
   const [pwError, setPwError] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
+  const [openDeletePopup, setOpenDeletePopup] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProfileData();
@@ -154,6 +165,29 @@ const MyAccountPage = () => {
     }
   };
 
+  const handleDeleteAccount = () => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+    deleteRestoAccount(userToken)
+      .then(res => {
+        if (res !== null) {
+          const event = new Event('loggedOut');
+          localStorage.removeItem('user');
+          document.dispatchEvent(event);
+          NavigateTo('/', navigate, {});
+        }
+      });
+    setOpenDeletePopup(false);
+  };
+
+  const handleOpenDeletePopup = () => {
+    setOpenDeletePopup(true);
+  };
+
+  const handleCloseDeletePopup = () => {
+    setOpenDeletePopup(false);
+  };
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -275,7 +309,32 @@ const MyAccountPage = () => {
             Save Changes
           </button>
         </div>
+        <button
+          className={styles.deleteButton}
+          onClick={handleOpenDeletePopup}
+        >
+          Delete Account
+        </button>
       </div>
+      <Dialog
+        open={openDeletePopup}
+        onClose={handleCloseDeletePopup}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Account"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete your account? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeletePopup}>Cancel</Button>
+          <Button onClick={handleDeleteAccount} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

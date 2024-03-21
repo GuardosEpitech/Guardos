@@ -95,7 +95,7 @@ const MapView = (props: MapProps) => {
           address:
             elem.location.streetName + ' ' + elem.location.streetNumber +
             ', ' + elem.location.postalCode + ' ' + elem.location.city,
-          index: elem.id,
+          index: elem.uid,
           objectR: elem,
           name: 'Marker',
         });
@@ -208,6 +208,7 @@ const MapView = (props: MapProps) => {
             onClick={() => NavigateTo("/menu", navigate, {
               menu: clickedFeature.categories,
               restoName: clickedFeature.name,
+              restoID: clickedFeature.uid,
               address: `${clickedFeature.location.streetName} 
               ${clickedFeature.location.streetNumber}, 
               ${clickedFeature.location.postalCode} 
