@@ -77,4 +77,10 @@ export const restaurantSchema = new mongoose.Schema({
     ingredients: [String],
   }],
   menuDesignID: Number,
+  reviews: [{
+    _id: String,
+    note: Number,
+    comment: String,
+    date: Date,
+  }]
 });

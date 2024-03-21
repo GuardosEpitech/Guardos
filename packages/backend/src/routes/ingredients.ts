@@ -21,44 +21,56 @@ router.get('/', async (_req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  if (await checkIfNameAndIdExistsIngredients(
-    req.body as IIngredientsCommunication)) {
-    const id =
-      req.body.id ? req.body.id : (await findMaxIndexIngredients() + 1);
-    await createNewIngredient(req.body.name, id, req.body.allergens);
+  try {
+    if (await checkIfNameAndIdExistsIngredients(
+      req.body as IIngredientsCommunication)) {
+      const id =
+        req.body.id ? req.body.id : (await findMaxIndexIngredients() + 1);
+      await createNewIngredient(req.body.name, id, req.body.allergens);
 
-    await addRestoProduct({
-      name: req.body.name,
-      allergens: req.body.allergens,
-      ingredients: req.body.ingredients,
-    }, req.body.restoName);
-    if (!await checkIfRestaurantExists(req.body.restoName)) {
-      return res.status(200)
-        .send('Coudnt find restaurant named ' +
-          req.body.restoName +
-          ' but added ingredient to ingredients database');
+      await addRestoProduct({
+        name: req.body.name,
+        allergens: req.body.allergens,
+        ingredients: req.body.ingredients,
+      }, req.body.restoName);
+      if (!await checkIfRestaurantExists(req.body.restoName)) {
+        return res.status(200)
+          .send('Coudnt find restaurant named ' +
+            req.body.restoName +
+            ' but added ingredient to ingredients database');
+      }
+      res.status(200)
+        .send('Ingredient '
+          + req.body.name + ' saved ' + ' with id ' + id);
+    } else {
+      res.status(400)
+        .send('Missing name or wrong id for ingredient');
     }
-    res.status(200)
-      .send('Ingredient '
-        + req.body.name + ' saved ' + ' with id ' + id);
-  } else {
-    res.status(400)
-      .send('Missing name or wrong id for ingredient');
+  } catch (error) {
+    console.error("Error in 'ingredients' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
   }
 });
 
 router.delete('/', async (req, res) => {
-  const id = req.body.id ? req.body.id
-    : (await getIngredientByName(req.body.name));
+  try {
+    const id = req.body.id ? req.body.id
+      : (await getIngredientByName(req.body.name));
 
-  if (await checkIfIdExists(id)) {
-    await deleteIngredient(req.body.name, id);
-    res.status(200)
-      .send('Ingredient '
-        + req.body.name + ' deleted ' + ' with id ' + id);
-  } else {
-    res.status(400)
-      .send('Ingredient not found');
+    if (await checkIfIdExists(id)) {
+      await deleteIngredient(req.body.name, id);
+      res.status(200)
+        .send('Ingredient '
+          + req.body.name + ' deleted ' + ' with id ' + id);
+    } else {
+      res.status(400)
+        .send('Ingredient not found');
+    }
+  } catch (error) {
+    console.error("Error in 'ingredients' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
   }
 });
 

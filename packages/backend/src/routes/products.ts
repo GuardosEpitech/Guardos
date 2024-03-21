@@ -13,11 +13,17 @@ import {getUserIdResto} from '../controllers/userRestoController';
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
-  const products = await getAllProducts();
-  if (!products)
-    return res.status(404);
-  return res.status(200)
-    .send(products);
+  try {
+    const products = await getAllProducts();
+    if (!products)
+      return res.status(404);
+    return res.status(200)
+      .send(products);
+  } catch (error) {
+    console.error("Error in 'products' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 router.get('/user/product', async (req, res) => {
@@ -38,7 +44,7 @@ router.get('/user/product', async (req, res) => {
       .send(products);
   } catch (error) {
     // Log the error for debugging purposes
-    console.error("Error in '/user/product' route:", error);
+    console.error("Error in 'products/user/product' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
     return res.status(500)
@@ -47,37 +53,61 @@ router.get('/user/product', async (req, res) => {
 });
 
 router.get('/:name', async (req, res) => {
-  const products = await getAllRestoProducts(req.params.name);
-  return res.status(200)
-    .send(products);
+  try {
+    const products = await getAllRestoProducts(req.params.name);
+    return res.status(200)
+      .send(products);
+  } catch (error) {
+    console.error("Error in 'products/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 router.post('/:name', async (req, res) => {
-  const restaurant = req.params.name;
-  const restaurantId = await getRestaurantByName(restaurant);
-  const product = await createOrUpdateProduct(req.body, restaurantId.uid);
-  await addRestoProduct(req.body, restaurant);
-  return res.status(200)
-    .send(product);
+  try {
+    const restaurant = req.params.name;
+    const restaurantId = await getRestaurantByName(restaurant);
+    const product = await createOrUpdateProduct(req.body, restaurantId.uid);
+    await addRestoProduct(req.body, restaurant);
+    return res.status(200)
+      .send(product);
+  } catch (error) {
+    console.error("Error in 'products/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 router.delete('/:name', async (req, res) => {
-  const productName = req.params.name;
-  if (await deleteProductByName(productName) === true)
-    return res.status(200)
-      .send('Product deleted successfully');
-  return res.status(404)
-    .send('Product not found');
+  try {
+    const productName = req.params.name;
+    if (await deleteProductByName(productName) === true)
+      return res.status(200)
+        .send('Product deleted successfully');
+    return res.status(404)
+      .send('Product not found');
+  } catch (error) {
+    console.error("Error in 'products/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 router.put('/:name', async (req, res) => {
-  if (!await getProductByName(req.params.name)) {
-    return res.status(404)
-      .send('Coundt find product named ' + req.params.name);
+  try {
+    if (!await getProductByName(req.params.name)) {
+      return res.status(404)
+        .send('Coundt find product named ' + req.params.name);
+    }
+    const product = await changeProductByName(req.body, req.params.name);
+    return res.status(200)
+      .send(product);
+  } catch (error) {
+    console.error("Error in 'products/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
   }
-  const product = await changeProductByName(req.body, req.params.name);
-  return res.status(200)
-    .send(product);
 });
 
 export default router;

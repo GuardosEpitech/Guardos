@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
 import HomePage from "@src/pages/HomePage";
 import RegistrationPage from "@src/pages/RegistrationPage";
@@ -14,8 +14,33 @@ import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
 
 const MVPRouter = () => {
+  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
+  const userToken = localStorage.getItem('user');
+
+  const checkUserToken = () => {
+    if (userToken === null) {
+      setIsUserTokenSet(false);
+      return;
+    }
+    setIsUserTokenSet(true);
+  };
+
+  useEffect(() => {
+    checkUserToken();
+  }, [isUserTokenSet, userToken]);
+
   return (
     <BrowserRouter>
+      {isUserTokenSet === false && window.location.pathname !== '/register'
+        && window.location.pathname !== '/account-recovery' && (
+        <Navigate to="login" />
+      )}
+      {isUserTokenSet === true && (window.location.pathname === '/register'
+      || window.location.pathname === '/account-recovery' ||
+      window.location.pathname === '/login'
+      ) && (
+        <Navigate to="/" />
+      )}
       <Routes>
         <Route element={<AppOutlet />}>
           <Route path="/my-account" element={<MyAccountPage />} />

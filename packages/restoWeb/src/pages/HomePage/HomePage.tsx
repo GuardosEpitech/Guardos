@@ -14,7 +14,7 @@ import SuccessAlert
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
-  const [isUserTokenSet, setIsUserTokenSet] = useState<Boolean>(false);
+  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,14 +47,17 @@ const HomePage = () => {
       <Layout>
         <div className={styles.DivContent}>
           <div>
-            { isUserTokenSet && restoData.length == 0 && (
+            { isUserTokenSet && restoData.length === 0 && (
               <p>
-                You have currently no active restaurant. You can click on the button in the lower right corner to add a new one.
+                You have currently no active restaurant. You can click on
+                the button in thelower right corner to add a new one.
               </p>
             )}
             { !isUserTokenSet && (
               <p>
-                Please <a onClick={() => NavigateTo('/login', navigate, {})}>login</a> to see your restaurants
+                Please <a onClick={() => NavigateTo('/login', navigate, {})}>
+                  Login
+                </a> to see your restaurants
               </p>
             )}
             {restoData.map((restaurant, index) => {
