@@ -220,18 +220,6 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       return;
     }
 
-    console.log(selectedRestaurantName);
-    console.log(selectedPhone);
-    console.log(selectedDescription);
-    console.log(selectedWebsite);
-    console.log(selectedOpeningHours);
-    console.log(selectedStreet);
-    console.log(selectedPostalCode);
-    console.log(selectedStreetNumber);
-    console.log(selectedCity);
-    console.log(selectedCountry);
-    console.log(selectedMenuDesignId);
-
     const resto: IAddResto = {
       name: selectedRestaurantName,
       phoneNumber: selectedPhone,
