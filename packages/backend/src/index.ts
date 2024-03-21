@@ -24,6 +24,7 @@ import restaurants from './routes/restaurants';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
+import review from './routes/review';
 
 async function main() {
   const app = express();
@@ -65,6 +66,7 @@ async function main() {
     app.use('/api/profile', visitorProfile);
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
+    app.use('/api/review', review);
     app.use('/api/favourites', favourites);
   }
 

@@ -15,7 +15,7 @@ const Header = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
     document.dispatchEvent(event);
-    NavigateTo('/', navigate, {})
+    NavigateTo('/login', navigate, {})
   }
 
   const checkUserToken = async () => {

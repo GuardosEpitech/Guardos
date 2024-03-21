@@ -76,4 +76,10 @@ export const restaurantSchema = new mongoose.Schema({
     allergens: [String],
     ingredients: [String],
   }],
+  reviews: [{
+    _id: String,
+    note: Number,
+    comment: String,
+    date: Date,
+  }]
 });
