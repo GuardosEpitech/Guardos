@@ -19,8 +19,24 @@ const RatingPage = () => {
     comment = ref.current.value;
   };
 
+  const averageRating = () => {
+    let sum = 0;
+    ratingData.forEach((data) => {
+      sum += data.note;
+    });
+    return parseFloat((sum / ratingData.length).toFixed(1));
+  }
+
   const addReview = () => {
-    postRatingData(restoName, comment, note);
+    try {
+      postRatingData(restoName, comment, note);
+    }
+    catch (err) {
+      console.error(err);
+    }
+    setNote(2);
+    comment = null;
+    getRatingData(restoName).then(res => setRatingData(res));
   };
 
   useState(() => {
@@ -113,12 +129,26 @@ const RatingPage = () => {
             Add my review
           </Button>
         </div>
-        {/* {ratingData.map((data, key) => (
-          <div key={key} className={styles.CardReview}>
-            <span>{data.note}</span>
-            <span>{data.comment}</span>
-          </div>
-        ))} */}
+        <div className={styles.AllReviewContainer}>
+          {ratingData === undefined ?
+            <h2>No reviews yet</h2>
+          :
+            <div className={styles.RecapReview}>
+              <h2>{`All the reviews (${ratingData.length})`}</h2>
+              <span className={styles.AverageTxt}>{averageRating()}</span>
+              <Rating size="small" name="read-only" value={averageRating()} readOnly />
+            </div>
+          }
+          {ratingData?.map((data, key) => (
+            <div key={key} className={styles.CardReview}>
+              <div className={styles.NoteContainer}>
+                <span>{data.note}</span>
+                <Rating name="read-only" value={data.note} readOnly />
+              </div>
+              <span>{data.comment}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

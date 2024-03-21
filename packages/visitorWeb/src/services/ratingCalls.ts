@@ -13,9 +13,9 @@ export const getRatingData = async (name: string) => (
     }) 
 )
 
-export const postRatingData = async (name: string, comment: string, rating: number) => (
-    console.log(comment, rating),
-    axios.post(`${baseUrl}/review/restaurants/${name}`, { comment, rating })
+export const postRatingData = async (name: string, comment: string, note: number) => (
+    console.log(comment, note),
+    axios.post(`${baseUrl}/review/restaurants/${name}`, { comment, note })
     .then(function (response) {
         console.log(response.data);
         return response.data;

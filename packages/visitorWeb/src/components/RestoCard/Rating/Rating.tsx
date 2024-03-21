@@ -56,7 +56,7 @@ const Rating = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => 
           restoName: restoName,
         })}
       >
-        add a review
+        Add a review
       </Button>
     </ThemeProvider>
   );
