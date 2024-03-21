@@ -50,6 +50,7 @@ export interface IRestaurantFrontEnd {
   ratingCount?: number;
   products: IProduct[];
   dishes: IDishFE[];
+  menuDesignID: number;
 }
 
 export interface IRestaurantBackEnd {
@@ -69,6 +70,7 @@ export interface IRestaurantBackEnd {
   mealType: IMealType[];
   extras: IDishBE[];
   products: IProduct[];
+  menuDesignID: number;
 }
 
 export interface IAddResto {
@@ -78,6 +80,7 @@ export interface IAddResto {
   website: string;
   openingHours: IOpeningHours[];
   location: ILocation;
+  menuDesignID: number;
 };
 
 export interface IAddRestoRequest {

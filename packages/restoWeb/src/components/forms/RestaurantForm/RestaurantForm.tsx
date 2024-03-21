@@ -9,19 +9,21 @@ import {
   Grid,
   InputLabel,
   OutlinedInput,
-  TextField
+  TextField,
+  Autocomplete
 } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { addNewResto, editResto } from "@src/services/restoCalls";
+import { addNewResto, editResto, getAllMenuDesigns } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
 import { IAddRestoRequest, IAddResto }
   from "shared/models/restaurantInterfaces";
 import { IimageInterface } from "shared/models/imageInterface";
+import { IMenuDesigns } from "shared/models/menuDesignsInterfaces";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {addImageResto, deleteImageRestaurant, getImages}
@@ -73,6 +75,7 @@ interface IRestaurantFormProps {
   openingHours?: IOpeningHours[];
   website?: string;
   picturesId?: number[];
+  menuDesignID?: number;
 }
 
 interface IDay {
@@ -102,11 +105,25 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     description,
     phone,
     website,
-    // eslint-disable-next-line prefer-const
-    picturesId
+    picturesId,
+    menuDesignID
   } = props;
   let openingHours = props.openingHours ? props.openingHours : [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [menuDesigns, setMenuDesigns] = useState<IMenuDesigns[]>([]);
+  const [selectedMenuDesignId, setSelectedMenuDesignId] = useState(0);
+  const [selectedRestaurantName, setSelectedRestaurantName] = useState('');
+  const [selectedStreet, setSelectedStreet] = useState('');
+  const [selectedStreetNumber, setSelectedStreetNumber] = useState(0);
+  const [selectedPostalCode, setSelectedPostalCode] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedDescription, setSelectedDescription] = useState('');
+  const [selectedPhone, setSelectedPhone] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedWebsite, setSelectedWebsite] = useState('');
+  const [selectedOpeningHours, setSelectedOpeningHours] = useState<IOpeningHours[]>([]);
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = React.useState("");
   const origRestoName = restaurantName;
 
   useEffect(() => {
@@ -145,6 +162,15 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       }
     };
 
+    getAllMenuDesigns()
+      .then((res) => {
+        setMenuDesigns(res);
+
+        if (menuDesignID !== undefined) {
+          setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
+        }
+      });
+
     fetchImages();
   }, [props.picturesId]);
 
@@ -160,9 +186,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           }
           return item;
         });
-        openingHours = updatedOpeningHours;
+        setSelectedOpeningHours(updatedOpeningHours);
       } else {
-        openingHours = [...openingHours, data];
+        setSelectedOpeningHours([...openingHours, data]);
       }
     }
   }
@@ -181,6 +207,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         });
         openingHours = updatedOpeningHours;
       } else {
+        
         openingHours = [...openingHours, data];
       }
     }
@@ -192,21 +219,35 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       console.log("Error getting user ID");
       return;
     }
+
+    console.log(selectedRestaurantName);
+    console.log(selectedPhone);
+    console.log(selectedDescription);
+    console.log(selectedWebsite);
+    console.log(selectedOpeningHours);
+    console.log(selectedStreet);
+    console.log(selectedPostalCode);
+    console.log(selectedStreetNumber);
+    console.log(selectedCity);
+    console.log(selectedCountry);
+    console.log(selectedMenuDesignId);
+
     const resto: IAddResto = {
-      name: restaurantName,
-      phoneNumber: phone,
-      description: description,
-      website: website,
-      openingHours: openingHours,
+      name: selectedRestaurantName,
+      phoneNumber: selectedPhone,
+      description: selectedDescription,
+      website: selectedWebsite,
+      openingHours: selectedOpeningHours,
       location: {
-        streetName: street,
-        streetNumber: streetNumber.toString(),
-        postalCode: postalCode,
-        city: city,
-        country: country,
+        streetName: selectedStreet,
+        streetNumber: selectedStreetNumber.toString(),
+        postalCode: selectedPostalCode,
+        city: selectedCity,
+        country: selectedCountry,
         latitude: "0",
         longitude: "0",
-      }
+      },
+      menuDesignID: selectedMenuDesignId
     };
     const data: IAddRestoRequest  = {
       userToken: userToken,
@@ -313,7 +354,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={restaurantName}
                   label="Name"
-                  onChange={(e) => (restaurantName = e.target.value)}
+                  onChange={(e) => (setSelectedRestaurantName(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -326,7 +367,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={phone}
                   label="Phone number"
-                  onChange={(e) => (phone = e.target.value)}
+                  onChange={(e) => (setSelectedPhone(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -339,7 +380,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={street}
                   label="Street name"
-                  onChange={(e) => (street = e.target.value)}
+                  onChange={(e) => (setSelectedStreet(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -352,7 +393,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={streetNumber}
                   label="Street number"
-                  onChange={(e) => (streetNumber = parseInt(e.target.value))}
+                  onChange={(e) => (setSelectedStreetNumber(parseInt(e.target.value)))}
                 />
               </FormControl>
             </Grid>
@@ -365,7 +406,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={postalCode}
                   label="Postal code"
-                  onChange={(e) => (postalCode = e.target.value)}
+                  onChange={(e) => (setSelectedPostalCode(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -376,7 +417,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={city}
                   label="City"
-                  onChange={(e) => (city = e.target.value)}
+                  onChange={(e) => (setSelectedCity(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -387,7 +428,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   id="component-outlined"
                   defaultValue={country}
                   label="Country"
-                  onChange={(e) => (country = e.target.value)}
+                  onChange={(e) => (setSelectedCountry(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -398,7 +439,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   defaultValue={description}
                   label="Description"
                   multiline
-                  onChange={(e) => (description = e.target.value)}
+                  onChange={(e) => (setSelectedDescription(e.target.value))}
                 />
               </FormControl>
             </Grid>
@@ -444,14 +485,39 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 </Grid>
               </LocalizationProvider>
             ))}
-            <Grid item xs={4} sm={8} md={5.15}>
+            <Grid item xs={2} sm={4} md={6}>
               <FormControl fullWidth>
                 <TextField
                   id="outlined-multiline-flexible"
                   defaultValue={website}
                   label="Web Site"
                   multiline
-                  onChange={(e) => (website = e.target.value)}
+                  onChange={(e) => (setSelectedWebsite(e.target.value))}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={2} sm={4} md={6}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  id="tags-outlined"
+                  options={menuDesigns}
+                  value={value}
+                  getOptionLabel={(option) =>
+                    (option ? (option as IMenuDesigns).name : "")}
+                  onChange={(e, value) => {
+                    setValue(value);
+                    setSelectedMenuDesignId(value._id);
+                  }}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Menu Design"
+                    />
+                  )}
                 />
               </FormControl>
             </Grid>

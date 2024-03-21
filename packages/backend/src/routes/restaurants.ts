@@ -32,6 +32,7 @@ router.post('/', async (req, res) => {
   const maxID = await findMaxIndexRestaurants();
   const { userToken, resto } = req.body;
   const userID = await getUserIdResto(userToken);
+  
   if (userID === false) {
     // If user ID is not found, return 404 Not Found
     return res.status(404)

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect }from "react";
 import { useLocation } from "react-router-dom";
 
 import Layout from 'shared/components/Layout/Layout';
@@ -17,6 +17,8 @@ interface IEditRestaurantPageProps {
   country: string;
   description: string;
   picturesId: number[];
+  menuDesignID: number;
+  website: string;
 }
 
 const EditRestaurantPage = () => {
@@ -29,7 +31,9 @@ const EditRestaurantPage = () => {
     city,
     country,
     description,
-    picturesId
+    picturesId,
+    menuDesignID,
+    website
   } = useLocation().state as IEditRestaurantPageProps;
 
   return (
@@ -48,6 +52,8 @@ const EditRestaurantPage = () => {
           country={country}
           description={description}
           picturesId={picturesId}
+          menuDesignID={menuDesignID}
+          website={website}
         />
       </Layout>
     </div>

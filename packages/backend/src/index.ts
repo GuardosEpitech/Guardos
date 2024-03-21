@@ -11,6 +11,7 @@ import logout from './routes/logout';
 import deleteUser from './routes/deleteUsers';
 import foodCategorie from './routes/foodCategories';
 import favourites from './routes/favourites';
+import menuDesigns from './routes/menuDesigns';
 import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
@@ -66,6 +67,7 @@ async function main() {
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
     app.use('/api/favourites', favourites);
+    app.use('/api/menuDesigns', menuDesigns);
   }
 
   app.use(function (_req, _res, next) {
