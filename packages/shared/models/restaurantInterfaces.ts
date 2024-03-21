@@ -9,6 +9,13 @@ export interface IProduct {
   ingredients: string[];
 }
 
+export interface IReview {
+  _id?: String,
+  note?: Number,
+  comment?: String,
+  date?: Date,
+}
+
 export interface IIngredient {
   name: string;
 }
