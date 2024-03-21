@@ -11,6 +11,8 @@ import AppOutlet from "@src/pages/AppOutlet";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import IntroPage from "@src/pages/IntroPage";
 import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
+import PaymentSuccessPage from "@src/pages/Payments/Accept/PaymentSuccessPage";
+import PaymentFailedPage from "@src/pages/Payments/Failed/PaymentFailedPage";
 
 const MVPRouter = () => {
   return (
@@ -27,6 +29,8 @@ const MVPRouter = () => {
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
+          <Route path="/payment-success" Component={PaymentSuccessPage} />
+          <Route path="/payment-failed" Component={PaymentFailedPage} />
         </Route>
       </Routes>
     </BrowserRouter>
