@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Grid, Paper } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
@@ -7,6 +9,10 @@ import {IimageInterface} from "shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
 import {defaultDishImage} from "shared/assets/placeholderImageBase64";
 import {displayImageFromBase64} from "shared/utils/imageConverter";
+import {
+  addDishAsFavourite,
+  deleteDishFromFavourites,
+} from "@src/services/favourites";
 
 interface IDishProps {
   dishName: string;
@@ -15,11 +21,15 @@ interface IDishProps {
   options?: string;
   picturesId: number[];
   price: number;
+  restoID: number;
+  dishID: number;
+  isFavourite: boolean;
 }
 
 const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [isFavorite, setIsFavorite] = useState(false);
   const { dishName, dishAllergens, dishDescription, options, price, picturesId } = props;
   const priceStr = `${price.toFixed(2)} €`;
 
@@ -49,10 +59,30 @@ const Dish = (props: IDishProps) => {
     }
 
     fetchImages();
-  }, [picturesId]);
+    setIsFavorite(props.isFavourite);
+  }, [props.isFavourite, picturesId]);
+
+  const handleFavoriteClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevents the card click event from triggering
+
+    // Toggle the favorite status
+    setIsFavorite((prevIsFavorite) => !prevIsFavorite);
+
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    if (!isFavorite) {
+      console.log("adding dish as favourite: " + props.restoID + " " + props.dishID);
+      addDishAsFavourite(userToken, props.restoID, props.dishID);
+    } else {
+      console.log("delete dish as favourite: " + props.restoID + " " + props.dishID);
+      deleteDishFromFavourites(userToken, props.restoID, props.dishID);
+    }
+  };
 
   return (
     <Paper
+      id="dish-card"
       className={styles.DishBox}
       elevation={3}
       onClick={() => setExtended(!extended)}
@@ -66,6 +96,13 @@ const Dish = (props: IDishProps) => {
           >
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
+              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+                {isFavorite ? (
+                  <FavoriteIcon id="favourite" color="error" />
+                ) : (
+                  <FavoriteBorderIcon id="no-favourite" color="error" />
+                )}
+              </div>
             </div>
             {extended && <AllergenTags dishAllergens={dishAllergens} />}
           </Grid>
@@ -104,6 +141,13 @@ const Dish = (props: IDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
+              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+                {isFavorite ? (
+                  <FavoriteIcon id="favourite" color="error" />
+                ) : (
+                  <FavoriteBorderIcon id="no-favourite" color="error" />
+                )}
+              </div>
             </div>
             {/*TODO: change allergens to products list*/}
             {extended && <AllergenTags dishAllergens={dishAllergens} />}

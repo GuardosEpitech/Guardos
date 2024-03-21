@@ -11,7 +11,7 @@ const AddDishPage = () => {
         <span className={styles.TitleSearch}>My new dish</span>
       </div>
       <Layout>
-        <DishForm add />
+        <DishForm add dishUID={-1} />
       </Layout>
     </div>
   );
