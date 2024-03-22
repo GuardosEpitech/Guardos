@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import {Button,Typography} from '@mui/material';
 
 import styles from "./MyAccountPage.module.scss";
 import {deleteAccount} from "@src/services/userCalls";
@@ -13,7 +14,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
 import {changeVisitorPassword, editVisitorProfileDetails, getVisitorProfileDetails} from "@src/services/profileCalls";
 import TextField from "@mui/material/TextField";
 
@@ -335,7 +335,13 @@ const MyAccountPage = () => {
           </button>
         </div>
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>Delete Account</button>
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Typography variant="body1">You need a new feature? </Typography>
+          <Button onClick={() => window.location.href = '/feature-request'}>
+          Just ask for it !
+          </Button>
+      </div>   
+      </div>         
       <div className={styles.restaurantSection}>
         <h1>Last Watched Restaurants</h1>
         <ul>
