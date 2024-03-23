@@ -22,8 +22,8 @@ router.post('/', async function (req: Request, res: Response) {
 
   
     const mailOptions: nodemailer.SendMailOptions = {
-      from: data.name,
-      to: 'guardos-help@outlook.com',
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_USER,
       subject: data.subject,
       text: `Name: ${data.name}\nRequest:${data.request}`,
     };
