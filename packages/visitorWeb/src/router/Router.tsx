@@ -11,6 +11,7 @@ import AppOutlet from "@src/pages/AppOutlet";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import IntroPage from "@src/pages/IntroPage";
 import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
+import FeatureRequest from "@src/pages/FeatureRequest";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
 
 const MVPRouter = () => {
@@ -52,6 +53,8 @@ const MVPRouter = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/account-recovery" element={<ResetPassword />} />
+          <Route path="/feature-request" element={<FeatureRequest />}> </Route>
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
         </Route>
