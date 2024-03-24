@@ -136,6 +136,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
                 onClick={() => NavigateTo("/menu", navigate, {
                   menu: categories,
                   restoName: name,
+                  restoID: props.restaurant.uid,
                   address: address,
                 })}
               >

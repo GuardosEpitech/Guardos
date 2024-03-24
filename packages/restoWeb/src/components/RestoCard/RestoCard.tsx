@@ -138,7 +138,7 @@ const RestoCard = (props: IRestoCardProps) => {
                       actionRedirect: "/editResto",
                       redirectProps: {
                         restoName: resto.name,
-                        phone: resto.name,
+                        phone: resto.phoneNumber,
                         street: resto.location.streetName,
                         streetNumber: resto.location.streetNumber,
                         postalCode: resto.location.postalCode,

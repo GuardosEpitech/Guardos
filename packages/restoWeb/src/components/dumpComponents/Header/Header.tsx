@@ -20,7 +20,7 @@ const Header = () => {
     setIsLogInSite(false);
     setLoggedIn(false);
     document.dispatchEvent(event);
-    NavigateTo('/', navigate)
+    NavigateTo('/login', navigate);
   }
 
   const checkUserToken = async () => {
@@ -51,7 +51,8 @@ const Header = () => {
   }, [navigate]);
 
   return (
-    <div className={loggedIn ? styles.BackgroundRectLoggedIn : styles.BackgroundRectLoggedOut}>
+    <div className={loggedIn ? styles.BackgroundRectLoggedIn
+      : styles.BackgroundRectLoggedOut}>
       <span className={loggedIn ? styles.NavTitle : styles.NavTitleLogIn}>
         { loggedIn && (
           <a onClick={logoutUser}>
@@ -61,63 +62,65 @@ const Header = () => {
         { !loggedIn && !isLogInSite && (
           <a onClick={() => {
             setIsLogInSite(true);
-            NavigateTo('/login', navigate, {})
-            }}>
+          }}
+          className={styles.NavTitleLogIn}
+          href="/login"
+          >
             Login
           </a>
         )}
         { !loggedIn && isLogInSite && (
           <a onClick={() => {
             setIsLogInSite(false);
-            NavigateTo('/', navigate, {})
-            }}>
+            NavigateTo('/', navigate, {});
+          }}>
             Home
           </a>
         )}
       </span>
-      { loggedIn
+      { loggedIn 
         &&
-          <span
-              className={styles.NavTitle}
-              onClick={() => NavigateTo("/account", navigate)}
-          >
+        <a
+          className={styles.NavTitle}
+          href="/account"
+        >
           My Account
-        </span>
+        </a>
       }
       { loggedIn 
         &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/", navigate)}
+        <a
+          className={styles.NavTitle}
+          href="/"
         >
           My Restaurants
-        </span>
+        </a>
       }
       <img className={styles.LogoImg} src={logo} alt="Logo" />
       { !loggedIn 
         &&
         <div
-        className={styles.NavTitle}
+          className={styles.NavTitle}
         >
         </div>
       }
       { loggedIn 
         &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/dishes", navigate)}
+        <a
+          className={styles.NavTitle}
+          href="/dishes"
         >
           My Dishes
-        </span>
+        </a>
       }
       { loggedIn 
         &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/products", navigate)}
+        <a
+          className={styles.NavTitle}
+          href="/products"
         >
           My Products
-        </span>
+        </a>
       }
     </div>
   );

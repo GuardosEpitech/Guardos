@@ -12,7 +12,7 @@ interface IEditDishPageProps {
 
 const EditDishPage = () => {
   const { dish } = useLocation().state as IEditDishPageProps;
-  const { name, products, description, price, allergens, resto,
+  const { name, uid, products, description, price, allergens, resto,
     category, picturesId }
     = dish;
   const selectResto: string[] = [resto];
@@ -28,6 +28,7 @@ const EditDishPage = () => {
       <Layout>
         <DishForm
           dishName={name}
+          dishUID={uid}
           dishProducts={products}
           dishDescription={description}
           price={price}

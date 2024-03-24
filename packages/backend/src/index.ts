@@ -10,6 +10,7 @@ import images from './routes/images';
 import logout from './routes/logout';
 import deleteUser from './routes/deleteUsers';
 import foodCategorie from './routes/foodCategories';
+import favourites from './routes/favourites';
 import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
@@ -24,6 +25,7 @@ import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
 import featureRequest from './routes/featureRequest'
+import review from './routes/review';
 
 async function main() {
   const app = express();
@@ -66,6 +68,8 @@ async function main() {
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
     app.use('/api/featureRequest', featureRequest)
+    app.use('/api/review', review);
+    app.use('/api/favourites', favourites);
   }
 
   app.use(function (_req, _res, next) {
