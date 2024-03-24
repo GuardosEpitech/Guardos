@@ -76,6 +76,7 @@ export const restaurantSchema = new mongoose.Schema({
     allergens: [String],
     ingredients: [String],
   }],
+  menuDesignID: Number,
   reviews: [{
     _id: String,
     note: Number,

@@ -41,6 +41,7 @@ export interface IRestaurantCommunication {
   extras?: IDishBE[];
   products?: IProduct[];
   userToken: string;
+  menuDesignID: number;
 }
 
 //Communication object for BE and FE

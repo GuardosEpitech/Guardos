@@ -34,7 +34,8 @@ export default class Filter {
         mealType: elem.mealType,
         dishes: elem.dishes,
         location: elem.location,
-        extras: elem.extras
+        extras: elem.extras,
+        menuDesignID: elem.menuDesignID
       });
       result.push(obj);
     }
@@ -65,6 +66,7 @@ export default class Filter {
       location: {} as ILocation,
       mealType: [{} as IMealType],
       extras: [{} as IDishBE],
+      menuDesignID: restaurant.menuDesignID
     };
     restaurantBE.dishes.pop();
     restaurantBE.mealType.pop();
@@ -136,7 +138,8 @@ export default class Filter {
       location: restaurant.location,
       hitRate: hitRate,
       range: 0,
-      dishes: [{} as IDishFE]
+      dishes: [{} as IDishFE],
+      menuDesignID: restaurant.menuDesignID
     };
     obj.categories.pop();
     obj.products.pop();

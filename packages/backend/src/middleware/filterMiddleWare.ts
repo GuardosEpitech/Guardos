@@ -122,7 +122,8 @@ export const getSelectedFilterReq =
         mealType: elem.mealType,
         dishes: elem.dishes,
         location: elem.location,
-        extras: elem.extras
+        extras: elem.extras,
+        menuDesignID: elem.menuDesignID,
       };
       filteredRestaurants.push(obj);
     }

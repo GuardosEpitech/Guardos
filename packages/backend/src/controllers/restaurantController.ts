@@ -31,6 +31,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     location: {} as ILocation,
     mealType: [{} as IMealType],
     extras: [{} as IDishBE],
+    menuDesignID: restaurant.menuDesignID,
   };
   restaurantBE.dishes.pop();
   restaurantBE.mealType.pop();
@@ -98,6 +99,7 @@ function createRestaurantObjFe(
     dishes: [{} as IDishFE],
     location: restaurant.location,
     range: 0,
+    menuDesignID: restaurant.menuDesignID
   };
   obj.categories.pop();
   obj.products.pop();
@@ -166,7 +168,8 @@ export async function getRestaurantByName(restaurantName: string) {
     products: rest.products as [IProduct],
     rating: rest.rating as number,
     ratingCount: rest.ratingCount as number,
-    website: rest.website as string
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
   });
   return createRestaurantObjFe(restaurantBE);
 }
@@ -192,7 +195,8 @@ export async function getRestaurantByID(restaurantID: number) {
     products: rest.products as [IProduct],
     rating: rest.rating as number,
     ratingCount: rest.ratingCount as number,
-    website: rest.website as string
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
   });
   return createRestaurantObjFe(restaurantBE);
 }
@@ -220,7 +224,8 @@ export async function getAllRestaurants() {
       products: restaurant.products as [IProduct],
       rating: restaurant.rating as number,
       ratingCount: restaurant.ratingCount as number,
-      website: restaurant.website as string
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
     });
     answer.push(createRestaurantObjFe(restaurantBE));
   }
@@ -250,7 +255,8 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
       products: restaurant.products as [IProduct],
       rating: restaurant.rating as number,
       ratingCount: restaurant.ratingCount as number,
-      website: restaurant.website as string
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
     });
     answer.push(createRestaurantObjFe(restaurantBE));
   }
@@ -278,6 +284,7 @@ export async function createNewRestaurant(
     mealType: obj.mealType ? obj.mealType : [],
     products: obj.products ? obj.products : [],
     extras: obj.extras ? obj.extras : [],
+    menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
   });
   await upload.save();
   console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
@@ -327,6 +334,7 @@ export async function changeRestaurant(
     ratingCount: oldRest.ratingCount,
     website: restaurant.website ? restaurant.website : oldRest.website,
     name: restaurant.name ? restaurant.name : oldRest.name,
+    menuDesignID: restaurant.menuDesignID !== undefined ? restaurant.menuDesignID : oldRest.menuDesignID,
   };
   await updateRestaurantByName(newRest, restaurantName);
   return newRest;
