@@ -10,7 +10,7 @@ import { ICategories } from "../../../shared/models/categoryInterfaces";
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
-    console.log(searchParams);
+    
     let data: any = await readAndGetAllRestaurants(); 
     
     const restoData: IRestaurantBackEnd[] = transformToIRestaurantBackend(data);
