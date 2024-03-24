@@ -9,6 +9,13 @@ export interface IProduct {
   ingredients: string[];
 }
 
+export interface IReview {
+  _id?: String,
+  note?: Number,
+  comment?: String,
+  date?: Date,
+}
+
 export interface IIngredient {
   name: string;
 }
@@ -34,7 +41,7 @@ export interface IOpeningHours {
 
 export interface IRestaurantFrontEnd {
   name: string;
-  id: number;
+  uid: number;
   userID: number;
   phoneNumber: string;
   website: string;
@@ -53,7 +60,7 @@ export interface IRestaurantFrontEnd {
 }
 
 export interface IRestaurantBackEnd {
-  id: number;
+  uid: number;
   userID: number;
   name: string;
   phoneNumber: string;

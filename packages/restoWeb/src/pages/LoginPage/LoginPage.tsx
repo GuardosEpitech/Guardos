@@ -104,11 +104,11 @@ const Login = () => {
             </Button>
             <p className={styles.registerInfo}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              <a className={styles.registerLink} onClick={() => NavigateTo('/account-recovery', navigate, {})}>Trouble logging in?</a>.
+              <a className={styles.registerLink} href="/account-recovery">Trouble logging in?</a>.
             </p>
             <p className={styles.registerInfo}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Don't you have an account yet? Register yourself <a className={styles.registerLink} onClick={() => NavigateTo('/register', navigate, {})}>here</a>.
+              Don't you have an account yet? Register yourself <a className={styles.registerLink} href="/register">here</a>.
             </p>
             <Container sx={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
               <Divider sx={{ width: '40%', marginY: '20px' }} />

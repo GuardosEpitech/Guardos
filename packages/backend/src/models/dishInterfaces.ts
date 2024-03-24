@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export const dishSchema = new mongoose.Schema({
   _id: Number,
+  uid: Number,
   name: String,
   description: String,
   products: [String],

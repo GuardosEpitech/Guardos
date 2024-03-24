@@ -7,6 +7,7 @@ import Filter from "@src/components/Filter/Filter";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
+import {getRestoFavourites} from "@src/services/favourites";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -45,10 +46,25 @@ const HomePage = () => {
     { name: "sulphides", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
+  const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
 
   useEffect(() => {
+    fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     loadFilter().then(r => console.log("Loaded search data."));
   }, []);
+
+  const fetchFavourites = async () => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    try {
+      const favourites = await getRestoFavourites(userToken);
+      const favouriteRestoIds = favourites.map((fav: any) => fav.uid);
+      setIsFavouriteRestos(favouriteRestoIds);
+    } catch (error) {
+      console.error("Error fetching user favourites:", error);
+    }
+  };
 
   const updateRestoData = () => {
     const inter: ISearchCommunication = { name: "" }
@@ -224,7 +240,8 @@ const HomePage = () => {
         <div>
           <h1 className={styles.TitleCard}>Berlin - +12548 Restaurants</h1>
           {filteredRestaurants?.map((item, index) => {
-            return <RestoCard resto={item} dataIndex={index} key={index} />
+            const isFavourite = isFavouriteRestos.includes(item.uid);
+            return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />
           })}
         </div>
       </div>
