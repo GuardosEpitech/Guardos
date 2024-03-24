@@ -6,10 +6,11 @@ export async function getMenuByRestoID(restoID: number, allergenList: string[]) 
 
   for (let i = 0; i < restaurant.categories.length; i++) {
     for (let j = 0; j < restaurant.categories[i].dishes.length; j++) {
-      const dishAllergens = restaurant.categories[i].dishes[j].allergens;
+      const dishAllergens = restaurant.categories[i].dishes[j].allergens
+        .map(a => a.toLowerCase());
       let containsUnwantedAllergens = false;
       for (let k = 0; k < allergenList.length; k++) {
-        if (dishAllergens.includes(allergenList[k])) {
+        if (dishAllergens.includes(allergenList[k].toLowerCase())) {
           containsUnwantedAllergens = true;
           break;
         }
