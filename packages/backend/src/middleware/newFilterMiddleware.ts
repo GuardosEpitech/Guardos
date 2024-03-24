@@ -78,7 +78,7 @@ function transformToIRestaurantBackend(data: any): IRestaurantBackEnd[] {
 
 function createBackEndObj(restaurant: IRestaurantBackEnd): IRestaurantBackEnd {
     const restaurantBE: IRestaurantBackEnd = {
-        id: restaurant.id,
+        uid: restaurant.uid,
         userID: restaurant.userID,
         name: restaurant.name,
         phoneNumber: restaurant.phoneNumber,
@@ -99,7 +99,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd): IRestaurantBackEnd {
     let dishId = 0;
     for (const dish of restaurant.dishes) {
         const dishObj: IDishBE = {
-            id: dishId,
+            uid: dishId,
             name: dish.name,
             description: dish.description,
             products: dish.products,
@@ -116,7 +116,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd): IRestaurantBackEnd {
     let extraId = 0;
     for (const extra of restaurant.extras) {
         const extraObj: IDishBE = {
-            id: extraId,
+            uid: extraId,
             name: extra.name,
             description: extra.description,
             products: extra.products,
@@ -144,7 +144,7 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
         picturesId: restaurant.picturesId,
         openingHours: restaurant.openingHours,
         products: restaurant.products,
-        id: restaurant.id,
+        uid: restaurant.uid,
         phoneNumber: restaurant.phoneNumber,
         categories: [],
         location: restaurant.location,
@@ -160,6 +160,7 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
         for (const dish of restaurant.dishes) {
             if (dish.category.menuGroup === mealType.name) {
                 const dishObj: IDishFE = {
+                    uid: dish.uid,
                     name: dish.name,
                     description: dish.description,
                     price: dish.price,
