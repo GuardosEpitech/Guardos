@@ -3,17 +3,50 @@ import {
     IRestaurantFrontEnd 
 } from "../../../shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "../models/communicationInterfaces";
-import { readAndGetAllRestaurants }
-  from '../controllers/connectDataBase';
 import { IDishFE, IDishBE } from "../../../shared/models/dishInterfaces";
 import { ICategories } from "../../../shared/models/categoryInterfaces";
+import {restaurantSchema} from '../models/restaurantInterfaces';
+import mongoose from 'mongoose';
+import { ILocation } from "../models/locationInterfaces";
+import { IMealType } from "../../../shared/models/mealTypeInterfaces";
+import { IOpeningHours } from "../../../shared/models/restaurantInterfaces";
+import { IProduct } from "../../../shared/models/restaurantInterfaces";
+import { createBackEndObj } from "../controllers/restaurantController";
+
+async function retrieveAllRestaurantsAsBE() {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const restaurants = await Restaurant.find();
+  const answer: [IRestaurantBackEnd] = [{} as IRestaurantBackEnd];
+  answer.pop();
+
+  for (const restaurant of await restaurants) {
+        const restaurantBE = createBackEndObj({
+          description: restaurant.description as string,
+          dishes: restaurant.dishes as [IDishBE],
+          extras: restaurant.extras as unknown as [IDishBE],
+          userID: restaurant.userID as number,
+          uid: restaurant._id as number,
+          location: restaurant.location as ILocation,
+          mealType: restaurant.mealType as [IMealType],
+          name: restaurant.name as string,
+          openingHours: restaurant.openingHours as [IOpeningHours],
+          phoneNumber: restaurant.phoneNumber as string,
+          pictures: restaurant.pictures as [string],
+          picturesId: restaurant.picturesId as [number],
+          products: restaurant.products as [IProduct],
+          rating: restaurant.rating as number,
+          ratingCount: restaurant.ratingCount as number,
+          website: restaurant.website as string
+        });
+        answer.push(restaurantBE);
+      }
+      return answer;
+}
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
-    
-    let data: any = await readAndGetAllRestaurants(); 
-    
-    const restoData: IRestaurantBackEnd[] = transformToIRestaurantBackend(data);
+    console.log(searchParams);
+    const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
 
     let filteredRestaurants: IRestaurantBackEnd[] = restoData;
 
@@ -61,77 +94,6 @@ export async function newfilterRestaurants
     return result;
 }
 
-function transformToIRestaurantBackend(data: any): IRestaurantBackEnd[] {
-    const results: IRestaurantBackEnd[] = [];
-
-    for (const elem of data) {
-        const obj = createBackEndObj(elem);
-        results.push(obj);
-    }
-    
-    for (const elem of results) {
-        elem.mealType.sort((a, b) => (a.sortId > b.sortId) ? 1 : -1);
-    }
-
-    return results;
-}
-
-function createBackEndObj(restaurant: IRestaurantBackEnd): IRestaurantBackEnd {
-    const restaurantBE: IRestaurantBackEnd = {
-        uid: restaurant.uid,
-        userID: restaurant.userID,
-        name: restaurant.name,
-        phoneNumber: restaurant.phoneNumber,
-        website: restaurant.website,
-        rating: restaurant.rating,
-        ratingCount: restaurant.ratingCount,
-        description: restaurant.description,
-        pictures: restaurant.pictures,
-        picturesId: restaurant.picturesId,
-        openingHours: restaurant.openingHours,
-        dishes: [],
-        location: restaurant.location,
-        mealType: restaurant.mealType,
-        extras: [],
-        products: restaurant.products
-    };
-
-    let dishId = 0;
-    for (const dish of restaurant.dishes) {
-        const dishObj: IDishBE = {
-            uid: dishId,
-            name: dish.name,
-            description: dish.description,
-            products: dish.products,
-            pictures: dish.pictures,
-            picturesId: dish.picturesId,
-            price: dish.price,
-            allergens: dish.allergens,
-            category: dish.category,
-        };
-        restaurantBE.dishes.push(dishObj);
-        dishId++;
-    }
-
-    let extraId = 0;
-    for (const extra of restaurant.extras) {
-        const extraObj: IDishBE = {
-            uid: extraId,
-            name: extra.name,
-            description: extra.description,
-            products: extra.products,
-            price: extra.price,
-            pictures: extra.pictures,
-            allergens: extra.allergens,
-            category: extra.category,
-        };
-        restaurantBE.extras.push(extraObj);
-        extraId++;
-    }
-    
-    return restaurantBE;
-}
-
 function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFrontEnd {
     const obj: IRestaurantFrontEnd = {
         name: restaurant.name,
@@ -149,8 +111,25 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
         categories: [],
         location: restaurant.location,
         range: 0,
-        dishes: []
+        dishes: [],
     };
+    const menuGroupToMealTypeIdMap: Map<string, number> = new Map();
+    for (const dish of restaurant.dishes) {
+        let mealTypeId = 0;
+        if (dish.category.menuGroup && menuGroupToMealTypeIdMap.has(dish.category.menuGroup)) {
+            mealTypeId = menuGroupToMealTypeIdMap.get(dish.category.menuGroup)!;
+        } else {
+            mealTypeId = menuGroupToMealTypeIdMap.size + 1;
+            menuGroupToMealTypeIdMap.set(dish.category.menuGroup, mealTypeId);
+            const newMealType: IMealType = {
+                name: dish.category.menuGroup,
+                id: mealTypeId,
+                sortId: mealTypeId 
+            };
+            restaurant.mealType.push(newMealType);
+        }
+    }
+
     for (const mealType of restaurant.mealType) {
         const category: ICategories = {
             name: mealType.name,

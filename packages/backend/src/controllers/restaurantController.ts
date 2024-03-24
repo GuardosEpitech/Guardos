@@ -13,7 +13,7 @@ import {ILocation} from '../../../shared/models/locationInterfaces';
 import {IRestaurantCommunication} from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
 
-function createBackEndObj(restaurant: IRestaurantBackEnd) {
+export function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
     name: restaurant.name,
     description: restaurant.description,
