@@ -129,7 +129,8 @@ const RestoCard = (props: IRestoCardProps) => {
                       redirectProps: {
                         menu: resto.categories,
                         restoName: resto.name,
-                        address: address
+                        address: address,
+                        menuDesignID: resto.menuDesignID
                       }
                     },
                     {
@@ -138,14 +139,16 @@ const RestoCard = (props: IRestoCardProps) => {
                       actionRedirect: "/editResto",
                       redirectProps: {
                         restoName: resto.name,
-                        phone: resto.name,
+                        phone: resto.phoneNumber,
                         street: resto.location.streetName,
                         streetNumber: resto.location.streetNumber,
                         postalCode: resto.location.postalCode,
                         city: resto.location.city,
                         country: resto.location.country,
                         description: resto.description,
-                        picturesId: resto.picturesId
+                        picturesId: resto.picturesId,
+                        menuDesignID: resto.menuDesignID,
+                        website: resto.website,
                       }
                     }
                   ]}

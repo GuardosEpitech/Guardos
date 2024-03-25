@@ -79,7 +79,7 @@ body {
 
 .restaurantSection {
   flex: 1;
-  max-width: 600px;
+  max-width: 800px;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
@@ -179,6 +179,45 @@ body {
 
 .saveButton:hover {
   background-color: #45a049;
+}
+
+.tabs {
+  display: flex;
+
+  button {
+    flex: 1;
+    padding: 0.7rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    color: #333;
+
+    &.activeTab {
+      background-color: #ccc;
+    }
+  }
+}
+
+.favoriteListContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.favoriteList {
+  width: 100%;
+  overflow-y: auto;
+  padding: 0.5rem;
+  max-height: 47rem;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .RestoCard, .Dish {
+    margin-bottom: 10px;
+  }
 }
 
 @media (min-width: 768px) {

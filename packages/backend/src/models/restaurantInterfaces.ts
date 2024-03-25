@@ -1,11 +1,5 @@
 import mongoose from 'mongoose';
 
-export interface IMealType {
-  _id: number;
-  name: string;
-  sortId: number;
-}
-
 //Database structure for restaurants
 export const restaurantSchema = new mongoose.Schema({
   _id: Number,
@@ -29,6 +23,7 @@ export const restaurantSchema = new mongoose.Schema({
   menuDesign: String,
   dishes: [{
     _id: Number,
+    uid: Number,
     name: String,
     description: String,
     products: [String],
@@ -81,4 +76,11 @@ export const restaurantSchema = new mongoose.Schema({
     allergens: [String],
     ingredients: [String],
   }],
+  menuDesignID: Number,
+  reviews: [{
+    _id: String,
+    note: Number,
+    comment: String,
+    date: Date,
+  }]
 });

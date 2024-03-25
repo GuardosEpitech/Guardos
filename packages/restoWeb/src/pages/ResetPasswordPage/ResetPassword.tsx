@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styles from './ResetPassword.module.scss';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 import { 
-    checkIfRestoUserExist 
+  sendRecoveryLinkForRestoUser, checkIfRestoUserExist
 } from '@src/services/userCalls';
 
 interface ResetPasswordProps {}
@@ -11,6 +16,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [username, setUsername] = useState('');
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(true);
+  const [disableButton, setDisableButton] = useState(false);
+  const [openFailed, setOpenFailed] = useState(true);
 
   const isValidEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,7 +36,15 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
         try {
             const response = await checkIfRestoUserExist({ email, username });
             if (response) {
-              window.location.href = '/login';
+              setDisableButton(true);
+              const emailWasSend = await sendRecoveryLinkForRestoUser({ email, username });
+              
+              if (emailWasSend) {
+                setStep(3);
+                setDisableButton(true);
+              } else {
+                setStep(4);
+              }
             } else {
               setError(`That username and email (${email}) don't match. Please check its spelling or try another username.`);
             }
@@ -51,6 +67,15 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     } else if (step === 2) {
       setUsername(e.target.value);
     }
+  };
+
+  const handleGoBackToLogin = () => {
+    setOpen(false);
+    window.location.href = '/login';
+  };
+
+  const handleGoBackToSite = () => {
+    setOpenFailed(false);
   };
 
   return (
@@ -99,18 +124,64 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           {error && <p className={styles.error}>{error}</p>}
         </>
       )}
-      <div className={styles.buttonsContainer}>
-        <button
-            onClick={handleContinue}
-            disabled={step === 1 ? 
-                !isValidEmail(email) : username.trim() === ''}
-            className={step === 1 ? isValidEmail(email) ? 
-                styles.buttonEnabled : '' : username.trim() !== '' ? 
-                styles.buttonEnabled : ''}
-        >
-            {step === 1 ? 'Continue' : 'Send My Password Reset Link'}
-        </button>
-      </div>
+      {step === 3 ? (
+        <div>
+          <Dialog open={open} onClose={handleGoBackToLogin}>
+            <DialogTitle>E-Mail was send!</DialogTitle>
+            <DialogContent>
+              <p>Please check your inbox for an email regarding password recovery, and also review your spam folder. The email contains a link that will remain valid for 15 minutes.</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      ) : (
+        <div>
+
+        </div>
+      )}
+      {step === 4 ? (
+        <div>
+          <Dialog open={openFailed} onClose={handleGoBackToSite}>
+            <DialogTitle>There was an Error.</DialogTitle>
+            <DialogContent>
+              <p>Please try again to get a recovery link. If the Error appears one more time, please contact us.</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      ) : (
+        <div>
+
+        </div>
+      )}
+      {disableButton === true ? (
+        <div className={styles.buttonsContainer}>
+          <button
+              onClick={handleContinue}
+              disabled={true}
+              className={styles.disableButton}
+          >
+              Send My Password Reset Link
+          </button>
+        </div>
+      ) : (
+        <div className={styles.buttonsContainer}>
+          <button
+              onClick={handleContinue}
+              disabled={step === 1 ? 
+                  !isValidEmail(email) : username.trim() === ''}
+              className={step === 1 ? isValidEmail(email) ? 
+                  styles.buttonEnabled : '' : username.trim() !== '' ? 
+                  styles.buttonEnabled : ''}
+          >
+              {step === 1 ? 'Continue' : 'Send My Password Reset Link'}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

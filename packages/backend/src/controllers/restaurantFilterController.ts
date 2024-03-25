@@ -19,7 +19,7 @@ export default class Filter {
     const data = await readAndGetAllRestaurants();
     for (const elem of data) {
       const obj = this.createBackEndObj({
-        id: elem.id,
+        uid: elem._id as number,
         name: elem.name,
         userID: elem.userID,
         description: elem.description,
@@ -34,7 +34,8 @@ export default class Filter {
         mealType: elem.mealType,
         dishes: elem.dishes,
         location: elem.location,
-        extras: elem.extras
+        extras: elem.extras,
+        menuDesignID: elem.menuDesignID
       });
       result.push(obj);
     }
@@ -52,7 +53,7 @@ export default class Filter {
       name: restaurant.name,
       userID: restaurant.userID,
       description: restaurant.description,
-      id: restaurant.id,
+      uid: restaurant.uid,
       website: restaurant.website,
       rating: restaurant.rating,
       ratingCount: restaurant.ratingCount,
@@ -65,6 +66,7 @@ export default class Filter {
       location: {} as ILocation,
       mealType: [{} as IMealType],
       extras: [{} as IDishBE],
+      menuDesignID: restaurant.menuDesignID
     };
     restaurantBE.dishes.pop();
     restaurantBE.mealType.pop();
@@ -72,10 +74,9 @@ export default class Filter {
     restaurantBE.products.pop();
     restaurantBE.openingHours.pop();
 
-    let dishId = 0;
     for (const dish of restaurant.dishes) {
       const dishObj: IDishBE = {
-        id: dishId,
+        uid: dish.uid,
         name: dish.name,
         description: dish.description,
         products: dish.products,
@@ -85,7 +86,6 @@ export default class Filter {
         allergens: dish.allergens,
         category: dish.category
       };
-      dishId++;
       restaurantBE.dishes.push(dishObj);
     }
     for (const openingHoursElement of restaurant.openingHours) {
@@ -98,10 +98,9 @@ export default class Filter {
       restaurantBE.products.push(product);
     }
     restaurantBE.location = restaurant.location;
-    let extraId = 0;
     for (const extra of restaurant.extras) {
       const extraObj: IDishBE = {
-        id: extraId,
+        uid: extra.uid,
         name: extra.name,
         description: extra.description,
         products: extra.products,
@@ -110,7 +109,6 @@ export default class Filter {
         allergens: extra.allergens,
         category: extra.category
       };
-      extraId++;
       restaurantBE.extras.push(extraObj);
     }
     return restaurantBE;
@@ -125,6 +123,7 @@ export default class Filter {
     if (isNaN(hitRate)) hitRate = 0;
     const obj: IRestaurantFrontEnd = {
       name: restaurant.name,
+      uid: restaurant.uid,
       website: restaurant.website,
       userID: restaurant.userID,
       description: restaurant.description,
@@ -134,13 +133,13 @@ export default class Filter {
       picturesId: restaurant.picturesId,
       openingHours: [{} as IOpeningHours],
       products: [{} as IProduct],
-      id: restaurant.id,
       phoneNumber: restaurant.phoneNumber,
       categories: [{} as ICategories],
       location: restaurant.location,
       hitRate: hitRate,
       range: 0,
-      dishes: [{} as IDishFE]
+      dishes: [{} as IDishFE],
+      menuDesignID: restaurant.menuDesignID
     };
     obj.categories.pop();
     obj.products.pop();
@@ -164,6 +163,7 @@ export default class Filter {
         if (dish.category.menuGroup === x.name) {
           const dishObj: IDishFE = {
             name: dish.name,
+            uid: dish.uid,
             description: dish.description,
             price: dish.price,
             pictures: dish.pictures,
