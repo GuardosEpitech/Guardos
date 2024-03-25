@@ -20,6 +20,7 @@
     "nodemailer": "^6.9.7",
     "pug": "2.0.0-beta11",
     "shared": "*",
+    "stripe": "^14.21.0",
     "uuid": "^9.0.1"
   },
   "main": "dist/index.js",
@@ -51,6 +52,7 @@
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.11",
     "@types/node": "^16.18.7",
+    "@types/stripe": "^8.0.417",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
