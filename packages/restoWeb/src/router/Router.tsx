@@ -41,7 +41,10 @@ const MVPRouter = () => {
     <BrowserRouter>
       <ScrollToTop />
       {isUserTokenSet === false && window.location.pathname !== '/register'
-        && window.location.pathname !== '/account-recovery' && (
+        && window.location.pathname !== '/account-recovery' &&
+        window.location.pathname !== '/payment-failed' && 
+        window.location.pathname !== '/payment-success' &&
+        window.location.pathname !== '/change-password' && (
         <Navigate to="login" />
       )}
       {isUserTokenSet === true && (window.location.pathname === '/register'
