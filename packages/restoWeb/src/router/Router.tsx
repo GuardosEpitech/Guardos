@@ -40,6 +40,9 @@ const MVPRouter = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {isUserTokenSet === false && window.location.pathname === '/change-password' && (
+        <Navigate to="/change-password" />
+      )}
       {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' && (
         <Navigate to="login" />

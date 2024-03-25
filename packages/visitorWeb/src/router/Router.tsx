@@ -35,6 +35,15 @@ const MVPRouter = () => {
 
   return (
     <BrowserRouter>
+      {isUserTokenSet === false && window.location.pathname === '/change-password' && (
+        <Navigate to="/change-password" />
+      )}
+      {isUserTokenSet === false && window.location.pathname === '/payment-success' && (
+        <Navigate to="/payment-success" />
+      )}
+      {isUserTokenSet === false && window.location.pathname === '/payment-failed' && (
+        <Navigate to="/payment-failed" />
+      )}
       {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' && (
         <Navigate to="login" />
