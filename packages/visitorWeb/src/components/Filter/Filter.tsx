@@ -99,8 +99,8 @@ const Filter = (props: FilterProps) => {
   const [newFilterName, setNewFilterName] = useState('');
   const [openLoadDialog, setOpenLoadDialog] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [range, setRange] = React.useState(props.filter.range ? props.filter.range : 100);
-  const [rating, setRating] = React.useState(props.filter.rating ? props.filter.rating[0] : 3);
+  const [range, setRange] = React.useState(props.filter.range ? props.filter.range : 0);
+  const [rating, setRating] = React.useState(props.filter.rating ? props.filter.rating[0] : 0);
   const [categories, setCategories] = useState(props.categories);
   const [allergens, setAllergens] = useState<allergen[]>(props.allergens);
   const [changeStatus, setChangeStatus] = useState(null);
@@ -395,9 +395,9 @@ const Filter = (props: FilterProps) => {
   const handleClearFilter = () => {
     // default values
     const clearedFilter: IFilterObject = {
-      rating: [3, 5],
-      range: 100,
-      categories: ['Burger', 'Pizza', 'Salad', 'Sushi', 'Pasta'],
+      rating: [0, 0],
+      range: 0,
+      categories: [],
       allergenList: [],
       location: '',
       name: ''
@@ -405,13 +405,13 @@ const Filter = (props: FilterProps) => {
 
     // Reset UI state
     setCategories((prevCategories) =>
-      prevCategories.map((category) => ({ ...category, value: true }))
+      prevCategories.map((category) => ({ ...category, value: false }))
     );
     setAllergens((prevAllergens) =>
       prevAllergens.map((allergen) => ({ ...allergen, colorButton: "primary", value: false }))
     );
-    setRating(3);
-    setRange(100);
+    setRating(0);
+    setRange(0);
 
     localStorage.removeItem('filter');
 
