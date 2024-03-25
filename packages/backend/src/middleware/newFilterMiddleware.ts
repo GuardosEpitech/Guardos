@@ -36,7 +36,8 @@ async function retrieveAllRestaurantsAsBE() {
           products: restaurant.products as [IProduct],
           rating: restaurant.rating as number,
           ratingCount: restaurant.ratingCount as number,
-          website: restaurant.website as string
+          website: restaurant.website as string,
+          menuDesignID: restaurant.menuDesignID as number
         });
         answer.push(restaurantBE);
       }
@@ -45,7 +46,7 @@ async function retrieveAllRestaurantsAsBE() {
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
-    console.log(searchParams);
+    
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
 
     let filteredRestaurants: IRestaurantBackEnd[] = restoData;
@@ -112,6 +113,7 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
         location: restaurant.location,
         range: 0,
         dishes: [],
+        menuDesignID: restaurant.menuDesignID
     };
     const menuGroupToMealTypeIdMap: Map<string, number> = new Map();
     for (const dish of restaurant.dishes) {
