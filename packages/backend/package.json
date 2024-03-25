@@ -20,7 +20,7 @@
     "nodemailer": "^6.9.7",
     "pug": "2.0.0-beta11",
     "shared": "*",
-    "stripe": "^14.21.0"
+    "stripe": "^14.21.0",
     "uuid": "^9.0.1"
   },
   "main": "dist/index.js",
