@@ -13,6 +13,7 @@ import IntroPage from "@src/pages/IntroPage";
 import ResetPassword from "@src/pages/ResetPasswordPage/ResetPassword";
 import PaymentSuccessPage from "@src/pages/Payments/Accept/PaymentSuccessPage";
 import PaymentFailedPage from "@src/pages/Payments/Failed/PaymentFailedPage";
+import RestoPage from "@src/pages/RestoPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
 
@@ -52,7 +53,7 @@ const MVPRouter = () => {
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/map" element={<MapPage />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<RestoPage />} />
           <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/account-recovery" element={<ResetPassword />} />
