@@ -11,7 +11,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 router.post('/create-checkout-session',
   async (req: express.Request, res: express.Response) => {
     try {
-      console.log(process.env.STRIPE_SECRET_KEY);
       const domainURL = req.body.domainURL;
 
       if (!domainURL) {
@@ -36,7 +35,8 @@ router.post('/create-checkout-session',
 
       res.redirect(303, session.url);
     } catch (error) {
-      console.error('Fehler beim Erstellen der Checkout-Session:', error);
+      console.error('Error while creating checkout-Session for free product:'
+        , error);
       res.status(500)
         .send({ error: error.message });
     }
