@@ -6,6 +6,8 @@ import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAuto
 import { styled } from '@mui/system';
 import { getRatingData, postRatingData } from "@src/services/ratingCalls";
 import Button from "@mui/material/Button";
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 const RatingPage = () => {
   const { restoName } = useLocation().state;
@@ -13,7 +15,15 @@ const RatingPage = () => {
   let comment: string = null;
   const ref = useRef(null);
   const [ratingData, setRatingData] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
 
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleComment = () => {
     comment = ref.current.value;
@@ -30,6 +40,7 @@ const RatingPage = () => {
   const addReview = () => {
     try {
       postRatingData(restoName, comment, note);
+      setOpen(true);
     }
     catch (err) {
       console.error(err);
@@ -102,6 +113,16 @@ const RatingPage = () => {
       </div>
 
       <div className={styles.Content}>
+      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Comment succelfully added
+        </Alert>
+      </Snackbar>
         <h2>Add a review</h2>
         <div className={styles.RatingSection}>
           <div className={styles.NoteContainer}>

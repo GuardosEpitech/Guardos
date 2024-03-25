@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
@@ -7,17 +7,8 @@ import StarHalfIcon from '@mui/icons-material/StarHalf';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-
-const RatingColor = () => {
-  return createTheme({
-    palette: {
-      primary: {
-        main: "#ffe227",
-        contrastText: "#000000",
-      },
-    },
-  });
-};
+import { getRatingData } from "@src/services/ratingCalls";
+import Rating from '@mui/material/Rating';
 
 interface IRatingProps {
   restoRating: number,
@@ -25,41 +16,45 @@ interface IRatingProps {
   restoName: string
 }
 
-const Rating = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
-  const fullRating = Math.floor(restoRating);
+const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
   const navigate = useNavigate();
+  const [ratingData, setRatingData] = React.useState([]);
+
+  const averageRating = () => {
+    let sum = 0;
+    if (Array.isArray(ratingData)) {
+      ratingData.forEach((data) => {
+        if (data.note === undefined) {
+          sum += 0;
+        } else {
+          sum += data.note;
+        }
+      });
+      return parseFloat((sum / ratingData.length).toFixed(1));
+    } else {
+      return sum;
+    }
+  };
+
+  useState(() => {
+    getRatingData(restoName).then(res => setRatingData(res));
+  })
 
   return (
-    <ThemeProvider theme={RatingColor}>
-      {[...Array(fullRating)].map((elem, index) =>
-        <ThemeProvider key={index} theme={RatingColor}>
-          <StarIcon className={styles.StarPosition} color="primary" />
-        </ThemeProvider>
-      )}
-      {restoRating - fullRating > 0 &&
-        <ThemeProvider theme={RatingColor}>
-          <StarHalfIcon className={styles.StarPosition} color={"primary"} />
-        </ThemeProvider>
-      }
-      {[...Array(Math.floor(5 - restoRating))].map((elem, index) =>
-        <ThemeProvider key={index} theme={RatingColor}>
-          <StarOutlineIcon className={styles.StarPosition} color={"primary"} />
-        </ThemeProvider>
-      )}
-      <span className={styles.RatingCount}>
-        {restoRatingsCount}
-      </span>
+    <div className={styles.ReviewContainer}>
+      <Rating name="read-only" value={averageRating()} readOnly />
+      <span className={styles.AverageTxt}>{averageRating()}</span>
       <Button
         className={styles.AddReview}
         variant="contained"
         onClick={() => NavigateTo("/addreview", navigate, {
           restoName: restoName,
         })}
-      >
+        >
         Add a review
       </Button>
-    </ThemeProvider>
+    </div>
   );
 };
 
-export default Rating;
+export default RatingDisplay;

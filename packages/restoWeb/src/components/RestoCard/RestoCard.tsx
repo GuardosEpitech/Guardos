@@ -9,7 +9,7 @@ import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
 import { deleteResto } from "@src/services/restoCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
-import Rating from "@src/components/RestoCard/Rating/Rating";
+import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import styles from "./RestoCard.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import {getImages} from "@src/services/callImages";
@@ -114,7 +114,7 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{resto.name}</h3>
-            <Rating
+            <RatingDisplay
               restoRating={resto.rating}
               restoRatingsCount={resto.ratingCount}
             />
