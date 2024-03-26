@@ -9,3 +9,23 @@
   font-family: "Montserrat", sans-serif;
   font-size: 0.8rem;
 }
+
+.AddReview {
+  all: unset;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  color: #ffffff !important;
+  background-color: #6D071A !important;
+  margin-left: 1rem !important;
+  text-transform: none !important;
+  font-size: 0.9rem !important;
+  width: auto !important;
+  height: 2rem !important;
+}
+
+.ReviewContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

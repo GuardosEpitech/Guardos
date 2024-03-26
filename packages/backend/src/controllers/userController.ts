@@ -57,6 +57,21 @@ export async function loginUser(username: string,
   return false;
 }
 
+export async function getUserToken(username:string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema.find();
+  for (const elem of userData) {
+    if (elem.username === username || elem.email === username) {
+      const token = elem.username ? elem.username : elem.email;
+      const password = AES.decrypt(elem.password as string, 'Guardos')
+        .toString(enc.Utf8);
+      return AES.encrypt(token + password, 'Guardos')
+        .toString();
+    }
+  }
+  return false;
+}
+
 export async function logoutUser(token: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.find();
@@ -116,6 +131,29 @@ export async function updateProfileDetails(userId: number,
     AES.decrypt(userData.password as string, 'Guardos')
       .toString(enc.Utf8), 'Guardos')
     .toString();
+}
+
+export async function updateRecoveryPassword(userId: number,
+  newPassword: string) {
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema.findOne({ uid: userId });
+
+    if (!userData) {
+      // User not found
+      return false;
+    }
+
+    // Update the password
+    userData.password = AES.encrypt(newPassword, 'Guardos')
+      .toString();
+    await userData.save();
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function updatePassword(userId: number, password: string,

@@ -5,6 +5,8 @@
   background: $white;
   margin-bottom: 1.5rem;
   border-radius: 1.2rem !important;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .DishBox:hover {
@@ -33,9 +35,11 @@
 }
 
 .DishTitle {
-  margin: 0 1rem 0.4rem 0;
+  margin: 0 1rem 0rem 0;
   font-family: "Montserrat", sans-serif;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .JustificationPrint {
@@ -77,4 +81,10 @@
 .RestoBtn {
   margin: 0 0.3rem !important;
   padding: 0.2rem 0.8rem !important;
+}
+
+.FavoriteIcon {
+  cursor: pointer;
+  margin-left: auto;
+  padding: 8px;
 }

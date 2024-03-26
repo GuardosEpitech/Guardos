@@ -40,6 +40,44 @@ export const checkIfVisitorUserExist = async (body: any) => {
   }
 };
 
+export const sendRecoveryLinkForVisitorUser = async (body: any) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'sendEmail/userVisitor/sendPasswordRecovery',
+      data: body,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+    throw new Error("Error checking visitor user");
+  }
+}
+
+export const updateVisitorPassword = async (token: string, 
+  newPassword: string) => {
+  try {
+    const response = await axios({
+      method: "PUT",
+      url: baseUrl + 'profile/updateRecoveryPassword',
+      params: {key: token},
+      data: {
+        newPassword: newPassword
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+    throw new Error("Error checking visitor user");
+  }
+}
+
 export const deleteAccount = async (token: string) => {
   try {
     const response = await axios({

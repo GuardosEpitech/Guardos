@@ -24,10 +24,11 @@ interface IMenuPageProps {
   menu: [ICategories];
   restoName: string;
   address: string;
+  menuDesignID: number;
 }
 
 const MenuPage = () => {
-  const { menu, restoName, address } = useLocation().state as IMenuPageProps;
+  const { menu, restoName, address, menuDesignID } = useLocation().state as IMenuPageProps;
 
   return (
     <>

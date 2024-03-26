@@ -5,7 +5,7 @@ import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import { OSM } from "ol/source";
 import { Point } from 'ol/geom';
-import { useGeographic } from 'ol/proj';
+import { fromLonLat, useGeographic } from 'ol/proj';
 import "ol/ol.css";
 import { Feature, Overlay } from "ol";
 import VectorSource from "ol/source/Vector";
@@ -20,7 +20,7 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 
 const Berlin = [13.409523443447888, 52.52111129522459];
-const Epitech = [13.328820, 52.508540];// long,lat
+const Epitech = [13.328820, 52.508540]; // long,lat
 
 useGeographic();
 
@@ -77,10 +77,9 @@ const MapView = (props: MapProps) => {
   const navigate = useNavigate();
   const mapElement = useRef();
   const [map, setMap] = useState(null);
-  const element = document.getElementById('popup');
-  const popupContent = document.getElementById('popup-content');
-  const [clickedFeature, setClickedFeature] =
-    useState<IRestaurantFrontEnd | null>(null);
+  const element = useRef(null);
+  const [clickedFeature, setClickedFeature] = useState<IRestaurantFrontEnd | null>(null);
+  const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
 
   const testMarkerL = useMemo(() => {
     let markerList: Feature[] = [];
@@ -88,14 +87,13 @@ const MapView = (props: MapProps) => {
       for (const elem of props.data) {
         const obj = new Feature({
           type: 'icon',
-          geometry: new Point([parseFloat(elem.location.longitude),
-          parseFloat(elem.location.latitude)]),
+          geometry: new Point([parseFloat(elem.location.longitude), parseFloat(elem.location.latitude)]),
           description: elem.name,
           telephone: elem.phoneNumber,
           address:
             elem.location.streetName + ' ' + elem.location.streetNumber +
             ', ' + elem.location.postalCode + ' ' + elem.location.city,
-          index: elem.id,
+          index: elem.uid,
           objectR: elem,
           name: 'Marker',
         });
@@ -142,8 +140,7 @@ const MapView = (props: MapProps) => {
   }, [vectorLayer, map]);
 
   const popup = useMemo(() => new Overlay({
-    element: element,
-    positioning: 'bottom-center',
+    element: element.current,
     stopEvent: false,
     autoPan: true,
     autoPanAnimation: {
@@ -159,68 +156,91 @@ const MapView = (props: MapProps) => {
 
   useEffect(() => {
     if (map) {
-      map.on('click', function (evt: any) {
+      const handleMapClick = (evt: any) => {
+        if (!map || !popup) {
+          console.error('Map or popup not initialized properly');
+          return;
+        }
+
+        if (popup.getPosition()) {
+          popup.setPosition(undefined);
+          setClickedFeature(null);
+        }
+
         const feature = map.forEachFeatureAtPixel(evt.pixel,
           function (feature: Feature) {
             return feature;
           });
-        if (!feature) {
-          popup.setPosition(undefined);
-          return;
-        }
+          if (!feature) {
+            popup.setPosition(undefined);
+            return;
+          }
+        popup.setPosition(feature.getGeometry().getCoordinates());
         const restaurant = feature.get('objectR') as IRestaurantFrontEnd;
         const picture = restaurant.pictures[0];
         const rating = restaurant.rating;
         const description = feature.get('description');
         const telephone = feature.get('telephone');
         const address = feature.get('address');
-        const content = ReactDOMServer.renderToString(
+        setPopupContent(
           <div>
-            <img src={picture} alt="Logo" style={{ width: '471px', height: '176px' }} />
+            <img src={picture} alt="Logo" className={styles.popupImg} />
             <h2>{description}</h2>
             <p>Rating: {rating}</p>
             <p>Tel.: {telephone}</p>
             <p>Address: {address}</p>
+            <ThemeProvider theme={PageBtn()}>
+              <Button
+                variant="contained"
+                sx={{ width: "12.13rem" }}
+                onClick={() => NavigateTo("/menu", navigate, {
+                  menu: restaurant.categories,
+                  restoName: restaurant.name,
+                  address: `${restaurant.location.streetName} 
+              ${restaurant.location.streetNumber}, 
+              ${restaurant.location.postalCode} 
+              ${restaurant.location.city}, 
+              ${restaurant.location.country}`,
+                })}
+              >
+                Restaurant page
+              </Button>
+            </ThemeProvider>
           </div>
         );
-        popupContent.innerHTML = content;
-        popup.setPosition(evt.coordinate);
+        
         setClickedFeature(restaurant);
-      });
-      map.on('pointermove', function (e: any) {
+      };
+
+      const handlePointerMove = (e: any) => {
         const pixel = map.getEventPixel(e.originalEvent);
         const hit = map.hasFeatureAtPixel(pixel);
         map.getTarget().style.cursor = hit ? 'pointer' : '';
-      });
+      };
+
+      map.on('click', handleMapClick);
+      map.on('pointermove', handlePointerMove);
+
+      return () => {
+        map.un('click', handleMapClick);
+        map.un('pointermove', handlePointerMove);
+      };
     }
-  }, [popup, map, setClickedFeature, clickedFeature]);
+  }, [map, popup, navigate]);
 
   return (
     <>
       <div ref={mapElement} className={styles.map} id="map" />
-      <div id="popup" className={styles.popup}>
-        <a href="#" id="popup-closer" className="ol-popup-closer"></a>
-        <div className="popover-content" id="popup-content"></div>
-        <ThemeProvider theme={PageBtn()}>
-          <Button
-            variant="contained"
-            sx={{ width: "12.13rem" }}
-            onClick={() => NavigateTo("/menu", navigate, {
-              menu: clickedFeature.categories,
-              restoName: clickedFeature.name,
-              address: `${clickedFeature.location.streetName} 
-              ${clickedFeature.location.streetNumber}, 
-              ${clickedFeature.location.postalCode} 
-              ${clickedFeature.location.city}, 
-              ${clickedFeature.location.country}`,
-            })}
-          >
-            Restaurant page
-          </Button>
-        </ThemeProvider>
-      </div>
+      {clickedFeature && (
+        <div id="popup" className={styles.popup}>
+          <a href="#" id="popup-closer" className="ol-popup-closer"></a>
+          <div className="popover-content" id="popup-content">
+            {popupContent}
+          </div>
+        </div>
+      )}
     </>
-  )
+  );
 };
 
 export default MapView;

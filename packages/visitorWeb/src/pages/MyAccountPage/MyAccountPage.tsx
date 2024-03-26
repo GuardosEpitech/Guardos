@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import {Button,Typography} from '@mui/material';
 
 import styles from "./MyAccountPage.module.scss";
 import {deleteAccount} from "@src/services/userCalls";
@@ -13,9 +14,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
 import {changeVisitorPassword, editVisitorProfileDetails, getVisitorProfileDetails} from "@src/services/profileCalls";
 import TextField from "@mui/material/TextField";
+import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
+import RestoCard from "@src/components/RestoCard/RestoCard";
+import Dish from "@src/components/menu/Dish/Dish";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -38,9 +41,14 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
 
+  const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
+  const [favoriteDishes, setFavoriteDishes] = useState([]);
+  const [activeTab, setActiveTab] = useState("restaurants");
 
   useEffect(() => {
     fetchProfileData();
+    fetchFavoriteRestaurants();
+    fetchFavoriteDishes();
   }, []);
 
   const fetchProfileData = () => {
@@ -54,9 +62,29 @@ const MyAccountPage = () => {
         setSelectedOptions(res.allergens);
         setPicture(res.profilePicId);
         setPreferredLanguage(res.preferredLanguage);
-        console.log(preferredLanguage);
-        console.log(res);
       });
+  };
+
+  const fetchFavoriteRestaurants = async () => {
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
+    const favorites = await getRestoFavourites(userToken);
+    setFavoriteRestaurants(favorites);
+  };
+
+  const fetchFavoriteDishes = async () => {
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
+    const favorites = await getDishFavourites(userToken);
+    setFavoriteDishes(favorites);
+  };
+
+  const handleTabChange = (tab: any) => {
+    setActiveTab(tab);
   };
 
   const handlePictureChange = (e : any) => {
@@ -335,16 +363,70 @@ const MyAccountPage = () => {
           </button>
         </div>
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>Delete Account</button>
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Typography variant="body1">You need a new feature? </Typography>
+          <Button onClick={() => window.location.href = '/feature-request'}>
+          Just ask for it !
+          </Button>
+      </div>   
+      </div>         
       <div className={styles.restaurantSection}>
-        <h1>Last Watched Restaurants</h1>
-        <ul>
-          {watchedRestaurants.map((restaurant, index) => (
-            <li key={index}>
-              <strong>{restaurant.name}</strong> - {restaurant.date}
-            </li>
-          ))}
-        </ul>
+        {/* Tabs for Favorite Restaurants and Dishes */}
+        <div className={styles.tabs}>
+          <button
+            className={activeTab === "restaurants" ? styles.activeTab : "none"}
+            onClick={() => handleTabChange("restaurants")}
+          >
+            Favorite Restaurants
+          </button>
+          <button
+            className={activeTab === "dishes" ? styles.activeTab : "none"}
+            onClick={() => handleTabChange("dishes")}
+          >
+            Favorite Dishes
+          </button>
+        </div>
+
+        {/* Display Favorite Restaurants or Dishes based on the active tab */}
+        <div className={styles.favoriteListContainer}>
+          {activeTab === "restaurants" && (
+            <div className={styles.favoriteList}>
+              <h2>Favorite Restaurants</h2>
+              {favoriteRestaurants.map((restaurant) => (
+                <RestoCard
+                  key={restaurant.id}
+                  resto={restaurant}
+                  isFavourite={true}
+                  dataIndex={0}
+                />
+              ))}
+            </div>
+          )}
+
+          {activeTab === "dishes" && (
+            <div className={styles.favoriteList}>
+              <h2>Favorite Dishes</h2>
+              {favoriteDishes.map((dish) => {
+                return (
+                  <Dish
+                    key={dish.dish.uid}
+                    dishName={dish.dish.name}
+                    dishAllergens={dish.dish.allergens}
+                    dishDescription={dish.dish.description}
+                    options={dish.dish.options}
+                    picturesId={dish.dish.picturesId}
+                    price={dish.dish.price}
+                    restoID={dish.restoID}
+                    dishID={dish.dish.uid}
+                    isFavourite={true}
+                  />
+                )
+              }
+
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <Dialog
         open={openDeletePopup}

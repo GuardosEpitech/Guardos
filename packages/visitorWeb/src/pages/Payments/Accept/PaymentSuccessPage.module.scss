@@ -1,0 +1,29 @@
+.paymentSuccessContainer {
+  text-align: center;
+  padding: 50px;
+  max-width: 600px;
+  margin: auto;
+
+  h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .homeLink {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
