@@ -125,7 +125,6 @@ const RestoCard = (props: IRestoCardProps) => {
                 <FavoriteBorderIcon id="no-favourite" color="error" />
               )}
             </div>
-
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />
