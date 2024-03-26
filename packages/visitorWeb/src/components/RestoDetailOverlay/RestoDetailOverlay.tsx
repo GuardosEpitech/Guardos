@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import {IOpeningHours, IRestaurantFrontEnd} from '../../../../shared/models/restaurantInterfaces';
 import {NavigateTo} from "@src/utils/NavigateTo";
-import Rating from "@src/components/RestoCard/Rating/Rating";
+import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import ScrollOverlay from '../ScrollOverlay/ScrollOverlay';
 import styles from "./RestoDetailOverlay.module.scss";
 
@@ -103,7 +103,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             <Typography variant="h4" component="h2" className={styles.DishTitle}>
               {name}
             </Typography>
-            <Rating restoRating={rating} restoRatingsCount={ratingCount}/>
+            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon/>

@@ -9,7 +9,7 @@ import { Grid, Paper } from "@mui/material";
 import styles from "./RestoCard.module.scss";
 
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
-import Rating from "@src/components/RestoCard/Rating/Rating";
+import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
@@ -119,7 +119,7 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{name}</h3>
-            <Rating restoRating={rating} restoRatingsCount={ratingCount} />
+            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name} />
             <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
               {isFavorite ? (
                 <FavoriteIcon id="favourite" color="error" />

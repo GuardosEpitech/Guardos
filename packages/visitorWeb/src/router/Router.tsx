@@ -16,6 +16,7 @@ import PaymentFailedPage from "@src/pages/Payments/Failed/PaymentFailedPage";
 import RestoPage from "@src/pages/RestoPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
+import RatingPage from "@src/pages/RatingPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -56,6 +57,7 @@ const MVPRouter = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
           <Route path="/menu" element={<MenuPage />} />
+          <Route path="/addreview" element={<RatingPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/" element={<RestoPage />} />
           <Route path="/about-us" element={<AboutUsPage />} />

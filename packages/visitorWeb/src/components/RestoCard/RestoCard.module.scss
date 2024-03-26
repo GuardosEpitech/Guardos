@@ -35,9 +35,11 @@
 }
 
 .DishTitle {
-  margin: 0 1rem 0.4rem 0;
+  margin: 0 1rem 0rem 0;
   font-family: "Montserrat", sans-serif;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .JustificationPrint {

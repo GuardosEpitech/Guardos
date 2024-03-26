@@ -9,13 +9,14 @@ import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
 import { deleteResto } from "@src/services/restoCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
-import Rating from "@src/components/RestoCard/Rating/Rating";
 import styles from "./RestoCard.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import {getImages} from "@src/services/callImages";
 import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
 import { IimageInterface } from "shared/models/imageInterface";
+import Rating from '@mui/material/Rating';
 import { displayImageFromBase64} from "shared/utils/imageConverter";
+import { getRatingData } from "@src/services/ratingCalls";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -44,6 +45,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const { onUpdate, resto, editable } = props;
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [ratingData, setRatingData] = React.useState([]);
 
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
@@ -66,6 +68,26 @@ const RestoCard = (props: IRestoCardProps) => {
     await deleteResto(resto.name);
     await onUpdate();
   }
+  const averageRating = () => {
+    let sum = 0;
+    if (Array.isArray(ratingData)) {
+      ratingData.forEach((data) => {
+        if (data.note === undefined) {
+          sum += 0;
+        } else {
+          sum += data.note;
+        }
+      });
+      return parseFloat((sum / ratingData.length).toFixed(1));
+    } else {
+      return sum;
+    }
+  };
+
+  useState(() => {
+    getRatingData(props.resto.name)
+      .then(res => setRatingData(res));
+  });
 
   useEffect(() => {
     async function callToImages() {
@@ -114,10 +136,9 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{resto.name}</h3>
-            <Rating
-              restoRating={resto.rating}
-              restoRatingsCount={resto.ratingCount}
-            />
+            <Rating name="read-only" value={averageRating()} readOnly />
+            <span className={styles.AverageTxt}>{Array.isArray(ratingData) ?
+              ratingData.length : 0}</span>
             {editable && (
               <>
                 <DishActions
