@@ -20,6 +20,9 @@ import {
 import {
   addProfilePicture, deleteProfilePicture, getUserId
 } from '../controllers/userController';
+import {
+  addRestoProfilePic, deleteRestoProfilePic, getUserIdResto
+} from '../controllers/userRestoController';
 
 const router = express.Router();
 // get image by id or by id array
@@ -160,6 +163,39 @@ router.post('/profile', async (req, res) => {
   }
 });
 
+router.post('/restoProfile', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const error: string = errorHandlingImage(req);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'Resto user not found' });
+    }
+    if (error) {
+      return res.status(404)
+        .send(error);
+    }
+
+    await saveImageToDB(
+      req.body.image.filename,
+      req.body.image.contentType,
+      req.body.image.size,
+      req.body.image.base64);
+
+    const id: number = await getLatestID();
+    await addRestoProfilePic(userID as number, id);
+    return res.status(200)
+      .send('Post Image for resto profile successfully');
+  } catch (e) {
+    console.error(e);
+    return res.status(404)
+      .send('Post Images failed');
+  }
+});
+
 router.delete('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
@@ -199,22 +235,44 @@ router.delete('/profile', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
-    const error: string = await errorHandlingImageDelete(req);
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    if (error) {
-      return res.status(404)
-        .send(error);
-    }
 
     await deleteProfilePicture(userID);
     await deleteImageFromDB(req.body.imageId);
     return res.status(200)
       .send('Delete Image for profile successfully');
+  } catch (e) {
+    console.error(e);
+    return res.status(404)
+      .send('Delete Images failed');
+  }
+});
+
+router.delete('/restoProfile', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const error: string = await errorHandlingImageDelete(req);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'Resto user not found' });
+    }
+    if (error) {
+      return res.status(404)
+        .send(error);
+    }
+
+    await deleteRestoProfilePic(userID as number, req.body.imageId);
+    await deleteImageFromDB(req.body.imageId);
+    return res.status(200)
+      .send('Delete Image for resto profile successfully');
   } catch (e) {
     console.error(e);
     return res.status(404)

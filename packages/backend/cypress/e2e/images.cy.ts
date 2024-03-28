@@ -163,6 +163,62 @@ describe('BE Images Test', () => {
       });
   });
 
+  it('Should POST image to resto profile', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/images/restoProfile',
+      param: { key: userToken },
+      body: { image: testImage1 }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+      });
+  });
+
+  it('Should DELETE image from resto profile', () => {
+    cy.request({
+      method: 'DELETE',
+      url: 'http://localhost:8081/api/images/restoProfile',
+      param: { key: userToken },
+      body: {
+        imageId: latestImageIdINT
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+      });
+  });
+
+  it('POST should FAIL because of missing token for visitor profile', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/images/profile',
+      failOnStatusCode: false,
+      body: {
+        image: testImage1
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(404);
+        expect(response.body).to.eq('User not found');
+      });
+  });
+
+  it('POST should FAIL because of missing token for resto profile', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/images/restoProfile',
+      failOnStatusCode: false,
+      body: {
+        image: testImage1
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(404);
+        expect(response.body).to.eq('Resto user not found');
+      });
+  });
+
   it('POST should FAIL because of wrong dish', () => {
     cy.request({
       method: 'POST',
