@@ -9,13 +9,17 @@ import {
   deleteImageFromDB,
   unlinkImageFromRestaurantDish,
   unlinkImageFromRestaurant,
-  getImageById, changeImageById
+  getImageById, changeImageById,
 } from '../controllers/imageController';
 import {
-  errorHandlingImage,
+  errorHandlingRestoDishImage,
   errorHandlingImageChange,
-  errorHandlingImageDelete
+  errorHandlingRestoDishImageDelete,
+  errorHandlingImage, errorHandlingImageDelete
 } from '../middleware/imagesMiddleWare';
+import {
+  addProfilePicture, deleteProfilePicture, getUserId
+} from '../controllers/userController';
 
 const router = express.Router();
 // get image by id or by id array
@@ -74,7 +78,7 @@ router.post('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
-    const error: string = await errorHandlingImage(_req);
+    const error: string = await errorHandlingRestoDishImage(_req);
     if (error) {
       return res.status(404)
         .send(error);
@@ -123,11 +127,44 @@ router.post('/', async (_req, res) => {
   }
 });
 
+router.post('/profile', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    const error: string = errorHandlingImage(req);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    if (error) {
+      return res.status(404)
+        .send(error);
+    }
+
+    await saveImageToDB(
+      req.body.image.filename,
+      req.body.image.contentType,
+      req.body.image.size,
+      req.body.image.base64);
+
+    const id: number = await getLatestID();
+    await addProfilePicture(userID, id);
+    return res.status(200)
+      .send('Post Image for profile successfully');
+  } catch (e) {
+    console.error(e);
+    return res.status(404)
+      .send('Post Images failed');
+  }
+});
+
 router.delete('/', async (_req, res) => {
   try {
     const dishName: string = _req.body.dish;
     const extraName: string = _req.body.extra;
-    const error: string = await errorHandlingImageDelete(_req);
+    const error: string = await errorHandlingRestoDishImageDelete(_req);
     if (error) {
       console.log(error);
       return res.status(404)
@@ -151,6 +188,33 @@ router.delete('/', async (_req, res) => {
     await deleteImageFromDB(_req.body.imageId);
     return res.status(200)
       .send('Delete Image for restaurant successfully');
+  } catch (e) {
+    console.error(e);
+    return res.status(404)
+      .send('Delete Images failed');
+  }
+});
+
+router.delete('/profile', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    const error: string = await errorHandlingImageDelete(req);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    if (error) {
+      return res.status(404)
+        .send(error);
+    }
+
+    await deleteProfilePicture(userID);
+    await deleteImageFromDB(req.body.imageId);
+    return res.status(200)
+      .send('Delete Image for profile successfully');
   } catch (e) {
     console.error(e);
     return res.status(404)

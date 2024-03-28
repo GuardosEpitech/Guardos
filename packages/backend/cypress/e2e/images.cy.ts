@@ -1,5 +1,6 @@
 describe('BE Images Test', () => {
-  
+  const userToken = 'U2FsdGVkX1%2BMBYMoRR9X%2BKoM4y76QrJBvqjLQKMvhtk%3D';
+
   let latestImageId;
   let latestImageIdEnd;
   let latestImageIdINT = -1;
@@ -129,6 +130,32 @@ describe('BE Images Test', () => {
         restaurant: restaurantTestName,
         extra: 'cheese',
         image: testImage1
+      }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+      });
+  });
+
+  it('Should POST image to profile', () => {
+    cy.request({
+      method: 'POST',
+      url: 'http://localhost:8081/api/images/profile',
+      param: { key: userToken },
+      body: { image: testImage1 }
+    })
+      .then((response) => {
+        expect(response.status).to.eq(200);
+      });
+  });
+
+  it('Should DELETE image from profile', () => {
+    cy.request({
+      method: 'DELETE',
+      url: 'http://localhost:8081/api/images/profile',
+      param: { key: userToken },
+      body: {
+        imageId: latestImageIdINT
       }
     })
       .then((response) => {
