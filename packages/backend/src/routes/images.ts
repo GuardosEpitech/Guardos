@@ -134,13 +134,13 @@ router.post('/profile', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
-    const error: string = errorHandlingImage(req);
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send({ error: 'User not found' });
+        .send('User not found');
     }
+    const error: string = errorHandlingImage(req);
     if (error) {
       return res.status(404)
         .send(error);
@@ -167,13 +167,13 @@ router.post('/restoProfile', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
-    const error: string = errorHandlingImage(req);
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send({ error: 'Resto user not found' });
+        .send('Resto user not found');
     }
+    const error: string = errorHandlingImage(req);
     if (error) {
       return res.status(404)
         .send(error);
@@ -239,7 +239,7 @@ router.delete('/profile', async (req, res) => {
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send({ error: 'User not found' });
+        .send('User not found');
     }
 
     await deleteProfilePicture(userID);
@@ -257,13 +257,13 @@ router.delete('/restoProfile', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
-    const error: string = await errorHandlingImageDelete(req);
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send({ error: 'Resto user not found' });
+        .send('Resto user not found');
     }
+    const error: string = await errorHandlingImageDelete(req);
     if (error) {
       return res.status(404)
         .send(error);

@@ -279,6 +279,10 @@ export async function updateAllergens(email: string, allergens: string) {
 }
 
 export async function getUserId(token: string) {
+  if (!token) {
+    return false;
+  }
+
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.find();
 

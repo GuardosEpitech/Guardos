@@ -1,5 +1,7 @@
 describe('BE Images Test', () => {
-  const userToken = 'U2FsdGVkX1%2BMBYMoRR9X%2BKoM4y76QrJBvqjLQKMvhtk%3D';
+  const visitorUserToken =
+    'U2FsdGVkX1+c2q6WF1AGhT8nhGOlFJg/ANr8U+HaTGM=';
+  const restoUserToken = 'U2FsdGVkX18YuqcWme6lCnPQnFeP0EjHii6WDPc/+Oo=';
 
   let latestImageId;
   let latestImageIdEnd;
@@ -141,7 +143,7 @@ describe('BE Images Test', () => {
     cy.request({
       method: 'POST',
       url: 'http://localhost:8081/api/images/profile',
-      param: { key: userToken },
+      qs: { key: visitorUserToken },
       body: { image: testImage1 }
     })
       .then((response) => {
@@ -153,7 +155,7 @@ describe('BE Images Test', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/images/profile',
-      param: { key: userToken },
+      qs: { key: visitorUserToken },
       body: {
         imageId: latestImageIdINT
       }
@@ -167,7 +169,7 @@ describe('BE Images Test', () => {
     cy.request({
       method: 'POST',
       url: 'http://localhost:8081/api/images/restoProfile',
-      param: { key: userToken },
+      qs: { key: restoUserToken },
       body: { image: testImage1 }
     })
       .then((response) => {
@@ -179,7 +181,7 @@ describe('BE Images Test', () => {
     cy.request({
       method: 'DELETE',
       url: 'http://localhost:8081/api/images/restoProfile',
-      param: { key: userToken },
+      qs: { key: restoUserToken },
       body: {
         imageId: latestImageIdINT
       }
