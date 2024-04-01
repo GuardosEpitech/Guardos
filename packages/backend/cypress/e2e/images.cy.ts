@@ -148,6 +148,7 @@ describe('BE Images Test', () => {
     })
       .then((response) => {
         expect(response.status).to.eq(200);
+        expect(response.body.message).to.be.a('number');
       });
   });
 
@@ -174,6 +175,7 @@ describe('BE Images Test', () => {
     })
       .then((response) => {
         expect(response.status).to.eq(200);
+        expect(response.body.message).to.be.a('number');
       });
   });
 

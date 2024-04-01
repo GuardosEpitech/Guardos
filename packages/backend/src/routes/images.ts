@@ -155,7 +155,7 @@ router.post('/profile', async (req, res) => {
     const id: number = await getLatestID();
     await addProfilePicture(userID, id);
     return res.status(200)
-      .send('Post Image for profile successfully');
+      .send({message: id});
   } catch (e) {
     console.error(e);
     return res.status(404)
@@ -188,7 +188,7 @@ router.post('/restoProfile', async (req, res) => {
     const id: number = await getLatestID();
     await addRestoProfilePic(userID as number, id);
     return res.status(200)
-      .send('Post Image for resto profile successfully');
+      .send({message: id});
   } catch (e) {
     console.error(e);
     return res.status(404)
