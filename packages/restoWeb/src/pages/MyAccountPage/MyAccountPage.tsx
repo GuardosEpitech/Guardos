@@ -17,13 +17,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {useTranslation} from "react-i18next";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [picture, setPicture] = useState('');
   const [menuDesign, setMenuDesign] = useState('');
-  const [preferredLanguage, setPreferredLanguage] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState('en');
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -36,6 +37,7 @@ const MyAccountPage = () => {
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate();
+  const {i18n} = useTranslation();
 
   useEffect(() => {
     fetchProfileData();
@@ -50,7 +52,7 @@ const MyAccountPage = () => {
         setName(res.username);
         setPicture(res.profilePicId);
         setMenuDesign(res.defaultMenuDesign);
-        setPreferredLanguage(res.preferredLanguage);
+        setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
   };
 
@@ -147,6 +149,7 @@ const MyAccountPage = () => {
       defaultMenuDesign: menuDesign,
       preferredLanguage: preferredLanguage
     });
+    i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
     if (!res) {

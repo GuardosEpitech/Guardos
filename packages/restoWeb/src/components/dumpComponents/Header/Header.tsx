@@ -6,12 +6,16 @@ import logo from "@src/assets/logo.png";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { checkIfTokenIsValid } from '../../../services/userCalls';
 import styles from "./Header.module.scss";
+import TranslateIcon from "@mui/icons-material/Translate";
+import {useTranslation} from "react-i18next";
 
 const Header = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLogInSite, setIsLogInSite] = useState(false);
 
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const { i18n } = useTranslation();
   const usePathPattern = useLocation();
 
   function logoutUser() {
@@ -49,6 +53,11 @@ const Header = () => {
     }
     checkUserToken();
   }, [navigate]);
+
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    setShowLanguageDropdown(false);
+  };
 
   return (
     <div className={loggedIn ? styles.BackgroundRectLoggedIn
@@ -122,6 +131,29 @@ const Header = () => {
           My Products
         </a>
       }
+      { !loggedIn && isLogInSite && (
+        <a
+          className={styles.NavTitle}
+          onClick={() => {
+            setShowLanguageDropdown(!showLanguageDropdown);
+          }}
+        >
+          <TranslateIcon fontSize="medium" />
+          {showLanguageDropdown && (
+            <div className={styles.languageDropdown}>
+              <button className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                English
+              </button>
+              <button className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                German
+              </button>
+              <button className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                French
+              </button>
+            </div>
+          )}
+        </a>
+      )}
     </div>
   );
 };

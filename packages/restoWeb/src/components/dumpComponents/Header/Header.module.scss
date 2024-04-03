@@ -100,3 +100,30 @@
   height: 6.25rem;
   border-radius: 50%;
 }
+
+.languageButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.languageDropdown {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: #ccc;
+  z-index: 1;
+}
+
+.languageOption {
+  padding: 10px;
+  border-bottom-width: 1px;
+  border-bottom-color: #ccc;
+}
