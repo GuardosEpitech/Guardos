@@ -1,0 +1,73 @@
+{
+  "translation": {
+    "common": {
+      "save": "Speichern",
+      "submit": "Senden",
+      "apply-changes": "Änderungen übernehmen",
+      "change": "Ändern",
+      "confirm": "Bestätigen",
+      "ok": "OK",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "delete": "Löschen",
+      "yes": "Ja",
+      "no": "Nein",
+
+      "english": "Englisch",
+      "german": "Deutsch",
+      "french": "Französisch",
+
+      "ingredients": "Zutaten",
+      "my-ingredients": "Meine Zutaten",
+      "products": "Produkte",
+      "my-products": "Meine Produkte",
+      "dishes": "Gerichte",
+      "my-dishes": "Meine Gerichte",
+      "restos": "Restaurants",
+      "my-restos": "Meine Restaurants",
+
+      "add-picture": "Tippe, um ein Bild hinzuzufügen",
+
+      "loading": "Lädt...",
+
+      "success": "Geschafft",
+      "error": "Fehler",
+      "unexpected-error": "Ein unerwarteter Fehler ist aufgetreten",
+      "all-fields-mandatory": "Alle Felder sind Pflichtfelder.",
+      "need-cam-permissions": "Wir benötigen zusätzliche Berechtigungen für die Kamera!"
+    },
+    "components": {
+      "DishCard": {
+        "no-name": "Kein Name",
+        "no-description": "Keine Beschreibung"
+      },
+      "ErrorBoundary": {
+        "oops": "Hoppla!",
+        "error": "Es liegt ein Fehler vor",
+        "try-again": "Erneut versuchen"
+      },
+      "ModalConfirm": {
+        "do-you-want-to-delete-product": "Möchten Sie dieses Produkt wirklich löschen?"
+      },
+      "ProductCard": {
+        "ingredients": "Zutaten: {{ ingredients }}"
+      },
+      "ProductForm": {
+        "product-name": "Produktname",
+        "select-ingredients": "Zutaten auswählen",
+        "restos": "Restaurants",
+        "select-restos": "Restaurants auswählen",
+        "edit-product": "Produkt bearbeiten",
+        "add-product": "Produkt hinzufügen"
+      },
+      "RestaurantCard": {
+        "rating": "Bewertung: {{ rating }} ({{ ratingCount }} Bewertungen)"
+      }
+    },
+    "pages": {
+      "LoginPage": {
+        "login": "Anmelden"
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "translation": {
+    "common": {
+      "save": "Enregistrer",
+      "submit": "Envoyer",
+      "apply-changes": "Appliquer les modifications",
+      "change": "Modifier",
+      "confirm": "Confirmer",
+      "ok": "OK",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "delete": "Supprimer",
+      "yes": "Oui",
+      "no": "Non",
+
+      "english": "Anglais",
+      "german": "Allemand",
+      "french": "Français",
+
+      "ingredients": "Ingrédients",
+      "my-ingredients": "Mes ingrédients",
+      "products": "Produits",
+      "my-products": "Mes produits",
+      "dishes": "Plats",
+      "my-dishes": "Mes plats",
+      "restos": "Restaurants",
+      "my-restos": "Mes restaurants",
+
+      "add-picture": "Appuyez pour ajouter une image",
+
+      "loading": "Chargement...",
+
+      "success": "Succès",
+      "error": "Erreur",
+      "unexpected-error": "Une erreur inattendue s'est produite",
+      "all-fields-mandatory": "Tous les champs sont obligatoires.",
+      "need-cam-permissions": "Désolé, nous avons besoin des autorisations de la galerie photo pour que cela fonctionne !"
+    },
+    "components": {
+      "DishCard": {
+        "no-name": "Pas de nom",
+        "no-description": "Pas de description"
+      },
+      "ErrorBoundary": {
+        "oops": "Oups !",
+        "error": "Une erreur s'est produite",
+        "try-again": "Réessayer"
+      },
+      "ModalConfirm": {
+        "do-you-want-to-delete-product": "Êtes-vous sûr de vouloir supprimer ce produit ?"
+      },
+      "ProductCard": {
+        "ingredients": "Ingrédients : {{ ingredients }}"
+      },
+      "ProductForm": {
+        "product-name": "Nom du produit",
+        "select-ingredients": "Sélectionner les ingrédients",
+        "restos": "Restaurants",
+        "select-restos": "Sélectionner les restaurants",
+        "edit-product": "Modifier le produit",
+        "add-product": "Ajouter un produit"
+      },
+      "RestaurantCard": {
+        "rating": "Note : {{ rating }} ({{ ratingCount }} évaluations)"
+      }
+    },
+    "pages": {
+      "LoginPage": {
+        "login": "Connexion"
+      }
+    }
+  }
+}

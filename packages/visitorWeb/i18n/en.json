@@ -37,12 +37,9 @@
       "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!"
     },
     "components": {
-      "MapButton": {
-        "enter-map-view": "Go to Map View"
-      }
     },
     "pages": {
-      "Router": {
+      "LoginPage": {
         "login": "Login"
       }
     }

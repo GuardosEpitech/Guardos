@@ -141,15 +141,15 @@ const Header = () => {
           <TranslateIcon fontSize="medium" />
           {showLanguageDropdown && (
             <div className={styles.languageDropdown}>
-              <button className={styles.languageOption} onClick={() => changeLanguage('en')}>
+              <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
                 English
-              </button>
-              <button className={styles.languageOption} onClick={() => changeLanguage('de')}>
+              </a>
+              <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
                 German
-              </button>
-              <button className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+              </a>
+              <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
                 French
-              </button>
+              </a>
             </div>
           )}
         </a>

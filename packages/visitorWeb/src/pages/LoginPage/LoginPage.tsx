@@ -9,6 +9,7 @@ import FacebookLogo from '../../assets/Facebook.png';
 import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
+import {useTranslation} from "react-i18next";
 
 interface LoginUser {
   username: string;
@@ -25,6 +26,7 @@ const Login = () => {
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
+  const {t} = useTranslation();
 
   const handleFacebookLogin = () => {
     // Implement Facebook login logic here
@@ -77,7 +79,7 @@ const Login = () => {
     <>
       <Layout>
         <div className={styles.loginForm}>
-          <h2>Login</h2>
+          <h2>{t('pages.LoginPage.login')}</h2>
           <form onSubmit={handleSubmit}>
             <TextField
               label="Username or Email"

@@ -19,6 +19,7 @@ import TextField from "@mui/material/TextField";
 import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import Dish from "@src/components/menu/Dish/Dish";
+import {useTranslation} from "react-i18next";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +30,7 @@ const MyAccountPage = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate();
-  const [preferredLanguage, setPreferredLanguage] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState('en');
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -44,6 +45,7 @@ const MyAccountPage = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [favoriteDishes, setFavoriteDishes] = useState([]);
   const [activeTab, setActiveTab] = useState("restaurants");
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     fetchProfileData();
@@ -61,7 +63,7 @@ const MyAccountPage = () => {
         setCity(res.city);
         setSelectedOptions(res.allergens);
         setPicture(res.profilePicId);
-        setPreferredLanguage(res.preferredLanguage);
+        setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
   };
 
@@ -192,6 +194,7 @@ const MyAccountPage = () => {
       allergens: selectedOptions,
       preferredLanguage: preferredLanguage
     });
+    i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
     if (!res) {
