@@ -2,9 +2,10 @@
   "translation": {
     "common": {
       "save": "Speichern",
-      "submit": "Senden",
+      "submit": "Einreichen",
       "apply-changes": "Änderungen übernehmen",
       "change": "Ändern",
+      "edit": "Bearbeiten",
       "confirm": "Bestätigen",
       "ok": "OK",
       "cancel": "Abbrechen",
@@ -26,167 +27,210 @@
       "restos": "Restaurants",
       "my-restos": "Meine Restaurants",
 
-      "add-picture": "Tippe, um ein Bild hinzuzufügen",
+      "add-picture": "Tippen, um ein Bild hinzuzufügen",
 
-      "loading": "Lädt...",
+      "loading": "Laden...",
 
-      "success": "Geschafft",
+      "success": "Erfolg",
       "error": "Fehler",
       "unexpected-error": "Ein unerwarteter Fehler ist aufgetreten",
       "all-fields-mandatory": "Alle Felder sind Pflichtfelder.",
-      "need-cam-permissions": "Wir benötigen zusätzliche Berechtigungen für die Kamera!"
+      "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für den Kamerazugriff, damit dies funktioniert!"
     },
     "components": {
-      "DishCard": {
-        "no-name": "Kein Name",
-        "no-description": "Keine Beschreibung"
+      "MapButton": {
+        "enter-map-view": "Zur Kartenansicht wechseln"
       },
-      "ErrorBoundary": {
-        "oops": "Hoppla!",
-        "error": "Es liegt ein Fehler vor",
-        "try-again": "Erneut versuchen"
+      "Header": {
+        "login": "Einloggen",
+        "logout": "Ausloggen",
+        "home": "Startseite",
+        "my-account": "Mein Konto"
       },
-      "ModalConfirm": {
-        "do-you-want-to-delete-product": "Möchten Sie dieses Produkt wirklich löschen?"
+      "SuccessAlert": {
+        "success-msg": "Dies ist eine Erfolgsmeldung!"
       },
-      "ProductCard": {
-        "ingredients": "Zutaten: {{ ingredients }}"
+      "DishForm": {
+        "alt-img": "Restaurantbild",
+        "change-img": "Bild ändern",
+        "delete-img": "Bild löschen",
+        "name": "Name",
+        "name-is-required": "Name ist erforderlich",
+        "price": "Preis",
+        "price-is-required": "Preis ist erforderlich",
+        "description": "Beschreibung",
+        "select-min-one-product": "Bitte wählen Sie mindestens ein Produkt aus",
+        "allergens": "Allergene",
+        "food-category": "Essenskategorie",
+        "select-min-one-category": "Bitte wählen Sie mindestens eine Kategorie aus",
+        "resto": "Restaurant",
+        "select-min-one-resto": "Bitte wählen Sie mindestens ein Restaurant aus"
       },
       "ProductForm": {
-        "product-name": "Produktname",
-        "select-ingredients": "Zutaten auswählen",
-        "restos": "Restaurants",
-        "select-restos": "Restaurants auswählen",
-        "edit-product": "Produkt bearbeiten",
-        "add-product": "Produkt hinzufügen"
+        "name": "Name",
+        "input-empty-error": "Eingabe darf nicht leer sein",
+        "resto": "Restaurant"
       },
-      "RestaurantCard": {
-        "rating": "Bewertung: {{ rating }} ({{ ratingCount }} Bewertungen)"
+      "RestaurantForm": {
+        "alt-img": "Restaurantbild",
+        "change-image": "Bild ändern",
+        "delete-image": "Bild löschen",
+        "name": "Name",
+        "phone-number": "Telefonnummer",
+        "street-name": "Straßenname",
+        "street-number": "Hausnummer",
+        "postal-code": "Postleitzahl",
+        "city": "Stadt",
+        "country": "Land",
+        "description": "Beschreibung",
+        "opening": "Öffnungszeit",
+        "closing": "Schließzeit",
+        "website": "Webseite",
+        "menu-design": "Menüdesign"
+      },
+      "Dish": {
+        "confirm-delete": "Sind Sie sicher, dass Sie {{ dishName }} löschen möchten?",
+        "options": "Optionen: "
+      },
+      "ProductCard": {
+        "confirm-delete": "Sind Sie sicher, dass Sie {{ productName }} löschen möchten?",
+        "ingredients": "Zutaten: "
+      },
+      "RestoCard": {
+        "menu": "Menü",
+        "confirm-delete": "Sind Sie sicher, dass Sie {{ restoName }} löschen möchten?",
+        "opening-hours": "Öffnungszeiten"
       }
     },
     "pages": {
-      "AddPage": {
-        "add-ingredient": "Zutat hinzufügen"
+      "AddDishPage": {
+        "my-new-dish": "Mein neues Gericht"
       },
-      "AddProductScreen": {
-        "add-product": "Neues Produkt hinzufügen"
+      "AddProductPage": {
+        "my-new-product": "Mein neues Produkt"
       },
-      "AddEditRestaurantScreen": {
-        "add-resto-failed": "Restaurant konnte nicht hinzugefügt werden. Bitte versuchen Sie es erneut.",
-        "resto-name-mandatory": "Restaurantname *",
-        "phone-number": "Telefonnummer",
-        "street-name-mandatory": "Straßenname *",
-        "street-number-mandatory": "Hausnummer *",
-        "postal-code-mandatory": "Postleitzahl *",
-        "city-mandatory": "Stadt *",
-        "country-mandatory": "Land *",
-        "description": "Beschreibung",
-        "website": "Webseite",
-        "select-menu-design": "Menüdesign auswählen:",
-        "add-resto": "Restaurant hinzufügen"
+      "AddRestaurantPage": {
+        "my-new-resto": "Mein neues Restaurant"
       },
-      "EditDishScreen": {
-        "dish-name": "Gerichtsname",
-        "price": "Preis",
-        "description": "Beschreibung",
-        "add-product": "Neues Produkt hinzufügen",
-        "allergens": "Allergene",
-        "add-allergens": "Neue Allergene hinzufügen",
-        "food-category": "Essenskategorie",
-        "add-category": "Neue Kategorie hinzufügen",
-        "resto": "Restaurant",
-        "add-resto": "Neues Restaurant hinzufügen",
-        "categories": "Kategorien"
+      "AppOutlet": {
+        "contact": "Kontakt:",
+        "email": "E-Mail: contact@guardos.com",
+        "phone": "Telefon: +49 211 1234567",
+        "location": "Standort: contact@guardos.com"
+      },
+      "ChangePassword": {
+        "invalid-link-redirect-to-mainpage": "Ihr Link ist ungültig. Sie werden zur Startseite weitergeleitet.",
+        "change-pw": "Passwort ändern",
+        "email": "E-Mail",
+        "new-pw": "Neues Passwort",
+        "wrong-pw-format": "Ihr Passwort muss mindestens 1 Großbuchstaben, 1 Kleinbuchstaben, 1 Zahl und mindestens 7 Zeichen enthalten",
+        "repeat-pw": "Passwort wiederholen",
+        "no-match-pw": "Ihr Passwort stimmt nicht überein. Bitte überprüfen Sie Ihr wiederholtes Passwort",
+        "change-pw-success": "Passwortänderung erfolgreich",
+        "save-pw-warning": "Stellen Sie sicher, dass Sie Ihr Passwort an einem sicheren Ort speichern.",
+        "go-back-to-login": "Zurück zum Login",
+        "error": "Ein Fehler ist aufgetreten",
+        "change-pw-failure": "Bitte versuchen Sie erneut, das Passwort zu ändern. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte."
+      },
+      "DishesPage": {
+        "no-dishes-yet": "Hoppla, es sieht so aus, als hätten Sie noch keine Gerichte!",
+        "add-first-dish": "Fügen Sie Ihr erstes Gericht hinzu, indem Sie ",
+        "here": "hier",
+        "add-dish": "ein Gericht hinzufügen"
+      },
+      "EditDishPage": {
+        "edit-dish": "Gericht bearbeiten"
       },
       "EditProductPage": {
         "edit-product": "Produkt bearbeiten"
       },
-      "EditRestaurant": {
-        "updated-resto-success": "Restaurantdaten erfolgreich aktualisiert",
-        "updated-resto-failure": "Aktualisierung der Restaurantdaten fehlgeschlagen"
+      "EditRestaurantPage": {
+        "edit-resto": "Restaurant bearbeiten"
       },
       "FeatureRequest": {
+        "feature-request": "Feature-Anfrage",
         "name": "Name",
         "subject": "Betreff",
-        "request": "Anfragen"
+        "request": "Ihre Anfrage",
+        "email-sent-success": "E-Mail erfolgreich gesendet!"
       },
-      "MenuPage": {
-        "price": "Preis: {{ price }}",
-        "allergens": "Allergene: {{ allergens }}",
-        "confirm-delete-dish": "Möchten Sie dieses Gericht wirklich löschen?"
+      "HomePage": {
+        "no-restos-yet": "Sie haben derzeit kein aktives Restaurant. Sie können auf die Schaltfläche unten rechts klicken, um ein neues hinzuzufügen.",
+        "please": "Bitte ",
+        "login": "Einloggen",
+        "to-see-your-restos": ", um Ihre Restaurants zu sehen.",
+        "add-resto": "Restaurant hinzufügen"
       },
-      "Profile": {
-        "change-pw": "Passwort ändern",
-        "old-pw": "Altes Passwort eingeben",
-        "new-pw": "Neues Passwort eingeben",
-        "wrong-pw-format": "Ihr Passwort sollte mindestens enthalten: 1x Großbuchstaben und Kleinbuchstaben, 1x Zahl und mindestens 7 Zeichen",
-        "same-pw": "Ihr neues Passwort darf nicht Ihrem alten Passwort entsprechen",
-        "confirm-pw": "Neues Passwort bestätigen",
-        "no-match": "Ihr Passwort stimmt nicht überein",
-        "pw-changed": "Passwort geändert",
-
+      "LoginPage": {
+        "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",
+        "redirect-google-login": "Weiterleitung zur Google-Anmeldung",
+        "login": "Einloggen",
         "username-or-email": "Benutzername oder E-Mail",
         "password": "Passwort",
-        "invalid-login": "Ungültige Anmeldedaten",
-        "login": "Anmelden",
+        "invalid-credentials": "Ungültige Anmeldedaten",
         "trouble-logging-in": "Probleme beim Einloggen?",
-        "register-prompt": "Sie haben noch kein Konto? Registrieren Sie sich ",
-        "register-here": "hier",
-        "or": "oder",
-        "default": "Standard",
-        "fast-food": "Fast-Food",
-        "pizzeria": "Pizzeria",
-
-        "logout": "Abmelden",
-        "confirm-logout": "Möchten Sie sich wirklich abmelden?",
+        "register-if-no-account": "Sie haben noch kein Konto? Registrieren Sie sich ",
+        "here": "hier",
+        "or": "Oder",
+        "facebook-img-alt": "Facebook-Logo",
+        "google-img-alt": "Google-Logo"
+      },
+      "MyAccountPage": {
+        "account-page": "Kontoübersicht",
+        "data-changed-success": "Profilangaben erfolgreich geändert!",
+        "data-changed-failure": "Ändern der Profildetails fehlgeschlagen.",
+        "profile-pic": "Profilbild:",
+        "pic-alt": "Profil",
+        "email": "E-Mail:",
+        "name": "Name:",
+        "menu-design": "Menüdesign",
+        "preferred-language": "Bevorzugte Sprache",
+        "language": "Sprache",
+        "change-pw": "Passwort ändern",
+        "change-pw-success": "Passwort erfolgreich geändert!",
+        "change-pw-failure": "Ändern des Passworts fehlgeschlagen. Bitte überprüfen Sie Ihr altes Passwort und versuchen Sie es erneut.",
+        "old-pw": "Altes Passwort",
+        "incorrect-pw": "Falsches Passwort",
+        "new-pw": "Neues Passwort",
+        "wrong-pw-format": "Ihr Passwort muss mindestens 1 Großbuchstaben, 1 Kleinbuchstaben, 1 Zahl und mindestens 7 Zeichen enthalten",
+        "confirm-pw": "Passwort bestätigen",
+        "no-match-pw": "Passwörter stimmen nicht überein",
+        "save-pw": "Passwort speichern",
+        "save-changes": "Änderungen speichern",
         "delete-account": "Konto löschen",
-        "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-        "delete-account-failure-login": "Löschen des Kontos fehlgeschlagen. Bitte loggen Sie sich erneut ein.",
-        "delete-account-failure-retry": "Löschen des Kontos fehlgeschlagen. Bitte versuchen Sie es erneut.",
-        "profile-page": "Mein Profil",
-        "add-picture": "Bild hinzufügen",
-        "username": "Benutzername",
-        "email": "E-Mail",
-        "feature-request": "Feature anfragen",
-
+        "feature-request": "Benötigen Sie ein neues Feature? ",
+        "just-ask": "Fragen Sie einfach danach!",
+        "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+      },
+      "ProductsPage": {
+        "add-product": "Produkt hinzufügen"
+      },
+      "RegistrationPage": {
         "register": "Registrieren",
-        "username-taken-or-invalid": "Der gewünschte Benutzername existiert bereits oder ist ungültig",
-        "email-taken-or-invalid": "Für die angegebene E-Mail-Adresse existiert bereits ein Konto oder sie ist ungültig"
+        "username": "Benutzername",
+        "username-exists-or-invalid": "Der gewünschte Benutzername existiert bereits oder ist ungültig",
+        "email": "E-Mail",
+        "email-taken-or-invalid": "Für die angegebene E-Mail-Adresse existiert bereits ein Konto oder sie ist ungültig",
+        "password": "Passwort",
+        "wrong-pw-format": "Ihr Passwort muss mindestens 1 Großbuchstaben, 1 Kleinbuchstaben, 1 Zahl und mindestens 7 Zeichen enthalten"
       },
-      "QRCodeEngin": {
-        "unknown-product": "Unbekanntes Produkt",
-        "get-product-info-failed": "Fehler beim Abrufen von Produktinformationen für Barcode {{ data }}",
-        "scan-ingredients": "Zutaten scannen",
-        "scan-prompt": "Bitte scannen Sie den Barcode des Produkts, das Sie hinzufügen möchten",
-        "select-resto": "Wählen Sie ein Restaurant aus",
-        "search": "Suchen...",
-        "scan-again": "Erneut scannen",
-        "scan-result-ask-if-want-to-add": "Sie haben gerade {{ data }} (Produktname: {{ productName }}) gescannt. Möchten Sie es zu Ihrer Liste der Zutaten hinzufügen?"
-      },
-      "ResetPasswordScreen": {
-        "username-email-no-match": "Dieser Benutzername und diese E-Mail-Adresse ({{ email }}) stimmen nicht überein. Bitte überprüfen Sie die Schreibweise oder versuchen Sie einen anderen Benutzernamen.",
-        "user-error": "Fehler beim Überprüfen des Benutzers. Bitte versuchen Sie es erneut.",
-        "re-enter-account": "Zurück in Ihr Guardos-Konto",
-        "enter-info": "Geben Sie uns einige Informationen zu Ihrem Konto",
+      "ResetPassword": {
+        "invalid-credentials": "Dieser Benutzername und diese E-Mail-Adresse {{ email }} stimmen nicht überein. Bitte überprüfen Sie die Rechtschreibung oder versuchen Sie einen anderen Benutzernamen",
+        "user-error": "Fehler beim Überprüfen des Restaurantbenutzers. Bitte versuchen Sie es erneut",
+        "get-back-in-account": "Zurück in Ihr Guardos-Konto",
+        "enter-account-info": "Geben Sie uns einige Informationen zu Ihrem Konto",
         "enter-username-prompt": "Geben Sie als Nächstes den Guardos-Benutzernamen ein, bei dem Sie Probleme haben",
         "enter-email": "Geben Sie Ihre E-Mail-Adresse ein",
         "email": "E-Mail",
         "enter-username": "Geben Sie Ihren Benutzernamen ein",
         "username": "Benutzername",
-        "email-sent": "E-Mail wurde gesendet!",
-        "check-your-emails": "Bitte überprüfen Sie Ihr Postfach auf eine E-Mail zur Passwortwiederherstellung und überprüfen Sie auch Ihren Spam-Ordner. Die E-Mail enthält einen Link, der 15 Minuten lang gültig bleibt.",
-        "go-back": "Zurück zur Anmeldung",
+        "email-sent-success": "E-Mail wurde gesendet!",
+        "email-sent-failure": "Überprüfen Sie bitte Ihren Posteingang auf eine E-Mail zur Passwortwiederherstellung und überprüfen Sie auch Ihren Spam-Ordner. Die E-Mail enthält einen Link, der 15 Minuten gültig bleibt.",
+        "back-to-login": "Zurück zum Login",
         "error": "Es gab einen Fehler.",
-        "try-again-msg": "Bitte versuchen Sie erneut, einen Wiederherstellungslink zu erhalten. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte.",
-        "continue": "Fortsetzen",
-        "send-reset-link": "Meinen Passwort-Wiederherstellungslink senden"
-      },
-      "Router": {
-        "no-internet-error": "Keine Internetverbindung. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
-        "scan": "Scannen",
-        "my-profile": "Mein Profil",
-        "login": "Anmelden",
-        "register": "Registrieren"
+        "retry-recovery-link": "Versuchen Sie erneut, einen Wiederherstellungslink zu erhalten. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte.",
+        "send-recovery-link": "Senden Sie meinen Passwort-Wiederherstellungslink",
+        "continue": "Fortfahren"
       }
     }
   }

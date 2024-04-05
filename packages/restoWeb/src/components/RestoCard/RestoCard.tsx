@@ -15,8 +15,8 @@ import {getImages} from "@src/services/callImages";
 import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
 import { IimageInterface } from "shared/models/imageInterface";
 import Rating from '@mui/material/Rating';
-import { displayImageFromBase64} from "shared/utils/imageConverter";
 import { getRatingData } from "@src/services/ratingCalls";
+import {useTranslation} from "react-i18next";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -29,6 +29,7 @@ interface IDay {
   name?: string;
 }
 
+// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -46,6 +47,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [ratingData, setRatingData] = React.useState([]);
+  const {t} = useTranslation();
 
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
@@ -144,7 +146,7 @@ const RestoCard = (props: IRestoCardProps) => {
                 <DishActions
                   actionList={[
                     {
-                      actionName: "Menu",
+                      actionName: t('components.RestoCard.menu'),
                       actionIcon: MenuBookIcon,
                       actionRedirect: "/menu",
                       redirectProps: {
@@ -155,7 +157,7 @@ const RestoCard = (props: IRestoCardProps) => {
                       }
                     },
                     {
-                      actionName: "Edit",
+                      actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editResto",
                       redirectProps: {
@@ -179,7 +181,8 @@ const RestoCard = (props: IRestoCardProps) => {
                 />
                 {showPopup && (
                   <Popup
-                    message={`Are you sure you want to delete ${resto.name}?`}
+                    message={t('components.RestoCard.confirm-delete',
+                      {restoName: resto.name})}
                     onConfirm={getOnDelete}
                     onCancel={() => setShowPopup(false)}
                   />
@@ -200,7 +203,7 @@ const RestoCard = (props: IRestoCardProps) => {
           >
             {resto.description}
           </p>
-          <h3>Opening hours</h3>
+          <h3>{t('components.RestoCard.opening-hours')}</h3>
           {resto.openingHours.map((index, key) => (
             <div key={key} className={styles.ContainerOpeningHours}>
               <span className={styles.DaysTextValue}>{days[key].name} :</span>

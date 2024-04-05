@@ -15,7 +15,7 @@ const Header = () => {
   const [isLogInSite, setIsLogInSite] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const usePathPattern = useLocation();
 
   function logoutUser() {
@@ -65,7 +65,7 @@ const Header = () => {
       <span className={loggedIn ? styles.NavTitle : styles.NavTitleLogIn}>
         { loggedIn && (
           <a onClick={logoutUser}>
-            Logout
+            {t('components.Header.logout')}
           </a>
         )}
         { !loggedIn && !isLogInSite && (
@@ -75,7 +75,7 @@ const Header = () => {
           className={styles.NavTitleLogIn}
           href="/login"
           >
-            Login
+            {t('components.Header.login')}
           </a>
         )}
         { !loggedIn && isLogInSite && (
@@ -83,7 +83,7 @@ const Header = () => {
             setIsLogInSite(false);
             NavigateTo('/', navigate, {});
           }}>
-            Home
+            {t('components.Header.home')}
           </a>
         )}
       </span>
@@ -93,7 +93,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/account"
         >
-          My Account
+          {t('components.Header.my-account')}
         </a>
       }
       { loggedIn 
@@ -102,7 +102,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/"
         >
-          My Restaurants
+          {t('common.my-restos')}
         </a>
       }
       <img className={styles.LogoImg} src={logo} alt="Logo" />
@@ -119,7 +119,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/dishes"
         >
-          My Dishes
+          {t('common.my-dishes')}
         </a>
       }
       { loggedIn 
@@ -128,7 +128,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/products"
         >
-          My Products
+          {t('common.my-products')}
         </a>
       }
       { !loggedIn && isLogInSite && (
@@ -142,13 +142,13 @@ const Header = () => {
           {showLanguageDropdown && (
             <div className={styles.languageDropdown}>
               <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
-                English
+                {t('common.english')}
               </a>
               <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
-                German
+                {t('common.german')}
               </a>
               <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
-                French
+                {t('common.french')}
               </a>
             </div>
           )}
