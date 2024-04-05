@@ -17,6 +17,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { enable, disable } from "darkreader";
+
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -36,9 +38,16 @@ const MyAccountPage = () => {
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
 
   useEffect(() => {
     fetchProfileData();
+    if (typeof DarkReader !== "undefined") {
+      DarkReader.setFetchMethod(window.fetch);
+      const isEnabled = DarkReader.isEnabled();
+      setIsDarkMode(isEnabled);
+    }
   }, []);
 
   const fetchProfileData = () => {
@@ -188,6 +197,20 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      enable({
+        brightness: 100,
+        contrast: 90,
+        sepia: 20
+      });
+    } else {
+      disable();
+    }
+  };
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -316,6 +339,7 @@ const MyAccountPage = () => {
           Delete Account
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Button onClick={toggleDarkMode}>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</Button>
           <Typography variant="body1">You need a new feature? </Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
           Just ask for it !
