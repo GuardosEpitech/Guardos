@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
-import StarIcon from '@mui/icons-material/Star';
-import StarHalfIcon from '@mui/icons-material/StarHalf';
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { getRatingData } from "@src/services/ratingCalls";
 import Rating from '@mui/material/Rating';
+import {useTranslation} from "react-i18next";
 
 interface IRatingProps {
   restoRating: number,
@@ -19,6 +16,7 @@ interface IRatingProps {
 const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
+  const {t} = useTranslation();
 
   const averageRating = () => {
     let sum = 0;
@@ -51,7 +49,7 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
           restoName: restoName,
         })}
         >
-        Add a review
+        {t('components.RestoCard.add-review')}
       </Button>
     </div>
   );

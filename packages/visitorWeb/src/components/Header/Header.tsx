@@ -13,7 +13,7 @@ const Header = () => {
   const [routeLoggedIn, setRouteLoggedIn] = useState('/login');
   const navigate = useNavigate();
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
@@ -58,22 +58,22 @@ const Header = () => {
       <span className={styles.NavTitle}>
         { loggedIn ? (
           <a onClick={logoutUser}>
-            Logout
+            {t('components.Header.logout')}
           </a>
         ) : (
           <a onClick={() => NavigateTo('/login', navigate, {})}>
-            Login
+            {t('components.Header.login')}
           </a>
         )}
       </span>
       { loggedIn && (
-          <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>My Account</span>
+          <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>{t('components.Header.my-account')}</span>
         )
       }
       <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
         <div className={styles.logo}></div>
       </div>
-      <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>Welcome to Guardos</span>
+      <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('components.Header.welcome')}</span>
       <a
         className={styles.NavTitle}
         onClick={() => {
@@ -84,13 +84,13 @@ const Header = () => {
         {showLanguageDropdown && (
           <div className={styles.languageDropdown}>
             <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
-              English
+              {t('common.english')}
             </a>
             <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
-              German
+              {t('common.german')}
             </a>
             <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
-              French
+              {t('common.french')}
             </a>
           </div>
         )}

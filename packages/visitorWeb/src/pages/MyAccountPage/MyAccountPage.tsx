@@ -238,7 +238,7 @@ const MyAccountPage = () => {
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
-        <h1>Account Page</h1>
+        <h1>{t('pages.MyAccountPage.account-page')}</h1>
         {dataChangeStatus !== null && (
           <div
             className={`${styles.dataChangeStatus} ${
@@ -246,64 +246,73 @@ const MyAccountPage = () => {
             }`}
           >
             {dataChangeStatus === 'success'
-              ? 'Profile details changed successfully!'
-              : 'Failed to change profile details.'}
+              ? t('pages.MyAccountPage.data-changed-success')
+              : t('pages.MyAccountPage.data-changed-failure')}
           </div>
         )}
         <div className={styles.profilePicture}>
-          <label>Profile Picture:</label>
+          <label>{t('pages.MyAccountPage.profile-pic')}</label>
           <input className={styles.InputField} type="file" accept="image/*" onChange={handlePictureChange} />
           {/* Add an image preview */}
           {picture && <img src={picture} alt="Profile" className={styles.profileImage} />}
         </div>
         <div>
-          <label>Email:</label>
+          <label>{t('pages.MyAccountPage.email')}</label>
           <input className={styles.InputField} type="text" value={email} onChange={handleEmailChange} required/>
         </div>
         <div>
-          <label>Name:</label>
+          <label>{t('pages.MyAccountPage.name')}</label>
           <input className={styles.InputField} type="text" value={name} onChange={handleNameChange} required/>
         </div>
         <div>
-          <label>City:</label>
+          <label>{t('pages.MyAccountPage.city')}</label>
           <input className={styles.InputField} type="text" value={city} onChange={handleCityChange} />
         </div>
         <div>
         <FormControl fullWidth className={styles.allergenInput}>
-          <InputLabel id="allergens-label">Allergens</InputLabel>
+          <InputLabel id="allergens-label">{t('pages.MyAccountPage.allergens')}</InputLabel>
           <Select
             labelId="allergens-label"
             id="allergens"
             multiple
             value={selectedOptions}
             onChange={handleSelectChange}
-            label="Allergens"
+            label={t('pages.MyAccountPage.allergens')}
           >
-            {['peanut', 'gluten', 'dairy'].map((allergen) => (
+            {
+              // TODO: apply i18n
+              ['peanut', 'gluten', 'dairy'].map((allergen) => (
               <MenuItem key={allergen} value={allergen} selected={selectedOptions.includes(allergen)}>
                 {allergen}
               </MenuItem>
-            ))}
+            ))
+            }
           </Select>
         </FormControl>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
-          <InputLabel id="langauge-label">Preferred Language</InputLabel>
+          <InputLabel id="langauge-label">{t('pages.MyAccountPage.preferred-language')}</InputLabel>
           <Select
             labelId="language-label"
             id="language"
             value={preferredLanguage}
             onChange={handleLanguageChange}
-            label="Language"
+            label={t('pages.MyAccountPage.language')}
           >
-            <MenuItem value="en" selected={preferredLanguage === 'en'}>English</MenuItem>
-            <MenuItem value="de" selected={preferredLanguage === 'de'}>Deutsch</MenuItem>
-            <MenuItem value="fr" selected={preferredLanguage === 'fr'}>Francais</MenuItem>
+            <MenuItem value="en" selected={preferredLanguage === 'en'}>
+              {t('common.english')}
+            </MenuItem>
+            <MenuItem value="de" selected={preferredLanguage === 'de'}>
+              {t('common.german')}
+            </MenuItem>
+            <MenuItem value="fr" selected={preferredLanguage === 'fr'}>
+              {t('common.french')}
+            </MenuItem>
           </Select>
         </FormControl>
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
           <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
-            Change Password
+            {t('pages.MyAccountPage.change-pw')}
           </button>
           {passwordChangeOpen && (
             <div>
@@ -314,47 +323,47 @@ const MyAccountPage = () => {
                   }`}
                 >
                   {passwordChangeStatus === 'success'
-                    ? 'Password changed successfully!'
-                    : 'Failed to change password. Please check your old password and try again.'}
+                    ? t('pages.MyAccountPage.change-pw-success')
+                    : t('pages.MyAccountPage.change-pw-failure')}
                 </div>
               )}
               <TextField
                 className={styles.fullWidth}
-                label="Old Password"
+                label={t('pages.MyAccountPage.old-pw')}
                 name="oldPassword"
                 type="password"
                 value={oldPassword}
                 onChange={handleOldPasswordChange}
                 margin="normal"
                 error={errorForm}
-                helperText={errorForm ? 'Incorrect password' : ''}
+                helperText={errorForm ? t('pages.MyAccountPage.incorrect-pw') : ''}
               />
               <TextField
                 className={styles.fullWidth}
-                label="New Password"
+                label={t('pages.MyAccountPage.new-pw')}
                 name="newPassword"
                 type="password"
                 value={newPassword}
                 onChange={handleNewPasswordChange}
                 margin="normal"
                 error={pwError}
-                helperText={pwError ? 'Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters' : ''}
+                helperText={pwError ? t('pages.MyAccountPage.wrong-pw-format') : ''}
               />
               <TextField
                 className={styles.fullWidth}
-                label="Confirm Password"
+                label={t('pages.MyAccountPage.confirm-pw')}
                 name="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 margin="normal"
                 error={samePwError}
-                helperText={samePwError ? 'Passwords do not match' : ''}
+                helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
               />
               {/* Save Password Button */}
               <div>
                 <button className={styles.saveButton} onClick={handleSavePassword}>
-                  Save Password
+                  {t('pages.MyAccountPage.save-pw')}
                 </button>
               </div>
             </div>
@@ -362,14 +371,16 @@ const MyAccountPage = () => {
         </div>
         <div>
           <button className={styles.saveButton} onClick={handleSave}>
-            Save Changes
+            {t('pages.MyAccountPage.save-changes')}
           </button>
         </div>
-        <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>Delete Account</button>
+        <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>
+          {t('pages.MyAccountPage.delete-account')}
+        </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <Typography variant="body1">You need a new feature? </Typography>
+          <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
-          Just ask for it !
+            {t('pages.MyAccountPage.just-ask')}
           </Button>
       </div>   
       </div>         
@@ -380,13 +391,13 @@ const MyAccountPage = () => {
             className={activeTab === "restaurants" ? styles.activeTab : "none"}
             onClick={() => handleTabChange("restaurants")}
           >
-            Favorite Restaurants
+            {t('pages.MyAccountPage.fav-restos')}
           </button>
           <button
             className={activeTab === "dishes" ? styles.activeTab : "none"}
             onClick={() => handleTabChange("dishes")}
           >
-            Favorite Dishes
+            {t('pages.MyAccountPage.fav-dishes')}
           </button>
         </div>
 
@@ -394,7 +405,7 @@ const MyAccountPage = () => {
         <div className={styles.favoriteListContainer}>
           {activeTab === "restaurants" && (
             <div className={styles.favoriteList}>
-              <h2>Favorite Restaurants</h2>
+              <h2>{t('pages.MyAccountPage.fav-restos')}</h2>
               {favoriteRestaurants.map((restaurant) => (
                 <RestoCard
                   key={restaurant.id}
@@ -408,7 +419,7 @@ const MyAccountPage = () => {
 
           {activeTab === "dishes" && (
             <div className={styles.favoriteList}>
-              <h2>Favorite Dishes</h2>
+              <h2>{t('pages.MyAccountPage.fav-dishes')}</h2>
               {favoriteDishes.map((dish) => {
                 return (
                   <Dish
@@ -437,16 +448,20 @@ const MyAccountPage = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Account"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {t('pages.MyAccountPage.delete-account')}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete your account? This action cannot be undone.
+            {t('pages.MyAccountPage.confirm-delete-account')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeletePopup}>Cancel</Button>
+          <Button onClick={handleCloseDeletePopup}>
+            {t('common.cancel')}
+          </Button>
           <Button onClick={handleDeleteAccount} autoFocus>
-            Delete
+            {t('common.delete')}
           </Button>
         </DialogActions>
       </Dialog>

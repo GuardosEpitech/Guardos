@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
 import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
+import {useTranslation} from "react-i18next";
 
 const theme = createTheme({
   palette: {
@@ -45,7 +46,7 @@ const PageBtn = () => {
 const InputSearch = (props: any) => {
   const [name, setName] = React.useState("");
   const [location, setLocation] = React.useState("");
-
+  const {t} = useTranslation();
 
   function onChangeName(event: any) {
     setName(event.target.value);
@@ -67,7 +68,7 @@ const InputSearch = (props: any) => {
     <div className={styles.DivSearchInput}>
       <ThemeProvider theme={theme}>
         <TextField
-          label="Name"
+          label={t('components.InputSearch.name')}
           variant="filled"
           className={styles.InputSearch}
           onChange={onChangeName}
@@ -79,7 +80,7 @@ const InputSearch = (props: any) => {
           variant="contained"
           endIcon={<SearchIcon />}
           onClick={() => sendButtonData(name, location)} >
-            Search
+          {t('components.InputSearch.search')}
         </Button>
       </ThemeProvider>
     </div>
