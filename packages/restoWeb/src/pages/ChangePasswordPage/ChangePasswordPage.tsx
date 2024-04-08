@@ -9,7 +9,9 @@ import DialogActions from '@mui/material/DialogActions';
 import { 
   checkIfRestoUserExist, updateRestoPassword
 } from '@src/services/userCalls';
+import { enable, disable, setFetchMethod } from "darkreader";
 import { set } from 'cypress/types/lodash';
+
 
 const ChangePasswordPage = () => {
   const location = useLocation();
@@ -28,6 +30,7 @@ const ChangePasswordPage = () => {
   const [errorPasswordRepeat, setErrorPasswordRepeat] = useState(false);
   const [open, setOpen] = useState(true);
   const [openFailed, setOpenFailed] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +52,7 @@ const ChangePasswordPage = () => {
     }
 
     fetchData();
+    toggleDarkMode();
   }, [email]);
 
   function isValidPassword(password: string): boolean {
@@ -110,6 +114,27 @@ const ChangePasswordPage = () => {
 
   const handleGoBackToSite = () => {
     setOpenFailed(false);
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
   };
 
   return (

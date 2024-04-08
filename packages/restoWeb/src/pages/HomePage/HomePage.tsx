@@ -11,14 +11,18 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import styles from "./HomePage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { enable, disable, setFetchMethod } from "darkreader";
+
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(Boolean(localStorage.getItem('darkMode')));
 
   useEffect(() => {
     updateRestoData();
+    toggleDarkMode();
   }, []);
 
   const updateRestoData = () => {
@@ -38,6 +42,26 @@ const HomePage = () => {
     setRestoData([]);
     setIsUserTokenSet(false);
   });
+
+  const toggleDarkMode = () => {
+    console.log(isDarkMode);
+      
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+  };
 
   return (
     <div>

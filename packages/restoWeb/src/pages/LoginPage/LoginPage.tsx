@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import TextField from "@mui/material/TextField";
@@ -9,6 +9,7 @@ import GoogleLogo from '../../assets/Google.svg';
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
+import { enable, disable, setFetchMethod } from "darkreader";
 
 interface LoginUser {
   username: string;
@@ -25,6 +26,11 @@ const Login = () => {
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/restoWeb`;
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    toggleDarkMode();
+  }, []);
 
   const handleFacebookLogin = () => {
     // Implement Facebook login logic here
@@ -72,6 +78,27 @@ const Login = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
   };
 
   return (

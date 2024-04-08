@@ -17,7 +17,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { enable, disable } from "darkreader";
+import { enable, disable, setFetchMethod } from "darkreader";
+import { log } from "console";
 
 
 const MyAccountPage = () => {
@@ -43,12 +44,17 @@ const MyAccountPage = () => {
 
   useEffect(() => {
     fetchProfileData();
-    if (typeof DarkReader !== "undefined") {
-      DarkReader.setFetchMethod(window.fetch);
-      const isEnabled = DarkReader.isEnabled();
-      setIsDarkMode(isEnabled);
-    }
+    checkDarkMode();
   }, []);
+
+  const checkDarkMode = () => {
+    const darkModePreference = JSON.parse(localStorage.getItem('darkMode'));
+    if (darkModePreference) {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  };
 
   const fetchProfileData = () => {
     const userToken = localStorage.getItem('user');
@@ -199,18 +205,33 @@ const MyAccountPage = () => {
 
   const toggleDarkMode = () => {
     setIsDarkMode(prevMode => !prevMode);
-  
     if (!isDarkMode) {
-      enable({
-        brightness: 100,
-        contrast: 90,
-        sepia: 20
-      });
+      enableDarkMode();
     } else {
-      disable();
+      disableDarkMode();
     }
   };
 
+  const enableDarkMode = () => {
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    localStorage.setItem('darkMode', JSON.stringify(true));
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    });
+  };
+
+  const disableDarkMode = () => {
+    localStorage.removeItem('darkMode');
+    disable();
+  };
+  
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>

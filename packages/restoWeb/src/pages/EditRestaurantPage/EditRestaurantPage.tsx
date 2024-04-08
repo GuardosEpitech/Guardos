@@ -6,6 +6,7 @@ import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
 import styles
   from "@src/pages/EditRestaurantPage/EditRestaurantPage.module.scss";
+import { enable, disable, setFetchMethod } from "darkreader";
 
 interface IEditRestaurantPageProps {
   restoName: string;
@@ -22,6 +23,7 @@ interface IEditRestaurantPageProps {
 }
 
 const EditRestaurantPage = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const {
     restoName,
     phone,
@@ -35,6 +37,31 @@ const EditRestaurantPage = () => {
     menuDesignID,
     website
   } = useLocation().state as IEditRestaurantPageProps;
+
+  useEffect(() => {
+    toggleDarkMode();
+  }, []);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
+  };
 
   return (
     <div>

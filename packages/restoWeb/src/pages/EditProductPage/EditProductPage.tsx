@@ -8,6 +8,8 @@ import styles from "@src/pages/EditProductPage/EditProductPage.module.scss";
 import { getAllResto } from "@src/services/restoCalls";
 import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
   from "shared/models/restaurantInterfaces";
+import { enable, disable, setFetchMethod } from "darkreader";
+
 
 interface IEditProductPageProps {
   product: IProductFE;
@@ -19,7 +21,9 @@ const EditProductPage = () => {
     = product;
   const [restoNameList, setRestoNameList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   let restoNameListTemp = [] as IRestaurantFrontEnd[];
+  
 
   useEffect(() => {
     getAllResto()
@@ -31,7 +35,29 @@ const EditProductPage = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 700);
+    toggleDarkMode();
   }, []);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
+  };
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -11,6 +11,7 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
 import { ICategories } from "shared/models/categoryInterfaces";
+import { enable, disable, setFetchMethod } from "darkreader";
 
 const theme = createTheme({
   palette: {
@@ -29,6 +30,32 @@ interface IMenuPageProps {
 
 const MenuPage = () => {
   const { menu, restoName, address, menuDesignID } = useLocation().state as IMenuPageProps;
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    toggleDarkMode();
+  }, []);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
+  };
 
   return (
     <>

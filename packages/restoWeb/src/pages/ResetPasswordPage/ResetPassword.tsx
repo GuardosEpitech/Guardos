@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from "react";
 import styles from './ResetPassword.module.scss';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 import { 
   sendRecoveryLinkForRestoUser, checkIfRestoUserExist
 } from '@src/services/userCalls';
+import { enable, disable, setFetchMethod } from "darkreader";
+
 
 interface ResetPasswordProps {}
 
@@ -19,6 +21,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [open, setOpen] = useState(true);
   const [disableButton, setDisableButton] = useState(false);
   const [openFailed, setOpenFailed] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    toggleDarkMode();
+  }, []);
 
   const isValidEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,6 +83,27 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
   const handleGoBackToSite = () => {
     setOpenFailed(false);
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  
+    if (!isDarkMode) {
+      setFetchMethod((url) => {
+        return fetch(url, {
+          mode: 'no-cors',
+        });
+      });
+      enable({
+        brightness: 100,
+        contrast: 100,
+        darkSchemeBackgroundColor: '#181a1b',
+        darkSchemeTextColor: '#e8e6e3'
+      });
+    } else {
+      disable();
+    }
+    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
   };
 
   return (
