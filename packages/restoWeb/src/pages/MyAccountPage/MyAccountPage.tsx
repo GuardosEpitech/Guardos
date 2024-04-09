@@ -17,8 +17,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { enable, disable, setFetchMethod } from "darkreader";
+import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
 import { log } from "console";
+import { DarkMode } from "@mui/icons-material";
 
 
 const MyAccountPage = () => {
@@ -38,23 +39,15 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
-  const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const navigate = useNavigate(); useState<boolean>(isEnabled());
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
 
 
-  useEffect(() => {
+
+
+  useEffect(() => {   
     fetchProfileData();
-    checkDarkMode();
   }, []);
-
-  const checkDarkMode = () => {
-    const darkModePreference = JSON.parse(localStorage.getItem('darkMode'));
-    if (darkModePreference) {
-      enableDarkMode();
-    } else {
-      disableDarkMode();
-    }
-  };
 
   const fetchProfileData = () => {
     const userToken = localStorage.getItem('user');
@@ -204,8 +197,8 @@ const MyAccountPage = () => {
   };
 
   const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-    if (!isDarkMode) {
+    const darkModeEnabled = localStorage.getItem('darkMode');    
+    if (darkModeEnabled == 'false') {
       enableDarkMode();
     } else {
       disableDarkMode();
@@ -219,16 +212,18 @@ const MyAccountPage = () => {
       });
     });
     localStorage.setItem('darkMode', JSON.stringify(true));
+    setIsDarkMode(true);
     enable({
       brightness: 100,
       contrast: 100,
       darkSchemeBackgroundColor: '#181a1b',
       darkSchemeTextColor: '#e8e6e3'
-    });
+    },);
   };
 
   const disableDarkMode = () => {
-    localStorage.removeItem('darkMode');
+    localStorage.setItem('darkMode', JSON.stringify(false));
+    setIsDarkMode(false);
     disable();
   };
   
@@ -360,7 +355,7 @@ const MyAccountPage = () => {
           Delete Account
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <Button onClick={toggleDarkMode}>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</Button>
+          <Button onClick={toggleDarkMode}>{localStorage.getItem('darkMode') === 'true' ? 'Light Mode' : 'Dark Mode'}</Button>
           <Typography variant="body1">You need a new feature? </Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
           Just ask for it !

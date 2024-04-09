@@ -9,16 +9,16 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
-import { enable, disable, setFetchMethod } from "darkreader";
+import { enable, disable, setFetchMethod} from "darkreader";
+
 
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
     updateDishData();
-    toggleDarkMode();
+    checkDarkMode();
   }, []);
 
   const updateDishData = () => {
@@ -30,26 +30,23 @@ const DishesPage = () => {
       });
   };
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  
-    if (!isDarkMode) {
-      setFetchMethod((url) => {
-        return fetch(url, {
-          mode: 'no-cors',
-        });
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
       });
-      enable({
-        brightness: 100,
-        contrast: 100,
-        darkSchemeBackgroundColor: '#181a1b',
-        darkSchemeTextColor: '#e8e6e3'
-      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
     } else {
       disable();
     }
-    localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
-  };
+  }
 
   return (
     <div>

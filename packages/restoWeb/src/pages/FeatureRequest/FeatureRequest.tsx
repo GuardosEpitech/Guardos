@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
 import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
-import { enable, disable, setFetchMethod } from "darkreader";
-
-
+import { enable, disable, setFetchMethod} from "darkreader";
 
 interface RequestUser {
     name: string;
@@ -25,7 +23,6 @@ const FeatureRequest = () => {
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
     const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
-    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -33,7 +30,7 @@ const FeatureRequest = () => {
     };
 
     useEffect(() => {
-        toggleDarkMode();
+        checkDarkMode();
       }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -63,27 +60,24 @@ const FeatureRequest = () => {
         }
     };
 
-    const toggleDarkMode = () => {
-        setIsDarkMode(prevMode => !prevMode);
-      
-        if (!isDarkMode) {
-          setFetchMethod((url) => {
-            return fetch(url, {
-              mode: 'no-cors',
-            });
+    const checkDarkMode = () => {
+        if ((localStorage.getItem('darkMode')) == 'true'){
+        setFetchMethod((url) => {
+          return fetch(url, {
+            mode: 'no-cors',
           });
-          enable({
-            brightness: 100,
-            contrast: 100,
-            darkSchemeBackgroundColor: '#181a1b',
-            darkSchemeTextColor: '#e8e6e3'
-          });
+        });
+        enable({
+          brightness: 100,
+          contrast: 100,
+          darkSchemeBackgroundColor: '#181a1b',
+          darkSchemeTextColor: '#e8e6e3'
+        },);
         } else {
           disable();
         }
-        localStorage.setItem('darkMode', JSON.stringify(!isDarkMode));
-      };
-
+      }
+      
     return (
         <>
             <Layout>
