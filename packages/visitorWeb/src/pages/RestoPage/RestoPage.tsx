@@ -11,6 +11,7 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
+import { enable, disable, setFetchMethod} from "darkreader";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -91,6 +92,7 @@ const RestoPage = () => {
     fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     clearFilter(); 
     loadFilter().then(() => console.log("Loaded search data."));
+    checkDarkMode();
   }, []);
 
   const fetchFavourites = async () => {
@@ -170,6 +172,24 @@ const RestoPage = () => {
         category.value).map(category => category.name),
       allergenList: allergens.filter(allergen => 
         allergen.value).map(allergen => allergen.name)
+    }
+  }
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
     }
   }
 

@@ -4,6 +4,7 @@ import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import axios from 'axios';
+import { enable, disable, setFetchMethod} from "darkreader";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/sendEmail/`;
 
@@ -13,6 +14,10 @@ const ContactPage = () => {
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    useEffect(() => {
+        checkDarkMode();
+      }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -60,6 +65,23 @@ const ContactPage = () => {
         return emailRegex.test(value);
       };
 
+    const checkDarkMode = () => {
+        if ((localStorage.getItem('darkMode')) == 'true'){
+        setFetchMethod((url) => {
+          return fetch(url, {
+            mode: 'no-cors',
+          });
+        });
+        enable({
+          brightness: 100,
+          contrast: 100,
+          darkSchemeBackgroundColor: '#181a1b',
+          darkSchemeTextColor: '#e8e6e3'
+        },);
+        } else {
+          disable();
+        }
+      }
     return (
         <div>
             <section className={styles.contact}>

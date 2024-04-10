@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect} from "react";
 import { useLocation } from "react-router-dom";
 import styles from "@src/pages/RatingPage/RatingPage.module.scss";
 import Rating from '@mui/material/Rating';
@@ -8,6 +8,7 @@ import { getRatingData, postRatingData } from "@src/services/ratingCalls";
 import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import { enable, disable, setFetchMethod} from "darkreader";
 
 const RatingPage = () => {
   const { restoName } = useLocation().state;
@@ -16,6 +17,10 @@ const RatingPage = () => {
   const ref = useRef(null);
   const [ratingData, setRatingData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -106,6 +111,24 @@ const RatingPage = () => {
     }
   `,
   );
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
   return (
     <>
       <div className={styles.RectOnImg}>

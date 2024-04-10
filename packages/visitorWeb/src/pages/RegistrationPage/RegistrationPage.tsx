@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
 
 interface User {
   username: string;
@@ -27,6 +28,10 @@ const Register = () => {
   const [errorPassword, setErrorPassword] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register`;
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;
@@ -108,6 +113,24 @@ const Register = () => {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
+  
   return (
     <>
       <Layout>

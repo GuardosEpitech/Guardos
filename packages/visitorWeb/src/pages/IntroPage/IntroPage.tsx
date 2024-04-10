@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, Container, Button, List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
@@ -10,6 +10,7 @@ import backgroundImage2 from '../../assets/restaurant.jpg';
 import styles from "./IntroPage.module.scss";
 import 'react-vertical-timeline-component/style.min.css';
 import './timeline.min.css';
+import { enable, disable, setFetchMethod} from "darkreader";
 
 const IntroPage = () => {
   const [opacity1, setOpacity1] = useState(1);
@@ -18,6 +19,10 @@ const IntroPage = () => {
   const targetSectionRef = useRef(null);
   const navigate = useNavigate();
   const baseUrlRestaurant = `${process.env.RESTAURANT_URL}`;
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const menuItems = [
     { title: 'Guardos', text: 
@@ -52,6 +57,24 @@ const IntroPage = () => {
     targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
+  
   return (
     <div>
       <Box className={styles.root}>

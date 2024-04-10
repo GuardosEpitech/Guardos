@@ -17,6 +17,8 @@ import {
 } from "@src/services/favourites";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { enable, disable, setFetchMethod} from "darkreader";
+
 
 const theme = createTheme({
   palette: {
@@ -34,6 +36,7 @@ const MenuPage = () => {
   useEffect(() => {
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
+    checkDarkMode();
   }, [])
 
   const fetchFavourites = async () => {
@@ -76,6 +79,24 @@ const MenuPage = () => {
       await deleteRestoFromFavourites(userToken, restoID);
     }
   };
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
 
   return (
     <>

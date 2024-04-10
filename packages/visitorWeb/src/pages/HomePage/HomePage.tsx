@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./HomePage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import RestoCard from "@src/components/RestoCard/RestoCard";
@@ -8,6 +8,7 @@ import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
 import {getRestoFavourites} from "@src/services/favourites";
+import { enable, disable, setFetchMethod} from "darkreader";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -51,6 +52,7 @@ const HomePage = () => {
   useEffect(() => {
     fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     loadFilter().then(r => console.log("Loaded search data."));
+    checkDarkMode();
   }, []);
 
   const fetchFavourites = async () => {
@@ -216,6 +218,24 @@ const HomePage = () => {
     }
     localStorage.setItem('filter', JSON.stringify(inter));
     setFilteredRestaurants(await getFilteredRestos(inter));
+  }
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
   }
 
   // until here -> more dynamic

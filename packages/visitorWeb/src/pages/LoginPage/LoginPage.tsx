@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { Container, Divider } from '@mui/material';
@@ -9,6 +9,7 @@ import FacebookLogo from '../../assets/Facebook.png';
 import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
 
 interface LoginUser {
   username: string;
@@ -25,6 +26,10 @@ const Login = () => {
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const handleFacebookLogin = () => {
     // Implement Facebook login logic here
@@ -72,6 +77,24 @@ const Login = () => {
     const { name, value } = e.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
 
   return (
     <>

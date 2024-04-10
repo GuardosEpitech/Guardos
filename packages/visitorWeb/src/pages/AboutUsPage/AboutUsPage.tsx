@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import styles from "./AboutUsPage.module.scss";
 import josi from "@src/assets/profile/josi.png";
 import gylian from "@src/assets/profile/gylian.png";
@@ -6,6 +6,7 @@ import mark from "@src/assets/profile/mark.png";
 import ramon from "@src/assets/profile/ramon.png";
 import renan from "@src/assets/profile/renan.png";
 import alban from "@src/assets/profile/alban.png";
+import { enable, disable, setFetchMethod} from "darkreader";
 
 const teamMembers = [
     {
@@ -72,6 +73,29 @@ const teamMembers = [
 
 const AboutUsPage = () => {
   const [activeSection, setActiveSection] = useState('introduction');
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
+
+  const checkDarkMode = () => {
+    if ((localStorage.getItem('darkMode')) == 'true'){
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+    } else {
+      disable();
+    }
+  }
+
     return (
         <div>
             <div className={styles.aboutuscontainer}>

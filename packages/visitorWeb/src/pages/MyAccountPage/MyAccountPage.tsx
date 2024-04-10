@@ -19,6 +19,8 @@ import TextField from "@mui/material/TextField";
 import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import Dish from "@src/components/menu/Dish/Dish";
+import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
+
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -44,6 +46,7 @@ const MyAccountPage = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [favoriteDishes, setFavoriteDishes] = useState([]);
   const [activeTab, setActiveTab] = useState("restaurants");
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
 
   useEffect(() => {
     fetchProfileData();
@@ -232,6 +235,37 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
+  const toggleDarkMode = () => {
+    const darkModeEnabled = localStorage.getItem('darkMode');    
+    if (darkModeEnabled == 'false') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  };
+
+  const enableDarkMode = () => {
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    localStorage.setItem('darkMode', JSON.stringify(true));
+    setIsDarkMode(true);
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+  };
+
+  const disableDarkMode = () => {
+    localStorage.setItem('darkMode', JSON.stringify(false));
+    setIsDarkMode(false);
+    disable();
+  };
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -364,6 +398,7 @@ const MyAccountPage = () => {
         </div>
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>Delete Account</button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Button onClick={toggleDarkMode}>{localStorage.getItem('darkMode') === 'true' ? 'Light Mode' : 'Dark Mode'}</Button>
           <Typography variant="body1">You need a new feature? </Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
           Just ask for it !
