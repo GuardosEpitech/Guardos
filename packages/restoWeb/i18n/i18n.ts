@@ -20,7 +20,6 @@ i18n
   .init({
     compatibilityJSON: 'v3',
     resources,
-    lng: 'en',// default language to use.
     fallbackLng: 'en'
   });
 
