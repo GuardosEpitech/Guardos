@@ -225,6 +225,8 @@
         "data-changed-failure": "Échec de la modification des détails du profil.",
         "profile-pic": "Photo de profil :",
         "pic-alt": "Profil",
+        "change-img": "Changer l'image",
+        "delete-img": "Image claire",
         "email": "Email :",
         "name": "Nom :",
         "city": "Ville",

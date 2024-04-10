@@ -181,6 +181,8 @@
         "data-changed-failure": "Impossible de modifier les détails du profil.",
         "profile-pic": "Image de profil :",
         "pic-alt": "Profil",
+        "change-img": "Changer l'image",
+        "delete-img": "Image claire",
         "email": "Email :",
         "name": "Nom :",
         "menu-design": "Design du menu",

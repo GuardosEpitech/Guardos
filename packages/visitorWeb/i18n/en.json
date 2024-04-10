@@ -225,6 +225,8 @@
         "data-changed-failure": "Failed to change profile details.",
         "profile-pic": "Profile Picture:",
         "pic-alt": "Profile",
+        "change-img": "Change Image",
+        "delete-img": "Delete Image",
         "email": "Email:",
         "name": "Name:",
         "city": "City",

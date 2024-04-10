@@ -302,11 +302,11 @@ const MyAccountPage = () => {
           id={"img-" + (profilePic && profilePic[0] ? profilePic[0].filename : "default")}
           src={profilePic.length > 0 ? profilePic[0].base64 : defaultProfileImage}
           className={styles.ImageDimensions}
-          alt="Resto Img"
+          alt={t('pages.MyAccountPage.pic-alt')}
         />
         <div className={styles.imageButtonContainer}>
           <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput').click(); }}>
-            Change Image
+            {t('pages.MyAccountPage.change-img')}
             <input
               id="fileInput"
               hidden
@@ -316,7 +316,7 @@ const MyAccountPage = () => {
               onChange={handleFileChange}/>
           </button>
           <button className={styles.deleteButton} onClick={handeFileDelete}>
-            Delete Image
+            {t('pages.MyAccountPage.delete-img')}
           </button>
         </div>
         <div>

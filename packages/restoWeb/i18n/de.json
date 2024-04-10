@@ -181,6 +181,8 @@
         "data-changed-failure": "Ändern der Profildetails fehlgeschlagen.",
         "profile-pic": "Profilbild:",
         "pic-alt": "Profil",
+        "change-img": "Bild ändern",
+        "delete-img": "Bild löschen",
         "email": "E-Mail:",
         "name": "Name:",
         "menu-design": "Menüdesign",
