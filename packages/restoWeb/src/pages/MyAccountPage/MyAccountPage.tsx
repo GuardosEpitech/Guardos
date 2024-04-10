@@ -7,6 +7,10 @@ import InputLabel from '@mui/material/InputLabel';
 import TextField from "@mui/material/TextField";
 import FormControl from '@mui/material/FormControl';
 import {Button,Typography} from '@mui/material';
+import { IimageInterface } from "shared/models/imageInterface";
+import {convertImageToBase64, displayImageFromBase64}
+  from "shared/utils/imageConverter";
+import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 
 import styles from "./MyAccountPage.module.scss";
 import {changePassword, editProfileDetails, getProfileDetails}
@@ -17,12 +21,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {
+  addRestoProfileImage, deleteRestoProfileImage, getImages
+} from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [picture, setPicture] = useState('');
+  const [picture, setPicture] = useState(null);
+  const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [menuDesign, setMenuDesign] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('en');
 
@@ -50,14 +58,10 @@ const MyAccountPage = () => {
       .then((res) => {
         setEmail(res.email);
         setName(res.username);
-        setPicture(res.profilePicId);
+        setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
-  };
-
-  const handlePictureChange = (e : any) => {
-    setPicture(e.target.value);
   };
 
   const handleEmailChange = (e : any) => {
@@ -191,6 +195,94 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
+  useEffect(() => {
+    const loadImages = async () => {
+      if (picture) {
+        try {
+          const answer = await getImages([picture]);
+          //@ts-ignore
+          setProfilePic(answer.map((img) => ({
+            base64: img.base64,
+            contentType: img.contentType,
+            filename: img.filename,
+            size: img.size,
+            uploadDate: img.uploadDate,
+            id: img.id,
+          })));
+        } catch (error) {
+          console.error("Failed to load images", error);
+          setProfilePic([{
+            base64: defaultProfileImage,
+            contentType: "image/png",
+            filename: "profile-placeholder.png",
+            size: 0,
+            uploadDate: "",
+            id: 0,
+          }]);
+        }
+      } else {
+        setProfilePic([{
+          base64: defaultProfileImage,
+          contentType: "image/png",
+          filename: "profile-placeholder.png",
+          size: 0,
+          uploadDate: "",
+          id: 0,
+        }]);
+      }
+    };
+
+    loadImages();
+  }, [picture]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const base64 = convertImageToBase64(file);
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) {
+        return;
+      }
+
+      base64.then((result) => {
+        addRestoProfileImage(userToken, file.name,
+          file.type, file.size, result)
+          .then(r => {
+            setProfilePic([{ base64: result, contentType: file.type,
+              filename: file.name, size: file.size,
+              uploadDate: "0", id: r.message }]);
+            if (picture) {
+              deleteRestoProfileImage(picture, userToken);
+            }
+            setPicture(r.message);
+          });
+      });
+    }
+  };
+
+  function handeFileDelete() {
+    if (picture) {
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) {
+        return;
+      }
+
+      deleteRestoProfileImage(picture, userToken);
+      displayImageFromBase64(defaultProfileImage, "ProfileImg");
+      setProfilePic([{
+        base64: defaultProfileImage,
+        contentType: "png",
+        filename: "profile-placeholder.png",
+        size: 0,
+        uploadDate: "0",
+        id: 0,
+      }]);
+    }
+    else {
+      console.log("No image to delete");
+    }
+  }
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -206,17 +298,26 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.data-changed-failure')}
           </div>
         )}
-        <div className={styles.profilePicture}>
-          <label>{t('pages.MyAccountPage.profile-pic')}</label>
-          <input className={styles.InputField} type="file" accept="image/*" onChange={handlePictureChange} />
-          {/* Add an image preview */}
-          {picture &&
-              <img
-                src={picture}
-                alt={t('pages.MyAccountPage.pic-alt')}
-                className={styles.profileImage}
-              />
-          }
+        <img
+          id={"img-" + (profilePic && profilePic[0] ? profilePic[0].filename : "default")}
+          src={profilePic.length > 0 ? profilePic[0].base64 : defaultProfileImage}
+          className={styles.ImageDimensions}
+          alt="Resto Img"
+        />
+        <div className={styles.imageButtonContainer}>
+          <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput').click(); }}>
+            Change Image
+            <input
+              id="fileInput"
+              hidden
+              accept="image/*"
+              multiple
+              type="file"
+              onChange={handleFileChange}/>
+          </button>
+          <button className={styles.deleteButton} onClick={handeFileDelete}>
+            Delete Image
+          </button>
         </div>
         <div>
           <label>{t('pages.MyAccountPage.email')}</label>

@@ -205,7 +205,7 @@ export async function addRestoProfilePic(userId: number, pictureId: number) {
     mongoose.model('UserResto', userRestoSchema, 'UserResto');
   return UserRestoSchema.findOneAndUpdate(
     { uid: userId },
-    { $push: { profilePicId: pictureId } },
+    { $set: { profilePicId: [pictureId] } },
     { new: true }
   );
 }
@@ -216,7 +216,7 @@ export async function editRestoProfilePic(userId: number, oldPictureId: number,
     mongoose.model('UserResto', userRestoSchema, 'UserResto');
   return UserRestoSchema.findOneAndUpdate(
     { uid: userId, profilePicId: oldPictureId },
-    { $set: { 'profilePicId.$': newPictureId } },
+    { $set: { profilePicId: [newPictureId] } },
     { new: true }
   );
 }
