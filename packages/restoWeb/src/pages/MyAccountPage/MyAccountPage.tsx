@@ -24,6 +24,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {
   addRestoProfileImage, deleteRestoProfileImage, getImages
 } from "@src/services/callImages";
+import {useTranslation} from "react-i18next";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ const MyAccountPage = () => {
   const [picture, setPicture] = useState(null);
   const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [menuDesign, setMenuDesign] = useState('');
-  const [preferredLanguage, setPreferredLanguage] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState('en');
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -44,6 +45,7 @@ const MyAccountPage = () => {
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate();
+  const {t, i18n} = useTranslation();
 
   useEffect(() => {
     fetchProfileData();
@@ -58,7 +60,7 @@ const MyAccountPage = () => {
         setName(res.username);
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
-        setPreferredLanguage(res.preferredLanguage);
+        setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
   };
 
@@ -151,6 +153,7 @@ const MyAccountPage = () => {
       defaultMenuDesign: menuDesign,
       preferredLanguage: preferredLanguage
     });
+    i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
     if (!res) {
@@ -283,7 +286,7 @@ const MyAccountPage = () => {
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
-        <h1>Account Page</h1>
+        <h1>{t('pages.MyAccountPage.account-page')}</h1>
         {dataChangeStatus !== null && (
           <div
             className={`${styles.dataChangeStatus} ${
@@ -291,19 +294,19 @@ const MyAccountPage = () => {
             }`}
           >
             {dataChangeStatus === 'success'
-              ? 'Profile details changed successfully!'
-              : 'Failed to change profile details.'}
+              ? t('pages.MyAccountPage.data-changed-success')
+              : t('pages.MyAccountPage.data-changed-failure')}
           </div>
         )}
         <img
           id={"img-" + (profilePic && profilePic[0] ? profilePic[0].filename : "default")}
           src={profilePic.length > 0 ? profilePic[0].base64 : defaultProfileImage}
           className={styles.ImageDimensions}
-          alt="Resto Img"
+          alt={t('pages.MyAccountPage.pic-alt')}
         />
         <div className={styles.imageButtonContainer}>
           <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput').click(); }}>
-            Change Image
+            {t('pages.MyAccountPage.change-img')}
             <input
               id="fileInput"
               hidden
@@ -313,48 +316,53 @@ const MyAccountPage = () => {
               onChange={handleFileChange}/>
           </button>
           <button className={styles.deleteButton} onClick={handeFileDelete}>
-            Delete Image
+            {t('pages.MyAccountPage.delete-img')}
           </button>
         </div>
         <div>
-          <label>Email:</label>
+          <label>{t('pages.MyAccountPage.email')}</label>
           <input className={styles.InputField} type="text" value={email} onChange={handleEmailChange} required/>
         </div>
         <div>
-          <label>Name:</label>
+          <label>{t('pages.MyAccountPage.name')}</label>
           <input className={styles.InputField} type="text" value={name} onChange={handleNameChange} required/>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
-          <InputLabel id="menu-design-label">Menu Design</InputLabel>
+          <InputLabel id="menu-design-label">
+            {t('pages.MyAccountPage.menu-design')}
+          </InputLabel>
           <Select
             labelId="menu-design-label"
             id="menu-design"
             value={menuDesign}
             onChange={handleMenuDesignChange}
-            label="Menu Design"
+            label={t('pages.MyAccountPage.menu-design')}
           >
+            {/*TODO: apply i18n*/}
             <MenuItem value="default">Default</MenuItem>
             <MenuItem value="fast-food">Fast Food</MenuItem>
             <MenuItem value="pizzeria">Pizzeria</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth className={styles.selectInput}>
-          <InputLabel id="langauge-label">Preferred Language</InputLabel>
+          <InputLabel id="langauge-label">
+            {t('pages.MyAccountPage.preferred-language')}
+          </InputLabel>
           <Select
             labelId="language-label"
             id="language"
             value={preferredLanguage}
             onChange={handleLanguageChange}
-            label="Language"
+            label={t('pages.MyAccountPage.language')}
           >
-            <MenuItem value="en">English</MenuItem>
-            <MenuItem value="de">Deutsch</MenuItem>
-            <MenuItem value="fr">Francais</MenuItem>
+            <MenuItem value="en">{t('common.english')}</MenuItem>
+            <MenuItem value="de">{t('common.german')}</MenuItem>
+            <MenuItem value="fr">{t('common.french')}</MenuItem>
           </Select>
         </FormControl>
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
           <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
-            Change Password
+            {t('pages.MyAccountPage.change-pw')}
           </button>
           {passwordChangeOpen && (
             <div>
@@ -365,47 +373,47 @@ const MyAccountPage = () => {
                   }`}
                 >
                   {passwordChangeStatus === 'success'
-                    ? 'Password changed successfully!'
-                    : 'Failed to change password. Please check your old password and try again.'}
+                    ? t('pages.MyAccountPage.change-pw-success')
+                    : t('pages.MyAccountPage.change-pw-failure')}
                 </div>
               )}
               <TextField
                 className={styles.fullWidth}
-                label="Old Password"
+                label={t('pages.MyAccountPage.old-pw')}
                 name="oldPassword"
                 type="password"
                 value={oldPassword}
                 onChange={handleOldPasswordChange}
                 margin="normal"
                 error={errorForm}
-                helperText={errorForm ? 'Incorrect password' : ''}
+                helperText={errorForm ? t('pages.MyAccountPage.incorrect-pw') : ''}
               />
               <TextField
                 className={styles.fullWidth}
-                label="New Password"
+                label={t('pages.MyAccountPage.new-pw')}
                 name="newPassword"
                 type="password"
                 value={newPassword}
                 onChange={handleNewPasswordChange}
                 margin="normal"
                 error={pwError}
-                helperText={pwError ? 'Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters' : ''}
+                helperText={pwError ? t('pages.MyAccountPage.wrong-pw-format') : ''}
               />
               <TextField
                 className={styles.fullWidth}
-                label="Confirm Password"
+                label={t('pages.MyAccountPage.confirm-pw')}
                 name="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
                 margin="normal"
                 error={samePwError}
-                helperText={samePwError ? 'Passwords do not match' : ''}
+                helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
               />
               {/* Save Password Button */}
               <div>
                 <button className={styles.saveButton} onClick={handleSavePassword}>
-                  Save Password
+                  {t('pages.MyAccountPage.save-pw')}
                 </button>
               </div>
             </div>
@@ -413,19 +421,19 @@ const MyAccountPage = () => {
         </div>
         <div>
           <button className={styles.saveButton} onClick={handleSave}>
-            Save Changes
+            {t('pages.MyAccountPage.save-changes')}
           </button>
         </div>
         <button
           className={styles.deleteButton}
           onClick={handleOpenDeletePopup}
         >
-          Delete Account
+          {t('pages.MyAccountPage.delete-account')}
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <Typography variant="body1">You need a new feature? </Typography>
+          <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
-          Just ask for it !
+            {t('pages.MyAccountPage.just-ask')}
           </Button>
         </div>
       </div>
@@ -435,16 +443,18 @@ const MyAccountPage = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete Account"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {t('pages.MyAccountPage.delete-account')}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete your account? This action cannot be undone.
+            {t('pages.MyAccountPage.confirm-delete-account')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeletePopup}>Cancel</Button>
+          <Button onClick={handleCloseDeletePopup}>{t('common.cancel')}</Button>
           <Button onClick={handleDeleteAccount} autoFocus>
-            Delete
+            {t('common.delete')}
           </Button>
         </DialogActions>
       </Dialog>

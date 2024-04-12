@@ -28,6 +28,7 @@ import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -83,6 +84,7 @@ interface IDay {
   name?: string;
 }
 
+// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -125,6 +127,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const origRestoName = restaurantName;
+  const {t} = useTranslation();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -295,7 +298,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             {pictures.length > 0 &&
           <img
             src={pictures[0].base64}
-            alt="Restaurant Image"
+            alt={t('components.RestaurantForm.alt-img')}
             className={styles.ImageDimensions}
           />
             }
@@ -307,7 +310,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     variant="outlined"
                     component="label"
                   >
-                  Change Image
+                    {t('components.RestaurantForm.change-img')}
                     <input
                       hidden
                       accept="image/*"
@@ -321,7 +324,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     component="label"
                     onClick={handeFileDelete}
                   >
-                  Delete Image
+                    {t('components.RestaurantForm.delete-img')}
                   </Button>
                 </ThemeProvider>
               </FormControl>
@@ -337,11 +340,11 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           >
             <Grid item xs={4} sm={5} md={8} className={styles.FieldMarginRight}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">Name</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.name')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={restaurantName}
-                  label="Name"
+                  label={t('components.RestaurantForm.name')}
                   onChange={(e) => (setSelectedRestaurantName(e.target.value))}
                 />
               </FormControl>
@@ -349,12 +352,12 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             <Grid item xs={4} sm={3} md={4} className={styles.FieldMarginLeft}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  Phone number
+                  {t('components.RestaurantForm.phone-number')}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={phone}
-                  label="Phone number"
+                  label={t('components.RestaurantForm.phone-number')}
                   onChange={(e) => (setSelectedPhone(e.target.value))}
                 />
               </FormControl>
@@ -362,12 +365,12 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             <Grid item xs={3} sm={7} md={10}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  Street name
+                  {t('components.RestaurantForm.street-name')}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={street}
-                  label="Street name"
+                  label={t('components.RestaurantForm.street-name')}
                   onChange={(e) => (setSelectedStreet(e.target.value))}
                 />
               </FormControl>
@@ -375,12 +378,12 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             <Grid item xs={1} sm={1} md={2}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  Street number
+                  {t('components.RestaurantForm.street-number')}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={streetNumber}
-                  label="Street number"
+                  label={t('components.RestaurantForm.street-number')}
                   onChange={(e) => (setSelectedStreetNumber(parseInt(e.target.value)))}
                 />
               </FormControl>
@@ -388,34 +391,34 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             <Grid item xs={4} sm={8} md={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  Postal code
+                  {t('components.RestaurantForm.postal-code')}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={postalCode}
-                  label="Postal code"
+                  label={t('components.RestaurantForm.postal-code')}
                   onChange={(e) => (setSelectedPostalCode(e.target.value))}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">City</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.city')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={city}
-                  label="City"
+                  label={t('components.RestaurantForm.city')}
                   onChange={(e) => (setSelectedCity(e.target.value))}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">Country</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.country')}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={country}
-                  label="Country"
+                  label={t('components.RestaurantForm.country')}
                   onChange={(e) => (setSelectedCountry(e.target.value))}
                 />
               </FormControl>
@@ -425,7 +428,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 <TextField
                   id="outlined-multiline-flexible"
                   defaultValue={description}
-                  label="Description"
+                  label={t('components.RestaurantForm.description')}
                   multiline
                   onChange={(e) => (setSelectedDescription(e.target.value))}
                 />
@@ -437,7 +440,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   <FormControl fullWidth>
                     <span className={styles.DayDisplay}>{index.name}</span>
                     <TimePicker
-                      label="Opening"
+                      label={t('components.RestaurantForm.opening')}
                       ampm={false}
                       defaultValue={openingHours[key]?.open || null}
                       onChange={(value: any) =>
@@ -454,7 +457,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     />
                     <br />
                     <TimePicker
-                      label="Closing"
+                      label={t('components.RestaurantForm.closing')}
                       ampm={false}
                       defaultValue={openingHours[key]?.close || null}
                       onChange={(value: any) =>
@@ -478,7 +481,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 <TextField
                   id="outlined-multiline-flexible"
                   defaultValue={website}
-                  label="Web Site"
+                  label={t('components.RestaurantForm.website')}
                   multiline
                   onChange={(e) => (setSelectedWebsite(e.target.value))}
                 />
@@ -503,7 +506,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Menu Design"
+                      label={t('components.RestaurantForm.menu-design')}
                     />
                   )}
                 />
@@ -519,7 +522,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           sx={{ width: "12.13rem" }}
           onClick={sendRequestAndGoBack}
         >
-          Save
+          {t('common.save')}
         </Button>
       </ThemeProvider>
     </Box>

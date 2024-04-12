@@ -16,6 +16,7 @@ import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
 import {IimageInterface} from "../../../../shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
 import {addRestoAsFavourite, deleteRestoFromFavourites} from "@src/services/favourites";
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -63,6 +64,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
+  const {t} = useTranslation();
 
   useEffect(() => {
     async function fetchImages() {
@@ -148,7 +150,7 @@ const RestoCard = (props: IRestoCardProps) => {
                 variant="contained"
                 onClick={() => setIsDetailPageOpen(true)}
               >
-                Details
+                {t('components.RestoCard.details')}
               </Button>
               <Button
                 className={styles.RestoBtn}
@@ -160,7 +162,7 @@ const RestoCard = (props: IRestoCardProps) => {
                   address: address,
                 })}
               >
-                Menu
+                {t('components.RestoCard.menu')}
               </Button>
             </ThemeProvider>
           </div>

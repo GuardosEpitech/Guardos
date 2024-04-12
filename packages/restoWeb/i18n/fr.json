@@ -1,0 +1,239 @@
+{
+  "translation": {
+    "common": {
+      "save": "Enregistrer",
+      "submit": "Soumettre",
+      "apply-changes": "Appliquer les modifications",
+      "change": "Changer",
+      "edit": "Éditer",
+      "confirm": "Confirmer",
+      "ok": "OK",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "delete": "Supprimer",
+      "yes": "Oui",
+      "no": "Non",
+
+      "english": "Anglais",
+      "german": "Allemand",
+      "french": "Français",
+
+      "ingredients": "Ingrédients",
+      "my-ingredients": "Mes Ingrédients",
+      "products": "Produits",
+      "my-products": "Mes Produits",
+      "dishes": "Plats",
+      "my-dishes": "Mes Plats",
+      "restos": "Restaurants",
+      "my-restos": "Mes Restaurants",
+
+      "add-picture": "Appuyez pour Ajouter une Image",
+
+      "loading": "Chargement...",
+
+      "success": "Succès",
+      "error": "Erreur",
+      "unexpected-error": "Une erreur inattendue s'est produite",
+      "all-fields-mandatory": "Tous les champs sont obligatoires.",
+      "need-cam-permissions": "Désolé, nous avons besoin des autorisations d'accès à la galerie pour que cela fonctionne correctement!"
+    },
+    "components": {
+      "MapButton": {
+        "enter-map-view": "Accéder à la vue cartographique"
+      },
+      "Header": {
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "home": "Accueil",
+        "my-account": "Mon compte"
+      },
+      "SuccessAlert": {
+        "success-msg": "Ceci est un message de succès!"
+      },
+      "DishForm": {
+        "alt-img": "Image du Restaurant",
+        "change-img": "Changer l'image",
+        "delete-img": "Supprimer l'image",
+        "name": "Nom",
+        "name-is-required": "Le nom est requis",
+        "price": "Prix",
+        "price-is-required": "Le prix est requis",
+        "description": "Description",
+        "select-min-one-product": "Veuillez sélectionner au moins un produit",
+        "allergens": "Allergènes",
+        "food-category": "Catégorie alimentaire",
+        "select-min-one-category": "Veuillez sélectionner au moins une catégorie",
+        "resto": "Restaurant",
+        "select-min-one-resto": "Veuillez sélectionner au moins un restaurant"
+      },
+      "ProductForm": {
+        "name": "Nom",
+        "input-empty-error": "Le champ ne peut pas être vide",
+        "resto": "Restaurant"
+      },
+      "RestaurantForm": {
+        "alt-img": "Image du Restaurant",
+        "change-image": "Changer l'image",
+        "delete-image": "Supprimer l'image",
+        "name": "Nom",
+        "phone-number": "Numéro de téléphone",
+        "street-name": "Nom de rue",
+        "street-number": "Numéro de rue",
+        "postal-code": "Code postal",
+        "city": "Ville",
+        "country": "Pays",
+        "description": "Description",
+        "opening": "Ouverture",
+        "closing": "Fermeture",
+        "website": "Site web",
+        "menu-design": "Design du menu"
+      },
+      "Dish": {
+        "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ dishName }}?",
+        "options": "Options: "
+      },
+      "ProductCard": {
+        "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ productName }}?",
+        "ingredients": "Ingrédients: "
+      },
+      "RestoCard": {
+        "menu": "Menu",
+        "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ restoName }}?",
+        "opening-hours": "Heures d'ouverture"
+      }
+    },
+    "pages": {
+      "AddDishPage": {
+        "my-new-dish": "Mon nouveau plat"
+      },
+      "AddProductPage": {
+        "my-new-product": "Mon nouveau produit"
+      },
+      "AddRestaurantPage": {
+        "my-new-resto": "Mon nouveau restaurant"
+      },
+      "AppOutlet": {
+        "contact": "Contact:",
+        "email": "Email: contact@guardos.com",
+        "phone": "Téléphone: +49 211 1234567",
+        "location": "Localisation: contact@guardos.com"
+      },
+      "ChangePassword": {
+        "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la page principale.",
+        "change-pw": "Changer le mot de passe",
+        "email": "Email",
+        "new-pw": "Nouveau mot de passe",
+        "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères",
+        "repeat-pw": "Répéter le mot de passe",
+        "no-match-pw": "Votre mot de passe ne correspond pas, veuillez vérifier le mot de passe répété",
+        "change-pw-success": "Le changement a été effectué avec succès",
+        "save-pw-warning": "Assurez-vous de sauvegarder votre mot de passe quelque part.",
+        "go-back-to-login": "Retourner à la connexion",
+        "error": "Une erreur s'est produite",
+        "change-pw-failure": "Veuillez réessayer de changer le mot de passe. Si l'erreur se produit à nouveau, veuillez nous contacter."
+      },
+      "DishesPage": {
+        "no-dishes-yet": "Oups, il semble que vous n'ayez pas encore de plats!",
+        "add-first-dish": "Ajoutez votre premier plat en cliquant ",
+        "here": "ici",
+        "add-dish": "Ajouter un plat"
+      },
+      "EditDishPage": {
+        "edit-dish": "Éditer le plat"
+      },
+      "EditProductPage": {
+        "edit-product": "Éditer le produit"
+      },
+      "EditRestaurantPage": {
+        "edit-resto": "Éditer le restaurant"
+      },
+      "FeatureRequest": {
+        "feature-request": "Demande de fonctionnalité",
+        "name": "Nom",
+        "subject": "Sujet",
+        "request": "Votre demande",
+        "email-sent-success": "Email envoyé avec succès!"
+      },
+      "HomePage": {
+        "no-restos-yet": "Vous n'avez actuellement aucun restaurant actif. Vous pouvez cliquer sur le bouton dans le coin inférieur droit pour en ajouter un nouveau.",
+        "please": "Veuillez ",
+        "login": "vous connecter",
+        "to-see-your-restos": " pour voir vos restaurants.",
+        "add-resto": "Ajouter un restaurant"
+      },
+      "LoginPage": {
+        "redirect-facebook-login": "Redirection vers la connexion Facebook",
+        "redirect-google-login": "Redirection vers la connexion Google",
+        "login": "Connexion",
+        "username-or-email": "Nom d'utilisateur ou Email",
+        "password": "Mot de passe",
+        "invalid-credentials": "Identifiants de connexion invalides",
+        "trouble-logging-in": "Problème de connexion?",
+        "register-if-no-account": "Vous n'avez pas encore de compte? Inscrivez-vous ",
+        "here": "ici",
+        "or": "Ou",
+        "facebook-img-alt": "Logo Facebook",
+        "google-img-alt": "Logo Google"
+      },
+      "MyAccountPage": {
+        "account-page": "Page du compte",
+        "data-changed-success": "Détails du profil modifiés avec succès!",
+        "data-changed-failure": "Impossible de modifier les détails du profil.",
+        "profile-pic": "Image de profil :",
+        "pic-alt": "Profil",
+        "change-img": "Changer l'image",
+        "delete-img": "Image claire",
+        "email": "Email :",
+        "name": "Nom :",
+        "menu-design": "Design du menu",
+        "preferred-language": "Langue préférée",
+        "language": "Langue",
+        "change-pw": "Changer le mot de passe",
+        "change-pw-success": "Mot de passe modifié avec succès!",
+        "change-pw-failure": "Échec de la modification du mot de passe. Veuillez vérifier votre ancien mot de passe et réessayer.",
+        "old-pw": "Ancien mot de passe",
+        "incorrect-pw": "Mot de passe incorrect",
+        "new-pw": "Nouveau mot de passe",
+        "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères",
+        "confirm-pw": "Confirmer le mot de passe",
+        "no-match-pw": "Les mots de passe ne correspondent pas",
+        "save-pw": "Enregistrer le mot de passe",
+        "save-changes": "Enregistrer les modifications",
+        "delete-account": "Supprimer le compte",
+        "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité? ",
+        "just-ask": "Demandez-la simplement!",
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
+      },
+      "ProductsPage": {
+        "add-product": "Ajouter un produit"
+      },
+      "RegistrationPage": {
+        "register": "S'inscrire",
+        "username": "Nom d'utilisateur",
+        "username-exists-or-invalid": "Le nom d'utilisateur désiré existe déjà ou est invalide",
+        "email": "Email",
+        "email-taken-or-invalid": "Un compte existe déjà pour l'adresse email spécifiée ou est invalide",
+        "password": "Mot de passe",
+        "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères"
+      },
+      "ResetPassword": {
+        "invalid-credentials": "Ce nom d'utilisateur et cet email {{ email }} ne correspondent pas. Veuillez vérifier l'orthographe ou essayer un autre nom d'utilisateur",
+        "user-error": "Erreur lors de la vérification de l'utilisateur. Veuillez réessayer",
+        "get-back-in-account": "Retournez dans votre compte Guardos",
+        "enter-account-info": "Indiquez-nous des informations sur votre compte",
+        "enter-username-prompt": "Ensuite, donnez-nous le nom d'utilisateur Guardos avec lequel vous rencontrez des problèmes",
+        "enter-email": "Entrez votre adresse email",
+        "email": "Email",
+        "enter-username": "Entrez votre nom d'utilisateur",
+        "username": "Nom d'utilisateur",
+        "email-sent-success": "Email envoyé!",
+        "email-sent-failure": "Veuillez vérifier votre boîte de réception pour un email concernant la récupération du mot de passe, et vérifiez également votre dossier spam. L'email contient un lien valide pendant 15 minutes.",
+        "back-to-login": "Retour à la connexion",
+        "error": "Une erreur s'est produite.",
+        "retry-recovery-link": "Veuillez réessayer pour obtenir un lien de récupération. Si l'erreur se produit à nouveau, veuillez nous contacter.",
+        "send-recovery-link": "Envoyer mon lien de réinitialisation de mot de passe",
+        "continue": "Continuer"
+      }
+    }
+  }
+}

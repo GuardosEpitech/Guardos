@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 
 import Layout from 'shared/components/Layout/Layout';
@@ -6,6 +6,7 @@ import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
 import styles
   from "@src/pages/EditRestaurantPage/EditRestaurantPage.module.scss";
+import {useTranslation} from "react-i18next";
 
 interface IEditRestaurantPageProps {
   restoName: string;
@@ -35,11 +36,14 @@ const EditRestaurantPage = () => {
     menuDesignID,
     website
   } = useLocation().state as IEditRestaurantPageProps;
+  const {t} = useTranslation();
 
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>Edit restaurant</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.EditRestaurantPage.edit-resto')}
+        </span>
       </div>
       <Layout>
         <RestaurantForm

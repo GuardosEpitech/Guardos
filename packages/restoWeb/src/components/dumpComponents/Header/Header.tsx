@@ -6,12 +6,16 @@ import logo from "@src/assets/logo.png";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { checkIfTokenIsValid } from '../../../services/userCalls';
 import styles from "./Header.module.scss";
+import TranslateIcon from "@mui/icons-material/Translate";
+import {useTranslation} from "react-i18next";
 
 const Header = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLogInSite, setIsLogInSite] = useState(false);
 
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
   const usePathPattern = useLocation();
 
   function logoutUser() {
@@ -50,13 +54,18 @@ const Header = () => {
     checkUserToken();
   }, [navigate]);
 
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    setShowLanguageDropdown(false);
+  };
+
   return (
     <div className={loggedIn ? styles.BackgroundRectLoggedIn
       : styles.BackgroundRectLoggedOut}>
       <span className={loggedIn ? styles.NavTitle : styles.NavTitleLogIn}>
         { loggedIn && (
           <a onClick={logoutUser}>
-            Logout
+            {t('components.Header.logout')}
           </a>
         )}
         { !loggedIn && !isLogInSite && (
@@ -66,7 +75,7 @@ const Header = () => {
           className={styles.NavTitleLogIn}
           href="/login"
           >
-            Login
+            {t('components.Header.login')}
           </a>
         )}
         { !loggedIn && isLogInSite && (
@@ -74,7 +83,7 @@ const Header = () => {
             setIsLogInSite(false);
             NavigateTo('/', navigate, {});
           }}>
-            Home
+            {t('components.Header.home')}
           </a>
         )}
       </span>
@@ -84,7 +93,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/account"
         >
-          My Account
+          {t('components.Header.my-account')}
         </a>
       }
       { loggedIn 
@@ -93,7 +102,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/"
         >
-          My Restaurants
+          {t('common.my-restos')}
         </a>
       }
       <img className={styles.LogoImg} src={logo} alt="Logo" />
@@ -110,7 +119,7 @@ const Header = () => {
           className={styles.NavTitle}
           href="/dishes"
         >
-          My Dishes
+          {t('common.my-dishes')}
         </a>
       }
       { loggedIn 
@@ -119,9 +128,32 @@ const Header = () => {
           className={styles.NavTitle}
           href="/products"
         >
-          My Products
+          {t('common.my-products')}
         </a>
       }
+      { !loggedIn && isLogInSite && (
+        <a
+          className={styles.NavTitle}
+          onClick={() => {
+            setShowLanguageDropdown(!showLanguageDropdown);
+          }}
+        >
+          <TranslateIcon fontSize="medium" />
+          {showLanguageDropdown && (
+            <div className={styles.languageDropdown}>
+              <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                {t('common.english')}
+              </a>
+              <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                {t('common.german')}
+              </a>
+              <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                {t('common.french')}
+              </a>
+            </div>
+          )}
+        </a>
+      )}
     </div>
   );
 };

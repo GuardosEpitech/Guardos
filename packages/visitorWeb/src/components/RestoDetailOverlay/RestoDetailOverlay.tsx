@@ -14,6 +14,7 @@ import {NavigateTo} from "@src/utils/NavigateTo";
 import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import ScrollOverlay from '../ScrollOverlay/ScrollOverlay';
 import styles from "./RestoDetailOverlay.module.scss";
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -65,6 +66,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
   const picture = props.pictureBase64;
   const {streetName, streetNumber, postalCode, city, country} = location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
+  const {t} = useTranslation();
 
   if (!props.restaurant) {
     return null;
@@ -84,9 +86,9 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             <table className={styles.OpeningHours}>
               <thead>
               <tr>
-                <th className={styles.OpeningHoursColumn}>Day</th>
-                <th className={styles.OpeningHoursColumn}>Opening</th>
-                <th className={styles.OpeningHoursColumn}>Closing</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.day')}</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.opening')}</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.closing')}</th>
               </tr>
               </thead>
               <tbody>
@@ -140,7 +142,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
                   address: address,
                 })}
               >
-                Menu
+                {t('components.RestoCard.menu')}
               </Button>
             </ThemeProvider>
           </div>
@@ -152,6 +154,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
 
 const getDayOpeningHours = (requestedDay: number, openingHours: IOpeningHours[]) => {
   const matchingDay = openingHours.find((item) => item.day === requestedDay);
+  // TODO: apply i18n
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const readableDay = daysOfWeek[requestedDay];
 
