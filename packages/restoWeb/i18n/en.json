@@ -1,0 +1,239 @@
+{
+  "translation": {
+    "common": {
+      "save": "Save",
+      "submit": "Submit",
+      "apply-changes": "Apply Changes",
+      "change": "Change",
+      "edit": "Edit",
+      "confirm": "Confirm",
+      "ok": "OK",
+      "cancel": "Cancel",
+      "close": "Close",
+      "delete": "Delete",
+      "yes": "Yes",
+      "no": "No",
+
+      "english": "English",
+      "german": "German",
+      "french": "French",
+
+      "ingredients": "Ingredients",
+      "my-ingredients": "My Ingredients",
+      "products": "Products",
+      "my-products": "My Products",
+      "dishes": "Dishes",
+      "my-dishes": "My Dishes",
+      "restos": "Restaurants",
+      "my-restos": "My Restaurants",
+
+      "add-picture": "Tap to Add Picture",
+
+      "loading": "Loading...",
+
+      "success": "Success",
+      "error": "Error",
+      "unexpected-error": "An unexpected error occurred",
+      "all-fields-mandatory": "All fields are mandatory.",
+      "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!"
+    },
+    "components": {
+      "MapButton": {
+        "enter-map-view": "Go to Map View"
+      },
+      "Header": {
+        "login": "Login",
+        "logout": "Logout",
+        "home": "Home",
+        "my-account": "My account"
+      },
+      "SuccessAlert": {
+        "success-msg": "This is a success message!"
+      },
+      "DishForm": {
+        "alt-img": "Resto Img",
+        "change-img": "Change Image",
+        "delete-img": "Delete Image",
+        "name": "Name",
+        "name-is-required": "Name is required",
+        "price": "Price",
+        "price-is-required": "Price is required",
+        "description": "Description",
+        "select-min-one-product": "Please select at least one product",
+        "allergens": "Allergens",
+        "food-category": "Food Category",
+        "select-min-one-category": "Please select at least one category",
+        "resto": "Restaurant",
+        "select-min-one-resto": "Please select at least one restaurant"
+      },
+      "ProductForm": {
+        "name": "Name",
+        "input-empty-error": "Input cannot be empty",
+        "resto": "Restaurant"
+      },
+      "RestaurantForm": {
+        "alt-img": "Restaurant Image",
+        "change-image": "Change Image",
+        "delete-image": "Delete Image",
+        "name": "Name",
+        "phone-number": "Phone number",
+        "street-name": "Street name",
+        "street-number": "Street number",
+        "postal-code": "Postal code",
+        "city": "City",
+        "country": "Country",
+        "description": "Description",
+        "opening": "Opening",
+        "closing": "Closing",
+        "website": "Website",
+        "menu-design": "Menu Design"
+      },
+      "Dish": {
+        "confirm-delete": "Are you sure you want to delete {{ dishName }}?",
+        "options": "Options: "
+      },
+      "ProductCard": {
+        "confirm-delete": "Are you sure you want to delete {{ productName }}?",
+        "ingredients": "Ingredients: "
+      },
+      "RestoCard": {
+        "menu": "Menu",
+        "confirm-delete": "Are you sure you want to delete {{ restoName }}?",
+        "opening-hours": "Opening hours"
+      }
+    },
+    "pages": {
+      "AddDishPage": {
+        "my-new-dish": "My new dish"
+      },
+      "AddProductPage": {
+        "my-new-product": "My new product"
+      },
+      "AddRestaurantPage": {
+        "my-new-resto": "My new restaurant"
+      },
+      "AppOutlet": {
+        "contact": "Contact:",
+        "email": "Email: contact@guardos.com",
+        "phone": "Phone: +49 211 1234567",
+        "location": "Location: contact@guardos.com"
+      },
+      "ChangePassword": {
+        "invalid-link-redirect-to-mainpage": "Your link is invalid. You will be redirected to the Mainpage.",
+        "change-pw": "Change Password",
+        "email": "Email",
+        "new-pw": "New Password",
+        "wrong-pw-format": "Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters",
+        "repeat-pw": "Repeat Password",
+        "no-match-pw": "Your Password is not the same, please check your repeated password",
+        "change-pw-success": "Change was successful",
+        "save-pw-warning": "Please ensure that you save your password anywhere.",
+        "go-back-to-login": "Go back to Login",
+        "error": "There was an error",
+        "change-pw-failure": "Please try again to change the password. If the Error appears one more time, please contact us."
+      },
+      "DishesPage": {
+        "no-dishes-yet": "Oops, looks like you dont have any dishes yet!",
+        "add-first-dish": "Add your first dish by clicking ",
+        "here": "here",
+        "add-dish": "Add dish"
+      },
+      "EditDishPage": {
+        "edit-dish": "Edit dish"
+      },
+      "EditProductPage": {
+        "edit-product": "Edit product"
+      },
+      "EditRestaurantPage": {
+        "edit-resto": "Edit restaurant"
+      },
+      "FeatureRequest": {
+        "feature-request": "Feature Request",
+        "name": "Name",
+        "subject": "Subject",
+        "request": "Your request",
+        "email-sent-success": "Email sent successfully!"
+      },
+      "HomePage": {
+        "no-restos-yet": "You have currently no active restaurant. You can click on the button in the lower right corner to add a new one.",
+        "please": "Please ",
+        "login": "Login",
+        "to-see-your-restos": " to see your restaurants.",
+        "add-resto": "Add Restaurant"
+      },
+      "LoginPage": {
+        "redirect-facebook-login": "Redirecting to Facebook login",
+        "redirect-google-login": "Redirecting to Google login",
+        "login": "Login",
+        "username-or-email": "Username or Email",
+        "password": "Password",
+        "invalid-credentials": "Invalid Login data",
+        "trouble-logging-in": "Trouble logging in?",
+        "register-if-no-account": "You don't have an account yet? Register yourself ",
+        "here": "here",
+        "or": "Or",
+        "facebook-img-alt": "Facebook Logo",
+        "google-img-alt": "Google Logo"
+      },
+      "MyAccountPage": {
+        "account-page": "Account page",
+        "data-changed-success": "Profile details changed successfully!",
+        "data-changed-failure": "Failed to change profile details.",
+        "profile-pic": "Profile Picture:",
+        "pic-alt": "Profile",
+        "change-img": "Change Image",
+        "delete-img": "Delete Image",
+        "email": "Email:",
+        "name": "Name:",
+        "menu-design": "Menu Design",
+        "preferred-language": "Preferred language",
+        "language": "Language",
+        "change-pw": "Change Password",
+        "change-pw-success": "Password changed successfully!",
+        "change-pw-failure": "Failed to change password. Please check your old password and try again.",
+        "old-pw": "Old Password",
+        "incorrect-pw": "Incorrect pass",
+        "new-pw": "New Password",
+        "wrong-pw-format": "Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters",
+        "confirm-pw": "Confirm Password",
+        "no-match-pw": "Passwords do not match",
+        "save-pw": "Save Password",
+        "save-changes": "Save Changes",
+        "delete-account": "Delete Account",
+        "feature-request": "You need a new feature? ",
+        "just-ask": "Just ask for it!",
+        "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone."
+      },
+      "ProductsPage": {
+        "add-product": "Add product"
+      },
+      "RegistrationPage": {
+        "register": "Register",
+        "username": "Username",
+        "username-exists-or-invalid": "The desired Username exists already or is invalid",
+        "email": "Email",
+        "email-taken-or-invalid": "An account already exists for the specified email or is invalid",
+        "password": "Password",
+        "wrong-pw-format": "Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters"
+      },
+      "ResetPassword": {
+        "invalid-credentials": "That username and email {{ email }} don't match. Please check its spelling or try another username",
+        "user-error": "Error checking resto user. Please try again",
+        "get-back-in-account": "Get back into your Guardos account",
+        "enter-account-info": "Tell us some information about your account",
+        "enter-username-prompt": "Next, give us the Guardos username you're having trouble with",
+        "enter-email": "Enter your email address",
+        "email": "Email",
+        "enter-username": "Enter your username",
+        "username": "Username",
+        "email-sent-success": "Email was sent!",
+        "email-sent-failure": "Please check your inbox for an email regarding password recovery, and also review your spam folder. The email contains a link that will remain valid for 15 minutes.",
+        "back-to-login": "Go back to Login",
+        "error": "There was an Error.",
+        "retry-recovery-link": "Please try again to get a recovery link. If the Error appears one more time, please contact us.",
+        "send-recovery-link": "Send My Password Reset Link",
+        "continue": "Continue"
+      }
+    }
+  }
+}

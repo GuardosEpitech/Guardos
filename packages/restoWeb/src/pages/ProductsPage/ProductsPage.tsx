@@ -11,9 +11,11 @@ import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { IProduct } from "shared/models/restaurantInterfaces";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 const ProductsPage = () => {
   const [productData, setProductData] = useState<Array<IProduct>>([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
     updateProductData();
@@ -50,7 +52,7 @@ const ProductsPage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My products</span>
+        <span className={styles.TitleSearch}>{t('common.my-products')}</span>
       </div>
       <Layout>
         <Grid
@@ -69,7 +71,10 @@ const ProductsPage = () => {
           ))}
         </Grid>
       </Layout>
-      <FixedBtn title="Add product" redirect="/addProduct" />
+      <FixedBtn
+        title={t('pages.ProductsPage.add-product')}
+        redirect="/addProduct"
+      />
       <SuccessAlert />
     </div>
   );

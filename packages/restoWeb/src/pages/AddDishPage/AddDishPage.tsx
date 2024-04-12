@@ -3,9 +3,11 @@ import DishForm from "@src/components/forms/DishForm/DishForm";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/AddDishPage/AddDishPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 const AddDishPage = () => {
-
+  const {t} = useTranslation();
+  
   useEffect(() => {
     checkDarkMode();
   }, []);
@@ -27,11 +29,10 @@ const AddDishPage = () => {
       disable();
     }
   }
-  
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My new dish</span>
+        <span className={styles.TitleSearch}>{t('pages.AddDishPage.my-new-dish')}</span>
       </div>
       <Layout>
         <DishForm add dishUID={-1} />

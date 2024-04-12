@@ -10,6 +10,7 @@ import {
 } from '@src/services/userCalls';
 import { enable, disable, setFetchMethod} from "darkreader";
 
+import {useTranslation} from "react-i18next";
 
 interface ResetPasswordProps {}
 
@@ -21,6 +22,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [open, setOpen] = useState(true);
   const [disableButton, setDisableButton] = useState(false);
   const [openFailed, setOpenFailed] = useState(true);
+  const {t} = useTranslation();
 
   useEffect(() => {
     checkDarkMode();
@@ -52,11 +54,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
                 setStep(4);
               }
             } else {
-              setError(`That username and email (${email}) don't match. Please check its spelling or try another username.`);
+              setError(t('pages.ResetPassword.invalid-credentials', {email: email}));
             }
           } catch (error) {
             console.error('Error checking resto user:', error);
-            setError('Error checking resto user. Please try again.');
+            setError(t('pages.ResetPassword.user-error'));
           }
       }
     }
@@ -104,19 +106,19 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Getting back into your Guardos account</h1>
-      <p>{step === 1 ? 'Tell us some information about your account' : 
-      'Next, give us the Guardos username you\'re having trouble with'}</p>
+      <h1>{t('pages.ResetPassword.get-back-in-account')}</h1>
+      <p>{step === 1 ? t('pages.ResetPassword.enter-account-info') :
+        t('pages.ResetPassword.enter-username-prompt')}</p>
       {step === 1 ? (
         <>
           <div className={styles.labelContainer}>
-            <label htmlFor="emailInput">Enter your email address</label>
+            <label htmlFor="emailInput">{t('pages.ResetPassword.enter-email')}</label>
           </div>
           <div className={styles.inputContainer}>
             <input
               id="emailInput"
               type="text"
-              placeholder="Email"
+              placeholder={t('pages.ResetPassword.email')}
               value={email}
               onChange={handleInputChange}
             />
@@ -125,7 +127,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       ) : (
         <>
           <div className={styles.emailSection}>
-            <label>Email</label>
+            <label>{t('pages.ResetPassword.email')}</label>
             <div className={styles.emailDisplay}>
               <span>{email}</span>
               <span className={styles.pencilIcon} onClick={handleGoBack}>
@@ -134,13 +136,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
             </div>
           </div>
           <div className={styles.labelContainer}>
-            <label htmlFor="usernameInput">Enter your username</label>
+            <label htmlFor="usernameInput">{t('pages.ResetPassword.enter-username')}</label>
           </div>
           <div className={styles.inputContainer}>
             <input
               id="usernameInput"
               type="text"
-              placeholder="Username"
+              placeholder={t('pages.ResetPassword.username')}
               value={username}
               onChange={handleInputChange}
             />
@@ -151,12 +153,12 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       {step === 3 ? (
         <div>
           <Dialog open={open} onClose={handleGoBackToLogin}>
-            <DialogTitle>E-Mail was send!</DialogTitle>
+            <DialogTitle>{t('pages.ResetPassword.email-sent-success')}</DialogTitle>
             <DialogContent>
-              <p>Please check your inbox for an email regarding password recovery, and also review your spam folder. The email contains a link that will remain valid for 15 minutes.</p>
+              <p>{t('pages.ResetPassword.email-sent-failure')}</p>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+              <Button onClick={handleGoBackToLogin}>{t('pages.ResetPassword.back-to-login')}</Button>
             </DialogActions>
           </Dialog>
         </div>
@@ -168,12 +170,12 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       {step === 4 ? (
         <div>
           <Dialog open={openFailed} onClose={handleGoBackToSite}>
-            <DialogTitle>There was an Error.</DialogTitle>
+            <DialogTitle>{t('pages.ResetPassword.error')}</DialogTitle>
             <DialogContent>
-              <p>Please try again to get a recovery link. If the Error appears one more time, please contact us.</p>
+              <p>{t('pages.ResetPassword.retry-recovery-link')}</p>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+              <Button onClick={handleGoBackToLogin}>{t('pages.ResetPassword.back-to-login')}</Button>
             </DialogActions>
           </Dialog>
         </div>
@@ -189,7 +191,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
               disabled={true}
               className={styles.disableButton}
           >
-              Send My Password Reset Link
+            {t('pages.ResetPassword.send-recovery-link')}
           </button>
         </div>
       ) : (
@@ -202,7 +204,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
                   styles.buttonEnabled : '' : username.trim() !== '' ? 
                   styles.buttonEnabled : ''}
           >
-              {step === 1 ? 'Continue' : 'Send My Password Reset Link'}
+              {step === 1 ? t('pages.ResetPassword.continue') :
+                t('pages.ResetPassword.send-recovery-link')}
           </button>
         </div>
       )}

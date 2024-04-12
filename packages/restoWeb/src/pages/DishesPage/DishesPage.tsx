@@ -10,11 +10,11 @@ import styles from "@src/pages/DishesPage/DishesPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { enable, disable, setFetchMethod} from "darkreader";
-
-
+import {useTranslation} from "react-i18next";
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
     updateDishData();
@@ -51,19 +51,20 @@ const DishesPage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My dishes</span>
+        <span className={styles.TitleSearch}>{t('common.my-dishes')}</span>
       </div>
       <Layout>
         {dishData.length === 0 ?
           (<div>
             <span className={styles.ErrorHeader}>
-              Oops, looks like you dont have any dishes yet!
+              {t('pages.DishesPage.no-dishes-yet')}
             </span>
             <br/>
             <br/>
             <br/>
             <span className={styles.ErrorText}>
-              Add your first dish by clicking <a href="/addDish">here</a>.
+              {t('pages.DishesPage.add-first-dish')}
+              <a href="/addDish">{t('pages.DishesPage.here')}</a>.
             </span>
           </div>)
           :
@@ -80,7 +81,7 @@ const DishesPage = () => {
           })
           )}
       </Layout>
-      <FixedBtn title="Add dish" redirect="/addDish"/>
+      <FixedBtn title={t('pages.DishesPage.add-dish')} redirect="/addDish"/>
       <SuccessAlert/>
     </div>
   );

@@ -8,6 +8,7 @@ import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 interface User {
   username: string;
@@ -28,6 +29,7 @@ const Register = () => {
   const [errorPassword, setErrorPassword] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register/restoWeb`;
+  const {t} = useTranslation();
 
   useEffect(() => {
     checkDarkMode();
@@ -79,12 +81,12 @@ const Register = () => {
       }
 
       const response = await axios({
-          method: 'POST',
-          url: baseUrl,
-          data: dataStorage,
-          headers: {
-              'Content-Type': 'application/json',
-          },
+        method: 'POST',
+        url: baseUrl,
+        data: dataStorage,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
       if (response.data[0]) {
@@ -103,8 +105,8 @@ const Register = () => {
       }
       return response.data;
     } catch (error) {
-        console.error(`Error in post Route: ${error}`);
-        throw error;
+      console.error(`Error in post Route: ${error}`);
+      throw error;
     }
   };
 
@@ -135,39 +137,47 @@ const Register = () => {
     <>
       <Layout>
         <div className={styles.registerForm}>
-          <h2>Register</h2>
+          <h2>{t('pages.RegistrationPage.register')}</h2>
           <form onSubmit={handleSubmit}>
             <TextField
-              label="Username"
+              label={t('pages.RegistrationPage.username')}
               name="username"
               value={user.username}
               onChange={handleChange}
               margin="normal"
               error={errorUsername}
-              helperText={errorUsername ? 'The desired Username exists already or is invalid' : ''}
+              helperText={errorUsername ?
+                t('pages.RegistrationPage.username-exists-or-invalid') : ''}
             />
             <TextField
-              label="Email"
+              label={t('pages.RegistrationPage.email')}
               name="email"
               type="email"
               value={user.email}
               onChange={handleChange}
               margin="normal"
               error={errorEmail}
-              helperText={errorEmail ? 'An account already exists for the specified email or is invalid' : ''}
+              helperText={errorEmail ?
+                t('pages.RegistrationPage.email-taken-or-invalid') : ''}
             />
             <TextField
-              label="Password"
+              label={t('pages.RegistrationPage.password')}
               name="password"
               type="password"
               value={user.password}
               onChange={handleChange}
               margin="normal"
               error={errorPassword}
-              helperText={errorPassword ? 'Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters' : ''}
+              helperText={errorPassword ?
+                t('pages.RegistrationPage.wrong-pw-format') : ''}
             />
-            <Button size='large' type="submit" variant="contained" color="primary">
-              Register
+            <Button
+              size='large'
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              {t('pages.RegistrationPage.register')}
             </Button>
           </form>
         </div>

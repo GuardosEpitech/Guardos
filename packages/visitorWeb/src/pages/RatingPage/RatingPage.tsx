@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 const RatingPage = () => {
   const { restoName } = useLocation().state;
@@ -17,6 +18,7 @@ const RatingPage = () => {
   const ref = useRef(null);
   const [ratingData, setRatingData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const {t} = useTranslation();
 
   useEffect(() => {
     checkDarkMode();
@@ -143,13 +145,15 @@ const RatingPage = () => {
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Comment succelfully added
+          {t('pages.RatingPage.comment-added-success')}
         </Alert>
       </Snackbar>
-        <h2>Add a review</h2>
+        <h2>{t('pages.RatingPage.add-review')}</h2>
         <div className={styles.RatingSection}>
           <div className={styles.NoteContainer}>
-            <span className={styles.SpanTitleRating}>Add a note :</span>
+            <span className={styles.SpanTitleRating}>
+              {t('pages.RatingPage.add-note')}
+            </span>
             <Rating
               size="large"
               name="size-large"
@@ -159,26 +163,28 @@ const RatingPage = () => {
               }}/>
           </div>
           <div className={styles.CommentContainer}>
-            <span className={styles.SpanTitleComment}>Add a comment :</span>
+            <span className={styles.SpanTitleComment}>{t('pages.RatingPage.add-comment')}</span>
             <Textarea
               aria-label="minimum height"
               minRows={10}
-              placeholder="Your comment..."
+              placeholder={t('pages.RatingPage.your-comment')}
               ref={ref}
               value={comment}
               onChange={handleComment}
             />
           </div>
           <Button variant="contained" onClick={addReview} className={styles.BtnSend}>
-            Add my review
+            {t('pages.RatingPage.add-my-review')}
           </Button>
         </div>
         <div className={styles.AllReviewContainer}>
           {ratingData === undefined ?
-            <h2>No reviews yet</h2>
+            <h2>{t('pages.RatingPage.no-reviews-yet')}</h2>
           :
             <div className={styles.RecapReview}>
-              <h2>{`All the reviews (${ratingData.length})`}</h2>
+              <h2>
+                {t('pages.RatingPage.review-overview', {ratingAmount: ratingData.length})}
+              </h2>
               <span className={styles.AverageTxt}>{averageRating()}</span>
               <Rating size="small" name="read-only" value={averageRating()} readOnly />
             </div>

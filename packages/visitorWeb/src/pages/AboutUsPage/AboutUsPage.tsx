@@ -7,38 +7,42 @@ import ramon from "@src/assets/profile/ramon.png";
 import renan from "@src/assets/profile/renan.png";
 import alban from "@src/assets/profile/alban.png";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
-const teamMembers = [
+const AboutUsPage = () => {
+  const [activeSection, setActiveSection] = useState('introduction');
+  const {t} = useTranslation();
+  const teamMembers = [
     {
       id: 1,
       photo: josi,
-      description: '4th year Epitech student from Germany',
+      description: t('pages.AboutUs.german-team-member'),
     },
     {
       id: 2,
       photo: gylian,
-      description: '4th year Epitech student from Germany',
+      description: t('pages.AboutUs.german-team-member'),
     },
     {
-        id: 3,
-        photo: mark,
-        description: '4th year Epitech student from Germany',
-      },
-      {
-        id: 4,
-        photo: ramon,
-        description: '4th year Epitech student from Germany',
-      },
-      {
-        id: 5,
-        photo: alban,
-        description: '4th year Epitech student from France',
-      },
-      {
-        id: 6,
-        photo: renan,
-        description: '4th year Epitech student from France',
-      },
+      id: 3,
+      photo: mark,
+      description: t('pages.AboutUs.german-team-member'),
+    },
+    {
+      id: 4,
+      photo: ramon,
+      description: t('pages.AboutUs.german-team-member'),
+    },
+    {
+      id: 5,
+      photo: alban,
+      description: t('pages.AboutUs.french-team-member'),
+    },
+    {
+      id: 6,
+      photo: renan,
+      description: t('pages.AboutUs.french-team-member'),
+    },
   ];
 
   const description = `Guardos is your trusted companion in the world of dining, 
@@ -71,8 +75,6 @@ const teamMembers = [
   for individuals affected by dietary restrictions. 
   Together, we embark on a journey to empower and support our community, one innovative idea at a time.`;
 
-const AboutUsPage = () => {
-  const [activeSection, setActiveSection] = useState('introduction');
 
   useEffect(() => {
     checkDarkMode();
@@ -100,28 +102,36 @@ const AboutUsPage = () => {
         <div>
             <div className={styles.aboutuscontainer}>
               <div className={styles.navigation}>
-                <button onClick={() => setActiveSection('introduction')}>Introduction</button>
-                <button onClick={() => setActiveSection('founding-story')}>Founding Story</button>
-                <button onClick={() => setActiveSection('mission-and-values')}>Mission and Values</button>
-                <button onClick={() => setActiveSection('team-members')}>Team Members</button>
+                <button onClick={() => setActiveSection('introduction')}>
+                  {t('pages.AboutUs.introduction')}
+                </button>
+                <button onClick={() => setActiveSection('founding-story')}>
+                  {t('pages.AboutUs.founding-story')}
+                </button>
+                <button onClick={() => setActiveSection('mission-and-values')}>
+                  {t('pages.AboutUs.mission-and-values')}
+                </button>
+                <button onClick={() => setActiveSection('team-members')}>
+                  {t('pages.AboutUs.team-members')}
+                </button>
               </div>
 
               {
                 activeSection === 'introduction' && (
                   <div className={styles.aboutussection}>
-                    <h2>About Us</h2>
+                    <h2>{t('pages.AboutUs.about-us')}</h2>
                     <div className={styles.descriptionContainer}>
                       <div className={styles.logoContainer}>
                         <div className={styles.logo}></div>
                       </div>
                       <p>
-                        {description}
+                        {t('pages.AboutUs.introduction-text')}
                         <br />
                         <span>
                           <a href="/register" className={styles.signupLink}>
-                            Sign up 
+                            {t('pages.AboutUs.sign-up')}
                           </a>
-                          {' '}for free and explore a world of personalized dining!
+                          {t('pages.AboutUs.for-free')}
                         </span>
                       </p>
                     </div>
@@ -131,8 +141,8 @@ const AboutUsPage = () => {
               {
                 activeSection === 'founding-story' && (
                   <div className={styles.foundingstorysection}>
-                    <h2>Founding Story</h2>
-                    <p>{foundingstory}</p>
+                    <h2>{t('pages.AboutUs.founding-story')}</h2>
+                    <p>{t('pages.AboutUs.founding-story-text')}</p>
                   </div>
                 )
               }
@@ -140,26 +150,26 @@ const AboutUsPage = () => {
               {
                 activeSection === 'mission-and-values' && (
                   <div className={styles.missionvaluessection}>
-                    <h2>Mission and Values</h2>
+                    <h2>{t('pages.AboutUs.mission-and-values')}</h2>
                     <section className={styles.missionValuesSection}>
                         <div className={styles.value}>
-                          <h3>Empowerment and Inclusivity</h3>
+                          <h3>{t('pages.AboutUs.empowerment')}</h3>
                           <p>
-                            Empower individuals to make informed and inclusive dining choices that cater to their unique dietary preferences and restrictions.
+                            {t('pages.AboutUs.empowerment-text')}
                           </p>
                         </div>
 
                         <div className={styles.value}>
-                          <h3>Transparency and Trust</h3>
+                          <h3>{t('pages.AboutUs.transparency')}</h3>
                           <p>
-                            Provide transparent and trustworthy information about restaurant menus, ingredients, and preparation methods to ensure users can make confident dining decisions.
+                            {t('pages.AboutUs.transparency-text')}
                           </p>
                         </div>
 
                         <div className={styles.value}>
-                          <h3>Continuous Improvement and Innovation</h3>
+                          <h3>{t('pages.AboutUs.continuous-improvement')}</h3>
                           <p>
-                            Commit to ongoing improvement, incorporating user feedback, technological advancements, and industry best practices to deliver a continually valuable service.
+                            {t('pages.AboutUs.improvement-text')}
                           </p>
                         </div>
                       </section>
@@ -170,7 +180,7 @@ const AboutUsPage = () => {
               {
                 activeSection === 'team-members' && (
                   <div className={styles.teamsection}>
-                      <h2>The Team</h2>
+                      <h2>{t('pages.AboutUs.team-members')}</h2>
                       <div className={styles.teammembers}>
                           {teamMembers.map((member) => (
                               <div key={member.id} className={styles.teammember}>
@@ -184,7 +194,7 @@ const AboutUsPage = () => {
                           ))}
                       </div>
                       {/* <div className={styles.teamdescription}>
-                        <p>{teamdescription}</p>
+                        <p>{t('pages.AboutUs.team-description')}</p>
                       </div> */}
                   </div>
                 )

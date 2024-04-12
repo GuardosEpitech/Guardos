@@ -6,10 +6,10 @@ import { IProductFE } from "shared/models/productInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/EditProductPage/EditProductPage.module.scss";
 import { getAllResto } from "@src/services/restoCalls";
-import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
+import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
 import { enable, disable, setFetchMethod} from "darkreader";
-
+import {useTranslation} from "react-i18next";
 
 interface IEditProductPageProps {
   product: IProductFE;
@@ -23,6 +23,7 @@ const EditProductPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   let restoNameListTemp = [] as IRestaurantFrontEnd[];
   
+  const {t} = useTranslation();
 
   useEffect(() => {
     getAllResto()
@@ -58,11 +59,13 @@ const EditProductPage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>Edit product</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.EditProductPage.edit-product')}
+        </span>
       </div>
       <Layout>
         {isLoading ? (
-          <p>Loading...</p>
+          <p>{t('common.loading')}</p>
         ) : (
           <ProductForm
             productName={name}

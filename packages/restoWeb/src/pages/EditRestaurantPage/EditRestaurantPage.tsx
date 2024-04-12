@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from "react";
+import React, {useEffect} from "react";
 import { useLocation } from "react-router-dom";
 
 import Layout from 'shared/components/Layout/Layout';
@@ -7,6 +7,7 @@ import RestaurantForm
 import styles
   from "@src/pages/EditRestaurantPage/EditRestaurantPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 interface IEditRestaurantPageProps {
   restoName: string;
@@ -36,6 +37,7 @@ const EditRestaurantPage = () => {
     menuDesignID,
     website
   } = useLocation().state as IEditRestaurantPageProps;
+  const {t} = useTranslation();
 
   useEffect(() => {
     checkDarkMode();
@@ -62,7 +64,9 @@ const EditRestaurantPage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>Edit restaurant</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.EditRestaurantPage.edit-resto')}
+        </span>
       </div>
       <Layout>
         <RestaurantForm

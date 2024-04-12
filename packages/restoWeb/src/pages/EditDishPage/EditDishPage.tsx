@@ -6,6 +6,7 @@ import { IDishFE } from "shared/models/dishInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/EditDishPage/EditDishPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
 
 interface IEditDishPageProps {
   dish: IDishFE;
@@ -20,6 +21,7 @@ const EditDishPage = () => {
   const selectAllergens: string[] = allergens.toString()
     .split(",");
   const selectCategories: string[] = [category.menuGroup];
+  const {t} = useTranslation();
 
   useEffect(() => {
     checkDarkMode();
@@ -46,7 +48,9 @@ const EditDishPage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>Edit dish</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.EditDishPage.edit-dish')}
+        </span>
       </div>
       <Layout>
         <DishForm
