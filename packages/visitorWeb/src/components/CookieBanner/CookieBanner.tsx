@@ -153,8 +153,9 @@ const CookieBanner: React.FC = () => {
               Withdraw or change your consent at any time by clicking the icon in the bottom left corner of the screen.
               Change your settings. Read more about how we use cookies and other technologies to collect personal data:{" "}
               <a href="/privacy-policy">Privacy policy</a> and{" "}
-              <a href="/cookie-policy">Cookie policy</a>. In alignment with{" "}
-              <a href="https://policies.google.com/privacy">Google's privacy policy</a> requirements, we ensure transparency and control over your data.
+              <a href="/cookiestatement">Cookie policy</a>.
+              {/*  In alignment with{" "}
+              <a href="https://policies.google.com/privacy">Google's privacy policy</a> requirements, we ensure transparency and control over your data. */}
             </p>
             <div className={styles["button-container"]}>
                 <ThemeProvider theme={DeclineBtn()}>
