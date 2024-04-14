@@ -20,6 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import {addSavedFilter, deleteSavedFilter, getSavedFilters} from "@src/services/profileCalls";
+import {useTranslation} from "react-i18next";
 
 const GlobalStyle = () => {
   return createTheme({
@@ -105,6 +106,7 @@ const Filter = (props: FilterProps) => {
   const [allergens, setAllergens] = useState<allergen[]>(props.allergens);
   const [changeStatus, setChangeStatus] = useState(null);
   const [changeStatusMsg, setChangeStatusMsg] = useState('');
+  const {t} = useTranslation();
 
   useEffect(() => {
     fetchSavedFilters();
@@ -223,10 +225,10 @@ const Filter = (props: FilterProps) => {
     addSavedFilter(userToken, filter).then((res) => {
       if (res == null) {
         setChangeStatus("failed");
-        setChangeStatusMsg("Failed to save filter");
+        setChangeStatusMsg(t('components.Filter.save-filter-failure'));
       } else {
         setChangeStatus("success");
-        setChangeStatusMsg("Successfully saved filter");
+        setChangeStatusMsg(t('components.Filter.save-filter-success'));
       }
     })
   };
@@ -251,7 +253,7 @@ const Filter = (props: FilterProps) => {
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
     setChangeStatus("success");
-    setChangeStatusMsg("Successfully loaded filter");
+    setChangeStatusMsg(t('components.Filter.load-filter-success'));
     props.onFilterLoad(newFilter);
 
     const updatedCategories = categories.map(category => ({
@@ -301,10 +303,10 @@ const Filter = (props: FilterProps) => {
     deleteSavedFilter(userToken, filterName).then((res) => {
       if (res == null) {
         setChangeStatus("failed");
-        setChangeStatusMsg("Failed to delete filter");
+        setChangeStatusMsg(t('components.Filter.delete-filter-failure'));
       } else {
         setChangeStatus("success");
-        setChangeStatusMsg("Successfully deleted filter");
+        setChangeStatusMsg(t('components.Filter.delete-filter-success'));
         const remainingFilters = savedFilters.filter((filter) => filter.filterName !== filterName);
         setSavedFilters(remainingFilters);
       }
@@ -424,7 +426,7 @@ const Filter = (props: FilterProps) => {
       <div className={styles.DivFilter}>
         <div className={styles.spaceBetween}>
           <div className={styles.DivTitleFilter}>
-            <span className={styles.TitleFilter}>Filter by:</span>
+            <span className={styles.TitleFilter}>{t('components.Filter.filter-by')}</span>
           <IconButton
             aria-label="filter-menu"
             aria-controls="filter-menu"
@@ -443,13 +445,13 @@ const Filter = (props: FilterProps) => {
           >
             <MenuItem>
               <TextField
-                label="Filter Name"
+                label={t('components.Filter.filter-name') as string}
                 variant="outlined"
                 value={newFilterName}
                 onChange={(e) => setNewFilterName(e.target.value)}
               />
               <Button onClick={handleSaveFilter} variant="contained">
-                <Save /> Save Filter
+                <Save /> {t('components.Filter.save-filter')}
               </Button>
             </MenuItem>
             {savedFilters.map((filter, index) => (
@@ -465,14 +467,14 @@ const Filter = (props: FilterProps) => {
             ))}
             <MenuItem>
               <Button onClick={handleClearFilter} variant="contained" color="secondary">
-                Clear Filter
+                {t('components.Filter.clear-filter')}
               </Button>
             </MenuItem>
           </Menu>
 
           {/* Load Filters Dialog */}
           <Dialog open={openLoadDialog} onClose={() => setOpenLoadDialog(false)}>
-            <DialogTitle>Load Filters</DialogTitle>
+            <DialogTitle>{t('components.Filter.load-filters')}</DialogTitle>
             <DialogContent>
               <List>
                 {savedFilters.map((filter, index) => (
@@ -495,7 +497,7 @@ const Filter = (props: FilterProps) => {
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setOpenLoadDialog(false)} color="primary">
-                Cancel
+                {t('common.cancel')}
               </Button>
             </DialogActions>
           </Dialog>
@@ -509,7 +511,7 @@ const Filter = (props: FilterProps) => {
         )}
 
         <div className={styles.DivRatingBox}>
-          <span className={styles.TitleSubFilter}>Rating:</span>
+          <span className={styles.TitleSubFilter}>{t('components.Filter.rating')}</span>
           <div className={styles.DivRating}>
             <Box component="fieldset" borderColor="transparent">
               <Rating
@@ -523,7 +525,7 @@ const Filter = (props: FilterProps) => {
         </div>
         <div className={styles.DivRange}>
           <div>
-            <span className={styles.TitleSubFilter}>Range:</span>
+            <span className={styles.TitleSubFilter}>{t('components.Filter.range')}</span>
           </div>
           <div className={styles.DivSlider}>
             <ThemeProvider theme={GlobalStyle()}>
@@ -541,7 +543,7 @@ const Filter = (props: FilterProps) => {
           </div>
         </div>
         <div className={styles.DivCategoriesBox}>
-          <span className={styles.TitleSubFilter}>Categories:</span>
+          <span className={styles.TitleSubFilter}>{t('components.Filter.categories')}</span>
           <div className={styles.DivCategories}>
             {categories.map((category) => (
               <ThemeProvider theme={GlobalStyle()} key={category.name}>
@@ -556,7 +558,7 @@ const Filter = (props: FilterProps) => {
         </div>
         <div className={styles.DivAller}>
           <div className={styles.DivTitleAller}>
-            <span className={styles.TitleSubFilter}>Allergens:</span>
+            <span className={styles.TitleSubFilter}>{t('components.Filter.allergens')}</span>
           </div>
           <div>
             <Stack className={styles.allergenChips} direction="row" spacing={1}>

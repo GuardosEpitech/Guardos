@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
+import {useTranslation} from "react-i18next";
 
 const Berlin = [13.409523443447888, 52.52111129522459];
 const Epitech = [13.328820, 52.508540]; // long,lat
@@ -80,6 +81,7 @@ const MapView = (props: MapProps) => {
   const element = useRef(null);
   const [clickedFeature, setClickedFeature] = useState<IRestaurantFrontEnd | null>(null);
   const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
+  const {t} = useTranslation();
 
   const testMarkerL = useMemo(() => {
     let markerList: Feature[] = [];
@@ -184,11 +186,11 @@ const MapView = (props: MapProps) => {
         const address = feature.get('address');
         setPopupContent(
           <div>
-            <img src={picture} alt="Logo" className={styles.popupImg} />
+            <img src={picture} alt={t('components.Map.alt-img')} className={styles.popupImg} />
             <h2>{description}</h2>
-            <p>Rating: {rating}</p>
-            <p>Tel.: {telephone}</p>
-            <p>Address: {address}</p>
+            <p>{t('components.Map.rating', {rating: rating})}</p>
+            <p>{t('components.Map.logout', {phone: telephone})}</p>
+            <p>{t('components.Map.address', {address: address})}</p>
             <ThemeProvider theme={PageBtn()}>
               <Button
                 variant="contained"
@@ -203,7 +205,7 @@ const MapView = (props: MapProps) => {
               ${restaurant.location.country}`,
                 })}
               >
-                Restaurant page
+                {t('components.Map.resto-page')}
               </Button>
             </ThemeProvider>
           </div>

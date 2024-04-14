@@ -2,8 +2,11 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import styles from "./AppOutlet.module.scss";
 import Header from "@src/components/Header/Header";
+import {useTranslation} from "react-i18next";
 
 const AppOutlet = () => {
+  const {t} = useTranslation();
+
   return (
     <div className={styles.ParentElement}>
       <div className={styles.ContentElement}>
@@ -12,11 +15,11 @@ const AppOutlet = () => {
       </div>
       <div className={styles.Container}>
         <div className={styles.TextContainer}>
-          <h2 className={styles.ContactTitle}>Contact:</h2>
+          <h2 className={styles.ContactTitle}>{t('pages.AppOutlet.contact')}</h2>
           <ul className={styles.ListContact}>
-            <li>Email: contact@guardos.com</li>
-            <li>Phone: +49 211 1234567</li>
-            <li>Location: contact@guardos.com</li>
+            <li>{t('pages.AppOutlet.email')}</li>
+            <li>{t('pages.AppOutlet.phone')}</li>
+            <li>{t('pages.AppOutlet.location')}</li>
           </ul>
         </div>
       </div>

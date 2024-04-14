@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Alert, Snackbar } from "@mui/material";
+import {useTranslation} from "react-i18next";
 
 const HomePage = () => {
   const [hidden, setHidden] = React.useState(true);
   let successfulForm = useLocation().state?.successfulForm;
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (successfulForm === true) {
@@ -27,7 +29,7 @@ const HomePage = () => {
   return (
     <Snackbar open={!hidden} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-        This is a success message!
+        {t('components.SuccessAlert.success-msg')}
       </Alert>
     </Snackbar>
   );

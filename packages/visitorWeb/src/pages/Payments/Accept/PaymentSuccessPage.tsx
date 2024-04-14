@@ -1,13 +1,16 @@
 import React from 'react';
 import styles from './PaymentSuccessPage.module.scss';
+import {useTranslation} from "react-i18next";
 
 const PaymentSuccessPage = () => {
+  const {t} = useTranslation();
+
   return (
       <div className={styles.paymentSuccessContainer}>
-        <h2>Payment Successful</h2>
-        <p>Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. You may check your mails to view details of this transaction.</p>
-        <p>For any further assistance, please contact our customer support.</p>
-        <a href="/" className={styles.homeLink}>Return to Home</a>
+        <h2>{t('pages.Payments.payment-success')}</h2>
+        <p>{t('pages.Payments.payment-success-text-1')}</p>
+        <p>{t('pages.Payments.payment-success-text-2')}</p>
+        <a href="/" className={styles.homeLink}>{t('pages.Payments.return-home')}</a>
       </div>
   );
 };

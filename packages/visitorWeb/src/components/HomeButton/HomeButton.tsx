@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const MapBackBtn = () => {
   return createTheme({
@@ -33,11 +34,13 @@ const MapBackBtn = () => {
 
 const BackButton = () => {
   const navigate = useNavigate();
+  const {t} = useTranslation();
+
   return (
     <div className={styles.DivRect}>
       <ThemeProvider theme={MapBackBtn()}>
         <Button variant="contained" sx={{ width: "15.44rem" }} onClick={() => NavigateTo("/", navigate)}>
-          Go To List View
+          {t('components.HomeButton.go-to-list-view')}
         </Button>
       </ThemeProvider>
     </div>

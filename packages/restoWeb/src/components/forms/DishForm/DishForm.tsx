@@ -26,6 +26,7 @@ import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultDishImage, defaultRestoImage}
   from 'shared/assets/placeholderImageBase64';
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -89,6 +90,7 @@ const DishForm = (props: IDishFormProps) => {
   const [restoList, setRestoList] = useState<Array<string>>([]);
   let allRestoNames: string[] = [];
   let allDishProd: string[] = [];
+  // TODO: apply i18n
   const suggestions: string[] = ["Appetizer", "Maindish", "Dessert"];
   const suggestionsAller: string[] = ["No Allergens", "Celery", "Gluten",
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
@@ -96,6 +98,7 @@ const DishForm = (props: IDishFormProps) => {
   const dishList: IDishFE[] = [];
   const picturesId: number[] = props.picturesId || [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -286,7 +289,7 @@ const DishForm = (props: IDishFormProps) => {
             <img 
               src={pictures.length > 0 ? pictures[0].base64 : defaultDishImage}
               className={styles.ImageDimensions}
-              alt="Resto Img"
+              alt={t('components.DishForm.alt-img')}
             />
             <div className={styles.FormControlMargin}>
               <FormControl className={styles.ImageFlex}>
@@ -296,7 +299,7 @@ const DishForm = (props: IDishFormProps) => {
                     variant="outlined"
                     component="label"
                   >
-                  Change Image
+                    {t('components.DishForm.change-img')}
                     <input
                       hidden
                       accept="image/*"
@@ -310,7 +313,7 @@ const DishForm = (props: IDishFormProps) => {
                     component="label"
                     onClick={handeFileDelete}
                   >
-                  Delete Image
+                    {t('components.DishForm.delete-img')}
                   </Button>
                 </ThemeProvider>
               </FormControl>
@@ -327,9 +330,10 @@ const DishForm = (props: IDishFormProps) => {
               <FormControl fullWidth>
                 <TextField
                   required
-                  label="Name"
+                  label={t('components.DishForm.name')}
                   error={invalidDishname}
-                  helperText={invalidDishname ? "Name is required" : ""}
+                  helperText={invalidDishname ?
+                    t('components.DishForm.name-is-required') : ""}
                   defaultValue={dish}
                   id="component-outlined"
                   fullWidth
@@ -343,10 +347,11 @@ const DishForm = (props: IDishFormProps) => {
               <FormControl fullWidth>
                 <TextField
                   required
-                  label="Price"
+                  label={t('components.DishForm.price')}
                   id="outlined-end-adornment"
                   error={invalidPrice}
-                  helperText={invalidPrice ? "Price is required" : ""}
+                  helperText={invalidPrice ?
+                    t('components.DishForm.price-is-required') : ""}
                   fullWidth
                   value={dishPrice}
                   onChange={(e) => {
@@ -368,7 +373,7 @@ const DishForm = (props: IDishFormProps) => {
               <FormControl fullWidth>
                 <TextField
                   id="outlined-multiline-flexible"
-                  label="Description"
+                  label={t('components.DishForm.description')}
                   defaultValue={dishDescription}
                   multiline
                   onChange={(e) => setDishDescription(e.target.value)}
@@ -389,11 +394,11 @@ const DishForm = (props: IDishFormProps) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Products"
+                    label={t('common.products')}
                     required
                     error={invalidProducts}
                     helperText={invalidProducts ?
-                      "Please select at least one product" : null}
+                      t('components.DishForm.select-min-one-product') : null}
                   />
                 )}
               />
@@ -411,7 +416,7 @@ const DishForm = (props: IDishFormProps) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Allergens"
+                    label={t('components.DishForm.allergens')}
                   />
                 )}
               />
@@ -430,11 +435,11 @@ const DishForm = (props: IDishFormProps) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Food Category"
+                    label={t('components.DishForm.food-category')}
                     required
                     error={invalidCategory}
                     helperText={invalidCategory ?
-                      "Please select at least one category" : null}
+                      t('components.DishForm.select-min-one-category') : null}
                   />
                 )}
               />
@@ -454,11 +459,11 @@ const DishForm = (props: IDishFormProps) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Restaurant"
+                    label={t('components.DishForm.resto')}
                     required
                     error={invalidResto}
                     helperText={invalidResto ?
-                      "Please select a restaurant" : ""}
+                      t('components.DishForm.select-min-one-resto') : ""}
                   />
                 )}
               />
@@ -473,7 +478,7 @@ const DishForm = (props: IDishFormProps) => {
           sx={{width: "12.13rem"}}
           onClick={sendRequestAndGoBack}
         >
-            Save
+          {t('common.save')}
         </Button>
       </ThemeProvider>
     </Box>

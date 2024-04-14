@@ -12,34 +12,36 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-
-const data = [
-  {
-    avatar: AVTR1,
-    name: "Allergen friendly",
-    review: "On our user page you can filter restaurants by allergens and never have a problem with them again. Restaurants are encouraged to write a complete transparent presentation of their allergens every time."
-  },
-  {
-    avatar: AVTR2,
-    name: "Modern Menus",
-    review:
-      "We offer various options for our restaurant partners to easily create their menu cards for their customers. You can choose from several options of templates for the menus."
-  },
-  {
-    avatar: AVTR3,
-    name: "QR-Scanning",
-    review:
-      "To make it easier for our partner restaurants to recognize the allergens of their products, we offer a QR scanning function that can automatically recognize the allergens of your products."
-  },
-  {
-    avatar: AVTR4,
-    name: "User Profiles",
-    review:
-      "Save your favorite restaurants and your settings on our site / app. So you never have to start a new search again. Collect points and experiences to get percentages on some restaurants."
-  }
-];
+import {useTranslation} from "react-i18next";
 
 const Slider = () => {
+  const {t} = useTranslation();
+  const data = [
+    {
+      avatar: AVTR1,
+      name: t('components.Slider.allergen-friendly'),
+      review: t('components.Slider.allergen-friendly-review')
+    },
+    {
+      avatar: AVTR2,
+      name: t('components.Slider.modern-menu'),
+      review:
+        t('components.Slider.modern-menu-review')
+    },
+    {
+      avatar: AVTR3,
+      name: t('components.Slider.qr-scanning'),
+      review:
+        t('components.Slider.qr-scanning-review')
+    },
+    {
+      avatar: AVTR4,
+      name: t('components.Slider.user-profiles'),
+      review:
+        t('components.Slider.user-profiles-review')
+    }
+  ];
+
   return (
     <section id="testimonials" className={styles.sectionTestimonials}>
       <Swiper

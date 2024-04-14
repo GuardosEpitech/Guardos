@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from "@src/pages/RestoPage/RestoPage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
-import BackButton from '@src/components/HomeButton/HomeButton';
 import Filter from "@src/components/Filter/Filter";
 import MapView from '@src/components/Map/Map';
 import { getNewFilteredRestos } from "@src/services/filterCalls";
@@ -11,6 +10,7 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
+import {useTranslation} from "react-i18next";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -50,6 +50,7 @@ const RestoPage = () => {
   const [inputFields, setInputFields] = useState(['', '']);
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([
+    // TODO: apply i18n
     { name: "Burger", value: false },
     { name: "Pizza", value: false },
     { name: "Salad", value: false },
@@ -61,6 +62,7 @@ const RestoPage = () => {
   const [filteredRestaurants, setFilteredRestaurants] = 
     useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = useState<Allergen[]>([
+    // TODO: apply i18n
     { name: "celery", value: false, colorButton: "primary" },
     { name: "gluten", value: false, colorButton: "primary" },
     { name: "crustaceans", value: false, colorButton: "primary" },
@@ -77,6 +79,7 @@ const RestoPage = () => {
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
+  const {t} = useTranslation();
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -176,7 +179,7 @@ const RestoPage = () => {
   return (
     <>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>What are you looking for ?</span>
+        <span className={styles.TitleSearch}>{t('pages.RestoPage.what-you-looking-for')}</span>
         <InputSearch onChange={handleFilterChange} />
       </div>
       <div className={styles.DivContent}>

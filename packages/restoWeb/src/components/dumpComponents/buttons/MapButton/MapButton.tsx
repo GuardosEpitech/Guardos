@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 
 import styles from "./MapButton.module.scss";
+import {useTranslation} from "react-i18next";
 
 const MapBtn = () => {
   return createTheme({
@@ -32,11 +33,13 @@ const MapBtn = () => {
 };
 
 const MapButton = () => {
+  const {t} = useTranslation();
+
   return (
     <div className={styles.DivRect}>
       <ThemeProvider theme={MapBtn()}>
         <Button variant="contained" sx={{ width: "15.44rem" }}>
-          Go To Map View
+          {t('components.MapButton.enter-map-view')}
         </Button>
       </ThemeProvider>
     </div>

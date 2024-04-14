@@ -94,6 +94,49 @@ body {
   margin-top: 10px;
 }
 
+.ImageDimensions {
+  width: 100%;
+  height: auto;
+  max-height: 25rem;
+  max-width: 15rem;
+  object-fit: cover;
+  margin: auto;
+  display: flex;
+}
+
+.imageButtonContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.imageButton {
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.imageButton:hover {
+  background-color: #2980b9;
+}
+
+.deleteButton {
+  background-color: #6d071a;
+  color: #fff;
+}
+
+.deleteButton:hover {
+  background-color: brown;
+}
+
 .allergenInput {
   div {
     margin-bottom: 0;

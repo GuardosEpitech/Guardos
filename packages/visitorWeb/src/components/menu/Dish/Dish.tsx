@@ -13,6 +13,7 @@ import {
   addDishAsFavourite,
   deleteDishFromFavourites,
 } from "@src/services/favourites";
+import {useTranslation} from "react-i18next";
 
 interface IDishProps {
   dishName: string;
@@ -32,6 +33,7 @@ const Dish = (props: IDishProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { dishName, dishAllergens, dishDescription, options, price, picturesId } = props;
   const priceStr = `${price.toFixed(2)} €`;
+  const {t} = useTranslation();
 
   useEffect(() => {
     async function fetchImages() {
@@ -109,7 +111,7 @@ const Dish = (props: IDishProps) => {
           <Grid item className={styles.FlexParent}>
             {pictures.map((picture, index) => (
                 <img key={index} src={`${picture.base64}`}
-                     alt={`Dish Image ${index}`} className={styles.ImageDimensions} />
+                     alt={t('components.Dish.img-alt', {index: index})} className={styles.ImageDimensions} />
             ))}
           </Grid>
           <Grid item xs={12} className={styles.GridItemDescription}>
@@ -125,7 +127,7 @@ const Dish = (props: IDishProps) => {
             <span className={styles.OptionsText}>
               {options && options.length != 0 && (
                 <div className={!extended && styles.OptionsWrap}>
-                  <b>{"Options: "}</b>
+                  <b>{t('components.Dish.options')}</b>
                   {options}
                 </div>
               )}
@@ -163,7 +165,7 @@ const Dish = (props: IDishProps) => {
             <span className={styles.OptionsText}>
               {options && options.length !== 0 && (
                 <div className={!extended && styles.OptionsWrap}>
-                  <b>Options: </b>
+                  <b>{t('components.Dish.options')}</b>
                   {options}
                 </div>
               )}
@@ -174,7 +176,7 @@ const Dish = (props: IDishProps) => {
           <Grid item xs={2} className={styles.GridItemImage}>
             {pictures.map((picture, index) => (
                 <img key={index} src={`${picture.base64}`}
-                     alt={`Dish Image ${index}`} className={styles.ImageDimensions} />
+                     alt={t('components.Dish.img-alt', {index: index})} className={styles.ImageDimensions} />
             ))}
           </Grid>
         </Grid>

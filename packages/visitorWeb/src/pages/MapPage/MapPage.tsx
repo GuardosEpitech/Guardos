@@ -7,6 +7,7 @@ import MapView from '@src/components/Map/Map';
 import {getFilteredRestos, getSelectedFilteredRestos} from "@src/services/filterCalls";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
+import {useTranslation} from "react-i18next";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -20,6 +21,7 @@ const MapPage = () => {
   // needs to be changed for the database && be sorted out as an own component
   const [inputFields, setInputFields] = React.useState(['', '']);
   const [categories, setCategories] = React.useState([
+    // TODO: apply i18n
     { name: "Burger", value: true },
     { name: "Pizza", value: true },
     { name: "Salad", value: true },
@@ -30,6 +32,7 @@ const MapPage = () => {
   const [rangeValue, setRangeValue] = React.useState(100);
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = React.useState<allergen[]>([
+    // TODO: apply i18n
     { name: "celery", value: false, colorButton: "primary" },
     { name: "gluten", value: false, colorButton: "primary" },
     { name: "crustaceans", value: false, colorButton: "primary" },
@@ -45,6 +48,7 @@ const MapPage = () => {
     { name: "sulphides", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
+  const {t} = useTranslation();
 
   useEffect(() => {
     loadFilter().then(r => console.log("Loaded search data."));
@@ -205,7 +209,9 @@ const MapPage = () => {
   return (
     <>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>What are you looking for ?</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.MapPage.what-you-looking-for')}
+        </span>
         <InputSearch onChange={handleFilterChange} />
       </div>
       <div className={styles.DivContent}>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
 import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
+import {useTranslation} from "react-i18next";
 
 interface RequestUser {
     name: string;
@@ -22,6 +23,7 @@ const FeatureRequest = () => {
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
     const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
+    const {t} = useTranslation();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -59,10 +61,10 @@ const FeatureRequest = () => {
         <>
             <Layout>
                 <div className={styles.requestform}>
-                    <h2>Feature Request</h2>
+                    <h2>{t('pages.FeatureRequest.feature-request')}</h2>
                     <form onSubmit={handleSubmit}>
                         <TextField
-                            label="Name"
+                            label={t('pages.FeatureRequest.name')}
                             name="name"
                             value={request.name}
                             onChange={handleChange}
@@ -70,7 +72,7 @@ const FeatureRequest = () => {
                             sx={{ width: 'calc(20% - 8px)', marginRight: '16px' }}
                         />
                         <TextField
-                            label="Subject"
+                            label={t('pages.FeatureRequest.subject')}
                             name="subject"
                             value={request.subject}
                             onChange={handleChange}
@@ -78,7 +80,7 @@ const FeatureRequest = () => {
                             sx={{ width: 'calc(20% - 8px)', marginRight: '16px' }}
                         />
                         <TextField
-                            label="Your request"
+                            label={t('pages.FeatureRequest.request')}
                             name="request"
                             value={request.request}
                             onChange={handleChange}
@@ -88,13 +90,13 @@ const FeatureRequest = () => {
                             sx={{ width: '100%', minHeight: '200px' }}
                         />
                         <Button type="submit" variant="contained" color="primary" size='large'>
-                            Submit
+                            {t('common.submit')}
                         </Button>
                     </form>
                 </div>
                 {showPopup && (
                     <div className={styles.popup}>
-                        <p>Email sent successfully!</p>
+                        <p>{t('pages.FeatureRequest.email-sent-success')}</p>
                     </div>
                 )}
             </Layout>
