@@ -39,7 +39,7 @@ const MVPRouter = () => {
 
   return (
     <>
-      <CookieBanner />
+      {isUserTokenSet && <CookieBanner />}
       <BrowserRouter>
         {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' && 

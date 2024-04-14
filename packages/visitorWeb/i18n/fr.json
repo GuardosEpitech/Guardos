@@ -125,9 +125,11 @@
       },
       "AppOutlet": {
         "contact": "Contact :",
-        "email": "Email : contact@guardos.com",
+        "email": "Email : guardos-help@outlook.com",
         "phone": "Téléphone : +49 211 1234567",
-        "location": "Localisation : contact@guardos.com"
+        "location": "Localisation : contact@guardos.com",
+        "cookieStatement": "Cookie statement",
+        "privacyStatement": "Privacy statement"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la Page Principale.",
