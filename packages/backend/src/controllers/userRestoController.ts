@@ -232,6 +232,9 @@ export async function deleteRestoProfilePic(userId: number, pictureId: number) {
 }
 
 export async function getUserIdResto(token: string) {
+  if (!token) {
+    return false;
+  }
   const UserRestoSchema = mongoose
     .model('UserResto', userRestoSchema, 'UserResto');
   const userData = await UserRestoSchema.find();
@@ -271,3 +274,31 @@ export async function doesUserRestoExist(username: string, email: string) {
   }
   return false;
 }
+
+export async function getUserRestoCookiePreferences(userId: number) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const user = await UserRestoSchema.findOne({ uid: userId });
+  if (!user) {
+    return null;
+  }
+  return user.preferencesCookie;
+}
+
+export async function setUserRestoCookiePreferences(userId: number, 
+  data: { functional: boolean, statistical: boolean, marketing: boolean }) {
+    const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const user = await UserRestoSchema.findOne({ uid: userId });
+  if (!user) {
+    return 404;
+  }
+  user.preferencesCookie = {
+    functional: data.functional,
+    statistical: data.statistical,
+    marketing: data.marketing
+  };
+
+  await user.save();
+  return 200;
+  }
