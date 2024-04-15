@@ -1,110 +1,180 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './CookiePage.module.scss';
-import {
-  intro,
-  intro2,
-  intro3,
-  cookies,
-  cookies2,
-  introTech,
-  script,
-  tracker,
-  cookie,
-  purposeTech,
-  functional1,
-  functional2,
-  analytical,
-  marketing,
-  security,
-  securityTxt,
-  securityThirdParty,
-  enableDisable1,
-  enableDisable2,
-  enableDisable3,
-  inspect,
-  inspect2,
-  tips,
-  tips2,
-  conclusion1,
-  conclusion2,
-  conclusion3,
-  conclusion4,
-  conclusion5,
-} from './text/text';
+import {useTranslation} from "react-i18next";
+import Switch from "@mui/material/Switch";
+import { 
+  setUserPreferences, 
+  getUserPreferences 
+} from '../../services/profileCalls';
+
+type SliderButtonProps = {
+  name: string;
+  isActive: boolean;
+  onClick: () => void;
+};
+
+const SliderButton: React.FC<SliderButtonProps> = ({
+  name,
+  isActive,
+  onClick
+}) => {
+  return (
+      <div className={styles["slider-button"]}>
+      <span>{name}</span>
+      {name === "Strictly necessary" ? (
+        <Switch
+          checked={true}
+          disabled={true}
+          color="primary"
+          className={styles["switch"]}
+        />
+      ) : (
+        <Switch
+          checked={isActive}
+          onChange={onClick}
+          color="primary"
+          className={styles["switch"]}
+        />
+      )}
+    </div>
+  );
+};
+
 
 const CookieStatementPage: React.FC = () => {
+  const [sliderButtons, setSliderButtons] = useState([
+    { name: "Functional", isActive: false },
+    { name: "Statistical", isActive: false },
+    { name: "Marketing", isActive: false },
+  ]);
+  const {t} = useTranslation();
+
+  const fetchUserPreference = async () => {
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
+    const data = await getUserPreferences(userToken);
+    console.log(data);
+    setSliderButtons(prevState => [
+      { name: "Functional", isActive: data.functional },
+      { name: "Statistical", isActive: data.statistical },
+      { name: "Marketing", isActive: data.marketing },
+    ]);
+  }
+
+  useEffect(() => {
+    fetchUserPreference();
+  }, []);
+
+  const updateCookies = async (index: number) => {
+    setSliderButtons((prevSliderButtons) =>
+    prevSliderButtons.map((button, i) =>
+      i === index ? { ...button, isActive: !button.isActive } : button
+    )
+  );
+
+  const userToken = localStorage.getItem("user");
+  if (userToken === null) {
+    return;
+  }
+
+  const updatedSliderButtons = [...sliderButtons];
+  updatedSliderButtons[index].isActive = !updatedSliderButtons[index].isActive; 
+
+  const response = await setUserPreferences(userToken, {
+    functional: updatedSliderButtons[0].isActive,
+    statistical: updatedSliderButtons[1].isActive,
+    marketing: updatedSliderButtons[2].isActive,
+  });
+
+  };
+
+
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h2 className={styles.title}>Cookie Statement</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.title')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{intro} <a href='/privacystatement'>privacy statement</a>.</p>
+          <p>{t('pages.CookieStatement.intro')} <a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>.</p>
           <br />
-          <p>{intro2}</p>
+          <p>{t('pages.CookieStatement.intro2')}</p>
           <br />
-          <p>{intro3}</p>
+          <p>{t('pages.CookieStatement.intro3')}</p>
         </div>
-        <h2 className={styles.title}>Enabling/disabling cookies and deleting cookies</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.EnableDisable')}</h2>
         <hr className={styles.line} />
+        <br />
+        <div className={styles["slider-container"]}>
+              {sliderButtons.map((button, index) => (
+                <SliderButton
+                key={button.name}
+                name={button.name}
+                isActive={button.isActive}
+                onClick={() => updateCookies(index)}
+                />
+            ))}
+            </div>
         <div className={styles.text}>
-          <p>{cookies}<a href='/technologies'>list of technologies</a>. {cookies2}</p>
+          <p>{t('pages.CookieStatement.cookies')}<a href='/technologies'>{t('pages.CookieStatement.listOf')}</a>. {t('pages.CookieStatement.cookies2')}</p>
 
         </div>
-        <h2 className={styles.title}>Which technologies do we use?</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.WhichTech')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{introTech}</p>
+          <p>{t('pages.CookieStatement.introTech')}</p>
           <br />
-          <p className={styles.italic}>1. What is a script?</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.WhatScript')}</p>
           <br />
-          <p>{script}</p>
+          <p>{t('pages.CookieStatement.script')}</p>
           <br />
-          <p className={styles.italic}>2. What is a tracker?</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.WhatTracker')}</p>
           <br />
-          <p>{tracker}</p>
+          <p>{t('pages.CookieStatement.tracker')}</p>
           <br />
-          <p className={styles.italic}>3. What are cookies?</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.WhatCookie')}</p>
           <br />
-          <p>{cookie}</p>
+          <p>{t('pages.CookieStatement.cookie')}</p>
         </div>
-        <h2 className={styles.title}>Why do we use these Technologies?</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.WhyTech')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{purposeTech}</p>
+          <p>{t('pages.CookieStatement.purposeTech')}</p>
           <br />
-          <p className={styles.italic}>1. Functional purposes</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.Func')}</p>
           <br />
-          <p>{functional1}</p>
-          <p>{functional2}</p>
+          <p>{t('pages.CookieStatement.functional1')}</p>
+          <p>{t('pages.CookieStatement.functional2')}</p>
           <br />
-          <p className={styles.italic}>2. Analytical purposes</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.Analytical')}</p>
           <br />
-          <p>{analytical}</p>
+          <p>{t('pages.CookieStatement.analytical')}</p>
           <br />
-          <p className={styles.italic}>3. Marketing purposes</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.Marketing')}</p>
           <br />
-          <p>{marketing}</p>
+          <p>{t('pages.CookieStatement.marketing')}</p>
         </div>
-        <h2 className={styles.title}>Security of your data by us and by third parties</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.Security')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p className={styles.italic}>1. {security}</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.security')}</p>
           <br />
-          <p>{securityTxt}</p>
+          <p>{t('pages.CookieStatement.securityTxt')}</p>
           <br />
-          <p className={styles.italic}>2. Third-party technologies</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.ThirdParty')}</p>
           <br />
-          <p>{securityThirdParty}</p>
+          <p>{t('pages.CookieStatement.securityThirdParty')}</p>
         </div>
-        <h2 className={styles.title}>What are your rights?</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.WhatRights')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p className={styles.italic}>1. Enabling/disabling cookies and deleting cookies</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.EnableCookie')}</p>
           <br />
-          <p>{enableDisable1}</p>
-          <p>{enableDisable2}</p>
-          <p>{enableDisable3}</p>
+          <p>{t('pages.CookieStatement.enableDisable1')}</p>
+          <p>{t('pages.CookieStatement.enableDisable2')}</p>
+          <p>{t('pages.CookieStatement.enableDisable3')}</p>
           <ul className={styles.indentedList}>
             <li><a href='https://support.google.com/chrome/answer/95647?hl=en'>Chrome</a></li>
             <li><a href='https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox'>Firefox</a></li>
@@ -113,26 +183,26 @@ const CookieStatementPage: React.FC = () => {
             <li><a href='https://support.apple.com/en-en/HT201265'>Safari</a></li>
           </ul>
           <br />
-          <p className={styles.italic}>2. Right to inspect, correct or delete your data</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.RightInspect')}</p>
           <br />
-          <p>{inspect}<a href='/privacystatement'>privacy statement</a>{inspect2}</p>
+          <p>{t('pages.CookieStatement.inspect')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.inspect2')}</p>
           <br />
-          <p className={styles.italic}>3. Tips, questions and complaints</p>
+          <p className={styles.italic}>{t('pages.CookieStatement.TipQuestion')}</p>
           <br />
-          <p>{tips}<a href='/privacystatement'>privacy statement</a>{tips2}</p>
+          <p>{t('pages.CookieStatement.tips')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.tips2')}</p>
           </div>
-        <h2 className={styles.title}>Conclusion</h2>
+        <h2 className={styles.title}>{t('pages.CookieStatement.Conclusion')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{conclusion1}</p>
+          <p>{t('pages.CookieStatement.conclusion1')}</p>
           <br />
-          <p>{conclusion2}</p>
+          <p>{t('pages.CookieStatement.conclusion2')}</p>
           <br />
-          <p>{conclusion3}</p>
+          <p>{t('pages.CookieStatement.conclusion3')}</p>
           <br />
-          <p>{conclusion4}</p>
+          <p>{t('pages.CookieStatement.conclusion4')}</p>
           <br />
-          <p>{conclusion5}</p>
+          <p>{t('pages.CookieStatement.conclusion5')}</p>
           <br />
         </div>
       </div>

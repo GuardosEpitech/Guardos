@@ -34,3 +34,36 @@
   .indentedList {
     padding-left: 20px;
   }
+
+  .slider-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .slider-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px; 
+  }
+  
+  .switch {
+    margin-top: 10px;
+  }
+  
+  
+  .slider-button:not(:first-child) {
+    position: relative;
+  }
+  
+  .slider-button:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px; 
+    width: 1px; 
+    height: 80%; 
+    background-color: #ccc; 
+    transform: translateY(-50%);
+  }

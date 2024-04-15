@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import styles from "./CookieBanner.module.scss";
+import {useTranslation} from "react-i18next";
+import { setUserPreferences } from "../../services/profileCalls";
 
 const OkBtn = () => {
     return createTheme({
@@ -92,6 +94,7 @@ const OkBtn = () => {
   };
 
 const CookieBanner: React.FC = () => {
+  const {t} = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
   const [sliderButtons, setSliderButtons] = useState([
     { name: "Strictly necessary", isActive: true },
@@ -100,15 +103,15 @@ const CookieBanner: React.FC = () => {
     { name: "Marketing", isActive: false },
   ]);
 
-//   useEffect(() => {
-//     const hasVisitedBefore = localStorage.getItem('visitedBefore');
+  useEffect(() => {
+    const hasVisitedBefore = localStorage.getItem('visitedBefore');
 
-//     if (hasVisitedBefore) {
-//       setIsOpen(false);
-//     } else {
-//       localStorage.setItem('visitedBefore', 'true');
-//     }
-//   }, []);
+    if (hasVisitedBefore) {
+      setIsOpen(false);
+    } else {
+      localStorage.setItem('visitedBefore', 'true');
+    }
+  }, []);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -122,6 +125,39 @@ const CookieBanner: React.FC = () => {
     );
   };
 
+  const handleDeclineAll = async () => {
+    const data = {
+      functional: false,
+      statistical: false,
+      marketing: false
+    };
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
+    const response = await setUserPreferences(userToken, data);
+    if (response == 200) {
+      handleClose();
+    }
+  };
+
+  const handleOk = async () => {
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
+    const data: { [key: string]: boolean } = {};
+
+    sliderButtons.slice(1).forEach(button => {
+      data[button.name.toLowerCase()] = button.isActive;
+    });
+    
+    const response = await setUserPreferences(userToken, data);
+    if (response == 200) {
+      handleClose();
+    }
+  };
+
   return (
     <>
       {isOpen && (
@@ -129,31 +165,26 @@ const CookieBanner: React.FC = () => {
           <div className={styles.overlay}></div>
           <div className={styles["cookie-banner-overlay"]}>
           <div className={styles["cookie-banner"]}>
-            <h2>We use cookies</h2>
+            <h2>{t('components.CookieBanner.title')}</h2>
             <p>
-              We use cookies to collect information about you. We use this information:
+            {t('components.CookieBanner.intro')}
             </p>
             <ul>
               <li>
-                1. to give you a better experience of our website{" "}
-                <strong>(functional)</strong>
+              {t('components.CookieBanner.txt1')}<strong>{t('components.CookieBanner.func')}</strong>
               </li>
               <li>
-                2. to count the pages you visit <strong>(statistics)</strong>
+              {t('components.CookieBanner.txt2')}<strong>{t('components.CookieBanner.statistical')}</strong>
               </li>
               <li>
-                3. to serve you relevant promotions <strong>(marketing)</strong>
+              {t('components.CookieBanner.txt3')}<strong>{t('components.CookieBanner.marketing')}</strong>
               </li>
             </ul>
             <p>
-              Click "<strong>OK</strong>" to give us your consent to use cookies for all these purposes.
-              You can also use the checkboxes to consent to specific purposes.
+            {t('components.CookieBanner.txt4')}<strong>{t('components.CookieBanner.ok')}</strong>{t('components.CookieBanner.txt5')}
             </p>
             <p>
-              Withdraw or change your consent at any time by clicking the icon in the bottom left corner of the screen.
-              Change your settings. Read more about how we use cookies and other technologies to collect personal data:{" "}
-              <a href="/privacy-policy">Privacy policy</a> and{" "}
-              <a href="/cookiestatement">Cookie policy</a>.
+            {t('components.CookieBanner.txt6')}<a href="/privacy-policy">{t('components.CookieBanner.privacy')}</a>{t('components.CookieBanner.and')}<a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
               {/*  In alignment with{" "}
               <a href="https://policies.google.com/privacy">Google's privacy policy</a> requirements, we ensure transparency and control over your data. */}
             </p>
@@ -162,18 +193,18 @@ const CookieBanner: React.FC = () => {
                 <Button
                     className={styles["decline-button"]}
                     variant="contained"
-                    onClick={() => handleClose()}
+                    onClick={() => handleDeclineAll()}
                 >
-                    DECLINE ALL
+                    {t('components.CookieBanner.decline')}
                 </Button>
                 </ThemeProvider>
               <ThemeProvider theme={OkBtn()}>
                 <Button
                     className={styles.RestoBtn}
                     variant="contained"
-                    onClick={() => handleClose()}
+                    onClick={() => handleOk()}
                 >
-                    OK
+                    {t('components.CookieBanner.ok')}
                 </Button>
               </ThemeProvider>
             </div>
