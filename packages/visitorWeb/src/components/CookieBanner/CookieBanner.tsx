@@ -136,7 +136,7 @@ const CookieBanner: React.FC = () => {
       return;
     }
     const response = await setUserPreferences(userToken, data);
-    if (response == 200) {
+    if (response == "OK") {
       handleClose();
     }
   };
@@ -153,7 +153,7 @@ const CookieBanner: React.FC = () => {
     });
     
     const response = await setUserPreferences(userToken, data);
-    if (response == 200) {
+    if (response == "OK") {
       handleClose();
     }
   };
