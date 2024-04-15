@@ -320,3 +320,29 @@ export async function doesUserExist(username: string, email: string) {
   }
   return false;
 }
+
+export async function getUserCookiePreferences(userId: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const user = await UserSchema.findOne({ uid: userId });
+  if (!user) {
+    return null;
+  }
+  return user.preferencesCookie;
+}
+
+export async function setUserCookiePreferences(userId: number, 
+  data: { functional: boolean, statistical: boolean, marketing: boolean }) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const user = await UserSchema.findOne({ uid: userId });
+  if (!user) {
+    return 404;
+  }
+  user.preferencesCookie = {
+    functional: data.functional,
+    statistical: data.statistical,
+    marketing: data.marketing
+  };
+
+  await user.save();
+  return 200;
+  }

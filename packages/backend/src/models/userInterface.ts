@@ -31,4 +31,9 @@ export const userSchema = new mongoose.Schema({
     required: false
   },
   preferredLanguage: String,
+  preferencesCookie: {
+    functional: Boolean,
+    statistical: Boolean,
+    marketing: Boolean
+  },
 });
