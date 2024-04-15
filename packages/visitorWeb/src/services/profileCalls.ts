@@ -211,7 +211,7 @@ export const getUserPreferences = async (token: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error setting Cookie preferences:", error);
-    throw new Error("Error setting Cookie preferences");
+    console.error("Error getting Cookie preferences:", error);
+    throw new Error("Error getting Cookie preferences");
   }
 };
