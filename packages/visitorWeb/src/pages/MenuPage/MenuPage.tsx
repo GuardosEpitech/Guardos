@@ -17,6 +17,10 @@ import {
 } from "@src/services/favourites";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import {getRestosMenu} from "@src/services/menuCalls";
+import Accordion from "@src/components/Accordion/Accordion";
+import {useTranslation} from "react-i18next";
+import {getUserAllergens} from "@src/services/userCalls";
 
 const theme = createTheme({
   palette: {
@@ -27,14 +31,29 @@ const theme = createTheme({
 });
 
 const MenuPage = () => {
-  const { menu, restoName, restoID, address } = useLocation().state;
+  const { restoName, restoID, address } = useLocation().state;
   const [isFavouriteDishs, setIsFavouriteDishs] = React.useState<Array<{ restoID: number, dish: IDishFE }>>([]);
   const [isFavouriteResto, setIsFavouriteResto] = React.useState(false);
+  const [restoMenu, setRestoMenu] = React.useState([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
+    fetchMenu();
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
   }, [])
+
+  const fetchMenu = async () => {
+    // const filter = JSON.parse(localStorage.getItem('filter') || '{}');
+    // const allergenList = filter.allergenList;
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+
+    const userAllergens = await getUserAllergens(userToken);
+    setRestoMenu(await getRestosMenu(restoID, userAllergens));
+  }
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
@@ -102,34 +121,50 @@ const MenuPage = () => {
         </List>
       </div>
       <Layout>
-        {menu.map((category: ICategories, index: number) => {
-          return (
-            <>
-              {category.dishes.length > 0 &&
-                <Category key={category.name + index} title={category.name}>
-                  {category.dishes.map((dish: IDishFE, index: number) => {
-                    const isFavourite = isFavouriteDishs.some(fav => {
-                      return fav.restoID === restoID && fav.dish.uid === dish.uid;
-                    });
-                    return (
-                      <Dish
-                        key={dish.name + index}
-                        dishName={dish.name}
-                        dishAllergens={dish.allergens}
-                        dishDescription={dish.description}
-                        options={dish.category.extraGroup.join(", ")}
-                        price={dish.price}
-                        picturesId={dish.picturesId}
-                        restoID={restoID}
-                        dishID={dish.uid}
-                        isFavourite={isFavourite}
-                      />
-                    )
-                  })}
-                </Category>}
-            </>
-          )
-        })}
+        {restoMenu.map((category: ICategories, index: number) => (
+          <div key={category.name + index}>
+            <Category title={category.name}>
+              {category.dishes
+                .filter((dish: IDishFE) => dish.fitsPreference)
+                .map((dish: IDishFE, dishIndex: number) => (
+                  <Dish
+                    key={dish.name + dishIndex}
+                    dishName={dish.name}
+                    dishAllergens={dish.allergens}
+                    dishDescription={dish.description}
+                    options={dish.category.extraGroup.join(", ")}
+                    price={dish.price}
+                    picturesId={dish.picturesId}
+                    restoID={restoID}
+                    dishID={dish.uid}
+                    isFavourite={isFavouriteDishs.some(
+                      (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                    )}
+                  />
+                ))}
+              <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                {category.dishes
+                  .filter((dish: IDishFE) => !dish.fitsPreference)
+                  .map((dish: IDishFE, dishIndex: number) => (
+                    <Dish
+                      key={dish.name + dishIndex}
+                      dishName={dish.name}
+                      dishAllergens={dish.allergens}
+                      dishDescription={dish.description}
+                      options={dish.category.extraGroup.join(", ")}
+                      price={dish.price}
+                      picturesId={dish.picturesId}
+                      restoID={restoID}
+                      dishID={dish.uid}
+                      isFavourite={isFavouriteDishs.some(
+                        (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                      )}
+                    />
+                  ))}
+              </Accordion>
+            </Category>
+          </div>
+        ))}
       </Layout>
     </>
   );

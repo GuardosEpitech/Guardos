@@ -219,6 +219,9 @@
       "MapPage": {
         "what-you-looking-for": "What are you looking for ?"
       },
+      "MenuPage": {
+        "show-non-compatible-dishes": "Show non-compatible dishes"
+      },
       "MyAccountPage": {
         "account-page": "Account page",
         "data-changed-success": "Profile details changed successfully!",
