@@ -44,6 +44,7 @@ const IntroPage = () => {
   };
 
   const handleMouseLeave = () => {
+    console.log(baseUrlRestaurant);
     setOpacity1(1);
     setOpacity2(1);
   };
@@ -52,6 +53,7 @@ const IntroPage = () => {
     // Scroll to the target section
     targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
 
   return (
     <div>
