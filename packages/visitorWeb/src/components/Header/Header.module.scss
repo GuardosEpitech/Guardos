@@ -87,3 +87,38 @@
 .languageOption:hover {
   background-color: #f0f0f0;
 }
+
+
+@media only screen and (max-width: 768px) {
+  .BackgroundRect {
+    gap: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem;
+  }
+  .logoContainer {
+    width: 3.125rem;
+    height: 3.125rem;
+    border-radius: 50%;
+    overflow: visible;
+    position: relative;
+    background-color: white;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    margin-right: 2rem ;
+  }
+
+  .logo {
+    width: 50%;
+    height: 50%;
+    background: url(../../assets/logo.png) center/cover no-repeat;
+    background-position: center;
+    overflow: visible;
+  }
+
+  .NavTitle {
+    font-size: 1rem;
+  }
+
+
+}

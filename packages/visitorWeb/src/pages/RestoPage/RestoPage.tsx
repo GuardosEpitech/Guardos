@@ -188,7 +188,7 @@ const RestoPage = () => {
             <ThemeProvider theme={Btn()}>
               <Button
                 variant="contained"
-                sx={{ width: "15.44rem" }}
+                sx={{ width: "100%" }}
                 onClick={handleButtonClick}>
                 {step === 1 ? 'Map' : 'List'}
               </Button>

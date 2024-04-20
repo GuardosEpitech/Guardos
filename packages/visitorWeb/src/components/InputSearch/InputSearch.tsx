@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
 import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const theme = createTheme({
   palette: {
@@ -17,36 +17,10 @@ const theme = createTheme({
   },
 });
 
-const PageBtn = () => {
-  return createTheme({
-    typography: {
-      button: {
-        fontFamily: "Montserrat",
-        textTransform: "none",
-        fontSize: "1.13rem",
-        fontWeight: "500",
-      },
-    },
-    palette: {
-      primary: {
-        main: "#6d071a",
-        contrastText: "#ffffff",
-      },
-      secondary: {
-        main: "#094067",
-        contrastText: "#ffffff",
-      },
-    },
-    shape: {
-      borderRadius: 5,
-    },
-  });
-};
-
 const InputSearch = (props: any) => {
   const [name, setName] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   function onChangeName(event: any) {
     setName(event.target.value);
@@ -59,8 +33,8 @@ const InputSearch = (props: any) => {
   function sendButtonData(name: string, location: string) {
     const inter: ISearchCommunication = {
       name: name,
-      location: location
-    }
+      location: location,
+    };
     props.onChange(inter);
   }
 
@@ -68,19 +42,26 @@ const InputSearch = (props: any) => {
     <div className={styles.DivSearchInput}>
       <ThemeProvider theme={theme}>
         <TextField
-          label={t('components.InputSearch.name')}
+          label={t("components.InputSearch.name")}
           variant="filled"
           className={styles.InputSearch}
           onChange={onChangeName}
         />
       </ThemeProvider>
       <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
-      <ThemeProvider theme={PageBtn()}>
+      <ThemeProvider theme={theme}>
         <Button
           variant="contained"
           endIcon={<SearchIcon />}
-          onClick={() => sendButtonData(name, location)} >
-          {t('components.InputSearch.search')}
+          onClick={() => sendButtonData(name, location)}
+          sx={{
+            fontSize: "1.13rem",
+            "@media (max-width: 768px)": {
+              fontSize: "0.7rem",
+            },
+          }}
+        >
+          {t("components.InputSearch.search")}
         </Button>
       </ThemeProvider>
     </div>

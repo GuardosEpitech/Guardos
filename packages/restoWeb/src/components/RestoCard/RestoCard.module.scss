@@ -1,6 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
 @import "../../general";
 
+@media only screen and (max-width: 768px) {
+  .FlexParent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .GridItem {
+    padding: 1rem;
+  }
+
+  .GridItemImage {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .ImageDimensions {
+    max-height: 8rem;
+  }
+
+  .DishTitle {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .JustificationPrint,
+  .JustificationPrintExtended {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0.3rem;
+  }
+
+  .ContainerOpeningHours {
+    width: auto;
+    padding: 0.3rem;
+  }
+}
+
 .DishBox {
   background: $white;
   margin-bottom: 1.5rem;
@@ -48,7 +85,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
 }

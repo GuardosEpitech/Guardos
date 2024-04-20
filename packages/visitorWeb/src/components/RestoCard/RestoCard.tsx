@@ -107,7 +107,7 @@ const RestoCard = (props: IRestoCardProps) => {
   return (
     <Paper id="resto-card" className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
-        <Grid item xs={3} className={styles.GridItemImage}>
+        <Grid item xs={12} sm={3} className={styles.GridItemImage}>
           {pictures.length > 0 &&
               <img
                   key={pictures[0].id+name}
@@ -117,8 +117,8 @@ const RestoCard = (props: IRestoCardProps) => {
               />
           }
         </Grid>
-
-        <Grid item xs={9} className={styles.GridItem}>
+  
+        <Grid item xs={12} sm={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{name}</h3>
             <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name} />

@@ -86,3 +86,63 @@
 .chip {
   margin-bottom: 0.4rem!important;
 }
+@media (max-width: 768px) {
+  .RectFilter {
+    width: calc(100% - 40px);
+    max-width: 100%;
+    height: auto;
+    background-color: #ffffff;
+    filter: drop-shadow(0rem 0.25rem 0.313rem rgba(0, 0, 0, 0.25));
+    margin: auto;
+    border-radius: 0.625rem;
+  }
+
+  .TitleFilter {
+    font-size: 1.3rem;
+  }
+
+  .DivTitleFilter {
+    margin-bottom: 2rem;
+  }
+
+  .DivRating,
+  .DivCategories {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  .TitleCheck {
+    font-size: 0.9rem;
+  }
+
+  .DivAller {
+    margin-top: 0.5rem;
+  }
+
+  .DivTitleAller {
+    margin-bottom: 1rem;
+  }
+
+  .DivFilter {
+    padding-top: 1rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 0 auto;
+  }
+
+  .DivRange,
+  .DivSlider {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: calc(100% - 40px);
+    max-width: 100%;
+    margin-left: 0rem;
+    margin-right: 1.5rem;
+  }
+  .allergenChips {
+    display: inline-block !important;
+  }
+
+  .chip {
+    margin-bottom: 0.2rem !important;
+  }
+}

@@ -10,3 +10,15 @@
   display: flex;
   gap: 2.5rem;
 }
+
+@media only screen and (max-width: 768px) {
+  .InputSearch {
+    width: calc(100% - 40px);
+    max-width: 50%;
+  }
+
+  .DivSearchInput {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
