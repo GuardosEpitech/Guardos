@@ -133,6 +133,10 @@ const CookieBanner: React.FC = () => {
     };
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
+      localStorage.setItem('functional', 'false');
+      localStorage.setItem('statistical', 'false');
+      localStorage.setItem('marketing', 'false');
+      handleClose();
       return;
     }
     const response = await setUserPreferences(userToken, data);
@@ -142,15 +146,19 @@ const CookieBanner: React.FC = () => {
   };
 
   const handleOk = async () => {
-    const userToken = localStorage.getItem("user");
-    if (userToken === null) {
-      return;
-    }
     const data: { [key: string]: boolean } = {};
 
     sliderButtons.slice(1).forEach(button => {
       data[button.name.toLowerCase()] = button.isActive;
     });
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      localStorage.setItem('functional', data['functional'].toString());
+      localStorage.setItem('statistical', data['statistical'].toString());
+      localStorage.setItem('marketing', data['marketing'].toString());
+      handleClose();
+      return;
+    }
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {

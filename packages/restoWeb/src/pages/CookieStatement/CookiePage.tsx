@@ -52,10 +52,39 @@ const CookieStatementPage: React.FC = () => {
   const fetchUserPreference = async () => {
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
+      const functional = localStorage.getItem("functional") === "true";
+      const statistical = localStorage.getItem("statistical") === "true";
+      const marketing = localStorage.getItem("marketing") === "true";
+     
+      let data = {
+        functional: functional,
+        statistical: statistical,
+        marketing: marketing
+      };
+      setSliderButtons(prevState => [
+        { name: "Functional", isActive: data.functional },
+        { name: "Statistical", isActive: data.statistical },
+        { name: "Marketing", isActive: data.marketing },
+      ]);
       return;
     }
-    const data = await getUserRestoPreferences(userToken);
-    console.log(data);
+    let data = await getUserRestoPreferences(userToken);
+    if (data == false) {
+      const functional = localStorage.getItem("functional") === "true";
+      const statistical = localStorage.getItem("statistical") === "true";
+      const marketing = localStorage.getItem("marketing") === "true";
+      
+      data = {
+        functional: functional,
+        statistical: statistical,
+        marketing: marketing
+      };
+      const userToken = localStorage.getItem("user");
+      if (userToken === null) {
+        return;
+      }
+      const response = await setUserRestoPreferences(userToken, data);
+    }
     setSliderButtons(prevState => [
       { name: "Functional", isActive: data.functional },
       { name: "Statistical", isActive: data.statistical },

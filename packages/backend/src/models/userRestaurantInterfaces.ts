@@ -15,6 +15,7 @@ export const userRestoSchema = new mongoose.Schema({
   defaultMenuDesign: String,
   preferredLanguage: String,
   preferencesCookie: {
+    isSet: Boolean,
     functional: Boolean,
     statistical: Boolean,
     marketing: Boolean

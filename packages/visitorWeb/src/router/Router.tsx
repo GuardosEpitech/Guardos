@@ -20,9 +20,11 @@ import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage
 import RatingPage from "@src/pages/RatingPage";
 import CookieStatement from "@src/pages/CookieStatement/CookiePage";
 import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
+import { getUserPreferences } from "@src/services/profileCalls";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
+  const [showCookies, setShowCookies] = useState<boolean>();
   const userToken = localStorage.getItem('user');
 
   const checkUserToken = () => {
@@ -33,20 +35,34 @@ const MVPRouter = () => {
     setIsUserTokenSet(true);
   };
 
+  const areCookiesSet = async () => {
+    if (isUserTokenSet) {
+      const data = await getUserPreferences(userToken);
+      if (data.isSet) {
+        setShowCookies(false);
+      } 
+    } 
+    setShowCookies(true);
+    return false;
+  }
+
   useEffect(() => {
     checkUserToken();
+    areCookiesSet();
   }, [isUserTokenSet, userToken]);
 
   return (
     <>
-      {isUserTokenSet && <CookieBanner />}
+      {showCookies && <CookieBanner />}
       <BrowserRouter>
         {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' && 
         window.location.pathname !== '/payment-failed' && 
         window.location.pathname !== '/payment-success' &&
         window.location.pathname !== '/change-password' &&
-        window.location.pathname !== '/intropage' && (
+        window.location.pathname !== '/intropage' &&
+        window.location.pathname !== '/cookiestatement' &&
+        window.location.pathname !== '/technologies' && (
         <Navigate to="login" />
       )}
       {isUserTokenSet === true && (window.location.pathname === '/register'

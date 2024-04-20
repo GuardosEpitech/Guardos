@@ -282,7 +282,11 @@ export async function getUserRestoCookiePreferences(userId: number) {
   if (!user) {
     return null;
   }
-  return user.preferencesCookie;
+  if (user.preferencesCookie.isSet) {
+    return user.preferencesCookie;
+  } else {
+    return false;
+  }
 }
 
 export async function setUserRestoCookiePreferences(userId: number, 
@@ -294,6 +298,7 @@ export async function setUserRestoCookiePreferences(userId: number,
     return 404;
   }
   user.preferencesCookie = {
+    isSet: true,
     functional: data.functional,
     statistical: data.statistical,
     marketing: data.marketing
