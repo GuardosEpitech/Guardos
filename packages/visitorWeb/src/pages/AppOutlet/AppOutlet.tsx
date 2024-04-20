@@ -24,7 +24,6 @@ const AppOutlet = () => {
         </div>
         <div className={styles.LinksContainer}>
           <a href="/cookiestatement" className={styles.Link}>{t('pages.AppOutlet.cookieStatement')}</a>
-          <a href="/privacystatement" className={styles.Link}>{t('pages.AppOutlet.privacyStatement')}</a>
         </div>
       </div>
     </div>
