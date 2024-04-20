@@ -34,7 +34,7 @@ const theme = createTheme({
 });
 
 const MenuPage = () => {
-  const { restoName, restoID, address, menuDesignID } = useLocation().state;
+  const { menu, restoName, restoID, address, menuDesignID } = useLocation().state;
   const [isFavouriteDishs, setIsFavouriteDishs] = React.useState<Array<{ restoID: number, dish: IDishFE }>>([]);
   const [isFavouriteResto, setIsFavouriteResto] = React.useState(false);
   const thirdLayout = {
@@ -42,7 +42,7 @@ const MenuPage = () => {
     padding: '40px',
     borderRadius: '10px',
   }
-  const [restoMenu, setRestoMenu] = React.useState([]);
+  const [restoMenu, setRestoMenu] = React.useState(menu);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const MenuPage = () => {
   };
 
   // Create refs for each section
-  const sectionRefs = useRef(menu.map(() => React.createRef()));
+  const sectionRefs = useRef(restoMenu.map(() => React.createRef()));
 
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
@@ -141,48 +141,46 @@ const MenuPage = () => {
           <div>
             {restoMenu.map((category: ICategories, index: number) => (
               <div key={category.name + index}>
-                {category.dishes.length > 0 &&
-                  <Category title={category.name}>
-                    {category.dishes
-                      .filter((dish: IDishFE) => dish.fitsPreference)
-                      .map((dish: IDishFE, dishIndex: number) => (
-                        <Dish
-                          key={dish.name + dishIndex}
-                          dishName={dish.name}
-                          dishAllergens={dish.allergens}
-                          dishDescription={dish.description}
-                          options={dish.category.extraGroup.join(", ")}
-                          price={dish.price}
-                          picturesId={dish.picturesId}
-                          restoID={restoID}
-                          dishID={dish.uid}
-                          isFavourite={isFavouriteDishs.some(
-                            (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
-                          )}
-                        />
-                      ))}
-                      <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
-                        {category.dishes
-                          .filter((dish: IDishFE) => !dish.fitsPreference)
-                          .map((dish: IDishFE, dishIndex: number) => (
-                            <Dish
-                              key={dish.name + dishIndex}
-                              dishName={dish.name}
-                              dishAllergens={dish.allergens}
-                              dishDescription={dish.description}
-                              options={dish.category.extraGroup.join(", ")}
-                              price={dish.price}
-                              picturesId={dish.picturesId}
-                              restoID={restoID}
-                              dishID={dish.uid}
-                              isFavourite={isFavouriteDishs.some(
-                                (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
-                              )}
-                            />
-                          ))}
-                      </Accordion>
-                  </Category>
-                }
+                <Category title={category.name}>
+                  {category.dishes
+                    .filter((dish: IDishFE) => dish.fitsPreference)
+                    .map((dish: IDishFE, dishIndex: number) => (
+                      <Dish
+                        key={dish.name + dishIndex}
+                        dishName={dish.name}
+                        dishAllergens={dish.allergens}
+                        dishDescription={dish.description}
+                        options={dish.category.extraGroup.join(", ")}
+                        price={dish.price}
+                        picturesId={dish.picturesId}
+                        restoID={restoID}
+                        dishID={dish.uid}
+                        isFavourite={isFavouriteDishs.some(
+                          (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                        )}
+                      />
+                    ))}
+                    <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                      {category.dishes
+                        .filter((dish: IDishFE) => !dish.fitsPreference)
+                        .map((dish: IDishFE, dishIndex: number) => (
+                          <Dish
+                            key={dish.name + dishIndex}
+                            dishName={dish.name}
+                            dishAllergens={dish.allergens}
+                            dishDescription={dish.description}
+                            options={dish.category.extraGroup.join(", ")}
+                            price={dish.price}
+                            picturesId={dish.picturesId}
+                            restoID={restoID}
+                            dishID={dish.uid}
+                            isFavourite={isFavouriteDishs.some(
+                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                            )}
+                          />
+                        ))}
+                    </Accordion>
+                </Category>
               </div>
             ))}
           </div>
@@ -204,7 +202,7 @@ const MenuPage = () => {
                 })}
               </ul>
             </div>
-            <div>
+            <div className={styles.restoList}>
               {restoMenu.map((category: ICategories, index: number) => {
                 return (
                   <div key={index} ref={sectionRefs.current[index]}>
@@ -230,48 +228,46 @@ const MenuPage = () => {
                       <div/>
                     )}
 
-                    {category.dishes.length > 0 &&
-                      <Category title={category.name}>
-                        {category.dishes
-                          .filter((dish: IDishFE) => dish.fitsPreference)
-                          .map((dish: IDishFE, dishIndex: number) => (
-                            <Dish
-                              key={dish.name + dishIndex}
-                              dishName={dish.name}
-                              dishAllergens={dish.allergens}
-                              dishDescription={dish.description}
-                              options={dish.category.extraGroup.join(", ")}
-                              price={dish.price}
-                              picturesId={dish.picturesId}
-                              restoID={restoID}
-                              dishID={dish.uid}
-                              isFavourite={isFavouriteDishs.some(
-                                (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
-                              )}
-                            />
-                          ))}
-                          <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
-                            {category.dishes
-                              .filter((dish: IDishFE) => !dish.fitsPreference)
-                              .map((dish: IDishFE, dishIndex: number) => (
-                                <Dish
-                                  key={dish.name + dishIndex}
-                                  dishName={dish.name}
-                                  dishAllergens={dish.allergens}
-                                  dishDescription={dish.description}
-                                  options={dish.category.extraGroup.join(", ")}
-                                  price={dish.price}
-                                  picturesId={dish.picturesId}
-                                  restoID={restoID}
-                                  dishID={dish.uid}
-                                  isFavourite={isFavouriteDishs.some(
-                                    (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
-                                  )}
-                                />
-                              ))}
-                          </Accordion>
-                      </Category>
-                    }
+                    <Category title={category.name}>
+                      {category.dishes
+                        .filter((dish: IDishFE) => dish.fitsPreference)
+                        .map((dish: IDishFE, dishIndex: number) => (
+                          <Dish
+                            key={dish.name + dishIndex}
+                            dishName={dish.name}
+                            dishAllergens={dish.allergens}
+                            dishDescription={dish.description}
+                            options={dish.category.extraGroup.join(", ")}
+                            price={dish.price}
+                            picturesId={dish.picturesId}
+                            restoID={restoID}
+                            dishID={dish.uid}
+                            isFavourite={isFavouriteDishs.some(
+                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                            )}
+                          />
+                        ))}
+                        <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                          {category.dishes
+                            .filter((dish: IDishFE) => !dish.fitsPreference)
+                            .map((dish: IDishFE, dishIndex: number) => (
+                              <Dish
+                                key={dish.name + dishIndex}
+                                dishName={dish.name}
+                                dishAllergens={dish.allergens}
+                                dishDescription={dish.description}
+                                options={dish.category.extraGroup.join(", ")}
+                                price={dish.price}
+                                picturesId={dish.picturesId}
+                                restoID={restoID}
+                                dishID={dish.uid}
+                                isFavourite={isFavouriteDishs.some(
+                                  (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                                )}
+                              />
+                            ))}
+                        </Accordion>
+                    </Category>
                   </div>
                 )
               })}

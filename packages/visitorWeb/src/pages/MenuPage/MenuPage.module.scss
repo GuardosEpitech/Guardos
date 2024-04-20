@@ -58,6 +58,10 @@
   margin-bottom: 20px;
 }
 
+.restoList {
+  min-width: 75%;
+}
+
 @media (max-width: 750px) {
   .secondLayout {
     flex-direction: column;
