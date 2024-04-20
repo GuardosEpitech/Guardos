@@ -24,3 +24,45 @@
   color: #ffffff;
   margin-left: 1rem;
 }
+
+.secondLayout {
+  display: flex;
+  flex-direction: row;
+}
+
+.secondLayoutList {
+  min-width: 150px;
+  width: 100%;
+  flex: 0.3;
+}
+
+.secondLayoutListObject {
+  cursor: pointer;
+  list-style: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding-bottom: 10px;
+  word-break: normal;
+  height: 40px;
+}
+
+.secondLayoutBanner {
+  height: 100px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.secondLayoutDishes {
+  flex: 0.7;
+}
+
+@media (max-width: 750px) {
+  .secondLayout {
+    flex-direction: column;
+  }
+  .secondLayoutList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

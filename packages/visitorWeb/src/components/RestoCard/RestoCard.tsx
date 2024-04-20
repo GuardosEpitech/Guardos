@@ -160,6 +160,7 @@ const RestoCard = (props: IRestoCardProps) => {
                   restoName: name,
                   restoID: props.resto.uid,
                   address: address,
+                  menuDesignID: props.resto.menuDesignID
                 })}
               >
                 {t('components.RestoCard.menu')}
