@@ -20,6 +20,10 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
+import {getRestosMenu} from "@src/services/menuCalls";
+import Accordion from "@src/components/Accordion/Accordion";
+import {useTranslation} from "react-i18next";
+import {getUserAllergens} from "@src/services/userCalls";
 
 const theme = createTheme({
   palette: {
@@ -38,11 +42,26 @@ const MenuPage = () => {
     padding: '40px',
     borderRadius: '10px',
   }
+  const [restoMenu, setRestoMenu] = React.useState(menu);
+  const {t} = useTranslation();
 
   useEffect(() => {
+    fetchMenu();
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
   }, [])
+
+  const fetchMenu = async () => {
+    // const filter = JSON.parse(localStorage.getItem('filter') || '{}');
+    // const allergenList = filter.allergenList;
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+
+    const userAllergens = await getUserAllergens(userToken);
+    setRestoMenu(await getRestosMenu(restoID, userAllergens));
+  }
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
@@ -86,7 +105,7 @@ const MenuPage = () => {
   };
 
   // Create refs for each section
-  const sectionRefs = useRef(menu.map(() => React.createRef()));
+  const sectionRefs = useRef(restoMenu.map(() => React.createRef()));
 
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
@@ -120,18 +139,33 @@ const MenuPage = () => {
       <Layout>
         {menuDesignID === 0 ? (
           <div>
-            {menu.map((category: ICategories, index: number) => {
-              return (
-                <>
-                  {category.dishes.length > 0 &&
-                    <Category key={category.name + index} title={category.name}>
-                      {category.dishes.map((dish: IDishFE, index: number) => {
-                        const isFavourite = isFavouriteDishs.some(fav => {
-                          return fav.restoID === restoID && fav.dish.uid === dish.uid;
-                        });
-                        return (
+            {restoMenu.map((category: ICategories, index: number) => (
+              <div key={category.name + index}>
+                <Category title={category.name}>
+                  {category.dishes
+                    .filter((dish: IDishFE) => dish.fitsPreference)
+                    .map((dish: IDishFE, dishIndex: number) => (
+                      <Dish
+                        key={dish.name + dishIndex}
+                        dishName={dish.name}
+                        dishAllergens={dish.allergens}
+                        dishDescription={dish.description}
+                        options={dish.category.extraGroup.join(", ")}
+                        price={dish.price}
+                        picturesId={dish.picturesId}
+                        restoID={restoID}
+                        dishID={dish.uid}
+                        isFavourite={isFavouriteDishs.some(
+                          (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                        )}
+                      />
+                    ))}
+                    <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                      {category.dishes
+                        .filter((dish: IDishFE) => !dish.fitsPreference)
+                        .map((dish: IDishFE, dishIndex: number) => (
                           <Dish
-                            key={dish.name + index}
+                            key={dish.name + dishIndex}
                             dishName={dish.name}
                             dishAllergens={dish.allergens}
                             dishDescription={dish.description}
@@ -140,25 +174,26 @@ const MenuPage = () => {
                             picturesId={dish.picturesId}
                             restoID={restoID}
                             dishID={dish.uid}
-                            isFavourite={isFavourite}
+                            isFavourite={isFavouriteDishs.some(
+                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                            )}
                           />
-                        )
-                      })}
-                    </Category>}
-                </>
-              )
-            })}
+                        ))}
+                    </Accordion>
+                </Category>
+              </div>
+            ))}
           </div>
         ) : (
           <div>
-            
+
           </div>
         )}
         {menuDesignID >= 1 ? (
           <div className={styles.secondLayout} style={menuDesignID === 2 ? thirdLayout : null}>
             <div className={styles.secondLayoutList}>
               <ul>
-                {menu.map((category: ICategories, index: number) => {
+                {restoMenu.map((category: ICategories, index: number) => {
                   return (
                     <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
                       {category.name}
@@ -167,54 +202,72 @@ const MenuPage = () => {
                 })}
               </ul>
             </div>
-            <div>
-              {menu.map((category: ICategories, index: number) => {
+            <div className={styles.restoList}>
+              {restoMenu.map((category: ICategories, index: number) => {
                 return (
                   <div key={index} ref={sectionRefs.current[index]}>
                     {index % 3 === 0 ? (
-                      <div style={{ 
+                      <div style={{
                         backgroundImage: `url(${pic1})`
                       }} className={styles.secondLayoutBanner} />
                     ) : (
                       <div/>
                     )}
                     {index % 3 === 1 ? (
-                      <div style={{ 
+                      <div style={{
                         backgroundImage: `url(${pic2})`
                       }} className={styles.secondLayoutBanner} />
                     ) : (
                       <div/>
                     )}
                     {index % 3 === 2 ? (
-                      <div style={{ 
-                        backgroundImage: `url(${pic3})` 
+                      <div style={{
+                        backgroundImage: `url(${pic3})`
                       }} className={styles.secondLayoutBanner}/>
                     ) : (
                       <div/>
                     )}
 
-                    {category.dishes.length > 0 &&
-                      <Category key={category.name + index} title={category.name}>
-                        {category.dishes.map((dish: IDishFE, index: number) => {
-                          const isFavourite = isFavouriteDishs.some(fav => {
-                            return fav.restoID === restoID && fav.dish.uid === dish.uid;
-                          });
-                          return (
-                            <Dish
-                              key={dish.name + index}
-                              dishName={dish.name}
-                              dishAllergens={dish.allergens}
-                              dishDescription={dish.description}
-                              options={dish.category.extraGroup.join(", ")}
-                              price={dish.price}
-                              picturesId={dish.picturesId}
-                              restoID={restoID}
-                              dishID={dish.uid}
-                              isFavourite={isFavourite}
-                            />
-                          )
-                        })}
-                      </Category>}
+                    <Category title={category.name}>
+                      {category.dishes
+                        .filter((dish: IDishFE) => dish.fitsPreference)
+                        .map((dish: IDishFE, dishIndex: number) => (
+                          <Dish
+                            key={dish.name + dishIndex}
+                            dishName={dish.name}
+                            dishAllergens={dish.allergens}
+                            dishDescription={dish.description}
+                            options={dish.category.extraGroup.join(", ")}
+                            price={dish.price}
+                            picturesId={dish.picturesId}
+                            restoID={restoID}
+                            dishID={dish.uid}
+                            isFavourite={isFavouriteDishs.some(
+                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                            )}
+                          />
+                        ))}
+                        <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                          {category.dishes
+                            .filter((dish: IDishFE) => !dish.fitsPreference)
+                            .map((dish: IDishFE, dishIndex: number) => (
+                              <Dish
+                                key={dish.name + dishIndex}
+                                dishName={dish.name}
+                                dishAllergens={dish.allergens}
+                                dishDescription={dish.description}
+                                options={dish.category.extraGroup.join(", ")}
+                                price={dish.price}
+                                picturesId={dish.picturesId}
+                                restoID={restoID}
+                                dishID={dish.uid}
+                                isFavourite={isFavouriteDishs.some(
+                                  (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                                )}
+                              />
+                            ))}
+                        </Accordion>
+                    </Category>
                   </div>
                 )
               })}
@@ -222,7 +275,7 @@ const MenuPage = () => {
           </div>
         ) : (
           <div>
-            
+
           </div>
         )}
       </Layout>

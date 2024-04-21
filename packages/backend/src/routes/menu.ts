@@ -3,7 +3,7 @@ import {getMenuByRestoID} from '../controllers/menuController';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const restoID = Number(req.body.restoID);
     const allergenList = req.body.allergenList;
