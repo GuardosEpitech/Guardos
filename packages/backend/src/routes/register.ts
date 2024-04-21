@@ -20,9 +20,11 @@ router.post('/', async function (req: Request, res: Response) {
 router.post('/restoWeb', async function (req: Request, res: Response) {
   try {
     const data = req.body;
-    const errArray = await addUserResto(data.username, data.email, data.password);
+    const errArray =
+        await addUserResto(data.username, data.email, data.password);
 
-    return res.status(200).send(errArray);
+    return res.status(200)
+      .send(errArray);
   } catch (error) {
     return res.status(500)
       .send('An error occurred while processing your request');
