@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', async (_req, res) => {
   try {
-    const userToken = String(_req.query.key);
+    const userToken = String(_req.body.token);
     const userID = await getUserIdResto(userToken);
     const filter = _req.body.filter;
     if (userID === false) {
