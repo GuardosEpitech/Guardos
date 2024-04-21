@@ -159,7 +159,8 @@
         "please": "Bitte ",
         "login": "Einloggen",
         "to-see-your-restos": ", um Ihre Restaurants zu sehen.",
-        "add-resto": "Restaurant hinzufügen"
+        "add-resto": "Restaurant hinzufügen",
+        "search-restos": "Suchen Sie nach Restaurants oder Locations"
       },
       "LoginPage": {
         "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",
