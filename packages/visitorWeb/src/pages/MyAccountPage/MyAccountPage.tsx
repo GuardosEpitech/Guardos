@@ -6,6 +6,8 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import {Button,Typography} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from "./MyAccountPage.module.scss";
 import {deleteAccount} from "@src/services/userCalls";
@@ -27,6 +29,7 @@ import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
+import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -54,6 +57,8 @@ const MyAccountPage = () => {
   const [activeTab, setActiveTab] = useState("restaurants");
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+
 
   useEffect(() => {
     fetchProfileData();
@@ -235,6 +240,7 @@ const MyAccountPage = () => {
 
   const toggleDarkMode = () => {
     const darkModeEnabled = localStorage.getItem('darkMode');    
+    setDarkMode(!darkMode);
     if (darkModeEnabled == 'false') {
       enableDarkMode();
     } else {
@@ -508,8 +514,10 @@ const MyAccountPage = () => {
           {t('pages.MyAccountPage.delete-account')}
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <Button onClick={toggleDarkMode}>{localStorage.getItem('darkMode') === 'true' ? 'Light Mode' : 'Dark Mode'}</Button>
-          <Typography variant="body1">You need a new feature? </Typography>
+        <FormControlLabel
+          control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
+          label={t('pages.MyAccountPage.enable-dark-mode')}
+        />
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}

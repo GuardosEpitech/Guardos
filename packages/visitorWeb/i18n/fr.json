@@ -249,7 +249,8 @@
         "just-ask": "Demandez simplement !",
         "fav-restos": "Restaurants favoris",
         "fav-dishes": "Plats favoris",
-        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+        "enable-dark-mode": "Activer le mode sombre"
       },
       "Payments": {
         "payment-success": "Paiement réussi",

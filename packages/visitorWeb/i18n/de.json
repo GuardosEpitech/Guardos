@@ -249,7 +249,8 @@
         "just-ask": "Fragen Sie einfach danach!",
         "fav-restos": "Lieblingsrestaurants",
         "fav-dishes": "Lieblingsgerichte",
-        "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "enable-dark-mode": "Dunkelmodus aktivieren"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",

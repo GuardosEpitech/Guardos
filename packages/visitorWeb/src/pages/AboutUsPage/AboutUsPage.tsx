@@ -45,37 +45,6 @@ const AboutUsPage = () => {
     },
   ];
 
-  const description = `Guardos is your trusted companion in the world of dining, 
-  specially crafted for individuals with food intolerances and specific culinary preferences. 
-  Our innovative platform empowers you to effortlessly discover restaurants in your vicinity 
-  that cater to your unique dietary needs. 
-  Whether you're gluten-free, vegan, or have other dietary restrictions, 
-  Guardos ensures that your dining experience is tailored to your tastes. 
-  Say goodbye to the hassle of searching for suitable options – with Guardos, 
-  finding the perfect restaurant that aligns with your preferences is just a click away. 
-  Enjoy a seamless and delightful dining experience with Guardos, 
-  where your food choices are always respected and celebrated.`;
-
-  const foundingstory = `Our journey at Guardos commenced during our college days, 
-  where a diverse group of individuals, each navigating the challenges of food intolerances, found common ground. 
-  Whether grappling with our own dietary restrictions or witnessing the struggles of friends and family, 
-  we recognized the pervasive inconvenience of deciphering suitable meals. 
-  Fueled by the collective desire to simplify the process of finding delicious and tailored dining options, 
-  we came together with a shared mission: to solve the intricate puzzle of eating well, no matter the dietary constraints. 
-  Thus, Guardos was born, a dedicated effort to empower individuals in their quest for enjoyable and hassle-free dining experiences`;
-
-  const teamdescription = `Our journey began during our time as students, 
-  brought together by a shared passion for making a positive impact. 
-  What unites us is not only our academic pursuits but a common understanding 
-  of the challenges posed by food intolerances. 
-  Whether personally affected or witnessing the struggles of friends and family, we recognized the need for change.
-  Driven by empathy and a desire to contribute, we formed a team committed to making a difference in the lives of 
-  those dealing with food intolerances. 
-  Our diverse backgrounds and skills converge with a singular purpose — to create solutions that enhance the quality of life 
-  for individuals affected by dietary restrictions. 
-  Together, we embark on a journey to empower and support our community, one innovative idea at a time.`;
-
-
   useEffect(() => {
     checkDarkMode();
   }, []);
