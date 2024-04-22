@@ -220,6 +220,9 @@
       "MapPage": {
         "what-you-looking-for": "Was suchen Sie?"
       },
+      "MenuPage": {
+        "show-non-compatible-dishes": "Zeige inkompatible Gerichte"
+      },
       "MyAccountPage": {
         "account-page": "Kontoseite",
         "data-changed-success": "Profilinformationen erfolgreich geändert!",
