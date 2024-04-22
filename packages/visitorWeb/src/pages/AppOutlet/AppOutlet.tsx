@@ -22,6 +22,9 @@ const AppOutlet = () => {
             <li>{t('pages.AppOutlet.location')}</li>
           </ul>
         </div>
+        <div className={styles.LinksContainer}>
+          <a href="/privacy" className={styles.Link}>{t('pages.AppOutlet.privacy')}</a>
+        </div>
       </div>
     </div>
   )
