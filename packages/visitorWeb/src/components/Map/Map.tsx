@@ -198,6 +198,7 @@ const MapView = (props: MapProps) => {
                 onClick={() => NavigateTo("/menu", navigate, {
                   menu: restaurant.categories,
                   restoName: restaurant.name,
+                  restoID: restaurant.uid,
                   address: `${restaurant.location.streetName} 
               ${restaurant.location.streetNumber}, 
               ${restaurant.location.postalCode} 

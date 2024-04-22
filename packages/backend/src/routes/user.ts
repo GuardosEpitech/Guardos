@@ -1,10 +1,10 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 
-import { 
-  getAllergens, 
-  updateAllergens, 
-  doesUserExist 
+import {
+  getAllergens,
+  updateAllergens,
+  doesUserExist, getUserId
 } from '../controllers/userController';
 import { doesUserRestoExist } from '../controllers/userRestoController';
 
@@ -23,8 +23,16 @@ router.post('/allergens/update', async function (req: Request, res: Response) {
 
 router.post('/allergens/get', async function (req: Request, res: Response) {
   try {
-    const data = req.body;
-    const answer = await getAllergens(data.username);
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(400)
+        .send({ error: 'Invalid Access' });
+    }
+
+    const answer = await getAllergens(userID);
     return res.send(answer);
   } catch (error) {
     console.log(error);
