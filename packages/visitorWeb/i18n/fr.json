@@ -128,7 +128,7 @@
         "email": "Email : contact@guardos.com",
         "phone": "Téléphone : +49 211 1234567",
         "location": "Localisation : contact@guardos.com",
-        "privacy": "Privacy statement"
+        "privacy": "Déclaration de Confidentialité"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la Page Principale.",
