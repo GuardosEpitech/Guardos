@@ -56,7 +56,7 @@ const MVPRouter = () => {
           <Route path="/intropage" element={<IntroPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
-          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/menu/:name" element={<MenuPage />} />
           <Route path="/addreview" element={<RatingPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/" element={<RestoPage />} />

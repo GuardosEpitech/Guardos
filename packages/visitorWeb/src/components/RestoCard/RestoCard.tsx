@@ -11,7 +11,6 @@ import styles from "./RestoCard.module.scss";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
-import { NavigateTo } from "@src/utils/NavigateTo";
 import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
 import {IimageInterface} from "../../../../shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
@@ -155,12 +154,7 @@ const RestoCard = (props: IRestoCardProps) => {
               <Button
                 className={styles.RestoBtn}
                 variant="contained"
-                onClick={() => NavigateTo("/menu", navigate, {
-                  menu: categories,
-                  restoName: name,
-                  restoID: props.resto.uid,
-                  address: address,
-                })}
+                onClick={() => navigate(`/menu/${name}`)}
               >
                 {t('components.RestoCard.menu')}
               </Button>

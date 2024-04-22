@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
+import { useParams } from "react-router-dom";
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 import Dish from "@src/components/menu/Dish/Dish";
 import Category from "shared/components/menu/Category/Category";
@@ -17,6 +17,7 @@ import {
 } from "@src/services/favourites";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { getRestaurant } from "@src/services/restoCall";
 
 const theme = createTheme({
   palette: {
@@ -27,15 +28,34 @@ const theme = createTheme({
 });
 
 const MenuPage = () => {
-  const { menu, restoName, restoID, address } = useLocation().state;
+  const { name } = useParams();
+  const [categories, setCategories] =  React.useState([]); // Initialize categories state
+  const [restoID, setRestoID] =  React.useState(null); // Initialize restoID state
+  const [address1, setAddress1] =  React.useState(null); // Initialize address state
+  // const { streetName, streetNumber, postalCode, city, country } = address1;
+  // const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
   const [isFavouriteDishs, setIsFavouriteDishs] = React.useState<Array<{ restoID: number, dish: IDishFE }>>([]);
   const [isFavouriteResto, setIsFavouriteResto] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
-  }, [])
+    const fetchData = async () => {
+      try {
+        const resto = await getRestaurant(name); // Assuming getRestaurant is an async function that fetches restaurant data
+        setCategories(resto.categories);
+        setRestoID(resto.uid);
+        setAddress1(resto.location);
+      } catch (error) {
+        console.error('Error fetching restaurant data:', error);
+      }
+    };
 
+    fetchData();
+  }, [name])
+  const address = address1 ? `${address1.streetName} ${address1.streetNumber}, ${address1.postalCode} ${address1.city}, ${address1.country}` : "";
+
+  
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
@@ -82,7 +102,7 @@ const MenuPage = () => {
       <div className={styles.RectOnImg}>
         <List>
           <ListItem>
-            <h2 className={styles.RestaurantTitle}>{restoName}</h2>
+            <h2 className={styles.RestaurantTitle}>{name}</h2>
             <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
               {isFavouriteResto ? (
                 <FavoriteIcon id="favourite-resto" color="error" />
@@ -102,10 +122,10 @@ const MenuPage = () => {
         </List>
       </div>
       <Layout>
-        {menu.map((category: ICategories, index: number) => {
+        {categories.map((category: ICategories, index: number) => {
           return (
-            <>
-              {category.dishes.length > 0 &&
+            <React.Fragment key={category.name + index}>
+            {category.dishes.length > 0 &&
                 <Category key={category.name + index} title={category.name}>
                   {category.dishes.map((dish: IDishFE, index: number) => {
                     const isFavourite = isFavouriteDishs.some(fav => {
@@ -127,7 +147,7 @@ const MenuPage = () => {
                     )
                   })}
                 </Category>}
-            </>
+            </React.Fragment>
           )
         })}
       </Layout>
@@ -136,3 +156,7 @@ const MenuPage = () => {
 };
 
 export default MenuPage;
+function useState(arg0: undefined[]): [any, any] {
+  throw new Error("Function not implemented.");
+}
+

@@ -37,16 +37,16 @@ const PopupButton = styled.button`
 `;
 
 export const Popup: React.FC<PopupProps> = (
-  { message, onConfirm, onCancel }) => {
+  { message, onConfirm, onCancel }: PopupProps) => {
   const {t} = useTranslation();
 
   return (
     <PopupContainer>
-      <div className={styles.PopupText} >{message}</div>
+      {/* <span className={styles.PopupText}>{message}</span>
       <div>
         <PopupButton onClick={onConfirm}>{t('common.confirm')}</PopupButton>
         <PopupButton onClick={onCancel}>{t('common.cancel')}</PopupButton>
-      </div>
+      </div> */}
     </PopupContainer>
   );
 };

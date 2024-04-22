@@ -33,7 +33,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         // Handle error accordingly for mobile (e.g., show error message)
       } else {
         setErrorForm(false);
-        // Navigate to the next screen upon successful login
       }
     } catch (error) {
       console.error(`Error in Post Route: ${error}`);

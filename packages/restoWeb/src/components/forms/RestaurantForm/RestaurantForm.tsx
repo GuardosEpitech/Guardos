@@ -29,6 +29,7 @@ import {convertImageToBase64, displayImageFromBase64}
 import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
+import { addQRCode } from "@src/services/qrcodeCall";
 
 const PageBtn = () => {
   return createTheme({
@@ -244,8 +245,13 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       userToken: userToken,
       resto: resto,
     };
+    const dataQRCode  = {
+      name: selectedRestaurantName,
+      url: `https://guardos.eu/menu/${selectedRestaurantName}`,
+    };
     if (props.add) {
       await addNewResto(data);
+      await addQRCode(dataQRCode);
     } else {
       await editResto(origRestoName, resto);
     }

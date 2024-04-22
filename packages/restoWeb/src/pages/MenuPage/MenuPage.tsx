@@ -1,8 +1,8 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { List, ListItem } from "@mui/material";
+import { Button, List, ListItem } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
 
 import Category from "shared/components/menu/Category/Category";
@@ -11,6 +11,7 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
 import { ICategories } from "shared/models/categoryInterfaces";
+import { getQRCodeByName } from "@src/services/qrcodeCall";
 
 const theme = createTheme({
   palette: {
@@ -28,7 +29,14 @@ interface IMenuPageProps {
 }
 
 const MenuPage = () => {
-  const { menu, restoName, address, menuDesignID } = useLocation().state as IMenuPageProps;
+  const { menu, restoName, address } = useLocation().state as IMenuPageProps;
+  const [URL, setURL] = useState(null);
+  const navigate = useNavigate();
+
+  useState(() => {
+    getQRCodeByName(restoName)
+      .then(res => setURL(res));
+  });
 
   return (
     <>
@@ -59,6 +67,14 @@ const MenuPage = () => {
             )
           );
         })}
+        <Button
+          className={styles.SaveBtn}
+          variant="contained"
+          sx={{width: "12.13rem"}}
+          onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.name}`}
+        >
+          Get my Menu QRCODE
+        </Button>
       </Layout>
     </>
   );

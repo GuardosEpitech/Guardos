@@ -26,9 +26,10 @@ import restaurants from './routes/restaurants';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
-import featureRequest from './routes/featureRequest'
+import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
+import qrcode from './routes/qrcode';
 
 async function main() {
   const app = express();
@@ -72,10 +73,11 @@ async function main() {
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
     app.use('/api/payments', payments);
-    app.use('/api/featureRequest', featureRequest)
+    app.use('/api/featureRequest', featureRequest);
     app.use('/api/review', review);
     app.use('/api/favourites', favourites);
     app.use('/api/menuDesigns', menuDesigns);
+    app.use('/api/qrcode', qrcode);
   }
 
   app.use(function (_req, _res, next) {
