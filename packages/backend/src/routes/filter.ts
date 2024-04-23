@@ -5,6 +5,8 @@ import { Response, Request } from 'express';
 import { handleFilterRequest, getSelectedFilterReq }
   from '../middleware/filterMiddleWare';
 
+import { newfilterRestaurants } from '../middleware/newFilterMiddleware';
+
 const router = express.Router();
 
 router.use(bodyParser.json());
@@ -23,6 +25,17 @@ router.post('/', async function (req: Request, res: Response) {
 router.post('/filteredlist', async function (req: Request, res: Response) {
   try {
     const answer = await getSelectedFilterReq(req.body);
+    return res.send(answer);
+  } catch (error) {
+    console.log(error);
+    return res.status(500)
+      .send('An error occurred while processing your request');
+  }
+});
+
+router.post('/newFilter', async function (req: Request, res: Response) {
+  try {
+    const answer = await newfilterRestaurants(req.body);
     return res.send(answer);
   } catch (error) {
     console.log(error);

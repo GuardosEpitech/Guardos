@@ -5,6 +5,7 @@ import Dialog  from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import {useTranslation} from "react-i18next";
 
 interface IRestoDetailOverlayProps {
   isOpen: boolean,
@@ -15,6 +16,7 @@ interface IRestoDetailOverlayProps {
 
 const ScrollOverlay = (props: IRestoDetailOverlayProps) => {
   const {isOpen, title, children} = props;
+  const {t} = useTranslation();
 
   const handleClose = () => {
     props.onClose();
@@ -46,7 +48,7 @@ const ScrollOverlay = (props: IRestoDetailOverlayProps) => {
           {children}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>{t('common.close')}</Button>
         </DialogActions>
       </Dialog>
     </div>

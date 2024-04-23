@@ -11,11 +11,13 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import styles from "./HomePage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import {useTranslation} from "react-i18next";
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
-  const [isUserTokenSet, setIsUserTokenSet] = useState<Boolean>(false);
+  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>(false);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   useEffect(() => {
     updateRestoData();
@@ -42,19 +44,23 @@ const HomePage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My Restaurants</span>
+        <span className={styles.TitleSearch}>{t('common.my-restos')}</span>
       </div>
       <Layout>
         <div className={styles.DivContent}>
           <div>
-            { isUserTokenSet && restoData.length == 0 && (
+            { isUserTokenSet && restoData.length === 0 && (
               <p>
-                You have currently no active restaurant. You can click on the button in the lower right corner to add a new one.
+                {t('pages.HomePage.no-restos-yet')}
               </p>
             )}
             { !isUserTokenSet && (
               <p>
-                Please <a onClick={() => NavigateTo('/login', navigate, {})}>login</a> to see your restaurants
+                {t('pages.HomePage.please')}
+                <a onClick={() => NavigateTo('/login', navigate, {})}>
+                  {t('pages.HomePage.login')}
+                </a>
+                {t('pages.HomePage.to-see-your-restos')}
               </p>
             )}
             {restoData.map((restaurant, index) => {
@@ -71,7 +77,7 @@ const HomePage = () => {
         </div>
       </Layout>
       { isUserTokenSet && (
-        <FixedBtn title="Add Restaurant" redirect="/addResto" />
+        <FixedBtn title={t('pages.HomePage.add-resto')} redirect="/addResto" />
       )}
       <SuccessAlert />
     </div>

@@ -1,0 +1,309 @@
+{
+  "translation": {
+    "common": {
+      "save": "Enregistrer",
+      "submit": "Soumettre",
+      "apply-changes": "Appliquer les modifications",
+      "change": "Changer",
+      "confirm": "Confirmer",
+      "ok": "OK",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "delete": "Supprimer",
+      "yes": "Oui",
+      "no": "Non",
+
+      "english": "Anglais",
+      "german": "Allemand",
+      "french": "Français",
+
+      "ingredients": "Ingrédients",
+      "my-ingredients": "Mes Ingrédients",
+      "products": "Produits",
+      "my-products": "Mes Produits",
+      "dishes": "Plats",
+      "my-dishes": "Mes Plats",
+      "restos": "Restaurants",
+      "my-restos": "Mes Restaurants",
+
+      "add-picture": "Appuyez pour Ajouter une Image",
+
+      "loading": "Chargement...",
+
+      "success": "Succès",
+      "error": "Erreur",
+      "unexpected-error": "Une erreur inattendue s'est produite",
+      "all-fields-mandatory": "Tous les champs sont obligatoires.",
+      "need-cam-permissions": "Désolé, nous avons besoin des autorisations de la galerie photos pour que cela fonctionne !"
+    },
+    "components": {
+      "Filter": {
+        "save-filter-failure": "Échec de l'enregistrement du filtre",
+        "save-filter-success": "Filtre enregistré avec succès",
+        "load-filter-success": "Filtre chargé avec succès",
+        "delete-filter-success": "Filtre supprimé avec succès",
+        "delete-filter-failure": "Échec de la suppression du filtre",
+        "filter-by": "Filtrer par :",
+        "filter-name": "Nom du filtre",
+        "save-filter": "Enregistrer le filtre",
+        "clear-filter": "Effacer le filtre",
+        "load-filters": "Charger les filtres",
+        "rating": "Note :",
+        "range": "Plage :",
+        "categories": "Catégories :",
+        "allergens": "Allergènes :"
+      },
+      "Header": {
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "my-account": "Mon Compte",
+        "welcome": "Bienvenue sur Guardos"
+      },
+      "HomeButton": {
+        "go-to-list-view": "Aller à la Vue en Liste"
+      },
+      "InputSearch": {
+        "name": "Nom",
+        "location": "Emplacement",
+        "search": "Rechercher"
+      },
+      "Map": {
+        "ima-alt": "Logo",
+        "rating": "Note : {{ rating }}",
+        "telephone": "Tél. : {{ phone }}",
+        "address": "Adresse : {{ address }}",
+        "resto-page": "Page du Restaurant",
+        "go-to-map-view": "Aller à la Vue Carte"
+      },
+      "Dish": {
+        "img-alt": "Image du Plat {{ index }}",
+        "options": "Options : "
+      },
+      "RestoCard": {
+        "add-review": "Ajouter un avis",
+        "details": "Détails",
+        "menu": "Menu",
+        "day": "Jour",
+        "opening": "Ouverture",
+        "closing": "Fermeture"
+      },
+      "Slider": {
+        "allergen-friendly": "Convivial pour les allergènes",
+        "allergen-friendly-review": "Sur notre page utilisateur, vous pouvez filtrer les restaurants par allergènes et ne plus jamais avoir de problème avec eux. Les restaurants sont encouragés à présenter de manière transparente et complète leurs allergènes à chaque fois.",
+        "modern-menu": "Menu moderne",
+        "modern-menu-review": "Nous proposons diverses options à nos partenaires restaurateurs pour créer facilement leurs cartes de menu pour leurs clients. Vous pouvez choisir parmi plusieurs modèles de menus.",
+        "qr-scanning": "Scan QR",
+        "qr-scanning-review": "Pour faciliter la reconnaissance des allergènes de leurs produits par nos restaurants partenaires, nous proposons une fonction de scan QR qui peut automatiquement reconnaître les allergènes de vos produits.",
+        "user-profiles": "Profils Utilisateur",
+        "user-profiles-review": "Enregistrez vos restaurants préférés et vos paramètres sur notre site/application. Ainsi, vous n'aurez plus jamais à recommencer une nouvelle recherche. Accumulez des points et des expériences pour obtenir des réductions dans certains restaurants.",
+        "team-leader-and-fe": "Chef d'équipe et Développeur Frontend",
+        "be-developer": "Développeur Backend",
+        "fe-developer": "Développeur Frontend",
+        "mobile-developer": "Développeur Mobile"
+      }
+    },
+    "pages": {
+      "AboutUs": {
+        "german-team-member": "Étudiant en 4ème année à Epitech, originaire d'Allemagne",
+        "french-team-member": "Étudiant en 4ème année à Epitech, originaire de France",
+        "about-us": "À propos de nous",
+        "introduction": "Introduction",
+        "introduction-text": "Guardos est votre compagnon de confiance dans le monde de la restauration, spécialement conçu pour les personnes avec des intolérances alimentaires et des préférences culinaires spécifiques. Notre plateforme innovante vous permet de découvrir facilement des restaurants à proximité qui répondent à vos besoins alimentaires uniques. Que vous soyez sans gluten, végétalien ou ayez d'autres restrictions alimentaires, Guardos veille à ce que votre expérience culinaire soit adaptée à vos goûts. Dites adieu à la recherche fastidieuse d'options adaptées - avec Guardos, trouver le restaurant parfait qui correspond à vos préférences n'est qu'à un clic. Profitez d'une expérience culinaire fluide et agréable avec Guardos, où vos choix alimentaires sont toujours respectés et célébrés.",
+        "founding-story": "Histoire de la Fondation",
+        "founding-story-text": "Notre aventure chez Guardos a commencé pendant nos années de collège, où un groupe diversifié d'individus, chacun confronté aux défis des intolérances alimentaires, a trouvé des points communs. Que ce soit en luttant contre nos propres restrictions alimentaires ou en voyant les difficultés de nos amis et de notre famille, nous avons reconnu l'inconvénient omniprésent de décoder des repas adaptés. Animés par le désir collectif de simplifier le processus de recherche d'options de restauration délicieuses et adaptées, nous nous sommes réunis avec une mission commune : résoudre le puzzle complexe de bien manger, quelles que soient les contraintes alimentaires. Ainsi est né Guardos, un effort dédié pour autonomiser les individus dans leur quête d'expériences culinaires agréables et sans tracas.",
+        "mission-and-values": "Mission et Valeurs",
+        "empowerment": "Autonomisation et Inclusivité",
+        "empowerment-text": "Autonomiser les individus pour prendre des décisions alimentaires informées et inclusives qui répondent à leurs préférences et restrictions alimentaires uniques.",
+        "transparency": "Transparence et Confiance",
+        "transparency-text": "Fournir des informations transparentes et fiables sur les menus des restaurants, les ingrédients et les méthodes de préparation pour que les utilisateurs puissent prendre des décisions culinaires en toute confiance.",
+        "continuous-improvement": "Amélioration Continue et Innovation",
+        "improvement-text": "S'engager dans une amélioration continue, en intégrant les retours des utilisateurs, les avancées technologiques et les meilleures pratiques de l'industrie pour offrir un service toujours plus précieux.",
+        "team-members": "Membres de l'Équipe",
+        "team-description": "Notre parcours a commencé pendant nos années d'études, réunis par une passion commune pour avoir un impact positif. Ce qui nous unit n'est pas seulement nos études, mais aussi une compréhension commune des défis posés par les intolérances alimentaires. Que ce soit en étant personnellement touchés ou en voyant les difficultés de nos amis et de notre famille, nous avons reconnu la nécessité de changement. Animés par l'empathie et le désir de contribuer, nous avons formé une équipe engagée à faire une différence dans la vie de ceux qui luttent contre les intolérances alimentaires. Nos origines et compétences diverses convergent vers un seul but : créer des solutions qui améliorent la qualité de vie des personnes affectées par les restrictions alimentaires. Ensemble, nous entreprenons un voyage pour autonomiser et soutenir notre communauté, une idée innovante à la fois.",
+        "sign-up": "Inscrivez-vous",
+        "for-free": "gratuitement et explorez un monde de restauration personnalisée !"
+      },
+      "AppOutlet": {
+        "contact": "Contact :",
+        "email": "Email : contact@guardos.com",
+        "phone": "Téléphone : +49 211 1234567",
+        "location": "Localisation : contact@guardos.com"
+      },
+      "ChangePassword": {
+        "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la Page Principale.",
+        "change-pw": "Changer le Mot de Passe",
+        "email": "Email",
+        "new-pw": "Nouveau Mot de Passe",
+        "wrong-pw-format": "Votre Mot de Passe doit contenir au minimum : 1x Majuscule et Minuscule, 1x Chiffre et au moins 7 Caractères",
+        "repeat-pw": "Répéter le Mot de Passe",
+        "no-match-pw": "Votre Mot de Passe n'est pas le même, veuillez vérifier votre mot de passe répété",
+        "change-pw-success": "Changement réussi",
+        "save-pw-warning": "Veuillez vous assurer de sauvegarder votre mot de passe quelque part.",
+        "go-back-to-login": "Retour à la Connexion",
+        "error": "Une erreur est survenue",
+        "change-pw-failure": "Veuillez réessayer de changer le mot de passe. Si l'erreur se reproduit, veuillez nous contacter."
+      },
+      "ContactPage": {
+        "contact-us": "Contactez-nous",
+        "reach-out": "N'hésitez pas à nous contacter !",
+        "address": "Adresse",
+        "germany": "Allemagne",
+        "phone": "Téléphone",
+        "email": "Email",
+        "send-msg": "Envoyer le Message",
+        "full-name": "Nom Complet :",
+        "subject": "Sujet",
+        "message": "Message",
+        "msg-sent-success": "Message envoyé avec succès !"
+      },
+      "FeatureRequest": {
+        "feature-request": "Demande de Fonctionnalité",
+        "name": "Nom",
+        "subject": "Sujet",
+        "request": "Votre demande",
+        "email-sent-success": "Email envoyé avec succès !"
+      },
+      "HomePage": {
+        "what-are-you-looking-for": "Que recherchez-vous ?",
+        "search-result": "Berlin - +12548 Restaurants"
+      },
+      "IntroPage": {
+        "guardos-intro": "Chez Guardos, notre mission est de permettre aux individus de mener une vie épanouissante en leur fournissant les connaissances, les outils et le soutien nécessaires pour naviguer dans les complexités des intolérances alimentaires. Nous croyons que chacun mérite de profiter d'une vie vibrante et saine, et cela commence par la compréhension et la gestion de sa relation avec la nourriture.",
+        "resto": "Restaurant",
+        "resto-intro": "Sur la page Restaurant de Guardos, nous ouvrons la possibilité d'inscrire des restaurants. (Cette inscription doit être faite par le propriétaire) Nous vous offrirons ensuite avec Guardos une plateforme pour promouvoir votre entreprise. Les fonctionnalités de cette page sont : Divers menus pour une sélection personnalisée et la conception correspondante de la structure, une fonction de scanner QR avec laquelle les produits et leurs allergènes associés sont automatiquement enregistrés.",
+        "visitor": "Visiteur",
+        "visitor-intro": "Sur la page Visiteur de Guardos, nous proposons aux clients à la recherche d'un restaurant un filtre masqué avec les allergènes correspondants. Une liste exacte des restaurants et un profil auto-conçu avec divers paramètres personnalisables pour une réutilisation. Les fonctionnalités ici sont : Mémorisation des allergènes dans le profil, restaurants favoris et vue transparente de tous les plats.",
+        "welcome": "Bienvenue chez Guardos !",
+        "let-us-introduce": "Nous sommes ravis de vous accueillir ici. Aidez-nous dans notre mission de rendre la nourriture facilement accessible à tous.",
+        "choose-site": "Choisissez votre site",
+        "what-is-guardos": "Qu'est-ce que Guardos ?",
+        "what-we-provide": "Que fournissons-nous ?",
+        "the-team": "L'équipe derrière Guardos",
+        "progress": "Avancement du projet",
+        "test-learn": "Test & Apprentissage",
+        "test-learn-text": "Conceptualisation et conception des applications pour les clients et les restaurants. Première phase de développement du site Web (Visiteur)",
+        "mgnt-process": "Gestion & Processus",
+        "mgnt-process-text": "Première phase de développement du site Web (Restaurant)",
+        "fast-forward": "Accéléré",
+        "fast-forward-text": "Première phase de développement des applications",
+        "beta-growth": "Beta & Croissance Hacking",
+        "beta-growth-text": "Ajustement fin et test final du site web visiteur et du site web restaurant",
+        "consolidation": "Consolidation",
+        "consolidation-text": "Ajustement fin et test final des applications",
+        "launch-metrics": "Lancement & Métriques",
+        "launch-metrics-text": "Lancement officiel",
+        "choose-service": "Choisissez le service adapté à vos besoins !",
+        "user-site": "Site utilisateur",
+        "user-site-text-1": "Vous avez du mal à trouver de bons restaurants qui respectent vos choix alimentaires ?",
+        "user-site-text-2": "Avec notre page utilisateur, vous trouverez tous les restaurants en fonction de vos préférences alimentaires.",
+        "user-site-text-3": "Inscrivez-vous simplement pour revenir régulièrement dans vos restaurants préférés.",
+        "resto-site": "Site restaurant",
+        "resto-site-text-1": "Vous possédez un restaurant et souhaitez le porter au niveau médial suivant ?",
+        "resto-site-text-2": "Cependant, vous n'avez pas d'expérience sur la façon de le faire ?",
+        "resto-site-text-3": "Alors jetez un coup d'œil aux offres sur notre page entrepreneur et mettez-vous en harmonie avec votre entreprise."
+      },
+      "LoginPage": {
+        "redirect-facebook-login": "Redirection vers la connexion Facebook",
+        "redirect-google-login": "Redirection vers la connexion Google",
+        "login": "Connexion",
+        "username-or-email": "Nom d'utilisateur ou Email",
+        "password": "Mot de passe",
+        "invalid-credentials": "Données de connexion invalides",
+        "trouble-logging-in": "Problème de connexion ?",
+        "register-if-no-account": "Vous n'avez pas encore de compte ? Inscrivez-vous ",
+        "here": "ici",
+        "or": "Ou",
+        "facebook-img-alt": "Logo Facebook",
+        "google-img-alt": "Logo Google"
+      },
+      "MapPage": {
+        "what-you-looking-for": "Que recherchez-vous ?"
+      },
+      "MenuPage": {
+        "show-non-compatible-dishes": "Afficher les plats incompatibles"
+      },
+      "MyAccountPage": {
+        "account-page": "Page de compte",
+        "data-changed-success": "Détails du profil modifiés avec succès !",
+        "data-changed-failure": "Échec de la modification des détails du profil.",
+        "profile-pic": "Photo de profil :",
+        "pic-alt": "Profil",
+        "change-img": "Changer l'image",
+        "delete-img": "Image claire",
+        "email": "Email :",
+        "name": "Nom :",
+        "city": "Ville",
+        "allergens": "Allergènes",
+        "preferred-language": "Langue préférée",
+        "language": "Langue",
+        "change-pw": "Changer le mot de passe",
+        "change-pw-success": "Mot de passe modifié avec succès !",
+        "change-pw-failure": "Échec de la modification du mot de passe. Veuillez vérifier votre ancien mot de passe et réessayer.",
+        "old-pw": "Ancien mot de passe",
+        "incorrect-pw": "Mot de passe incorrect",
+        "new-pw": "Nouveau mot de passe",
+        "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères",
+        "confirm-pw": "Confirmez le mot de passe",
+        "no-match-pw": "Les mots de passe ne correspondent pas",
+        "save-pw": "Enregistrer le mot de passe",
+        "save-changes": "Enregistrer les modifications",
+        "delete-account": "Supprimer le compte",
+        "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité ? ",
+        "just-ask": "Demandez simplement !",
+        "fav-restos": "Restaurants favoris",
+        "fav-dishes": "Plats favoris",
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+      },
+      "Payments": {
+        "payment-success": "Paiement réussi",
+        "payment-success-text-1": "Merci pour votre paiement. Votre transaction a été effectuée avec succès, et un reçu de votre achat vous a été envoyé par e-mail. Vous pouvez consulter vos e-mails pour voir les détails de cette transaction.",
+        "payment-success-text-2": "Pour toute assistance supplémentaire, veuillez contacter notre service client.",
+        "return-home": "Retour à l'accueil",
+        "payment-failed": "Paiement échoué",
+        "payment-failed-text-1": "Nous sommes désolés, mais votre transaction n'a pas pu être complétée à ce moment. Il peut y avoir eu un problème avec votre méthode de paiement ou la transaction a été refusée.",
+        "payment-failed-text-2": "Veuillez réessayer ou nous contacter pour obtenir de l'aide.",
+        "try-again": "Réessayer"
+      },
+      "RatingPage": {
+        "comment-added-success": "Commentaire ajouté avec succès",
+        "add-review": "Ajouter un avis",
+        "add-note": "Ajouter une note :",
+        "add-comment": "Ajouter un commentaire :",
+        "your-comment": "Votre commentaire...",
+        "add-my-review": "Ajouter mon avis",
+        "no-reviews-yet": "Aucun avis pour le moment",
+        "review-overview": "Tous les avis {{ ratingAmount }}"
+      },
+      "RegistrationPage": {
+        "register": "S'inscrire",
+        "username": "Nom d'utilisateur",
+        "username-exists-or-invalid": "Le nom d'utilisateur souhaité existe déjà ou est invalide",
+        "email": "Email",
+        "email-taken-or-invalid": "Un compte existe déjà pour l'e-mail spécifié ou est invalide",
+        "password": "Mot de passe",
+        "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères"
+      },
+      "ResetPassword": {
+        "invalid-credentials": "Ce nom d'utilisateur et cet e-mail {{ email }} ne correspondent pas. Veuillez vérifier l'orthographe ou essayer un autre nom d'utilisateur",
+        "user-error": "Erreur lors de la vérification de l'utilisateur de restaurant. Veuillez réessayer",
+        "get-back-in-account": "Revenez dans votre compte Guardos",
+        "enter-account-info": "Donnez-nous quelques informations sur votre compte",
+        "enter-username-prompt": "Ensuite, donnez-nous le nom d'utilisateur Guardos avec lequel vous rencontrez des problèmes",
+        "enter-email": "Entrez votre adresse e-mail",
+        "email": "Email",
+        "enter-username": "Entrez votre nom d'utilisateur",
+        "username": "Nom d'utilisateur",
+        "email-sent-success": "L'email a été envoyé !",
+        "email-sent-failure": "Veuillez vérifier votre boîte de réception pour un e-mail concernant la récupération de votre mot de passe, et vérifiez également votre dossier spam. L'e-mail contient un lien qui restera valide pendant 15 minutes.",
+        "back-to-login": "Retour à la connexion",
+        "error": "Une erreur s'est produite.",
+        "retry-recovery-link": "Veuillez réessayer pour obtenir un lien de récupération. Si l'erreur se produit à nouveau, veuillez nous contacter.",
+        "send-recovery-link": "Envoyer mon lien de réinitialisation de mot de passe",
+        "continue": "Continuer"
+      },
+      "RestoPage": {
+        "what-you-looking-for": "Que recherchez-vous ?"
+      }
+    }
+  }
+}

@@ -40,6 +40,44 @@ export const checkIfVisitorUserExist = async (body: any) => {
   }
 };
 
+export const sendRecoveryLinkForVisitorUser = async (body: any) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'sendEmail/userVisitor/sendPasswordRecovery',
+      data: body,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+    throw new Error("Error checking visitor user");
+  }
+}
+
+export const updateVisitorPassword = async (token: string, 
+  newPassword: string) => {
+  try {
+    const response = await axios({
+      method: "PUT",
+      url: baseUrl + 'profile/updateRecoveryPassword',
+      params: {key: token},
+      data: {
+        newPassword: newPassword
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+    throw new Error("Error checking visitor user");
+  }
+}
+
 export const deleteAccount = async (token: string) => {
   try {
     const response = await axios({
@@ -58,5 +96,26 @@ export const deleteAccount = async (token: string) => {
   } catch (error) {
     console.error("Error deleting the User:", error);
     throw new Error("Error deleting the User");
+  }
+};
+
+export const getUserAllergens = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'user/allergens/get',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching the User allergens:", error);
+    throw new Error("Error fetching the User allergens");
   }
 };

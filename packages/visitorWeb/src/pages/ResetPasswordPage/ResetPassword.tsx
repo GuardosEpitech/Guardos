@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import styles from './ResetPassword.module.scss';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 import { 
-    checkIfVisitorUserExist 
+    checkIfVisitorUserExist, sendRecoveryLinkForVisitorUser
 } from '@src/services/userCalls';
+import {useTranslation} from "react-i18next";
 
 interface ResetPasswordProps {}
 
@@ -11,6 +17,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [username, setUsername] = useState('');
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(true);
+  const [disableButton, setDisableButton] = useState(false);
+  const [openFailed, setOpenFailed] = useState(true);
+  const {t} = useTranslation();
 
   const isValidEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,13 +38,21 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
         try {
             const response = await checkIfVisitorUserExist({ email, username });
             if (response) {
-              window.location.href = '/login';
+              setDisableButton(true);
+              const emailWasSend = await sendRecoveryLinkForVisitorUser({ email, username });
+              
+              if (emailWasSend) {
+                setStep(3);
+                setDisableButton(true);
+              } else {
+                setStep(4);
+              }
             } else {
-              setError(`That username and email (${email}) don't match. Please check its spelling or try another username.`);
+              setError(t('pages.ResetPassword.invalid-credentials', {email: email}));
             }
           } catch (error) {
             console.error('Error checking resto user:', error);
-            setError('Error checking resto user. Please try again.');
+            setError(t('pages.ResetPassword.user-error'));
           }
       }
     }
@@ -53,21 +71,30 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     }
   };
 
+  const handleGoBackToLogin = () => {
+    setOpen(false);
+    window.location.href = '/login';
+  };
+
+  const handleGoBackToSite = () => {
+    setOpenFailed(false);
+  };
+
   return (
     <div className={styles.container}>
-      <h1>Getting back into your Guardos account</h1>
-      <p>{step === 1 ? 'Tell us some information about your account' : 
-      'Next, give us the Guardos username you\'re having trouble with'}</p>
+      <h1>{t('pages.ResetPassword.get-back-in-account')}</h1>
+      <p>{step === 1 ? t('pages.ResetPassword.enter-account-info') :
+        t('pages.ResetPassword.enter-username-prompt')}</p>
       {step === 1 ? (
         <>
           <div className={styles.labelContainer}>
-            <label htmlFor="emailInput">Enter your email address</label>
+            <label htmlFor="emailInput">{t('pages.ResetPassword.enter-email')}</label>
           </div>
           <div className={styles.inputContainer}>
             <input
               id="emailInput"
               type="text"
-              placeholder="Email"
+              placeholder={t('pages.ResetPassword.email')}
               value={email}
               onChange={handleInputChange}
             />
@@ -76,7 +103,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       ) : (
         <>
           <div className={styles.emailSection}>
-            <label>Email</label>
+            <label>{t('pages.ResetPassword.email')}</label>
             <div className={styles.emailDisplay}>
               <span>{email}</span>
               <span className={styles.pencilIcon} onClick={handleGoBack}>
@@ -85,13 +112,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
             </div>
           </div>
           <div className={styles.labelContainer}>
-            <label htmlFor="usernameInput">Enter your username</label>
+            <label htmlFor="usernameInput">{t('pages.ResetPassword.enter-username')}</label>
           </div>
           <div className={styles.inputContainer}>
             <input
               id="usernameInput"
               type="text"
-              placeholder="Username"
+              placeholder={t('pages.ResetPassword.username')}
               value={username}
               onChange={handleInputChange}
             />
@@ -99,18 +126,65 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           {error && <p className={styles.error}>{error}</p>}
         </>
       )}
-      <div className={styles.buttonsContainer}>
-        <button
-            onClick={handleContinue}
-            disabled={step === 1 ? 
-                !isValidEmail(email) : username.trim() === ''}
-            className={step === 1 ? isValidEmail(email) ? 
-                styles.buttonEnabled : '' : username.trim() !== '' ? 
-                styles.buttonEnabled : ''}
-        >
-            {step === 1 ? 'Continue' : 'Send My Password Reset Link'}
-        </button>
-      </div>
+      {step === 3 ? (
+        <div>
+          <Dialog open={open} onClose={handleGoBackToLogin}>
+            <DialogTitle>{t('pages.ResetPassword.email-sent-success')}</DialogTitle>
+            <DialogContent>
+              <p>{t('pages.ResetPassword.email-sent-failure')}</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleGoBackToLogin}>{t('pages.ResetPassword.back-to-login')}</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      ) : (
+        <div>
+
+        </div>
+      )}
+      {step === 4 ? (
+        <div>
+          <Dialog open={openFailed} onClose={handleGoBackToSite}>
+            <DialogTitle>{t('pages.ResetPassword.error')}</DialogTitle>
+            <DialogContent>
+              <p>{t('pages.ResetPassword.retry-recovery-link')}</p>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleGoBackToLogin}>{t('pages.ResetPassword.back-to-login')}</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      ) : (
+        <div>
+
+        </div>
+      )}
+      {disableButton === true ? (
+        <div className={styles.buttonsContainer}>
+          <button
+              onClick={handleContinue}
+              disabled={true}
+              className={styles.disableButton}
+          >
+            {t('pages.ResetPassword.send-recovery-link')}
+          </button>
+        </div>
+      ) : (
+        <div className={styles.buttonsContainer}>
+          <button
+              onClick={handleContinue}
+              disabled={step === 1 ? 
+                  !isValidEmail(email) : username.trim() === ''}
+              className={step === 1 ? isValidEmail(email) ? 
+                  styles.buttonEnabled : '' : username.trim() !== '' ? 
+                  styles.buttonEnabled : ''}
+          >
+              {step === 1 ? t('pages.ResetPassword.continue') :
+                t('pages.ResetPassword.send-recovery-link')}
+          </button>
+        </div>
+      )}
     </div>
   );
 };

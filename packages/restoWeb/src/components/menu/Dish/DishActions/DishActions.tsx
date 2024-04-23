@@ -15,6 +15,7 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./DishActions.module.scss";
 import { IAction }
   from "shared/models/restaurantInterfaces";
+import {useTranslation} from "react-i18next";
 
 interface IDishActionsProps {
   actionList?: IAction[];
@@ -28,6 +29,7 @@ const DishActions = (props: IDishActionsProps) => {
   const open = Boolean(anchorEl);
   const { actionList, onDelete } = props;
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -83,7 +85,7 @@ const DishActions = (props: IDishActionsProps) => {
           <ListItemIcon>
             <DeleteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>{t('common.delete')}</ListItemText>
         </MenuItem>
       </Menu>
     </div>

@@ -7,6 +7,8 @@ import Filter from "@src/components/Filter/Filter";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
+import {getRestoFavourites} from "@src/services/favourites";
+import {useTranslation} from "react-i18next";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -20,6 +22,7 @@ const HomePage = () => {
   // needs to be changed for the database && be sorted out as an own component
   const [inputFields, setInputFields] = React.useState(['', '']);
   const [categories, setCategories] = React.useState([
+    // TODO: apply i18n
     { name: "Burger", value: true },
     { name: "Pizza", value: true },
     { name: "Salad", value: true },
@@ -30,6 +33,7 @@ const HomePage = () => {
   const [rangeValue, setRangeValue] = React.useState(100);
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = React.useState<allergen[]>([
+    // TODO: apply i18n
     { name: "celery", value: false, colorButton: "primary" },
     { name: "gluten", value: false, colorButton: "primary" },
     { name: "crustaceans", value: false, colorButton: "primary" },
@@ -45,10 +49,26 @@ const HomePage = () => {
     { name: "sulphides", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
+  const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
+    fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     loadFilter().then(r => console.log("Loaded search data."));
   }, []);
+
+  const fetchFavourites = async () => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) { return; }
+
+    try {
+      const favourites = await getRestoFavourites(userToken);
+      const favouriteRestoIds = favourites.map((fav: any) => fav.uid);
+      setIsFavouriteRestos(favouriteRestoIds);
+    } catch (error) {
+      console.error("Error fetching user favourites:", error);
+    }
+  };
 
   const updateRestoData = () => {
     const inter: ISearchCommunication = { name: "" }
@@ -206,7 +226,7 @@ const HomePage = () => {
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>What are you looking for ?</span>
+        <span className={styles.TitleSearch}>{t('pages.HomePage.what-are-you-looking-for')}</span>
         <InputSearch onChange={handleFilterChange} />
       </div>
       <div className={styles.DivContent}>
@@ -222,9 +242,10 @@ const HomePage = () => {
           />
         </div>
         <div>
-          <h1 className={styles.TitleCard}>Berlin - +12548 Restaurants</h1>
+          <h1 className={styles.TitleCard}>{t('pages.HomePage.search-result')}</h1>
           {filteredRestaurants?.map((item, index) => {
-            return <RestoCard resto={item} dataIndex={index} key={index} />
+            const isFavourite = isFavouriteRestos.includes(item.uid);
+            return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />
           })}
         </div>
       </div>

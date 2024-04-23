@@ -8,7 +8,7 @@ import {
   getProfileDetails, getSavedFilter, getSavedFilters,
   getUserId,
   updatePassword,
-  updateProfileDetails
+  updateProfileDetails, updateRecoveryPassword
 } from '../controllers/userController';
 
 const router = express.Router();
@@ -81,6 +81,31 @@ router.put('/password', async (req, res) => {
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in PUT '/api/profile/password' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.put('/updateRecoveryPassword', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    const newPassword = req.body.newPassword;
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    const returnValue = await updateRecoveryPassword(userID, newPassword);
+    return res.status(200)
+      .send(returnValue);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in PUT '/api/profile/updateRecoveryPassword' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
     return res.status(500)
