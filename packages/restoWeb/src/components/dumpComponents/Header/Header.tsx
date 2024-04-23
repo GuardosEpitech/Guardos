@@ -117,6 +117,15 @@ const Header = () => {
         &&
         <a
           className={styles.NavTitle}
+          href="/addCategory"
+        >
+          {t('common.my-category')}
+        </a>
+      }
+      { loggedIn 
+        &&
+        <a
+          className={styles.NavTitle}
           href="/dishes"
         >
           {t('common.my-dishes')}

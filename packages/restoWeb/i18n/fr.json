@@ -26,6 +26,7 @@
       "my-dishes": "Mes Plats",
       "restos": "Restaurants",
       "my-restos": "Mes Restaurants",
+      "my-category": "Mes catégorie",
 
       "add-picture": "Appuyez pour Ajouter une Image",
 
@@ -233,6 +234,11 @@
         "retry-recovery-link": "Veuillez réessayer pour obtenir un lien de récupération. Si l'erreur se produit à nouveau, veuillez nous contacter.",
         "send-recovery-link": "Envoyer mon lien de réinitialisation de mot de passe",
         "continue": "Continuer"
+      },
+      "AddCategory": {
+        "name": "Catégorie:",
+        "id": "Séquence:",
+        "add": "Nouveau"
       }
     }
   }

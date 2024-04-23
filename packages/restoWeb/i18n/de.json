@@ -26,6 +26,7 @@
       "my-dishes": "Meine Gerichte",
       "restos": "Restaurants",
       "my-restos": "Meine Restaurants",
+      "my-category": "Meine Kategorien",
 
       "add-picture": "Tippen, um ein Bild hinzuzufügen",
 
@@ -233,6 +234,11 @@
         "retry-recovery-link": "Versuchen Sie erneut, einen Wiederherstellungslink zu erhalten. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte.",
         "send-recovery-link": "Senden Sie meinen Passwort-Wiederherstellungslink",
         "continue": "Fortfahren"
+      },
+      "AddCategory": {
+        "name": "Kategorie:",
+        "id": "Reihenfolge:",
+        "add": "Neu"
       }
     }
   }

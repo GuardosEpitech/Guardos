@@ -20,6 +20,7 @@ import ResetPassword from "@src/pages/ResetPasswordPage";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
+import AddCategoryPage from "@src/pages/AddCategoryPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -72,6 +73,7 @@ const MVPRouter = () => {
           <Route path="/feature-request" element={<FeatureRequest />}> </Route>
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+          <Route path="addCategory" element={<AddCategoryPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

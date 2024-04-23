@@ -26,6 +26,7 @@
       "my-dishes": "My Dishes",
       "restos": "Restaurants",
       "my-restos": "My Restaurants",
+      "my-category": "My Categories",
 
       "add-picture": "Tap to Add Picture",
 
@@ -233,6 +234,11 @@
         "retry-recovery-link": "Please try again to get a recovery link. If the Error appears one more time, please contact us.",
         "send-recovery-link": "Send My Password Reset Link",
         "continue": "Continue"
+      },
+      "AddCategory": {
+        "name": "Category:",
+        "id": "Order:",
+        "add": "New"
       }
     }
   }
