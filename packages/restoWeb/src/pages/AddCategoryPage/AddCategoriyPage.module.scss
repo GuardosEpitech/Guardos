@@ -22,7 +22,7 @@
         width: 100%;
         min-width: 500px;
         display: flex;
-        align-items: center; /* Center items horizontally */
+        align-items: center; 
         justify-content: space-between;
   
         div {
@@ -30,7 +30,7 @@
         }
 
         input {
-            margin-top: auto; /* Push the input fields to the top */
+            margin-top: auto; 
             margin-bottom: auto;
             margin-right: 10px;
             padding: 8px;
@@ -57,8 +57,9 @@
 
     .add-new-category-btn-container {
         display: flex;
-        justify-content: center; /* Center the button horizontally */
-        margin-top: 20px; /* Add some top margin */
+        justify-content: center; 
+        margin-top: 20px; 
+        margin-bottom: 20px;
         
         button {
           padding: 10px 20px;

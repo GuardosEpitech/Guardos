@@ -1,19 +1,8 @@
-const login = (email:string) => {
-    cy.session(email, () => {
-        cy.viewport(1710, 948);
-        cy.visit('http://localhost:8080/login');
-        cy.wait(100);
-        cy.get('#\\:r0\\:').type(email);
-        cy.wait(100);
-        cy.get('#\\:r1\\:').type('gylianN1');
-        cy.get('.MuiButtonBase-root').click();
-        cy.wait(3000);
-    })
-  }
+import {loginFull} from '../../fixtures/login';
 
 describe('Categories Test', function() {
     it('adds a Category ', function() {
-        login("gylian");
+        loginFull("gylian", "gylianN1");
         cy.viewport(1710, 948);
         cy.visit('http://localhost:8080/addCategory');
         cy.wait(5000);
