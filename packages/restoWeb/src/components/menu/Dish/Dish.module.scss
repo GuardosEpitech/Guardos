@@ -10,6 +10,10 @@
   display: flex;
 }
 
+.FlexParentMenu {
+  display: flex;
+}
+
 .DishBox {
   background: $white;
   margin-bottom: 1.5rem;
@@ -44,6 +48,19 @@
   .GridItem {
     padding: 2rem 0 0 1.5rem;
     align-items: center;
+  }
+
+  .FlexParent {
+    width: 100%;
+
+  }
+
+  .FlexParentMenu {
+    width: 100%;
+
+    > div {
+      margin-left: auto;
+    }
   }
 
   .FlexGridItem {
@@ -85,12 +102,12 @@
     height: auto;
     max-height: 7.5rem;
     margin: 1.5rem 1.5rem 0 0;
-    max-width: 8rem;
     object-fit: cover;
     border-radius: 1.2rem;
   }
 
   .MobileVersion {
+    flex-direction: column !important;
   }
 
   .WebVersion {

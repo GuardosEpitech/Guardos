@@ -10,6 +10,10 @@
   border-radius: 0.625rem;
   margin: 2rem auto;
   padding: 2rem;
+
+  button {
+    width: 50% !important;
+  }
 }
 
 @media (max-width: 768px) {

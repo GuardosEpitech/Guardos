@@ -204,7 +204,7 @@ const RestoPage = () => {
           />
         </div>
         {step === 1 ? (
-          <div>
+          <div className={styles.DivContentRestoSection}>
             <h1 className={styles.TitleCard}>Berlin - +12548 Restaurants</h1>
             {filteredRestaurants?.map((item, index) => {
               const isFavourite = isFavouriteRestos.includes(item.uid);

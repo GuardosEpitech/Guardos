@@ -2,6 +2,7 @@ import React from "react";
 import styles from "@src/components/InputSearch/InputSearch.module.scss";
 import TextField from "@mui/material/TextField";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import FormControl from '@mui/material/FormControl';
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
@@ -39,25 +40,28 @@ const InputSearch = (props: any) => {
   }
 
   return (
-    <div className={styles.DivSearchInput}>
-      <ThemeProvider theme={theme}>
-        <TextField
-          label={t("components.InputSearch.name")}
-          variant="filled"
-          className={styles.InputSearch}
-          onChange={onChangeName}
-        />
-      </ThemeProvider>
-      <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
+    <div className={styles.searchContainer}>
+      <div className={styles.searchInput}>
+        <ThemeProvider theme={theme}>
+          <TextField
+            label={t("components.InputSearch.name")}
+            className={styles.InputSearch}
+            onChange={onChangeName}
+            focused
+          />
+        </ThemeProvider>
+        <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
+      </div>
       <ThemeProvider theme={theme}>
         <Button
           variant="contained"
           endIcon={<SearchIcon />}
           onClick={() => sendButtonData(name, location)}
           sx={{
-            fontSize: "1.13rem",
-            "@media (max-width: 768px)": {
-              fontSize: "0.7rem",
+            fontSize: "1rem",
+            textTransform: "none",
+            "@media (max-width: 1200px)": {
+              fontSize: "1rem",
             },
           }}
         >

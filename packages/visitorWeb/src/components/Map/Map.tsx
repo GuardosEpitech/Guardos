@@ -236,7 +236,7 @@ const MapView = (props: MapProps) => {
       {clickedFeature && (
         <div id="popup" className={styles.popup}>
           <a href="#" id="popup-closer" className="ol-popup-closer"></a>
-          <div className="popover-content" id="popup-content">
+          <div className={styles.popoverContent} id="popup-content">
             {popupContent}
           </div>
         </div>
