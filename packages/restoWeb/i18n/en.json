@@ -165,7 +165,8 @@
         "please": "Please ",
         "login": "Login",
         "to-see-your-restos": " to see your restaurants.",
-        "add-resto": "Add Restaurant"
+        "add-resto": "Add Restaurant",
+        "search-restos": "Search restaurants or locations"
       },
       "LoginPage": {
         "redirect-facebook-login": "Redirecting to Facebook login",

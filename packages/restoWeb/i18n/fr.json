@@ -165,7 +165,8 @@
         "please": "Veuillez ",
         "login": "vous connecter",
         "to-see-your-restos": " pour voir vos restaurants.",
-        "add-resto": "Ajouter un restaurant"
+        "add-resto": "Ajouter un restaurant",
+        "search-restos": "Cherchez des restaurants ou des lieux"
       },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
