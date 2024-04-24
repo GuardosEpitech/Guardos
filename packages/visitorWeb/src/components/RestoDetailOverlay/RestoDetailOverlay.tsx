@@ -76,7 +76,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
     <ScrollOverlay isOpen={true} onClose={props.onClose}>
       <Grid container>
         {/* left column with image and opening hours */}
-        <Grid item xs={3} className={styles.GridItemImage}>
+        <Grid item xs={12} sm={6} className={styles.GridItemImage}> 
           <div>
             {pictures.length > 0 && (
               <img src={picture} alt={name} className={styles.ImageDimensions}/>
@@ -100,7 +100,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
           </div>)}
         </Grid>
         {/* right column with name, rating, address, phone, website, description and menu button */}
-        <Grid item xs={9} className={styles.GridItem}>
+        <Grid item xs={12} sm={6} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <Typography variant="h4" component="h2" className={styles.DishTitle}>
               {name}

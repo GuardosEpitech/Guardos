@@ -127,7 +127,13 @@
         "contact": "Contact:",
         "email": "Email: contact@guardos.com",
         "phone": "Phone: +49 211 1234567",
-        "location": "Location: contact@guardos.com"
+        "location": "Location: Berlin",
+        "tradeMark": "© 2024 Guardos",
+        "privacy": "Privacy Policy",
+        "imprint": "Imprint",
+        "welcomeSite": "Welcome to Guardos",
+        "instagram": "Our Instagram",
+        "linkedIn": "Our linkedIn"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Your link is invalid. You will be redirected to the Mainpage.",

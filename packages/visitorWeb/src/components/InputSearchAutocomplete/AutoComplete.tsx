@@ -93,14 +93,14 @@ const AutoComplete = (props: AutoCompleteProps) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div className={styles.inputSearchContainer}>
         <TextField
           label={t('components.InputSearch.location')}
-          variant="filled"
           className={inputSyles.InputSearch}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={value}
+          focused
         />
         {suggestionsActive && <Suggestions />}
       </div>

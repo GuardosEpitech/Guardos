@@ -97,12 +97,19 @@ const Dish = (props: IEditableDishProps) => {
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       {/*mobile version of dish element*/}
       <div className={styles.MobileVersion}>
-        <Grid container justifyContent="space-between">
+        <Grid container justifyContent="space-between" className={styles.MobileVersion}>
+          <Grid item className={styles.FlexParent}>
+            <img
+              src={pictures[0]?.base64 || defaultDishImage}
+              alt={name}
+              className={styles.ImageDimensions}
+            />
+          </Grid>
           <Grid
             item
             className={extended ? styles.GridItem : styles.FlexGridItem}
           >
-            <div className={styles.FlexParent}>
+            <div className={styles.FlexParentMenu}>
               <h3 className={styles.DishTitle}>{name}</h3>
               {editable && (
                 <>
@@ -128,13 +135,6 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </div>
             {/* {extended && <AllergenTags dishAllergens={allergens.split(",")} />} */}
-          </Grid>
-          <Grid item className={styles.FlexParent}>
-            <img
-              src={pictures[0]?.base64 || defaultDishImage}
-              alt={name}
-              className={styles.ImageDimensions}
-            />
           </Grid>
           <Grid item xs={12} className={styles.GridItemDescription}>
             <p

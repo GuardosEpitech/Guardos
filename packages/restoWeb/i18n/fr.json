@@ -113,10 +113,16 @@
         "my-new-resto": "Mon nouveau restaurant"
       },
       "AppOutlet": {
-        "contact": "Contact:",
-        "email": "Email: contact@guardos.com",
-        "phone": "Téléphone: +49 211 1234567",
-        "location": "Localisation: contact@guardos.com"
+        "contact": "Contact :",
+        "email": "Email : contact@guardos.com",
+        "phone": "Téléphone : +49 211 1234567",
+        "location": "Localisation : Berlin",
+        "tradeMark": "© 2024 Guardos",
+        "privacy": "Politique de confidentialité",
+        "imprint": "Impression",
+        "welcomeSite": "Bienvenue à Guardos",
+        "instagram": "Notre Instagram",
+        "linkedIn": "Notre linkedIn"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la page principale.",
