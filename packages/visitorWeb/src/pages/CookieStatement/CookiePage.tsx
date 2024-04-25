@@ -42,12 +42,12 @@ const SliderButton: React.FC<SliderButtonProps> = ({
 
 
 const CookieStatementPage: React.FC = () => {
-  const [sliderButtons, setSliderButtons] = useState([
-    { name: "Functional", isActive: false },
-    { name: "Statistical", isActive: false },
-    { name: "Marketing", isActive: false },
-  ]);
   const {t} = useTranslation();
+  const [sliderButtons, setSliderButtons] = useState([
+    { name: 'components.CookieBanner.Func', isActive: false },
+    { name: 'components.CookieBanner.Statistical', isActive: false },
+    { name: 'components.CookieBanner.Marketing', isActive: false },
+  ]);
 
   const fetchUserPreference = async () => {
     const userToken = localStorage.getItem("user");
@@ -62,9 +62,9 @@ const CookieStatementPage: React.FC = () => {
         marketing: marketing
       };
       setSliderButtons(prevState => [
-        { name: "Functional", isActive: data.functional },
-        { name: "Statistical", isActive: data.statistical },
-        { name: "Marketing", isActive: data.marketing },
+        { name: 'components.CookieBanner.Func', isActive: data.functional },
+        { name: 'components.CookieBanner.Statistical', isActive: data.statistical },
+        { name: 'components.CookieBanner.Marketing', isActive: data.marketing },
       ]);
       return;
     }
@@ -86,9 +86,9 @@ const CookieStatementPage: React.FC = () => {
       const response = await setUserPreferences(userToken, data);
     }
     setSliderButtons(prevState => [
-      { name: "Functional", isActive: data.functional },
-      { name: "Statistical", isActive: data.statistical },
-      { name: "Marketing", isActive: data.marketing },
+      { name: 'components.CookieBanner.Func', isActive: data.functional },
+      { name: 'components.CookieBanner.Statistical', isActive: data.statistical },
+      { name: 'components.CookieBanner.Marketing', isActive: data.marketing },
     ]);
   }
 
@@ -127,7 +127,7 @@ const CookieStatementPage: React.FC = () => {
         <h2 className={styles.title}>{t('pages.CookieStatement.title')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.CookieStatement.intro')} <a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>.</p>
+          <p>{t('pages.CookieStatement.intro')} <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>.</p>
           <br />
           <p>{t('pages.CookieStatement.intro2')}</p>
           <br />
@@ -140,7 +140,7 @@ const CookieStatementPage: React.FC = () => {
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}
-                name={button.name}
+                name={t(button.name)}
                 isActive={button.isActive}
                 onClick={() => updateCookies(index)}
                 />
@@ -214,11 +214,11 @@ const CookieStatementPage: React.FC = () => {
           <br />
           <p className={styles.italic}>{t('pages.CookieStatement.RightInspect')}</p>
           <br />
-          <p>{t('pages.CookieStatement.inspect')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.inspect2')}</p>
+          <p>{t('pages.CookieStatement.inspect')}<a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.inspect2')}</p>
           <br />
           <p className={styles.italic}>{t('pages.CookieStatement.TipQuestion')}</p>
           <br />
-          <p>{t('pages.CookieStatement.tips')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.tips2')}</p>
+          <p>{t('pages.CookieStatement.tips')}<a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.tips2')}</p>
           </div>
         <h2 className={styles.title}>{t('pages.CookieStatement.Conclusion')}</h2>
         <hr className={styles.line} />

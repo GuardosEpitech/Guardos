@@ -42,12 +42,12 @@ const SliderButton: React.FC<SliderButtonProps> = ({
 
 
 const CookieStatementPage: React.FC = () => {
-  const [sliderButtons, setSliderButtons] = useState([
-    { name: "Functional", isActive: false },
-    { name: "Statistical", isActive: false },
-    { name: "Marketing", isActive: false },
-  ]);
   const {t} = useTranslation();
+  const [sliderButtons, setSliderButtons] = useState([
+    { name: 'components.CookieBanner.Func', isActive: false },
+    { name: 'components.CookieBanner.Statistical', isActive: false },
+    { name: 'components.CookieBanner.Marketing', isActive: false },
+  ]);
 
   const fetchUserPreference = async () => {
     const userToken = localStorage.getItem("user");
@@ -62,9 +62,9 @@ const CookieStatementPage: React.FC = () => {
         marketing: marketing
       };
       setSliderButtons(prevState => [
-        { name: "Functional", isActive: data.functional },
-        { name: "Statistical", isActive: data.statistical },
-        { name: "Marketing", isActive: data.marketing },
+        { name: 'components.CookieBanner.Func', isActive: data.functional },
+        { name: 'components.CookieBanner.Statistical', isActive: data.statistical },
+        { name: 'components.CookieBanner.Marketing', isActive: data.marketing },
       ]);
       return;
     }
@@ -86,9 +86,9 @@ const CookieStatementPage: React.FC = () => {
       const response = await setUserRestoPreferences(userToken, data);
     }
     setSliderButtons(prevState => [
-      { name: "Functional", isActive: data.functional },
-      { name: "Statistical", isActive: data.statistical },
-      { name: "Marketing", isActive: data.marketing },
+      { name: 'components.CookieBanner.Func', isActive: data.functional },
+      { name: 'components.CookieBanner.Statistical', isActive: data.statistical },
+      { name: 'components.CookieBanner.Marketing', isActive: data.marketing },
     ]);
   }
 
@@ -140,7 +140,7 @@ const CookieStatementPage: React.FC = () => {
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}
-                name={button.name}
+                name={t(button.name)}
                 isActive={button.isActive}
                 onClick={() => updateCookies(index)}
                 />

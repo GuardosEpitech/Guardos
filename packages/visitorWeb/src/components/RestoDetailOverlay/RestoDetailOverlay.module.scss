@@ -64,3 +64,18 @@
 .OpeningHoursColumn {
   padding: 0 0.6rem;
 }
+
+@media (max-width: 768px) {
+  .GridItemImage,
+  .GridItem {
+    flex-basis: 100%;
+  }
+
+  .FlexParent {
+    flex-direction: column;
+  }
+
+  .OpeningHours {
+    overflow-x: auto;
+  }
+}

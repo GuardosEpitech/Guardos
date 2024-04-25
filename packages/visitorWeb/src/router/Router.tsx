@@ -18,6 +18,8 @@ import RestoPage from "@src/pages/RestoPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage";
 import RatingPage from "@src/pages/RatingPage";
+import PrivacyPage from "@src/pages/PrivacyPage";
+import ImprintPage from "@src/pages/ImprintPage";
 import CookieStatement from "@src/pages/CookieStatement/CookiePage";
 import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
 import { getUserPreferences } from "@src/services/profileCalls";
@@ -89,6 +91,8 @@ const MVPRouter = () => {
             <Route path="/payment-success" Component={PaymentSuccessPage} />
           <Route path="/payment-failed" Component={PaymentFailedPage} />
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+          <Route path="/privacy" element={<PrivacyPage />}></Route>
+          <Route path="/imprint" element={<ImprintPage />}></Route>
           <Route path="/cookiestatement" element={<CookieStatement />}></Route>
           <Route path="/technologies" element={<TechnologyList />}></Route>
         </Route>

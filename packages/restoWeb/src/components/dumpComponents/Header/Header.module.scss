@@ -1,69 +1,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
 
-.BackgroundRectLoggedIn {
-  height: 7.813rem;
-  background-color: #6d071a;
+.header {
   display: flex;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
   align-items: center;
-  justify-content: space-between;
-  padding-left: 5rem;
-  padding-right: 5rem;
+  height: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
 }
 
-.BackgroundRectLoggedOut {
-  width: 100vw;
-  height: 7.813rem;
-  background-color: #6d071a;
+.headerLinks {
   display: flex;
+  margin-left: auto;
+  gap: 25px;
   align-items: center;
-  gap: 8.75rem;
-
-  .NavTitle {
-    flex: 1;
-  }
-
-  .NavTitleLogIn {
-    flex: 1;
-    margin-left: 5rem;
-    position: relative;
-    text-decoration: none;
-    color: #ffffff;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 500;
-
-    a {
-      max-width: 100px;
-
-      &:hover {
-        cursor: pointer;
-        color: #ffffff;
-
-        &::before {
-          transform: scaleX(1);
-        }
-      }
-
-      &::before {
-        content: "";
-        position: absolute;
-        display: block;
-        max-width: 100px;
-        width: 100%;
-        height: 0.125rem;
-        bottom: 0;
-        left: 0;
-        background-color: #fff;
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
-      }
-    }
-  }
-
-  .LogoImg {
-    margin-left: -20px;
-  }
 }
 
+.containerHeader {
+  height: 5rem;
+  width: 100%;
+  background-color: #6d071a;
+}
 
 .NavTitle {
   position: relative;
@@ -98,12 +57,25 @@
 .LogoImg {
   width: 6.25rem;
   height: 6.25rem;
-  border-radius: 50%;
+  cursor: pointer;
+}
+
+.logoContainer {
+  width: 5rem;
+  height: 5rem;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  .logo {
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/logo_processed.png) center/cover no-repeat;  }
 }
 
 .languageDropdown {
   position: absolute;
-  left: 0;
+  right: 0;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;

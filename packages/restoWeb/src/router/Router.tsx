@@ -20,6 +20,8 @@ import ResetPassword from "@src/pages/ResetPasswordPage";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
+import PrivacyPage from "@src/pages/PrivacyPage";
+import ImprintPage from "@src/pages/ImprintPage/ImprintPage";
 import CookieStatement from "@src/pages/CookieStatement/CookiePage";
 import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
 import CookieBanner from "@src/components/CookieBanner/CookieBanner";
@@ -93,6 +95,8 @@ const MVPRouter = () => {
           <Route path="/feature-request" element={<FeatureRequest />}> </Route>
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+          <Route path="/privacy" element={<PrivacyPage />}></Route>
+          <Route path="/imprint" element={<ImprintPage />}></Route>
           <Route path="/cookiestatement" element={<CookieStatement />}></Route>
           <Route path="/technologies" element={<TechnologyList />}></Route>
         </Route>

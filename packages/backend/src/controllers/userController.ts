@@ -261,11 +261,11 @@ export async function deleteProfilePicture(userId: number) {
   );
 }
 
-export async function getAllergens(email: string) {
+export async function getAllergens(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.findOne({ email: email })
+  const userData = await UserSchema.findOne({ uid: userID })
     .exec();
-  return userData;
+  return userData?.allergens;
 }
 
 export async function updateAllergens(email: string, allergens: string) {

@@ -97,10 +97,10 @@ const CookieBanner: React.FC = () => {
   const {t} = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
   const [sliderButtons, setSliderButtons] = useState([
-    { name: "Strictly necessary", isActive: true },
-    { name: "Functional", isActive: false },
-    { name: "Statistical", isActive: false },
-    { name: "Marketing", isActive: false },
+    { name: t('components.CookieBanner.strictly'), isActive: true },
+    { name: t('components.CookieBanner.Func'), isActive: false },
+    { name: t('components.CookieBanner.Statistical'), isActive: false },
+    { name: t('components.CookieBanner.Marketing'), isActive: false },
   ]);
 
   useEffect(() => {
@@ -220,7 +220,7 @@ const CookieBanner: React.FC = () => {
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}
-                name={button.name}
+                name={t(button.name)}
                 isActive={button.isActive}
                 onClick={() => handleSliderButtonClick(index)}
                 />

@@ -1,11 +1,16 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./AppOutlet.module.scss";
 import Header from "@src/components/Header/Header";
 import {useTranslation} from "react-i18next";
+import instagram from "../../../../shared/assets/whiteInstagram.png";
+import linkedIn from "../../../../shared/assets/linkedin.png";
 
 const AppOutlet = () => {
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <div className={styles.ParentElement}>
@@ -15,15 +20,29 @@ const AppOutlet = () => {
       </div>
       <div className={styles.Container}>
         <div className={styles.TextContainer}>
-          <h2 className={styles.ContactTitle}>{t('pages.AppOutlet.contact')}</h2>
-          <ul className={styles.ListContact}>
-            <li>{t('pages.AppOutlet.email')}</li>
-            <li>{t('pages.AppOutlet.phone')}</li>
-            <li>{t('pages.AppOutlet.location')}</li>
-          </ul>
-        </div>
-        <div className={styles.LinksContainer}>
-          <a href="/cookiestatement" className={styles.Link}>{t('pages.AppOutlet.cookieStatement')}</a>
+          <div>
+            <h2 className={styles.ContactTitle}>{t('pages.AppOutlet.contact')}</h2>
+            <ul className={styles.ListContact}>
+              <li>{t('pages.AppOutlet.email')}</li>
+              <li>{t('pages.AppOutlet.phone')}</li>
+              <li>{t('pages.AppOutlet.location')}</li>
+            </ul>
+          </div>
+          <div>
+            <ul className={styles.ListLinks}>
+              <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
+              <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
+              <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
+              <li><a className={styles.links} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('pages.AppOutlet.welcomeSite')}</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className={styles.footerIcons}>
+              <a className={styles.links}><img src={instagram} alt={t('pages.AppOutlet.instagram')} /></a>
+              <a className={styles.links}><img src={linkedIn} alt={t('pages.AppOutlet.linkedIn')} /></a>
+            </div>
+            <p className={styles.footerTrademark}>{t('pages.AppOutlet.tradeMark')}</p>
+          </div>
         </div>
       </div>
     </div>

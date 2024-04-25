@@ -15,7 +15,7 @@ import {useTranslation} from "react-i18next";
 const IntroPage = () => {
   const [opacity1, setOpacity1] = useState(1);
   const [opacity2, setOpacity2] = useState(1);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(0);
   const targetSectionRef = useRef(null);
   const navigate = useNavigate();
   const baseUrlRestaurant = `${process.env.RESTAURANT_URL}`;
@@ -44,6 +44,7 @@ const IntroPage = () => {
   };
 
   const handleMouseLeave = () => {
+    console.log(baseUrlRestaurant);
     setOpacity1(1);
     setOpacity2(1);
   };
@@ -52,6 +53,7 @@ const IntroPage = () => {
     // Scroll to the target section
     targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
 
   return (
     <div>
