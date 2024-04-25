@@ -22,7 +22,10 @@ const config = {
     host: "0.0.0.0",
     allowedHosts: ["all"], // HUGE SECURITY RISK --> WE HAVE TO CHANGE THIS SOMEHOW
     port: 8080,
-    historyApiFallback: true
+    historyApiFallback: true,
+    client: {
+      webSocketURL: 'ws://restaurant.guardos.eu/ws',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
