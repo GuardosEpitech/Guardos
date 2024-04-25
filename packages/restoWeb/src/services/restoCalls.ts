@@ -1,7 +1,11 @@
 import axios from "axios";
 
+// eslint-disable-next-line max-len
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/restaurants/`;
+// eslint-disable-next-line max-len
 const menuDesignUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/menuDesigns/`;
+// eslint-disable-next-line max-len
+const restoUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/search/restaurants/`;
 
 export const getAllResto = async () => {
   try {
@@ -72,6 +76,21 @@ export const getAllRestaurantsByUser = async (body: any) => {
       headers: {
         "content-type": "application/json",
       },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all restaurants:", error);
+    throw new Error("Failed to fetch all restaurants");
+  }
+};
+
+export const getAllRestaurantsByUserAndFilter = async (userToken: string,
+  filter: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: restoUrl,
+      data: { "filter": filter, "token": userToken }
     });
     return response.data;
   } catch (error) {

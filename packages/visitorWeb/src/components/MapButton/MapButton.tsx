@@ -42,7 +42,8 @@ const MapButton = () => {
         <Button
           variant="contained"
           sx={{ width: "15.44rem" }}
-          onClick={() => NavigateTo("/map", navigate)}>
+          onClick={() => NavigateTo("/map", navigate)}
+          className={styles.goToMapButton}>
           {t('components.Map.go-to-map-view')}
         </Button>
       </ThemeProvider>

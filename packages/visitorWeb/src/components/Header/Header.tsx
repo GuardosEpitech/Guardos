@@ -54,47 +54,51 @@ const Header = () => {
   }, [navigate]);
 
   return (
-    <div className={styles.BackgroundRect}>
-      <span className={styles.NavTitle}>
-        { loggedIn ? (
-          <a onClick={logoutUser}>
-            {t('components.Header.logout')}
+    <div className={styles.containerHeader}>
+      <div className={styles.header}>
+        <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+          <div className={styles.logo}></div>
+        </div>
+        <div className={styles.headerLinks}>
+          <span className={styles.NavTitle}>
+            { loggedIn ? (
+              <a onClick={logoutUser}>
+                {t('components.Header.logout')}
+              </a>
+            ) : (
+              <a onClick={() => NavigateTo('/login', navigate, {})}>
+                {t('components.Header.login')}
+              </a>
+            )}
+          </span>
+          { loggedIn && (
+              <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>{t('components.Header.my-account')}</span>
+            )
+          }
+          <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('components.Header.welcome')}</span>
+          <a
+            className={styles.NavTitle}
+            onClick={() => {
+              setShowLanguageDropdown(!showLanguageDropdown);
+            }}
+          >
+            <TranslateIcon fontSize="medium" />
+            {showLanguageDropdown && (
+              <div className={styles.languageDropdown}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                  {t('common.english')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                  {t('common.german')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                  {t('common.french')}
+                </a>
+              </div>
+            )}
           </a>
-        ) : (
-          <a onClick={() => NavigateTo('/login', navigate, {})}>
-            {t('components.Header.login')}
-          </a>
-        )}
-      </span>
-      { loggedIn && (
-          <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>{t('components.Header.my-account')}</span>
-        )
-      }
-      <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
-        <div className={styles.logo}></div>
+        </div>
       </div>
-      <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('components.Header.welcome')}</span>
-      <a
-        className={styles.NavTitle}
-        onClick={() => {
-          setShowLanguageDropdown(!showLanguageDropdown);
-        }}
-      >
-        <TranslateIcon fontSize="medium" />
-        {showLanguageDropdown && (
-          <div className={styles.languageDropdown}>
-            <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
-              {t('common.english')}
-            </a>
-            <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
-              {t('common.german')}
-            </a>
-            <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
-              {t('common.french')}
-            </a>
-          </div>
-        )}
-      </a>
     </div>
   );
 };

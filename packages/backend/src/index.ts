@@ -23,6 +23,7 @@ import { connectDataBase, SUCCEED } from './controllers/connectDataBase';
 import dishes from './routes/dishes';
 import products from './routes/products';
 import restaurants from './routes/restaurants';
+import restaurantsSearch from './routes/restoFilter';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
@@ -81,6 +82,7 @@ async function main() {
     app.use('/api/products', products);
     app.use('/api/dishes', dishes);
     app.use('/api/restaurants', restaurants);
+    app.use('/api/search/restaurants', restaurantsSearch);
     app.use('/api/menu', menu);
     app.use('/api/ingredients', basicApiIngredients);
     app.use('/api/filter', filter);
