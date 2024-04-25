@@ -125,10 +125,15 @@
       },
       "AppOutlet": {
         "contact": "Contact:",
-        "email": "Email: contact@guardos.com",
+        "email": "Email: guardos-help@outlook.com",
         "phone": "Phone: +49 211 1234567",
-        "location": "Location: contact@guardos.com",
-        "privacy": "Privacy statement"
+        "location": "Location: Berlin",
+        "tradeMark": "© 2024 Guardos",
+        "privacy": "Privacy Policy",
+        "imprint": "Imprint",
+        "welcomeSite": "Welcome to Guardos",
+        "instagram": "Our Instagram",
+        "linkedIn": "Our linkedIn"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Your link is invalid. You will be redirected to the Mainpage.",
@@ -367,6 +372,24 @@
         "email": "Email: guardos-help@outlook.com",
         "phone": "Phone: +49 211 1234567",
         "end": "Thank you for entrusting Guardos.eu with your personal information."
+      },
+      "Imprint": {
+        "title": "Impressum",
+        "intro": "Operator of the website Guardos.eu is",
+        "us": "Guardos",
+        "address1": "Fasanenstraße 86,",
+        "address2": "10623 Berlin",
+        "telephone": "Telephone: +49 211 1234567",
+        "email": "Email: guardos-help@outlook.com",
+        "register": "Registry court: ",
+        "registerNr": "Commercial register number: ",
+        "ust": "VAT ID: ",
+        "manager": "Managing Director: ",
+        "legal": "Legal Notice",
+        "introLegal": "The depicted trademarks and logos are registered trademarks of Guardos.",
+        "txtlegal1": "Consumer information according to Regulation (EU) No. 524/2013: ",
+        "txtlegal2": "An online dispute resolution platform of the EU Commission is available at",
+        "txtlegal3": ", within the framework of the regulation on online dispute resolution in consumer matters."
       }
     }
   }

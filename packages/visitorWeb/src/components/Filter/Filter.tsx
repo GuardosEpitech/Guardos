@@ -424,7 +424,7 @@ const Filter = (props: FilterProps) => {
   return (
     <div className={styles.RectFilter}>
       <div className={styles.DivFilter}>
-        <div className={styles.spaceBetween}>
+        <div>
           <div className={styles.DivTitleFilter}>
             <span className={styles.TitleFilter}>{t('components.Filter.filter-by')}</span>
           <IconButton
@@ -446,13 +446,11 @@ const Filter = (props: FilterProps) => {
             <MenuItem>
               <TextField
                 label={t('components.Filter.filter-name') as string}
-                variant="outlined"
                 value={newFilterName}
                 onChange={(e) => setNewFilterName(e.target.value)}
+                focused
+                fullWidth
               />
-              <Button onClick={handleSaveFilter} variant="contained">
-                <Save /> {t('components.Filter.save-filter')}
-              </Button>
             </MenuItem>
             {savedFilters.map((filter, index) => (
               <MenuItem key={index}>
@@ -468,6 +466,9 @@ const Filter = (props: FilterProps) => {
             <MenuItem>
               <Button onClick={handleClearFilter} variant="contained" color="secondary">
                 {t('components.Filter.clear-filter')}
+              </Button>
+              <Button onClick={handleSaveFilter} variant="contained" className={styles.saveFilter}>
+                <Save /> {t('components.Filter.save-filter')}
               </Button>
             </MenuItem>
           </Menu>

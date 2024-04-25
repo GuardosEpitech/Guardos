@@ -124,7 +124,7 @@ const RestoCard = (props: IRestoCardProps) => {
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
-      <Grid container>
+      <Grid container className={styles.flexContainer}>
         <Grid item xs={3} className={styles.GridItemImage}>
           {
             <img
@@ -138,9 +138,6 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{resto.name}</h3>
-            <Rating name="read-only" value={averageRating()} readOnly />
-            <span className={styles.AverageTxt}>{Array.isArray(ratingData) ?
-              ratingData.length : 0}</span>
             {editable && (
               <>
                 <DishActions
@@ -189,6 +186,12 @@ const RestoCard = (props: IRestoCardProps) => {
                 )}
               </>
             )}
+          </div>
+          <div className={styles.FlexParent}>
+              <Rating name="read-only" value={averageRating()} readOnly />
+              <span className={styles.AverageTxt}>
+                {Array.isArray(ratingData) ? ratingData.length : 0}
+              </span>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />

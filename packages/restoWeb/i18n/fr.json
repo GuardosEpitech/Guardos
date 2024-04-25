@@ -113,11 +113,16 @@
         "my-new-resto": "Mon nouveau restaurant"
       },
       "AppOutlet": {
-        "contact": "Contact:",
-        "email": "Email: contact@guardos.com",
-        "phone": "Téléphone: +49 211 1234567",
-        "location": "Localisation: contact@guardos.com",
-        "privacy": "Déclaration de Confidentialité"
+        "contact": "Contact :",
+        "email": "Email : guardos-help@outlook.com",
+        "phone": "Téléphone : +49 211 1234567",
+        "location": "Localisation : Berlin",
+        "tradeMark": "© 2024 Guardos",
+        "privacy": "Politique de confidentialité",
+        "imprint": "Impression",
+        "welcomeSite": "Bienvenue à Guardos",
+        "instagram": "Notre Instagram",
+        "linkedIn": "Notre linkedIn"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la page principale.",
@@ -160,7 +165,8 @@
         "please": "Veuillez ",
         "login": "vous connecter",
         "to-see-your-restos": " pour voir vos restaurants.",
-        "add-resto": "Ajouter un restaurant"
+        "add-resto": "Ajouter un restaurant",
+        "search-restos": "Cherchez des restaurants ou des lieux"
       },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
@@ -297,6 +303,24 @@
         "email": "E-mail : guardos-help@outlook.com",
         "phone": "Téléphone : +49 211 1234567",
         "end": "Nous vous remercions de confier vos informations personnelles à Guardos.eu."
+      },
+      "Imprint": {
+        "title": "Mentions légales",
+        "intro": "L'opérateur du site Web Guardos.eu est",
+        "us": "Guardos",
+        "address1": "Fasanenstraße 86,",
+        "address2": "10623 Berlin",
+        "telephone": "Téléphone : +49 211 1234567",
+        "email": "E-mail : guardos-help@outlook.com",
+        "register": "Tribunal d'enregistrement : ",
+        "registerNr": "Numéro d'enregistrement au registre du commerce : ",
+        "ust": "Numéro de TVA : ",
+        "manager": "Directeur général : ",
+        "legal": "Avis juridique",
+        "introLegal": "Les marques et logos représentés sont des marques déposées de Guardos.",
+        "txtlegal1": "Informations aux consommateurs conformément au règlement (UE) n° 524/2013 : ",
+        "txtlegal2": "Dans le cadre du règlement sur la résolution des litiges en ligne en matière de consommation, ",
+        "txtlegal3": "une plateforme de résolution des litiges en ligne de la Commission européenne est disponible à l'adresse."
       }
     }
   }

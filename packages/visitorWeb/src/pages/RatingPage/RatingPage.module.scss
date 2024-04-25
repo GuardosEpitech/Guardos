@@ -82,3 +82,48 @@
 .AverageTxt {
   margin: 0rem 0.3rem 0rem 1rem;
 }
+
+@media (max-width: 768px) {
+  .RectOnImg {
+    height: 20rem;
+  }
+
+  .RestaurantTitle {
+    font-size: 1.5rem;
+  }
+
+  .Content {
+    margin-top: 2rem;
+  }
+
+  .CommentContainer {
+    align-items: center;
+    text-align: center;
+  }
+
+  .RatingSection {
+    align-items: center;
+    text-align: center;
+  }
+
+  .CardReview {
+    width: 90%;
+  }
+
+  .BtnSend {
+    width: 50%;
+  }
+
+  .AllReviewContainer {
+    margin: 2rem 0;
+  }
+
+  .RecapReview {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .AverageTxt {
+    margin: 0.5rem 0;
+  }
+}

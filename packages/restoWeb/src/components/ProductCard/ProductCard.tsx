@@ -47,7 +47,7 @@ const ProductCard = (props: IProductCardProps) => {
 
 
   return (
-    <Grid item xs={6} key={index} onClick={handleClick}>
+    <Grid item xs={6} key={index} onClick={handleClick} className={styles.productCard}>
       <Paper className={styles.Product} elevation={3}>
         <div className={styles.ProductHeader}>
           <h3 className={styles.ProductTitle}>{product.name}</h3>
