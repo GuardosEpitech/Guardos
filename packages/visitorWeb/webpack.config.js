@@ -25,7 +25,7 @@ const config = {
     port: 8082,
     historyApiFallback: true,
     client: {
-      webSocketURL: 'ws://guardos.eu/ws',
+      webSocketURL: 'wss://guardos.eu/ws',
     },
   },
   plugins: [

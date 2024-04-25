@@ -24,7 +24,7 @@ const config = {
     port: 8080,
     historyApiFallback: true,
     client: {
-      webSocketURL: 'ws://restaurant.guardos.eu/ws',
+      webSocketURL: 'wss://restaurant.guardos.eu/ws',
     },
   },
   plugins: [
