@@ -21,6 +21,8 @@
   bottom: 0;
   width: 100%;
   padding: 40px;
+  display: flex; 
+  justify-content: space-between;
 }
 
 .ListContact {
@@ -75,6 +77,8 @@
 
 .links {
   cursor: pointer;
+  text-decoration: none; 
+  color: white; 
 
   &:hover {
     text-decoration: underline;
