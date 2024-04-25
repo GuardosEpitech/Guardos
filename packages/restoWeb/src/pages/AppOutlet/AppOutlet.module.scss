@@ -15,14 +15,11 @@
 
 .Container {
   display: grid;
-  min-height: 7rem;
   background-color: #6d071a;
   align-items: center;
   position: relative;
   bottom: 0;
   width: 100%;
-  display: flex; 
-  justify-content: space-between;
   box-sizing: border-box;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
