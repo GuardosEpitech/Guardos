@@ -263,6 +263,49 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
   return answer;
 }
 
+export async function getAllUserRestaurantsFiltered(loggedInUserId: number,
+  locationOrName?: string): Promise<IRestaurantFrontEnd[]> {
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
+  const query: any = { userID: loggedInUserId };
+
+  if (locationOrName) {
+    query.$or = [
+      { name: { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.streetName': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.city': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.postalCode': { $regex: new RegExp(locationOrName, 'i') } }
+    ];
+  }
+
+  const restaurants = await RestaurantModel.find(query);
+  const answer: IRestaurantFrontEnd[] = [];
+
+  for (const restaurant of restaurants) {
+    const restaurantBE = createBackEndObj({
+      description: restaurant.description as string,
+      dishes: restaurant.dishes as [IDishBE],
+      extras: restaurant.extras as unknown as [IDishBE],
+      userID: restaurant.userID as number,
+      uid: restaurant._id as number,
+      location: restaurant.location as ILocation,
+      mealType: restaurant.mealType as [IMealType],
+      name: restaurant.name as string,
+      openingHours: restaurant.openingHours as [IOpeningHours],
+      phoneNumber: restaurant.phoneNumber as string,
+      pictures: restaurant.pictures as [string],
+      picturesId: restaurant.picturesId as [number],
+      products: restaurant.products as [IProduct],
+      rating: restaurant.rating as number,
+      ratingCount: restaurant.ratingCount as number,
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
+    });
+    answer.push(createRestaurantObjFe(restaurantBE));
+  }
+
+  return answer;
+}
+
 export async function createNewRestaurant(
   obj: IRestaurantCommunication, userID: number, id: number) {
   const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
