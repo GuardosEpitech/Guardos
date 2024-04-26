@@ -310,7 +310,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     variant="outlined"
                     component="label"
                   >
-                    {t('components.RestaurantForm.change-img')}
+                    {t('components.RestaurantForm.change-image')}
                     <input
                       hidden
                       accept="image/*"
@@ -324,7 +324,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     component="label"
                     onClick={handeFileDelete}
                   >
-                    {t('components.RestaurantForm.delete-img')}
+                    {t('components.RestaurantForm.delete-image')}
                   </Button>
                 </ThemeProvider>
               </FormControl>
