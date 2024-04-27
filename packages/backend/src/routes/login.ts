@@ -3,6 +3,8 @@ import { Response, Request } from 'express';
 import {getUserId, loginUser} from '../controllers/userController';
 import { loginUserResto, getUserIdResto }
   from '../controllers/userRestoController';
+import {authenticateGoogle} from '../middleware/googleAuthenticate';
+import {handleGoogleLogin} from '../controllers/googleLoginController';
 
 const router = express.Router();
 
@@ -23,6 +25,8 @@ router.post('/', async function (req: Request, res: Response) {
       .send('An error occurred while processing your request');
   }
 });
+
+router.get('/google/callback', authenticateGoogle, handleGoogleLogin);
 
 router.get('/checkIn', async function (req: Request, res: Response) {
   try {

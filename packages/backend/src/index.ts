@@ -27,7 +27,7 @@ import restaurantsSearch from './routes/restoFilter';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
-import featureRequest from './routes/featureRequest'
+import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
 
