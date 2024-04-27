@@ -12,7 +12,6 @@ import {useTranslation} from "react-i18next";
 const Header = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLogInSite, setIsLogInSite] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
@@ -21,7 +20,6 @@ const Header = () => {
   function logoutUser() {
     const event = new Event('loggedOut');
     localStorage.removeItem('user');
-    setIsLogInSite(false);
     setLoggedIn(false);
     document.dispatchEvent(event);
     NavigateTo('/login', navigate);
@@ -48,9 +46,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (usePathPattern.pathname === "/login") {
-      setIsLogInSite(true);
-    }
     checkUserToken();
   }, [navigate]);
 
@@ -60,100 +55,70 @@ const Header = () => {
   };
 
   return (
-    <div className={loggedIn ? styles.BackgroundRectLoggedIn
-      : styles.BackgroundRectLoggedOut}>
-      <span className={loggedIn ? styles.NavTitle : styles.NavTitleLogIn}>
-        { loggedIn && (
-          <a onClick={logoutUser}>
-            {t('components.Header.logout')}
-          </a>
-        )}
-        { !loggedIn && !isLogInSite && (
-          <a onClick={() => {
-            setIsLogInSite(true);
-          }}
-          className={styles.NavTitleLogIn}
-          href="/login"
-          >
-            {t('components.Header.login')}
-          </a>
-        )}
-        { !loggedIn && isLogInSite && (
-          <a onClick={() => {
-            setIsLogInSite(false);
-            NavigateTo('/', navigate, {});
-          }}>
-            {t('components.Header.home')}
-          </a>
-        )}
-      </span>
-      { loggedIn 
-        &&
-        <a
-          className={styles.NavTitle}
-          href="/account"
-        >
-          {t('components.Header.my-account')}
-        </a>
-      }
-      { loggedIn 
-        &&
-        <a
-          className={styles.NavTitle}
-          href="/"
-        >
-          {t('common.my-restos')}
-        </a>
-      }
-      <img className={styles.LogoImg} src={logo} alt="Logo" />
-      { !loggedIn 
-        &&
-        <div
-          className={styles.NavTitle}
-        >
+    <div className={styles.containerHeader}>
+      <div className={styles.header}>
+        <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+          <div className={styles.logo}></div>
         </div>
-      }
-      { loggedIn 
-        &&
-        <a
-          className={styles.NavTitle}
-          href="/dishes"
-        >
-          {t('common.my-dishes')}
-        </a>
-      }
-      { loggedIn 
-        &&
-        <a
-          className={styles.NavTitle}
-          href="/products"
-        >
-          {t('common.my-products')}
-        </a>
-      }
-      { !loggedIn && isLogInSite && (
-        <a
-          className={styles.NavTitle}
-          onClick={() => {
-            setShowLanguageDropdown(!showLanguageDropdown);
-          }}
-        >
-          <TranslateIcon fontSize="medium" />
-          {showLanguageDropdown && (
-            <div className={styles.languageDropdown}>
-              <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
-                {t('common.english')}
-              </a>
-              <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
-                {t('common.german')}
-              </a>
-              <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
-                {t('common.french')}
-              </a>
-            </div>
-          )}
-        </a>
-      )}
+        <div className={styles.headerLinks}>
+          <span className={styles.NavTitle}>
+            { !loggedIn ? (
+              <span className={styles.NavTitle} onClick={() => NavigateTo('/login', navigate, {})}>{t('components.Header.login')}</span>
+            ) : (
+              <></>
+            )}
+          </span>
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('components.Header.home')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/account', navigate, {})}>{t('components.Header.my-account')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('common.my-restos')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/addCategory', navigate, {})}>{t('common.my-category')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/dishes', navigate, {})}>{t('common.my-dishes')}</span>
+            )
+          }
+          { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/products', navigate, {})}>{t('common.my-products')}</span>
+            )
+          }
+          <a
+            className={styles.NavTitle}
+            onClick={() => {
+              setShowLanguageDropdown(!showLanguageDropdown);
+            }}
+          >
+            <TranslateIcon fontSize="medium" />
+            {showLanguageDropdown && (
+              <div className={styles.languageDropdown}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                  {t('common.english')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                  {t('common.german')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                  {t('common.french')}
+                </a>
+              </div>
+            )}
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
