@@ -109,9 +109,7 @@ const CookieStatementPage: React.FC = () => {
     });
 
   };
-
-
-
+  
   return (
     <div className={styles.container}>
       <div className={styles.content}>
