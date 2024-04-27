@@ -12,7 +12,7 @@ import styles from '@src/pages/LoginPage/LoginPage.module.scss';
 import {useTranslation} from 'react-i18next';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const REDIRECT_URI = 'http://localhost:8081/api/login/google/callback';
+const REDIRECT_URI = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/google/callback`;
 const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
 
 
@@ -39,9 +39,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=
-    ${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}
-    &scope=${encodeURIComponent(SCOPE)}&prompt=select_account`;
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&access_type=offline&prompt=consent`;
     window.location.href = authUrl;
   };
 

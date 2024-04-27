@@ -18,6 +18,7 @@ import ChangePasswordPage from "@src/pages/ChangePasswordPage/ChangePasswordPage
 import RatingPage from "@src/pages/RatingPage";
 import PrivacyPage from "@src/pages/PrivacyPage";
 import ImprintPage from "@src/pages/ImprintPage";
+import LoginSuccess from "@src/pages/LoginSuccess/LoginSuccess";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -68,6 +69,7 @@ const MVPRouter = () => {
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
           <Route path="/payment-success" Component={PaymentSuccessPage} />
           <Route path="/payment-failed" Component={PaymentFailedPage} />
+          <Route path="/login-success" element={<LoginSuccess />} />
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
           <Route path="/privacy" element={<PrivacyPage />}></Route>
           <Route path="/imprint" element={<ImprintPage />}></Route>
