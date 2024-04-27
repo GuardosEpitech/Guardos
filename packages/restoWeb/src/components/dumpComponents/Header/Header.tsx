@@ -85,6 +85,10 @@ const Header = () => {
             )
           }
           { loggedIn && (
+                <span className={styles.NavTitle} onClick={() => NavigateTo('/addCategory', navigate, {})}>{t('common.my-category')}</span>
+            )
+          }
+          { loggedIn && (
                 <span className={styles.NavTitle} onClick={() => NavigateTo('/dishes', navigate, {})}>{t('common.my-dishes')}</span>
             )
           }
