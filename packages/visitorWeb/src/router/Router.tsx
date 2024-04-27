@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
-import HomePage from "@src/pages/HomePage";
 import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
 import MapPage from "@src/pages/MapPage";
