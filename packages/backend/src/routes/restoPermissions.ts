@@ -1,11 +1,10 @@
 import express from 'express';
-import { getUserId } from '../controllers/userController';
+import {getUserIdResto} from '../controllers/userRestoController';
 import {
-  getVisitorPermissions,
-  addVisitorPermission,
-  removePermissions,
-  deleteAllPermissions,
-} from '../controllers/visitorPermissionController';
+  addRestoPermission, deleteAllRestoPermissions,
+  getRestoPermissions,
+  removeRestoPermissions
+} from '../controllers/restoPermissionController';
 
 const router = express.Router();
 
@@ -14,7 +13,7 @@ const availablePermissions = ['default', 'basicSubscription', 'premiumUser'];
 router.get('/', async (req, res) => {
   try {
     const userToken = String(req.query.key);
-    const userID = await getUserId(userToken);
+    const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
@@ -22,12 +21,12 @@ router.get('/', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const permissions = await getVisitorPermissions(userID);
+    const permissions = await getRestoPermissions(userID as number);
     return res.status(200)
       .send(permissions);
   } catch (error) {
     // Log the error for debugging purposes
-    console.error("Error in GET '/api/permissions/visitor' route:", error);
+    console.error("Error in GET '/api/permissions/resto' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
     return res.status(500)
@@ -38,7 +37,7 @@ router.get('/', async (req, res) => {
 router.post('/addPermissions', async (req, res) => {
   try {
     const userToken = String(req.query.key);
-    const userID = await getUserId(userToken);
+    const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
       return res.status(404)
@@ -56,11 +55,12 @@ router.post('/addPermissions', async (req, res) => {
         .send({ error: 'No valid permissions provided' });
     }
 
-    const updatedUser = await addVisitorPermission(userID, validPermissions);
+    const updatedUser = await addRestoPermission(userID as number,
+      validPermissions);
     return res.status(200)
       .send(updatedUser);
   } catch (error) {
-    console.error("Error in POST '/api/permissions/visitor/addPermissions' route:", error);
+    console.error("Error in POST '/api/permissions/resto/addPermissions' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
@@ -69,7 +69,7 @@ router.post('/addPermissions', async (req, res) => {
 router.put('/removePermissions', async (req, res) => {
   try {
     const userToken = String(req.query.key);
-    const userID = await getUserId(userToken);
+    const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
       return res.status(404)
@@ -82,11 +82,12 @@ router.put('/removePermissions', async (req, res) => {
       availablePermissions.includes(perm)
     );
 
-    const updatedUser = await removePermissions(userID, validPermissions);
+    const updatedUser = await removeRestoPermissions(userID as number,
+      validPermissions);
     return res.status(200)
       .send(updatedUser);
   } catch (error) {
-    console.error("Error in PUT '/api/permissions/visitor/removePermissions' route:", error);
+    console.error("Error in PUT '/api/permissions/resto/removePermissions' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
@@ -95,18 +96,18 @@ router.put('/removePermissions', async (req, res) => {
 router.delete('/deleteAllPermissions', async (req, res) => {
   try {
     const userToken = String(req.query.key);
-    const userID = await getUserId(userToken);
+    const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
       return res.status(404)
         .send({ error: 'User not found' });
     }
 
-    const updatedUser = await deleteAllPermissions(userID);
+    const updatedUser = await deleteAllRestoPermissions(userID as number);
     return res.status(200)
       .send(updatedUser);
   } catch (error) {
-    console.error("Error in DELETE '/api/permissions/visitor/deleteAllPermissions' route:", error);
+    console.error("Error in DELETE '/api/permissions/resto/deleteAllPermissions' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
