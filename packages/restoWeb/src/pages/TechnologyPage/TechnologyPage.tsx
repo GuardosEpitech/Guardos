@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TechnologyPage.module.scss';
-import {useTranslation} from "react-i18next";
+import {useTranslation} from 'react-i18next';
 
 const TechnologyPage: React.FC = () => {
   const {t} = useTranslation();
@@ -10,7 +10,10 @@ const TechnologyPage: React.FC = () => {
         <h2 className={styles.title}>{t('pages.TechnologyPage.title')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.TechnologyPage.intro')} <a href='/cookiestatement'>{t('pages.TechnologyPage.cookie')}</a>.</p>
+          <p>
+            {t('pages.TechnologyPage.intro')} 
+            <a href='/cookiestatement'>{t('pages.TechnologyPage.cookie')}</a>.
+          </p>
         </div>
         <h2 className={styles.title}>{t('pages.TechnologyPage.func')}</h2>
         <hr className={styles.line} />

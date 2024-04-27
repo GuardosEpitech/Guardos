@@ -27,6 +27,7 @@ describe('Cookie routes', () => {
         }).then((response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.deep.equal({
+            isSet: true,
             functional: true,
             statistical: true,
             marketing: true
@@ -57,6 +58,7 @@ describe('Cookie routes', () => {
         }).then((response) => {
         expect(response.status).to.equal(200);
         expect(response.body).to.deep.equal({
+            isSet: true,
             functional: true,
             statistical: true,
             marketing: true

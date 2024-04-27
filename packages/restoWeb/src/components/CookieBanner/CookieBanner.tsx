@@ -72,21 +72,21 @@ const OkBtn = () => {
     onClick
   }) => {
     return (
-        <div className={styles["slider-button"]}>
+        <div className={styles.sliderButton}>
         <span>{name}</span>
-        {name === "Strictly necessary" ? (
+        {name === 'components.CookieBanner.strictly' ? (
           <Switch
             checked={true}
             disabled={true}
             color="primary"
-            className={styles["switch"]}
+            className={styles.switch}
           />
         ) : (
           <Switch
             checked={isActive}
             onChange={onClick}
             color="primary"
-            className={styles["switch"]}
+            className={styles.switch}
           />
         )}
       </div>
@@ -171,35 +171,41 @@ const CookieBanner: React.FC = () => {
       {isOpen && (
         <div>
           <div className={styles.overlay}></div>
-          <div className={styles["cookie-banner-overlay"]}>
-          <div className={styles["cookie-banner"]}>
+          <div className={styles.cookieBannerOverlay}>
+          <div className={styles.cookieBanner}>
             <h2>{t('components.CookieBanner.title')}</h2>
             <p>
             {t('components.CookieBanner.intro')}
             </p>
             <ul>
               <li>
-              {t('components.CookieBanner.txt1')}<strong>{t('components.CookieBanner.func')}</strong>
+                {t('components.CookieBanner.txt1')}
+                <strong>{t('components.CookieBanner.func')}</strong>
               </li>
               <li>
-              {t('components.CookieBanner.txt2')}<strong>{t('components.CookieBanner.statistical')}</strong>
+                {t('components.CookieBanner.txt2')}
+                <strong>{t('components.CookieBanner.statistical')}</strong>
               </li>
               <li>
-              {t('components.CookieBanner.txt3')}<strong>{t('components.CookieBanner.marketing')}</strong>
+                {t('components.CookieBanner.txt3')}
+                <strong>{t('components.CookieBanner.marketing')}</strong>
               </li>
             </ul>
             <p>
-            {t('components.CookieBanner.txt4')}<strong>{t('components.CookieBanner.ok')}</strong>{t('components.CookieBanner.txt5')}
+              {t('components.CookieBanner.txt4')}
+              <strong>{t('components.CookieBanner.ok')}</strong>
+              {t('components.CookieBanner.txt5')}
             </p>
             <p>
-            {t('components.CookieBanner.txt6')}<a href="/privacy-policy">{t('components.CookieBanner.privacy')}</a>{t('components.CookieBanner.and')}<a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
-              {/*  In alignment with{" "}
-              <a href="https://policies.google.com/privacy">Google's privacy policy</a> requirements, we ensure transparency and control over your data. */}
+              {t('components.CookieBanner.txt6')}
+              <a href="/privacy">{t('components.CookieBanner.privacy')}</a>
+              {t('components.CookieBanner.and')}
+              <a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
             </p>
-            <div className={styles["button-container"]}>
+            <div className={styles.buttonContainer}>
                 <ThemeProvider theme={DeclineBtn()}>
                 <Button
-                    className={styles["decline-button"]}
+                    className={styles.declineDutton}
                     variant="contained"
                     onClick={() => handleDeclineAll()}
                 >
@@ -216,7 +222,7 @@ const CookieBanner: React.FC = () => {
                 </Button>
               </ThemeProvider>
             </div>
-            <div className={styles["slider-container"]}>
+            <div className={styles.sliderContainer}>
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}

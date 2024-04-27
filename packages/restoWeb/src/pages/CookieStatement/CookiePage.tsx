@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './CookiePage.module.scss';
-import {useTranslation} from "react-i18next";
-import Switch from "@mui/material/Switch";
+import {useTranslation} from 'react-i18next';
+import Switch from '@mui/material/Switch';
 import { 
   setUserRestoPreferences, 
   getUserRestoPreferences 
@@ -19,23 +19,14 @@ const SliderButton: React.FC<SliderButtonProps> = ({
   onClick
 }) => {
   return (
-      <div className={styles["slider-button"]}>
+      <div className={styles.sliderButton}>
       <span>{name}</span>
-      {name === "Strictly necessary" ? (
-        <Switch
-          checked={true}
-          disabled={true}
-          color="primary"
-          className={styles["switch"]}
-        />
-      ) : (
         <Switch
           checked={isActive}
           onChange={onClick}
           color="primary"
-          className={styles["switch"]}
+          className={styles.switch}
         />
-      )}
     </div>
   );
 };
@@ -98,24 +89,24 @@ const CookieStatementPage: React.FC = () => {
 
   const updateCookies = async (index: number) => {
     setSliderButtons((prevSliderButtons) =>
-    prevSliderButtons.map((button, i) =>
-      i === index ? { ...button, isActive: !button.isActive } : button
-    )
-  );
+      prevSliderButtons.map((button, i) =>
+        i === index ? { ...button, isActive: !button.isActive } : button
+      )
+    );
 
-  const userToken = localStorage.getItem("user");
-  if (userToken === null) {
-    return;
-  }
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      return;
+    }
 
-  const updatedSliderButtons = [...sliderButtons];
-  updatedSliderButtons[index].isActive = !updatedSliderButtons[index].isActive; 
+    const updatedSliderButtons = [...sliderButtons];
+    updatedSliderButtons[index].isActive = !updatedSliderButtons[index].isActive; 
 
-  const response = await setUserRestoPreferences(userToken, {
-    functional: updatedSliderButtons[0].isActive,
-    statistical: updatedSliderButtons[1].isActive,
-    marketing: updatedSliderButtons[2].isActive,
-  });
+    const response = await setUserRestoPreferences(userToken, {
+      functional: updatedSliderButtons[0].isActive,
+      statistical: updatedSliderButtons[1].isActive,
+      marketing: updatedSliderButtons[2].isActive,
+    });
 
   };
 
@@ -127,7 +118,10 @@ const CookieStatementPage: React.FC = () => {
         <h2 className={styles.title}>{t('pages.CookieStatement.title')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.CookieStatement.intro')} <a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>.</p>
+          <p>
+            {t('pages.CookieStatement.intro')} 
+            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>.
+          </p>
           <br />
           <p>{t('pages.CookieStatement.intro2')}</p>
           <br />
@@ -136,7 +130,7 @@ const CookieStatementPage: React.FC = () => {
         <h2 className={styles.title}>{t('pages.CookieStatement.EnableDisable')}</h2>
         <hr className={styles.line} />
         <br />
-        <div className={styles["slider-container"]}>
+        <div className={styles.sliderContainer}>
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}
@@ -147,7 +141,11 @@ const CookieStatementPage: React.FC = () => {
             ))}
             </div>
         <div className={styles.text}>
-          <p>{t('pages.CookieStatement.cookies')}<a href='/technologies'>{t('pages.CookieStatement.listOf')}</a>. {t('pages.CookieStatement.cookies2')}</p>
+          <p>
+            {t('pages.CookieStatement.cookies')}
+            <a href='/technologies'>{t('pages.CookieStatement.listOf')}</a>. 
+            {t('pages.CookieStatement.cookies2')}
+          </p>
 
         </div>
         <h2 className={styles.title}>{t('pages.CookieStatement.WhichTech')}</h2>
@@ -205,20 +203,40 @@ const CookieStatementPage: React.FC = () => {
           <p>{t('pages.CookieStatement.enableDisable2')}</p>
           <p>{t('pages.CookieStatement.enableDisable3')}</p>
           <ul className={styles.indentedList}>
-            <li><a href='https://support.google.com/chrome/answer/95647?hl=en'>Chrome</a></li>
-            <li><a href='https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox'>Firefox</a></li>
-            <li><a href='https://support.microsoft.com/en-us/topic/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d'>Internet Explorer</a></li>
-            <li><a href='https://support.microsoft.com/en-us/microsoft-edge/view-and-delete-browser-history-in-microsoft-edge-00cf7943-a9e1-975a-a33d-ac10ce454ca4'>Edge</a></li>
-            <li><a href='https://support.apple.com/en-en/HT201265'>Safari</a></li>
+            <li>
+              <a href='https://support.google.com/chrome/answer/95647?hl=en'>Chrome</a>
+            </li>
+            <li>
+              <a href='https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox'>Firefox</a>
+            </li>
+            <li>
+              <a href='https://support.microsoft.com/en-us/topic/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d'>Internet Explorer</a>
+            </li>
+            <li>
+              <a href='https://support.microsoft.com/en-us/microsoft-edge/view-and-delete-browser-history-in-microsoft-edge-00cf7943-a9e1-975a-a33d-ac10ce454ca4'>Edge</a>
+            </li>
+            <li>
+              <a href='https://support.apple.com/en-en/HT201265'>Safari</a>
+            </li>
           </ul>
           <br />
           <p className={styles.italic}>{t('pages.CookieStatement.RightInspect')}</p>
           <br />
-          <p>{t('pages.CookieStatement.inspect')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.inspect2')}</p>
+          <p>
+            {t('pages.CookieStatement.inspect')}
+            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>
+            {t('pages.CookieStatement.inspect2')}
+          </p>
           <br />
-          <p className={styles.italic}>{t('pages.CookieStatement.TipQuestion')}</p>
+          <p className={styles.italic}>
+            {t('pages.CookieStatement.TipQuestion')}
+          </p>
           <br />
-          <p>{t('pages.CookieStatement.tips')}<a href='/privacystatement'>{t('pages.CookieStatement.privacy')}</a>{t('pages.CookieStatement.tips2')}</p>
+          <p>
+            {t('pages.CookieStatement.tips')}
+            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>
+            {t('pages.CookieStatement.tips2')}
+          </p>
           </div>
         <h2 className={styles.title}>{t('pages.CookieStatement.Conclusion')}</h2>
         <hr className={styles.line} />
