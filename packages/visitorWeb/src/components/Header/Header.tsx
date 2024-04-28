@@ -73,10 +73,10 @@ const Header = () => {
             )}
           </span>
           { loggedIn && (
-              <span className={styles.NavTitle} onClick={() => NavigateTo('/my-account', navigate, {})}>{t('components.Header.my-account')}</span>
+              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a>
             )
           }
-          <span className={styles.NavTitle} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('components.Header.welcome')}</span>
+          <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
           <a
             className={styles.NavTitle}
             onClick={() => {
