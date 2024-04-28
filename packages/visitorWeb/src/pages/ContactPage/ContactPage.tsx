@@ -36,7 +36,6 @@ const ContactPage = () => {
             });
       
             if (response.status >= 200 && response.status < 300) {
-              console.log('Backend response:', response.data);
       
               setShowConfirmation(true);
       
