@@ -26,6 +26,7 @@
       "my-dishes": "My Dishes",
       "restos": "Restaurants",
       "my-restos": "My Restaurants",
+      "my-category": "My Categories",
 
       "add-picture": "Tap to Add Picture",
 
@@ -344,6 +345,11 @@
         "txtlegal1": "Consumer information according to Regulation (EU) No. 524/2013: ",
         "txtlegal2": "An online dispute resolution platform of the EU Commission is available at",
         "txtlegal3": ", within the framework of the regulation on online dispute resolution in consumer matters."
+      },
+      "AddCategory": {
+        "name": "Category:",
+        "id": "Order:",
+        "add": "New"
       },
       "CookieStatement": {
         "title": "Cookie Statement",

@@ -70,23 +70,27 @@ const Header = () => {
             )}
           </span>
           { loggedIn && (
-                <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
+              <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
             )
           }
           { loggedIn && (
-                <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('components.Header.home')}</span>
+              <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('components.Header.home')}</span>
             )
           }
           { loggedIn && (
-                <a className={styles.NavTitle} href='/account'>{t('components.Header.my-account')}</a>
+              <a className={styles.NavTitle} href='/account'>{t('components.Header.my-account')}</a>
             )
           }
           { loggedIn && (
-                <a className={styles.NavTitle} href='/'>{t('common.my-restos')}</a>
+              <a className={styles.NavTitle} href='/'>{t('common.my-restos')}</a>
             )
           }
           { loggedIn && (
-                <a className={styles.NavTitle} href='/dishes'>{t('common.my-dishes')}</a>
+              <a className={styles.NavTitle} href='/addCategory'>{t('common.my-category')}</a>
+            )
+          }
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/dishes'>{t('common.my-dishes')}</a>
             )
           }
           { loggedIn && (

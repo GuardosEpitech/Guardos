@@ -111,3 +111,24 @@ export const getAllMenuDesigns = async () => {
     throw new Error("Failed to fetch all menu designs");
   }
 };
+
+export const updateRestoCategories = async (userToken: string, uid: number, newCategories: any) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'updateCategories', 
+      method: 'POST',
+      data: {
+        userToken: userToken,
+        uid: uid,
+        newCategories: newCategories
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user categories:', error);
+    throw new Error('Failed to update user categories');
+  }
+};

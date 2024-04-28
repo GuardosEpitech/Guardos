@@ -26,6 +26,7 @@ import CookieStatement from "@src/pages/CookieStatement/CookiePage";
 import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
 import CookieBanner from "@src/components/CookieBanner/CookieBanner";
 import { getUserRestoPreferences } from "@src/services/profileCalls";
+import AddCategoryPage from "@src/pages/AddCategoryPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -104,6 +105,7 @@ const MVPRouter = () => {
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
           <Route path="/privacy" element={<PrivacyPage />}></Route>
           <Route path="/imprint" element={<ImprintPage />}></Route>
+          <Route path="addCategory" element={<AddCategoryPage />}></Route>
           <Route path="/cookiestatement" element={<CookieStatement />}></Route>
           <Route path="/technologies" element={<TechnologyList />}></Route>
         </Route>
