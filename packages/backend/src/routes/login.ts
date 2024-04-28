@@ -1,10 +1,12 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
-import {getUserId, loginUser} from '../controllers/userController';
+import { getUserId, loginUser} from '../controllers/userController';
 import { loginUserResto, getUserIdResto }
   from '../controllers/userRestoController';
-import {authenticateGoogle} from '../middleware/googleAuthenticate';
-import {handleGoogleLogin} from '../controllers/googleLoginController';
+import { authenticateGoogle } from '../middleware/googleAuthenticate';
+import { handleGoogleLogin } from '../controllers/googleLoginController';
+import { authenticateFacebook } from '../middleware/facebookAuthenticate';
+import { handleFacebookLogin} from '../controllers/facebookLoginController';
 
 const router = express.Router();
 
@@ -27,6 +29,8 @@ router.post('/', async function (req: Request, res: Response) {
 });
 
 router.get('/google/callback', authenticateGoogle, handleGoogleLogin);
+
+router.get('/facebook/callback', authenticateFacebook, handleFacebookLogin);
 
 router.get('/checkIn', async function (req: Request, res: Response) {
   try {
