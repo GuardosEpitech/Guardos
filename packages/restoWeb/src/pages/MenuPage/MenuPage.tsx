@@ -41,6 +41,8 @@ const MenuPage = () => {
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
+  console.log(sectionRefs);
+  console.log(menu);
 
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
@@ -102,7 +104,7 @@ const MenuPage = () => {
             <div className={styles.secondLayoutDishes}>
               {menu.map((category: ICategories, index: number) => {
                 return (
-                  <div className="">
+                  <div key={index} ref={sectionRefs.current[index]}>
                     {index % 3 === 0 ? (
                       <div style={{ 
                         backgroundImage: `url(${pic1})`
