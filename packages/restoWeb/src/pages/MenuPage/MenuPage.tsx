@@ -41,8 +41,6 @@ const MenuPage = () => {
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
-  console.log(sectionRefs);
-  console.log(menu);
 
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
