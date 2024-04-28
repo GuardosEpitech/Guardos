@@ -7,58 +7,58 @@ import {useTranslation} from "react-i18next";
 import { setUserRestoPreferences } from "../../services/profileCalls";
 
 const OkBtn = () => {
-    return createTheme({
-      typography: {
-        button: {
-          fontFamily: "Montserrat",
-          textTransform: "none",
-          fontSize: "1.13rem",
-          fontWeight: "500",
-          padding: "0"
-        },
+  return createTheme({
+    typography: {
+      button: {
+        fontFamily: "Montserrat",
+        textTransform: "none",
+        fontSize: "1.13rem",
+        fontWeight: "500",
+        padding: "0"
       },
-      palette: {
-        primary: {
-          main: "#6d071a",
-          contrastText: "#ffffff",
-        },
-        secondary: {
-          main: "#094067",
-          contrastText: "#ffffff",
-        },
+    },
+    palette: {
+      primary: {
+        main: "#6d071a",
+        contrastText: "#ffffff",
       },
-      shape: {
-        borderRadius: 5,
+      secondary: {
+        main: "#094067",
+        contrastText: "#ffffff",
       },
-    });
-  };
+    },
+    shape: {
+      borderRadius: 5,
+    },
+  });
+};
 
-  const DeclineBtn = () => {
-    return createTheme({
-      typography: {
-        button: {
-          fontFamily: "Montserrat",
-          textTransform: "none",
-          fontSize: "1.13rem",
-          fontWeight: "500",
-          padding: "0"
-        },
+const DeclineBtn = () => {
+  return createTheme({
+    typography: {
+      button: {
+        fontFamily: "Montserrat",
+        textTransform: "none",
+        fontSize: "1.13rem",
+        fontWeight: "500",
+        padding: "0"
       },
-      palette: {
-        primary: {
-          main: "#ffffff",
-          contrastText: "#000000",
-        },
-        secondary: {
-          main: "#999999",
-          contrastText: "#ffffff",
-        },
+    },
+    palette: {
+      primary: {
+        main: "#ffffff",
+        contrastText: "#000000",
       },
-      shape: {
-        borderRadius: 5,
+      secondary: {
+        main: "#999999",
+        contrastText: "#ffffff",
       },
-    });
-  };
+    },
+    shape: {
+      borderRadius: 5,
+    },
+  });
+};
 
   type SliderButtonProps = {
     name: string;
@@ -71,10 +71,11 @@ const OkBtn = () => {
     isActive,
     onClick
   }) => {
+    const {t} = useTranslation();
     return (
         <div className={styles.sliderButton}>
         <span>{name}</span>
-        {name === 'components.CookieBanner.strictly' ? (
+        {name === t('components.CookieBanner.strictly') ? (
           <Switch
             checked={true}
             disabled={true}
@@ -97,19 +98,17 @@ const CookieBanner: React.FC = () => {
   const {t} = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
   const [sliderButtons, setSliderButtons] = useState([
-    { name: 'components.CookieBanner.strictly', isActive: true },
-    { name: 'components.CookieBanner.Func', isActive: false },
-    { name: 'components.CookieBanner.Statistical', isActive: false },
-    { name: 'components.CookieBanner.Marketing', isActive: false },
+    { name: t('components.CookieBanner.strictly'), isActive: true },
+    { name: t('components.CookieBanner.Func'), isActive: false },
+    { name: t('components.CookieBanner.Statistical'), isActive: false },
+    { name: t('components.CookieBanner.Marketing'), isActive: false },
   ]);
 
   useEffect(() => {
-    const hasVisitedBefore = localStorage.getItem('visitedBefore');
-
+    const hasVisitedBefore = localStorage.getItem('visitedRestoBefore');
+    
     if (hasVisitedBefore) {
       setIsOpen(false);
-    } else {
-      localStorage.setItem('visitedBefore', 'true');
     }
   }, []);
 
@@ -141,6 +140,7 @@ const CookieBanner: React.FC = () => {
     }
     const response = await setUserRestoPreferences(userToken, data);
     if (response == "OK") {
+      localStorage.setItem('visitedRestoBefore', 'true');
       handleClose();
     }
   };
@@ -162,6 +162,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserRestoPreferences(userToken, data);
     if (response == "OK") {
+      localStorage.setItem('visitedRestoBefore', 'true');
       handleClose();
     }
   };
@@ -205,7 +206,7 @@ const CookieBanner: React.FC = () => {
             <div className={styles.buttonContainer}>
                 <ThemeProvider theme={DeclineBtn()}>
                 <Button
-                    className={styles.declineDutton}
+                    className={styles.declineButton}
                     variant="contained"
                     onClick={() => handleDeclineAll()}
                 >

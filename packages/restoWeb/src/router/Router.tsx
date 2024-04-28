@@ -45,16 +45,23 @@ const MVPRouter = () => {
       const data = await getUserRestoPreferences(userToken);
       if (data.isSet) {
         setShowCookies(false);
-      } 
-    } 
-    setShowCookies(true);
-    return false;
-  }
+        localStorage.setItem('visitedRestoBefore', 'true');  
+      } else {
+        setShowCookies(true);
+      }
+    } else {
+      setShowCookies(true);
+    }
+  };
 
   useEffect(() => {
     checkUserToken();
     areCookiesSet();
   }, [isUserTokenSet, userToken]);
+
+  const toggleCookieBanner = (value: boolean) => {
+    setShowCookies(value);
+  };
 
   return (
     <>
@@ -82,7 +89,7 @@ const MVPRouter = () => {
           <Route path="addProduct" element={<AddProductPage />} />
           <Route path="addResto" element={<AddRestaurantPage />} />
           <Route path="dishes" element={<DishesPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path="login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="account" element={<MyAccountPage />} />
           <Route path="editDish" element={<EditDishPage />} />
