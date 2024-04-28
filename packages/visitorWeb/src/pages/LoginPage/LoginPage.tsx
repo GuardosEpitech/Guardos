@@ -34,8 +34,13 @@ const Login = () => {
   const {t} = useTranslation();
 
   const handleFacebookLogin = () => {
-    // Implement Facebook login logic here
-    alert(t('pages.LoginPage.redirect-facebook-login'));
+    const clientId = process.env.FACEBOOK_APP_ID;
+    const redirectUri = encodeURIComponent(`${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/facebook/callback`);
+    const scope = encodeURIComponent('email,public_profile');
+    const authUrl =
+        `https://www.facebook.com/v10.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
+
+    window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
