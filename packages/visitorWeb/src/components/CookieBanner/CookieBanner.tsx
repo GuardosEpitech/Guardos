@@ -106,11 +106,9 @@ const CookieBanner: React.FC = () => {
 
   useEffect(() => {
     const hasVisitedBefore = localStorage.getItem('visitedBefore');
-
+    
     if (hasVisitedBefore) {
       setIsOpen(false);
-    } else {
-      localStorage.setItem('visitedBefore', 'true');
     }
   }, []);
 
@@ -142,6 +140,7 @@ const CookieBanner: React.FC = () => {
     }
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
+      localStorage.setItem('visitedBefore', 'true');
       handleClose();
     }
   };
@@ -163,6 +162,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
+      localStorage.setItem('visitedBefore', 'true');
       handleClose();
     }
   };

@@ -23,6 +23,7 @@ const Header = () => {
   function logoutUser() {
     const event = new Event('loggedOut');
     localStorage.removeItem('user');
+    localStorage.removeItem('visitedBefore');
     setLoggedIn(false);
     document.dispatchEvent(event);
     NavigateTo('/login', navigate, {})

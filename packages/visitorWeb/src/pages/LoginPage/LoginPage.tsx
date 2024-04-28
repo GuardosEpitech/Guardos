@@ -10,6 +10,7 @@ import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 import {useTranslation} from "react-i18next";
+import { Navigate } from 'react-router-dom';
 
 interface LoginUser {
   username: string;
@@ -21,7 +22,11 @@ const initialUserState = {
   password: '',
 };
 
-const Login = () => {
+interface LoginPageProps {
+  toggleCookieBanner: (value: boolean) => void;
+}
+
+const Login = (props:LoginPageProps) => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
@@ -60,9 +65,8 @@ const Login = () => {
       } else {
         localStorage.setItem('user', response.data);
         setErrorForm(false);
-        NavigateTo("/", navigate, {
-          loginName: user.username
-        })
+        props.toggleCookieBanner(false);
+        return <Navigate to="/" />;
       }
     } catch (error) {
         console.error(`Error in Post Route: ${error}`);

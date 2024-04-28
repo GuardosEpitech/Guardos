@@ -26,7 +26,7 @@ import { getUserPreferences } from "@src/services/profileCalls";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
-  const [showCookies, setShowCookies] = useState<boolean>();
+  const [showCookies, setShowCookies] = useState<boolean>(true);
   const userToken = localStorage.getItem('user');
 
   const checkUserToken = () => {
@@ -42,16 +42,23 @@ const MVPRouter = () => {
       const data = await getUserPreferences(userToken);
       if (data.isSet) {
         setShowCookies(false);
-      } 
-    } 
-    setShowCookies(true);
-    return false;
-  }
+        localStorage.setItem('visitedBefore', 'true');  
+      } else {
+        setShowCookies(true);
+      }
+    } else {
+      setShowCookies(true);
+    }
+  };
 
   useEffect(() => {
     checkUserToken();
     areCookiesSet();
   }, [isUserTokenSet, userToken]);
+
+  const toggleCookieBanner = (value: boolean) => {
+    setShowCookies(value);
+  };
 
   return (
     <>
@@ -77,7 +84,7 @@ const MVPRouter = () => {
           <Route element={<AppOutlet />}>
             <Route path="/my-account" element={<MyAccountPage />} />
             <Route path="/intropage" element={<IntroPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/addreview" element={<RatingPage />} />
