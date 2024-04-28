@@ -27,6 +27,8 @@ import restaurantsSearch from './routes/restoFilter';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
+import visitorPermissions from './routes/visitorPermissions';
+import restoPermissions from './routes/restoPermissions';
 import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
@@ -95,6 +97,8 @@ async function main() {
     app.use('/api/profile', visitorProfile);
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
+    app.use('/api/permissions/visitor', visitorPermissions);
+    app.use('/api/permissions/resto', restoPermissions);
     app.use('/api/payments', payments);
     app.use('/api/featureRequest', featureRequest);
     app.use('/api/review', review);
