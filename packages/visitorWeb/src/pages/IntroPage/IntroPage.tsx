@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, Container, Button, List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
@@ -10,7 +10,9 @@ import backgroundImage2 from '../../assets/restaurant.jpg';
 import styles from "./IntroPage.module.scss";
 import 'react-vertical-timeline-component/style.min.css';
 import './timeline.min.css';
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const IntroPage = () => {
   const [opacity1, setOpacity1] = useState(1);
@@ -20,6 +22,10 @@ const IntroPage = () => {
   const navigate = useNavigate();
   const baseUrlRestaurant = `${process.env.RESTAURANT_URL}`;
   const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const menuItems = [
     { title: 'Guardos', text: t('pages.IntroPage.guardos-intro')},
@@ -53,7 +59,6 @@ const IntroPage = () => {
     // Scroll to the target section
     targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-
 
   return (
     <div>

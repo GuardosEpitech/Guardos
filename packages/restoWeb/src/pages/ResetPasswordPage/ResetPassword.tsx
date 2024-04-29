@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from "react";
 import styles from './ResetPassword.module.scss';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,7 +8,10 @@ import Button from '@mui/material/Button';
 import {
   sendRecoveryLinkForRestoUser, checkIfRestoUserExist
 } from '@src/services/userCalls';
+import { enable, disable, setFetchMethod} from "darkreader";
+
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface ResetPasswordProps {
 }
@@ -22,6 +25,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [disableButton, setDisableButton] = useState(false);
   const [openFailed, setOpenFailed] = useState(true);
   const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const isValidEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

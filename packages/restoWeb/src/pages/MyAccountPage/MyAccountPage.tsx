@@ -11,6 +11,7 @@ import { IimageInterface } from "shared/models/imageInterface";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
+import {FormControlLabel} from "@mui/material";
 
 import styles from "./MyAccountPage.module.scss";
 import {changePassword, editProfileDetails, getProfileDetails}
@@ -21,6 +22,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
+import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
+
 import {
   addRestoProfileImage, deleteRestoProfileImage, getImages
 } from "@src/services/callImages";
@@ -44,10 +48,12 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); useState<boolean>(isEnabled());
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
 
-  useEffect(() => {
+  useEffect(() => {   
     fetchProfileData();
   }, []);
 
@@ -196,6 +202,38 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
+  const toggleDarkMode = () => {
+    const darkModeEnabled = localStorage.getItem('darkMode');   
+    setDarkMode(!darkMode); 
+    if (darkModeEnabled == 'false') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  };
+
+  const enableDarkMode = () => {
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    localStorage.setItem('darkMode', JSON.stringify(true));
+    setIsDarkMode(true);
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+  };
+
+  const disableDarkMode = () => {
+    localStorage.setItem('darkMode', JSON.stringify(false));
+    setIsDarkMode(false);
+    disable();
+  };
+  
   useEffect(() => {
     const loadImages = async () => {
       if (picture) {
@@ -432,6 +470,10 @@ const MyAccountPage = () => {
           {t('pages.MyAccountPage.delete-account')}
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <FormControlLabel
+          control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
+          label={t('pages.MyAccountPage.enable-dark-mode')}
+        />
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}

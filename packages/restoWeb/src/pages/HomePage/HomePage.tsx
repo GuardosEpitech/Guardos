@@ -11,7 +11,9 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import styles from "./HomePage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -20,10 +22,16 @@ const HomePage = () => {
   const {t} = useTranslation();
   const [searchFilter, setSearchFilter] = useState<string>('');
 
+
+  useEffect(() => {
+    updateRestoData();
+    checkDarkMode();
+  }, []);
   document.addEventListener('loggedOut', function( ) {
     setRestoData([]);
     setIsUserTokenSet(false);
   });
+
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilter = event.target.value;

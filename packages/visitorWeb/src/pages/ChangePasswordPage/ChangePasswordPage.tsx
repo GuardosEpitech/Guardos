@@ -10,7 +10,9 @@ import {
   checkIfVisitorTokenIsValid, updateVisitorPassword
 } from '@src/services/userCalls';
 import { set } from 'cypress/types/lodash';
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const ChangePasswordPage = () => {
   const location = useLocation();
@@ -51,6 +53,7 @@ const ChangePasswordPage = () => {
     }
 
     fetchData();
+    checkDarkMode();
   }, [email]);
 
   function isValidPassword(password: string): boolean {

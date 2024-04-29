@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+
+import React, {useEffect, useState, useRef} from "react";
 import { useLocation } from "react-router-dom";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -11,9 +12,12 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
 import { ICategories } from "shared/models/categoryInterfaces";
+import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
+import {checkDarkMode} from "../../utils/DarkMode";
+
 
 const theme = createTheme({
   palette: {
@@ -46,6 +50,10 @@ const MenuPage = () => {
   const scrollToSection = (index:number) => {
     sectionRefs.current[index].current.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   return (
     <>

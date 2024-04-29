@@ -233,7 +233,8 @@
         "delete-account": "Delete Account",
         "feature-request": "You need a new feature? ",
         "just-ask": "Just ask for it!",
-        "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone."
+        "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
+        "enable-dark-mode": "Enable Dark Mode"
       },
       "ProductsPage": {
         "add-product": "Add product"

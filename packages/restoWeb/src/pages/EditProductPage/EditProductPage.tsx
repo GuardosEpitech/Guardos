@@ -8,7 +8,9 @@ import styles from "@src/pages/EditProductPage/EditProductPage.module.scss";
 import { getAllResto } from "@src/services/restoCalls";
 import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface IEditProductPageProps {
   product: IProductFE;
@@ -21,6 +23,7 @@ const EditProductPage = () => {
   const [restoNameList, setRestoNameList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isLoading, setIsLoading] = useState(true);
   let restoNameListTemp = [] as IRestaurantFrontEnd[];
+  
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -33,6 +36,7 @@ const EditProductPage = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 700);
+    checkDarkMode();
   }, []);
 
   return (

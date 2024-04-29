@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 
 import DishForm from "@src/components/forms/DishForm/DishForm";
 import { IDishFE } from "shared/models/dishInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/EditDishPage/EditDishPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface IEditDishPageProps {
   dish: IDishFE;
@@ -21,6 +23,10 @@ const EditDishPage = () => {
     .split(",");
   const selectCategories: string[] = [category.menuGroup];
   const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   return (
     <div>

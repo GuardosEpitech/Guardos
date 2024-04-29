@@ -233,7 +233,8 @@
         "delete-account": "Supprimer le compte",
         "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité? ",
         "just-ask": "Demandez-la simplement!",
-        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
+        "enable-dark-mode": "Activer le mode sombre"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit"

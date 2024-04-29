@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
 import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface RequestUser {
     name: string;
@@ -25,6 +27,10 @@ const FeatureRequest = () => {
     const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
     const {t} = useTranslation();
 
+    useEffect(() => {
+        checkDarkMode();
+      }, []);
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setRequest((prevState) => ({ ...prevState, [name]: value }));

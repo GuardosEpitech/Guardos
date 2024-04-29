@@ -17,6 +17,8 @@ import {
 } from "@src/services/favourites";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
+import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
@@ -24,6 +26,7 @@ import {getRestosMenu} from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import {useTranslation} from "react-i18next";
 import {getUserAllergens} from "@src/services/userCalls";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const theme = createTheme({
   palette: {
@@ -49,6 +52,7 @@ const MenuPage = () => {
     fetchMenu();
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
+    checkDarkMode();
   }, [])
 
   const fetchMenu = async () => {
@@ -111,6 +115,7 @@ const MenuPage = () => {
   const scrollToSection = (index:number) => {
     sectionRefs.current[index].current.scrollIntoView({ behavior: 'smooth' });
   };
+
 
   return (
     <>

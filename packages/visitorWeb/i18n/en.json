@@ -281,7 +281,8 @@
         "just-ask": "Just ask for it!",
         "fav-restos": "Favourite Restaurants",
         "fav-dishes": "Favourite Dishes",
-        "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone."
+        "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
+        "enable-dark-mode": "Enable Dark Mode"
       },
       "Payments": {
         "payment-success": "Payment Successful",

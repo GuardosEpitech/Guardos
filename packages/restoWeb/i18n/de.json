@@ -233,7 +233,8 @@
         "delete-account": "Konto löschen",
         "feature-request": "Benötigen Sie ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
-        "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+        "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "enable-dark-mode": "Dunkles Design aktivieren"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen"

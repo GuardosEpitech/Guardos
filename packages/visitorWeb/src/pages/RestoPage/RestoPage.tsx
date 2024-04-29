@@ -10,7 +10,9 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -94,6 +96,7 @@ const RestoPage = () => {
     fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     clearFilter(); 
     loadFilter().then(() => console.log("Loaded search data."));
+    checkDarkMode();
   }, []);
 
   const fetchFavourites = async () => {

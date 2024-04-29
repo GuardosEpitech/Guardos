@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
@@ -7,7 +7,9 @@ import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface User {
   username: string;
@@ -29,6 +31,10 @@ const Register = () => {
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register`;
   const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;
@@ -109,7 +115,7 @@ const Register = () => {
     const { name, value } = e.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
-
+  
   return (
     <>
       <Layout>
