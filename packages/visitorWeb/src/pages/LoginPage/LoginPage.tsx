@@ -12,8 +12,6 @@ import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
-import styles from '@src/pages/LoginPage/LoginPage.module.scss';
-import {useTranslation} from 'react-i18next';
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const REDIRECT_URI = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/google/callback`;

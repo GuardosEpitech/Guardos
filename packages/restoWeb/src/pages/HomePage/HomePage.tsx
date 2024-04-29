@@ -24,7 +24,7 @@ const HomePage = () => {
 
 
   useEffect(() => {
-    updateRestoData();
+    updateRestoData("");
     checkDarkMode();
   }, []);
   document.addEventListener('loggedOut', function( ) {

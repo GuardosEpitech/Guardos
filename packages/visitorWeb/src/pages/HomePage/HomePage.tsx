@@ -12,10 +12,6 @@ import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
 
-type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
-import { getRestoFavourites } from "@src/services/favourites";
-import { useTranslation } from "react-i18next";
-
 type color =
   | "primary"
   | "secondary"
