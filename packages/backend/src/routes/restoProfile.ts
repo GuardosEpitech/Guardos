@@ -4,8 +4,8 @@ import 'dotenv/config';
 import {
   addRestoProfilePic, deleteRestoProfilePic, editRestoProfilePic,
   getRestoProfileDetails,
-  getUserIdResto,
-  updateRestoPassword,
+  getUserIdResto, getUserRestoCookiePreferences,
+  updateRestoPassword, setUserRestoCookiePreferences,
   updateRestoProfileDetails, updateRecoveryPasswordResto
 } from '../controllers/userRestoController';
 
@@ -187,6 +187,44 @@ router.delete('/image', async (req, res) => {
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
+});
+
+router.post('/setCookiePref', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const data = req.body;
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    const response = await setUserRestoCookiePreferences(<number>userID, data);
+    return res.status(200)
+      .send(response);
+
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in POST '/api/profile/setCookiePref' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/getCookiePref', async (req, res) => {
+  const userToken = String(req.query.key);
+  const userID = await getUserIdResto(userToken);
+  if (userID === false) {
+    // If user ID is not found, return 404 Not Found
+    return res.status(404)
+      .send({ error: 'User not found' });
+  }
+  const response = await getUserRestoCookiePreferences(<number>userID);
+  return res.status(200)
+    .send(response);
 });
 
 export default router;

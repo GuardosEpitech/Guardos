@@ -101,7 +101,29 @@
         "menu": "Menu",
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ restoName }}?",
         "opening-hours": "Heures d'ouverture"
-      }
+      },
+      "CookieBanner": {
+        "title": "Nous utilisons des cookies",
+        "intro": "Nous utilisons des cookies pour collecter des informations vous concernant. Nous utilisons ces informations :",
+        "txt1": "1. pour vous offrir une meilleure expérience sur notre site Web ",
+        "func": "(fonctionnel)",
+        "Func": "Fonctionnel",
+        "txt2": "2. pour compter les pages que vous visitez ",
+        "statistical": "(statistiques)",
+        "Statistical": "Statistiques",
+        "txt3": "3. pour vous proposer des promotions pertinentes ",
+        "marketing": "(marketing)",
+        "Marketing": "Marketing",
+        "txt4": "Cliquez sur \"",
+        "ok": "OK",
+        "txt5": "\" pour nous donner votre consentement à l'utilisation de cookies à toutes ces fins. Vous pouvez également utiliser les cases à cocher pour consentir à des finalités spécifiques.",
+        "txt6": "Retirez ou modifiez votre consentement à tout moment. En savoir plus sur la manière dont nous utilisons les cookies et d'autres technologies pour collecter des données personnelles : ",
+        "privacy": "Politique de confidentialité",
+        "cookie": "Politique en matière de cookies",
+        "decline": "REFUSER TOUT",
+        "and": " et ",
+        "strictly": "Strictement nécessaire"
+        }
     },
     "pages": {
       "AddDishPage": {
@@ -123,7 +145,8 @@
         "imprint": "Impression",
         "welcomeSite": "Bienvenue à Guardos",
         "instagram": "Notre Instagram",
-        "linkedIn": "Notre linkedIn"
+        "linkedIn": "Notre linkedIn",
+        "cookieStatement": "Politique des cookies"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la page principale.",
@@ -327,7 +350,76 @@
         "name": "Catégorie:",
         "id": "Séquence:",
         "add": "Nouveau"
-      }
+      },
+      "CookieStatement": {
+        "title": "Déclaration relative aux cookies",
+        "listOf": "liste des technologies",
+        "privacy": "déclaration de confidentialité",
+        "EnableDisable": "Activation/désactivation des cookies et suppression des cookies",
+        "WhichTech": "Quelles technologies utilisons-nous ?",
+        "WhatScript": "1. Qu'est-ce qu'un script ?",
+        "WhatTracker": "2. Qu'est-ce qu'un tracker ?",
+        "WhatCookie": "3. Qu'est-ce qu'un cookie ?",
+        "WhyTech": "Pourquoi utilisons-nous ces technologies ?",
+        "Func": "1. Objectifs fonctionnels",
+        "Analytical": "2. Objectifs analytiques",
+        "Marketing": "3. Objectifs marketing",
+        "Security": "Sécurité de vos données par nous et par des tiers",
+        "ThirdParty": "2. Technologies tierces",
+        "WhatRights": "Quels sont vos droits ?",
+        "EnableCookie": "1. Activation/désactivation des cookies et suppression des cookies",
+        "RightInspect": "2. Droit d'accès, de rectification ou de suppression de vos données",
+        "TipQuestion": "3. Conseils, questions et plaintes",
+        "Conclusion": "Conclusion",
+        "intro": "Guardos.eu utilise diverses technologies telles que les cookies, les trackers et les scripts (ci-après collectivement désignés par 'Technologies') sur ses sites web et applications pour améliorer l'expérience utilisateur en termes de vitesse, de sécurité et de performance globale. Ces technologies sont mises en œuvre non seulement directement par Guardos.eu mais également via des services tiers engagés par Guardos.eu. Garantir votre confidentialité concernant ces technologies est d'une importance capitale pour nous. Pour des informations détaillées sur la manière dont nous gérons vos données, veuillez consulter notre ",
+        "intro2": "À travers cette déclaration relative aux cookies, nous visons à élucider la nature et le but des technologies que nous utilisons. Si vous avez des questions concernant notre utilisation des technologies ou des préoccupations concernant votre vie privée en relation avec ces technologies, n'hésitez pas à nous contacter à l'adresse guardos-help@outlook.com.",
+        "intro3": "Lors de votre première visite sur nos sites web et applications à partir de n'importe quel appareil (tel qu'un ordinateur, un smartphone ou une tablette), vous rencontrerez notre bannière de cookies. Ici, vous avez la possibilité d'accepter tous les cookies ou de personnaliser vos paramètres de cookies. Vous conservez la flexibilité de modifier vos préférences en matière de cookies à tout moment via le centre de préférences (fourni ci-dessous). Toutefois, veuillez noter que la désactivation de certains types de cookies peut avoir un impact sur votre expérience de navigation sur nos sites web et applications, ainsi que sur la gamme de services que nous pouvons offrir. Soyez assuré que nous configurons toujours des cookies pour mémoriser vos préférences et d'autres cookies techniques essentiels.",
+        "cookies": "Nous ne stockons que des cookies essentiels, y compris ceux avec une fonctionnalité analytique limitée, sur votre appareil s'ils sont cruciaux pour le bon fonctionnement de nos services. Cependant, pour toutes les autres catégories de cookies, nous sollicitons votre consentement explicite en fonction de leurs finalités et fonctions respectives. Il est important de noter que certains cookies peuvent être placés par des services tiers présentés sur nos pages. Pour une compréhension complète de toutes les technologies que nous utilisons, ainsi que de leurs finalités, fonctions et durée de vie, veuillez consulter notre ",
+        "cookies2": "Cela garantit que vous avez un aperçu précis des technologies que nous utilisons.",
+        "introTech": "Comme indiqué précédemment, Guardos.eu utilise différentes technologies pour la collecte de données. Les technologies utilisées par Guardos.eu incluent les scripts, les trackers et les cookies. Ci-dessous, nous fournirons une explication de chaque technologie :",
+        "script": "Un script est un segment de code de programmation conçu pour faciliter le bon fonctionnement et l'interactivité de notre site web. Ce code peut être exécuté soit sur notre serveur, soit directement sur votre appareil. Son objectif principal est de garantir un fonctionnement sans heurts et d'améliorer l'engagement des utilisateurs en permettant des fonctionnalités interactives et une présentation de contenu dynamique.",
+        "tracker": "Un tracker est un élément discret, souvent un petit extrait de texte ou une image intégrée dans notre site web, utilisé pour surveiller et analyser le trafic sur le site web. Pour cartographier efficacement les modèles de trafic, nous utilisons plusieurs trackers, chacun conçu pour capturer différents types de données sur les interactions des utilisateurs. De plus, des entités tierces peuvent être autorisées à installer des trackers sur notre site web pour aider à surveiller et à analyser le trafic en notre nom. Ces trackers jouent un rôle crucial en fournissant des informations précieuses sur le comportement des utilisateurs et en optimisant les performances et l'expérience utilisateur de notre site web.",
+        "cookie": "Un cookie est un fichier texte basique et compact qui est transmis depuis certaines pages de notre site web et ensuite stocké par votre navigateur web sur le disque dur de votre ordinateur. Alors que certains cookies servent à établir des connexions entre vos activités sur notre site web pendant votre visite, d'autres persistent sur le disque dur de votre ordinateur et sont renvoyés à nos serveurs, ou à ceux de tiers qui ont déployé le cookie en notre nom, lorsque vous revisitez notre site web. Cela nous permet de reconnaître votre appareil et d'adapter votre expérience de navigation en conséquence, que ce soit en mémorisant vos préférences ou en fournissant un contenu personnalisé.",
+        "purposeTech": "Nous déployons des cookies, des trackers et des scripts pour des objectifs distincts : fonctionnels, analytiques et marketing. Voici un aperçu des différents objectifs pour lesquels nous utilisons ces technologies. Pour une ventilation détaillée de toutes les technologies que nous utilisons, de leurs finalités prévues et de leurs fonctionnalités spécifiques, veuillez consulter notre liste de technologies. Cette liste est régulièrement mise à jour pour vous fournir un aperçu précis des technologies que nous utilisons.",
+        "functional1": "Nous utilisons diverses technologies pour garantir la fonctionnalité et la convivialité de notre site web. Parmi celles-ci, les scripts et les cookies jouent des rôles vitaux. Les scripts permettent l'interactivité sur le site web, garantissant que les actions telles que le clic sur des éléments produisent les résultats attendus. Les cookies, quant à eux, facilitent des fonctions essentielles telles que le maintien du panier d'achat et la mémorisation des produits sélectionnés ou des adresses utilisateur. Sans cookies, ces fonctions seraient impraticables.",
+        "functional2": "Certaines technologies utilisées à des fins fonctionnelles sont indispensables au fonctionnement du site web et ne peuvent pas être désactivées. Ces technologies sont conservées pour une durée limitée, généralement ne dépassant pas quelques heures après votre visite sur le site web. Cela garantit que les fonctionnalités critiques restent intactes et accessibles pendant votre session de navigation.",
+        "analytical": "Nous utilisons des cookies et des trackers pour analyser votre comportement sur notre site web, dans le but de l'améliorer et de l'adapter à vos préférences. En examinant ces données, nous nous efforçons d'optimiser la convivialité de notre site web. Par exemple, nous surveillons quelles pages sont les plus fréquemment visitées et observons comment vous naviguez sur notre site web. Cette approche analytique nous permet de faire des ajustements et des améliorations informés, en visant à fournir la meilleure expérience de navigation possible.",
+        "marketing": "Évidemment, nous espérons que vous utiliserez notre site web aussi souvent que possible, c'est pourquoi nous utilisons des cookies et des trackers pour vous faire de la publicité. Grâce aux cookies, nous pouvons vous proposer des offres intéressantes et/ou des réductions. À cette fin, nous analysons, entre autres, la fréquence à laquelle vous utilisez notre site web et les produits qui vous intéressent. Cela nous permet d'adapter notre offre et nos publicités à vos souhaits. Un autre objectif marketing pour lequel nous utilisons des trackers est de vérifier si vous venez d'un site web de l'un de nos annonceurs. Cela est nécessaire car nous devons payer nos annonceurs pour les clients qui visitent notre site web via leur plateforme (ou passent une commande sur notre plateforme).",
+        "security": "1. Sécurité de vos données par Guardos.eu",
+        "securityTxt": "Guardos.eu accorde la priorité à la protection de vos données et met en œuvre des mesures appropriées pour prévenir leur mauvaise utilisation, leur perte, leur accès non autorisé, leur divulgation accidentelle et leur altération non autorisée. Si vous soupçonnez que vos données ne sont pas suffisamment sécurisées ou s'il y a des signes de mauvaise utilisation, n'hésitez pas à nous contacter à l'adresse : guardos-help@outlook.com. Vos préoccupations seront traitées rapidement et en détail car nous nous engageons à garantir la sécurité et l'intégrité de vos informations.",
+        "securityThirdParty": "Comme mentionné précédemment, nous incorporons des technologies tierces pour nous aider à atteindre les objectifs définis. Ces entités tierces contribuent à la réalisation des objectifs décrits dans cette déclaration. Nous interdisons strictement aux tiers d'utiliser vos données à leurs propres fins ou à des fins qui dévieraient de celles décrites dans cette déclaration. Guardos.eu conclut des accords de traitement avec des entités tierces responsables du déploiement de technologies sur notre site web en notre nom. Ces accords de traitement sont établis pour garantir les mêmes normes de sécurité et de confidentialité pour vos données. Nous sommes responsables du traitement de vos données personnelles par des tiers agissant au nom de Guardos.eu. Soyez assuré, nous restons engagés à protéger votre vie privée et à garantir l'intégrité de vos données tout au long de leur cycle de traitement.",
+        "enableDisable1": "Vous avez la possibilité de modifier vos préférences concernant les technologies utilisées sur notre site web, communément appelées cookies sur Internet. De plus, vous avez la possibilité de supprimer les cookies qui ont déjà été placés sur votre appareil, car les cookies sont la seule technologie qui stocke les données localement.",
+        "enableDisable2": "Cependant, veuillez noter que la désactivation de certaines technologies peut entraîner le dysfonctionnement de certaines parties de notre site web. Il est important de comprendre que les technologies essentielles nécessaires au fonctionnement du site web, qui peuvent inclure certains scripts et cookies, ne peuvent pas être désactivées.",
+        "enableDisable3": "Pour vous aider à ajuster vos paramètres et éventuellement à supprimer les cookies, nous fournissons ci-dessous des liens qui vous guideront dans le processus pour chaque navigateur :",
+        "inspect": "Vous conservez le droit de demander l'accès, la rectification ou la suppression de vos données. Pour des informations détaillées sur ce processus, veuillez vous référer à notre ",
+        "inspect2": ". Pour éviter les abus, nous pouvons vous demander une pièce d'identité appropriée lors du traitement de telles demandes. Cette mesure garantit la sécurité et l'intégrité de vos données tout au long du processus. Nous nous engageons à faciliter vos droits concernant vos données personnelles de manière transparente et responsable.",
+        "tips": "Pour obtenir des détails complets sur notre politique de confidentialité et le traitement de vos données personnelles, nous vous encourageons à consulter notre ",
+        "tips2": ". Si vous avez des questions ou des préoccupations concernant notre politique en matière de cookies, nous sommes plus qu'heureux de vous aider. Votre satisfaction et votre compréhension nous tiennent à cœur, et nous nous engageons à répondre à toutes les questions ou plaintes que vous pourriez avoir concernant nos politiques. N'hésitez pas à nous contacter pour obtenir de l'aide.",
+        "conclusion1": "Nous pouvons mettre périodiquement à jour cette déclaration relative aux cookies en réponse à l'évolution des développements juridiques, techniques ou commerciaux. Nous nous réservons le droit de modifier le contenu de la déclaration relative aux cookies et les cookies répertoriés dans la liste des technologies selon les besoins. Toutes les modifications apportées à la déclaration relative aux cookies seront effectives dès leur publication.",
+        "conclusion2": "Si vous n'êtes pas d'accord avec la déclaration révisée, vous avez la possibilité de modifier vos préférences ou de cesser d'utiliser nos sites web et applications. En continuant à accéder ou à utiliser nos services après l'entrée en vigueur des modifications, vous indiquez votre acceptation de la déclaration relative aux cookies révisée.",
+        "conclusion3": "Si vous avez d'autres questions ou commentaires, n'hésitez pas à nous contacter via guardos-help@outlook.com ou via notre formulaire de confidentialité.",
+        "conclusion4": "Nous vous encourageons à consulter régulièrement les dernières mises à jour. Les versions précédentes de notre déclaration relative aux cookies seront archivées pour votre référence.",
+        "conclusion5": "Cette déclaration relative aux cookies est sujette à modification et a été mise à jour pour la dernière fois le 08/04/2024."
+      },
+      "TechnologyPage": {
+        "title": "Liste des technologies",
+        "intro": "Cette liste fournit un inventaire de tous les cookies utilisés sur nos sites Guardos.eu, classés selon les objectifs définis dans la ",
+        "cookie": "déclaration de cookie",
+        "func": "Technologies fonctionnelles",
+        "introFunc": "Nous utilisons diverses technologies pour garantir le bon fonctionnement et la convivialité de notre site Web. Les technologies suivantes sont utilisées à des fins fonctionnelles :",
+        "tableName": "Nom du fournisseur (nom de la technologie)",
+        "tablePurpose": "Objectif de la technologie",
+        "tableShared": "Partagé avec des tiers",
+        "tableLife": "Durée de vie de la technologie",
+        "namePlaceholder": "Actuellement, aucun cookie n'est utilisé.",
+        "purposePlaceholder": "",
+        "sharedPlaceholder": "Non partagé avec des tiers",
+        "lifePlaceholder": "",
+        "analytical": "Technologies analytiques",
+        "introAnalytical": "Nous analysons vos interactions sur le site Web à l'aide de cookies et de trackers pour améliorer et adapter notre site Web à vos préférences. Grâce à cette analyse, nous nous efforçons de rendre notre site Web aussi convivial que possible. Les technologies suivantes sont utilisées à des fins analytiques :",
+        "marketing": "Technologies marketing",
+        "introMarketing": "Naturellement, nous visons une utilisation fréquente de notre site Web et utilisons donc des cookies et des trackers pour le promouvoir auprès de vous. Les technologies suivantes sont utilisées à des fins marketing :"
+        }
     }
   }
 }

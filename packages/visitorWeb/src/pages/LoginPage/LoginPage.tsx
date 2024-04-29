@@ -26,7 +26,11 @@ const initialUserState = {
   password: '',
 };
 
-const Login = () => {
+interface LoginPageProps {
+  toggleCookieBanner: (value: boolean) => void;
+}
+
+const Login = (props:LoginPageProps) => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
@@ -71,6 +75,7 @@ const Login = () => {
       } else {
         localStorage.setItem('user', response.data);
         setErrorForm(false);
+        props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
           loginName: user.username
         })

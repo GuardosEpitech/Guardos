@@ -32,6 +32,7 @@ const AppOutlet = () => {
             <ul className={styles.ListLinks}>
               <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
               <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
+              <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
               <li><a className={styles.links} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('pages.AppOutlet.welcomeSite')}</a></li>
             </ul>
           </div>
