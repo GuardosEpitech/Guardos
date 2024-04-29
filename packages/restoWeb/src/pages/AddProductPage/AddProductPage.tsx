@@ -4,6 +4,7 @@ import ProductForm from "@src/components/forms/ProductForm/ProductForm";
 import styles from "@src/pages/AddProductPage/AddProductPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const AddProductPage = () => {
   const {t} = useTranslation();
@@ -11,24 +12,6 @@ const AddProductPage = () => {
   useEffect(() => {
     checkDarkMode();
   }, []);
-  
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
   
   return (
     <div>

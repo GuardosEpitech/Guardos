@@ -11,6 +11,7 @@ import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
@@ -29,24 +30,6 @@ const DishesPage = () => {
         setDishData(res);
       });
   };
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
   return (
     <div>

@@ -5,6 +5,7 @@ import RestaurantForm
 import styles from "@src/pages/AddRestaurantPage/AddRestaurantPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 
 const AddRestaurantPage = () => {
@@ -14,24 +15,6 @@ const AddRestaurantPage = () => {
     checkDarkMode();
   }, []);
 
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
-  
   return (
     <div>
       <div className={styles.RectOnImg}>

@@ -11,6 +11,7 @@ import {
 import { enable, disable, setFetchMethod} from "darkreader";
 
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface ResetPasswordProps {
 }
@@ -86,24 +87,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const handleGoBackToSite = () => {
     setOpenFailed(false);
   };
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
   return (
     <div className={styles.container}>

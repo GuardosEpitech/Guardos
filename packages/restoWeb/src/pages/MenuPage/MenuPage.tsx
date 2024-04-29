@@ -16,6 +16,7 @@ import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 
 const theme = createTheme({
@@ -53,24 +54,6 @@ const MenuPage = () => {
   useEffect(() => {
     checkDarkMode();
   }, []);
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
   return (
     <>

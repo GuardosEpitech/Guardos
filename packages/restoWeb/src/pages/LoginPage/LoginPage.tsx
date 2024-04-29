@@ -11,6 +11,7 @@ import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface LoginUser {
   username: string;
@@ -79,24 +80,6 @@ const Login = () => {
     const { name, value } = e.target;
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
   return (
     <>
