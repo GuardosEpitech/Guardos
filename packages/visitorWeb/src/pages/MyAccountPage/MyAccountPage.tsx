@@ -223,6 +223,7 @@ const MyAccountPage = () => {
       if (res !== null) {
         const event = new Event('loggedOut');
         localStorage.removeItem('user');
+        localStorage.removeItem('visitedBefore');
         document.dispatchEvent(event);
         NavigateTo('/', navigate, {})
       }

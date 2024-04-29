@@ -6,7 +6,29 @@
   width: 19.56rem;
 }
 
-.DivSearchInput {
+.searchInput {
   display: flex;
   gap: 2.5rem;
+}
+
+.searchContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  .InputSearch {
+    width: 100%
+  }
+
+  .searchInput {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .searchContainer {
+    flex-direction: column;
+  }
 }

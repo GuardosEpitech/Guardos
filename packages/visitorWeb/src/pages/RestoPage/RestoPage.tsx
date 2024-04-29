@@ -191,7 +191,7 @@ const RestoPage = () => {
             <ThemeProvider theme={Btn()}>
               <Button
                 variant="contained"
-                sx={{ width: "15.44rem" }}
+                sx={{ width: "100%" }}
                 onClick={handleButtonClick}>
                 {step === 1 ? 'Map' : 'List'}
               </Button>
@@ -207,7 +207,7 @@ const RestoPage = () => {
           />
         </div>
         {step === 1 ? (
-          <div>
+          <div className={styles.DivContentRestoSection}>
             <h1 className={styles.TitleCard}>Berlin - +12548 Restaurants</h1>
             {filteredRestaurants?.map((item, index) => {
               const isFavourite = isFavouriteRestos.includes(item.uid);

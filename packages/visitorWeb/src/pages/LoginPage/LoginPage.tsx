@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { Container, Divider } from '@mui/material';
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Layout from "shared/components/Layout/Layout";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Layout from 'shared/components/Layout/Layout';
 import FacebookLogo from '../../assets/Facebook.png';
 import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
@@ -12,6 +12,13 @@ import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
+import styles from '@src/pages/LoginPage/LoginPage.module.scss';
+import {useTranslation} from 'react-i18next';
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const REDIRECT_URI = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/google/callback`;
+const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+
 
 
 interface LoginUser {
@@ -24,7 +31,11 @@ const initialUserState = {
   password: '',
 };
 
-const Login = () => {
+interface LoginPageProps {
+  toggleCookieBanner: (value: boolean) => void;
+}
+
+const Login = (props:LoginPageProps) => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
@@ -36,19 +47,25 @@ const Login = () => {
   }, []);
 
   const handleFacebookLogin = () => {
-    // Implement Facebook login logic here
-    alert(t('pages.LoginPage.redirect-facebook-login'));
+    const clientId = process.env.FACEBOOK_APP_ID;
+    const redirectUri = encodeURIComponent(`${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/facebook/callback`);
+    const scope = encodeURIComponent('email,public_profile');
+    const authUrl =
+        `https://www.facebook.com/v10.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
+
+    window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
-    // Implement Google login logic here
-    alert(t('pages.LoginPage.redirect-google-login'));
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&access_type=offline&prompt=consent`;
+    window.location.href = authUrl;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // handle registration logic here
     try {
+      console.log(process.env.GOOGLE_CLIENT_ID);
       const dataStorage = JSON.stringify({
         username: user.username,
         password: user.password
@@ -67,6 +84,7 @@ const Login = () => {
       } else {
         localStorage.setItem('user', response.data);
         setErrorForm(false);
+        props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
           loginName: user.username
         })
@@ -127,14 +145,21 @@ const Login = () => {
               <span>{t('pages.LoginPage.or')}</span>
               <Divider sx={{ width: '40%', marginY: '20px' }} />
             </Container>
-            <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '25px', justifyContent: 'space-around' }}>
+            <Container maxWidth="xs" sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: '25px',
+              justifyContent: 'space-around'
+            }}>
               <img
-                src={FacebookLogo}
-                alt={t('pages.LoginPage.facebook-img-alt')}
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleFacebookLogin}
+                  src={FacebookLogo}
+                  alt={t('pages.LoginPage.facebook-img-alt')}
+                  style={{width: '50px', height: '50px', cursor: 'pointer'}}
+                  onClick={handleFacebookLogin}
               />
               <div className={styles.dividerLogos}></div>
+
               <img
                 src={GoogleLogo}
                 alt={t('pages.LoginPage.google-img-alt')}

@@ -186,6 +186,7 @@ const MyAccountPage = () => {
         if (res !== null) {
           const event = new Event('loggedOut');
           localStorage.removeItem('user');
+          localStorage.removeItem('visitedRestoBefore');
           document.dispatchEvent(event);
           NavigateTo('/', navigate, {});
         }

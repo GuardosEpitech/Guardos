@@ -6,6 +6,7 @@ export const userRestoSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  permissions: [String],
   isActive: Boolean,
   restaurantIDs: [Number],
   profilePicId: {
@@ -14,4 +15,10 @@ export const userRestoSchema = new mongoose.Schema({
   },
   defaultMenuDesign: String,
   preferredLanguage: String,
+  preferencesCookie: {
+    isSet: Boolean,
+    functional: Boolean,
+    statistical: Boolean,
+    marketing: Boolean
+  },
 });

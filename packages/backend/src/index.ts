@@ -23,19 +23,44 @@ import { connectDataBase, SUCCEED } from './controllers/connectDataBase';
 import dishes from './routes/dishes';
 import products from './routes/products';
 import restaurants from './routes/restaurants';
+import restaurantsSearch from './routes/restoFilter';
 import email from './routes/email';
 import visitorProfile from './routes/visitorProfile';
 import restoProfile from './routes/restoProfile';
-import featureRequest from './routes/featureRequest'
+import visitorPermissions from './routes/visitorPermissions';
+import restoPermissions from './routes/restoPermissions';
+import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
 
+function constructAllowedOrigins(): string[] {
+  const domains: { [key: string]: string | undefined } = {
+    RW: process.env.allowedRW,
+    VW: process.env.allowedVW,
+  };
+
+  const needsPort = (domain: string | undefined): boolean => {
+    return domain ? domain.endsWith(':') : false;
+  };
+  return Object.keys(domains)
+    .map((key) => {
+      const base = domains[key];
+      const portVar = `PORT${key}`;
+      const port = process.env[portVar];
+
+      if (!base) {
+        throw new Error(`Environment variable ${key} is not defined`);
+      }
+
+      return needsPort(base) && port ? `${base}${port}` : base;
+    });
+}
+
 async function main() {
   const app = express();
-  const allowedOrigins = [`${process.env.allowedRW}${process.env.PORTRW}`,
-    `${process.env.allowedVW}${process.env.PORTVW}`];
-  console.log('allowedOrigins', allowedOrigins);
 
+  const allowedOrigins = constructAllowedOrigins();
+  console.log('Allowed Origins:', allowedOrigins);
   app.use(logger('dev'));
   app.use(bodyParser.json({limit: '50mb'}));
   app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
@@ -59,6 +84,7 @@ async function main() {
     app.use('/api/products', products);
     app.use('/api/dishes', dishes);
     app.use('/api/restaurants', restaurants);
+    app.use('/api/search/restaurants', restaurantsSearch);
     app.use('/api/menu', menu);
     app.use('/api/ingredients', basicApiIngredients);
     app.use('/api/filter', filter);
@@ -71,8 +97,10 @@ async function main() {
     app.use('/api/profile', visitorProfile);
     app.use('/api/foodCategorie', foodCategorie);
     app.use('/api/profile/resto', restoProfile);
+    app.use('/api/permissions/visitor', visitorPermissions);
+    app.use('/api/permissions/resto', restoPermissions);
     app.use('/api/payments', payments);
-    app.use('/api/featureRequest', featureRequest)
+    app.use('/api/featureRequest', featureRequest);
     app.use('/api/review', review);
     app.use('/api/favourites', favourites);
     app.use('/api/menuDesigns', menuDesigns);

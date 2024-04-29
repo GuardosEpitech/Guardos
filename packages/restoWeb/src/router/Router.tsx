@@ -20,9 +20,17 @@ import ResetPassword from "@src/pages/ResetPasswordPage";
 import ChangePasswordPage from "@src/pages/ChangePasswordPage";
 import MyAccountPage from "@src/pages/MyAccountPage";
 import FeatureRequest from "@src/pages/FeatureRequest";
+import PrivacyPage from "../../../shared/pages/PrivacyPage";
+import ImprintPage from "../../../shared/pages/ImprintPage";
+import CookieStatement from "@src/pages/CookieStatement/CookiePage";
+import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
+import CookieBanner from "@src/components/CookieBanner/CookieBanner";
+import { getUserRestoPreferences } from "@src/services/profileCalls";
+import AddCategoryPage from "@src/pages/AddCategoryPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
+  const [showCookies, setShowCookies] = useState<boolean>();
   const userToken = localStorage.getItem('user');
 
   const checkUserToken = () => {
@@ -33,18 +41,41 @@ const MVPRouter = () => {
     setIsUserTokenSet(true);
   };
 
+  const areCookiesSet = async () => {
+    if (isUserTokenSet) {
+      const data = await getUserRestoPreferences(userToken);
+      if (data.isSet) {
+        setShowCookies(false);
+        localStorage.setItem('visitedRestoBefore', 'true');  
+      } else {
+        setShowCookies(true);
+      }
+    } else {
+      setShowCookies(true);
+    }
+  };
+
   useEffect(() => {
     checkUserToken();
+    areCookiesSet();
   }, [isUserTokenSet, userToken]);
 
+  const toggleCookieBanner = (value: boolean) => {
+    setShowCookies(value);
+  };
+
   return (
+    <>
+    {showCookies && <CookieBanner />}
     <BrowserRouter>
       <ScrollToTop />
       {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' &&
         window.location.pathname !== '/payment-failed' && 
         window.location.pathname !== '/payment-success' &&
-        window.location.pathname !== '/change-password' && (
+        window.location.pathname !== '/change-password' &&
+        window.location.pathname !== '/cookiestatement' &&
+        window.location.pathname !== '/technologies' &&  (
         <Navigate to="login" />
       )}
       {isUserTokenSet === true && (window.location.pathname === '/register'
@@ -59,7 +90,7 @@ const MVPRouter = () => {
           <Route path="addProduct" element={<AddProductPage />} />
           <Route path="addResto" element={<AddRestaurantPage />} />
           <Route path="dishes" element={<DishesPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path="login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="account" element={<MyAccountPage />} />
           <Route path="editDish" element={<EditDishPage />} />
@@ -72,9 +103,15 @@ const MVPRouter = () => {
           <Route path="/feature-request" element={<FeatureRequest />}> </Route>
           <Route path="/account-recovery" element={<ResetPassword />}></Route>
           <Route path="/change-password" element={<ChangePasswordPage />}></Route>
+          <Route path="/privacy" element={<PrivacyPage />}></Route>
+          <Route path="/imprint" element={<ImprintPage />}></Route>
+          <Route path="addCategory" element={<AddCategoryPage />}></Route>
+          <Route path="/cookiestatement" element={<CookieStatement />}></Route>
+          <Route path="/technologies" element={<TechnologyList />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
+    </>
   );
 };
 

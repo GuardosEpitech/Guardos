@@ -110,7 +110,7 @@ const MenuPage = () => {
             <div className={styles.secondLayoutDishes}>
               {menu.map((category: ICategories, index: number) => {
                 return (
-                  <div className="">
+                  <div key={index} ref={sectionRefs.current[index]}>
                     {index % 3 === 0 ? (
                       <div style={{ 
                         backgroundImage: `url(${pic1})`

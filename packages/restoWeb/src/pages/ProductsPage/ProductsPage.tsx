@@ -42,6 +42,7 @@ const ProductsPage = () => {
           container
           spacing={{ xs: 1, sm: 2, md: 3 }}
           justifyContent="space-between"
+          className={styles.productGrid}
         >
           {productData.map((product, index) => (
             <ProductCard

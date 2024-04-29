@@ -2,7 +2,8 @@ import * as express from 'express';
 
 import {
   changeRestaurant, createNewRestaurant, deleteRestaurantByName,
-  getAllRestaurants, getRestaurantByName, getAllUserRestaurants
+  getAllRestaurants, getRestaurantByName, getAllUserRestaurants, 
+  addCategory
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -117,6 +118,25 @@ router.put('/:name', async (req, res) => {
       .send(answer);
   } catch (error) {
     console.error("Error in 'restaurants/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.post('/updateCategories', async (req, res) => {
+  try {
+    const { userToken, uid, newCategories } = req.body;
+    const userID = await getUserIdResto(userToken);
+    
+    if (userID === false) {
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    const answer = await addCategory(uid, newCategories);
+    return res.status(200)
+      .send(answer);
+  } catch (error) {
+    console.error("Error in 'restaurants/updateCategories' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
