@@ -6,6 +6,7 @@ export const userRestoSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  permissions: [String],
   isActive: Boolean,
   restaurantIDs: [Number],
   profilePicId: {

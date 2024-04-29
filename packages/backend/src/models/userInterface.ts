@@ -6,6 +6,7 @@ export const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  permissions: [String],
   city: String,
   allergens: [String],
   // ISearchCommunication
