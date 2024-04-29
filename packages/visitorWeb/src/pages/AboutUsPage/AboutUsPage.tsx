@@ -6,8 +6,8 @@ import mark from "@src/assets/profile/mark.png";
 import ramon from "@src/assets/profile/ramon.png";
 import renan from "@src/assets/profile/renan.png";
 import alban from "@src/assets/profile/alban.png";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const AboutUsPage = () => {
   const [activeSection, setActiveSection] = useState('introduction');
@@ -48,24 +48,6 @@ const AboutUsPage = () => {
   useEffect(() => {
     checkDarkMode();
   }, []);
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
     return (
         <div>

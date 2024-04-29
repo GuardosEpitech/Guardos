@@ -9,6 +9,7 @@ import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -206,24 +207,6 @@ const MapPage = () => {
     }
     localStorage.setItem('filter', JSON.stringify(inter));
     setFilteredRestaurants(await getSelectedFilteredRestos(inter));
-  }
-
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
   }
 
   return (

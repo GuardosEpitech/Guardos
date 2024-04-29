@@ -12,6 +12,7 @@ import 'react-vertical-timeline-component/style.min.css';
 import './timeline.min.css';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const IntroPage = () => {
   const [opacity1, setOpacity1] = useState(1);
@@ -58,24 +59,6 @@ const IntroPage = () => {
     // Scroll to the target section
     targetSectionRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-  
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
 
   return (
     <div>

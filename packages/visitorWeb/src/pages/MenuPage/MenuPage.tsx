@@ -26,6 +26,7 @@ import {getRestosMenu} from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import {useTranslation} from "react-i18next";
 import {getUserAllergens} from "@src/services/userCalls";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const theme = createTheme({
   palette: {
@@ -107,23 +108,6 @@ const MenuPage = () => {
     }
   };
 
-  const checkDarkMode = () => {
-    if ((localStorage.getItem('darkMode')) == 'true'){
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
-    } else {
-      disable();
-    }
-  }
   // Create refs for each section
   const sectionRefs = useRef(restoMenu.map(() => React.createRef()));
 
