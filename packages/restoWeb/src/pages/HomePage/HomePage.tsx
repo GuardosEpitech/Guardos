@@ -61,7 +61,7 @@ const HomePage = () => {
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>{t('common.my-restos')}</span>
       </div>
-      <div>
+      <div className={styles.searchContainer}>
         <input
           type="text"
           placeholder={t('pages.HomePage.search-restos')}

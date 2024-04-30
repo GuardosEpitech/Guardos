@@ -125,26 +125,6 @@ const Login = (props:LoginPageProps) => {
                 {t('pages.LoginPage.here')}
               </a>.
             </p>
-            <Container sx={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
-              <Divider sx={{ width: '40%', marginY: '20px' }} />
-              <span>{t('pages.LoginPage.or')}</span>
-              <Divider sx={{ width: '40%', marginY: '20px' }} />
-            </Container>
-            <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '25px', justifyContent: 'space-around' }}>
-              <img
-                src={FacebookLogo}
-                alt={t('pages.LoginPage.facebook-img-alt')}
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleFacebookLogin}
-              />
-              <div className={styles.dividerLogos}></div>
-              <img
-                src={GoogleLogo}
-                alt={t('pages.LoginPage.google-img-alt')}
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleGoogleLogin}
-              />
-            </Container>
           </form>
         </div>
       </Layout>

@@ -29,3 +29,14 @@
     }
   }
 }
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.searchInput {
+  margin-top: 5px;
+  width: 50%;
+}
