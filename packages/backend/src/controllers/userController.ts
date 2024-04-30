@@ -58,7 +58,6 @@ export async function loginUser(username: string,
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -78,7 +77,6 @@ export async function getUserToken(username:string) {
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -100,7 +98,6 @@ export async function logoutUser(token: string) {
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -148,7 +145,6 @@ export async function updateProfileDetails(userId: number,
       .toString();
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -171,7 +167,6 @@ export async function updateRecoveryPassword(userId: number,
     return true;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -207,7 +202,6 @@ export async function updatePassword(userId: number, password: string,
       .toString();
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -317,7 +311,6 @@ export async function getUserId(token: string) {
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 

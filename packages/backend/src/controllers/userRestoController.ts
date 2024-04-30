@@ -66,7 +66,6 @@ export async function loginUserResto(username: string,
     return false;
   }  catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -87,7 +86,6 @@ export async function getUserTokenResto(username:string) {
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -111,7 +109,6 @@ export async function logoutUserResto(token: string) {
     return false;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -156,7 +153,6 @@ export async function updateRestoProfileDetails(userId: number,
       .toString();
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -194,7 +190,6 @@ export async function updateRestoPassword(userId: number, password: string,
       .toString();
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -218,7 +213,6 @@ export async function updateRecoveryPasswordResto(userId: number,
     return true;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -276,7 +270,6 @@ export async function getUserIdResto(token: string) {
   }
   catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
