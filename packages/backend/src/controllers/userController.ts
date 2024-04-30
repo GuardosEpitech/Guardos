@@ -42,52 +42,66 @@ export async function addUser(username: string,
 
 export async function loginUser(username: string,
   password: string) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.find();
-  for (const elem of userData) {
-    if ((elem.username === username || elem.email === username)
-      && AES.decrypt(elem.password as string, 'Guardos')
-        .toString(enc.Utf8) === password) {
-      const token = elem.username ? elem.username : elem.email;
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema.find();
+    for (const elem of userData) {
+      if ((elem.username === username || elem.email === username)
+          && AES.decrypt(elem.password as string, 'Guardos')
+            .toString(enc.Utf8) === password) {
+        const token = elem.username ? elem.username : elem.email;
 
-      return AES.encrypt(token + password, 'Guardos')
-        .toString();
+        return AES.encrypt(token + password, 'Guardos')
+          .toString();
+      }
     }
+    return false;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  return false;
 }
 
 export async function getUserToken(username:string) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.find();
-  for (const elem of userData) {
-    if (elem.username === username || elem.email === username) {
-      const token = elem.username ? elem.username : elem.email;
-      const password = AES.decrypt(elem.password as string, 'Guardos')
-        .toString(enc.Utf8);
-      return AES.encrypt(token + password, 'Guardos')
-        .toString();
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema.find();
+    for (const elem of userData) {
+      if (elem.username === username || elem.email === username) {
+        const token = elem.username ? elem.username : elem.email;
+        const password = AES.decrypt(elem.password as string, 'Guardos')
+          .toString(enc.Utf8);
+        return AES.encrypt(token + password, 'Guardos')
+          .toString();
+      }
     }
+    return false;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  return false;
 }
 
 export async function logoutUser(token: string) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.find();
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema.find();
 
-  for (const elem of userData) {
-    let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password as string, 'Guardos')
-      .toString(enc.Utf8);
+    for (const elem of userData) {
+      let tokenToCheck = elem.username ? elem.username : elem.email;
+      tokenToCheck += AES.decrypt(elem.password as string, 'Guardos')
+        .toString(enc.Utf8);
 
-    if (AES.decrypt(token, 'Guardos')
-      .toString(enc.Utf8) === tokenToCheck) {
-      return true;
+      if (AES.decrypt(token, 'Guardos')
+        .toString(enc.Utf8) === tokenToCheck) {
+        return true;
+      }
     }
+    return false;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-
-  return false;
 }
 
 export async function getProfileDetails(userId: number) {
@@ -115,22 +129,27 @@ export async function getProfileDetails(userId: number) {
 // update username, email, allergens, preferred language
 export async function updateProfileDetails(userId: number,
   updateFields: Partial<IProfileCommunication>) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema
-    .findOneAndUpdate({ uid: userId }, {
-      username: updateFields.username,
-      email: updateFields.email,
-      city: updateFields.city,
-      allergens: updateFields.allergens,
-      preferredLanguage: updateFields.preferredLanguage,
-    }, { new: true });
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema
+      .findOneAndUpdate({uid: userId}, {
+        username: updateFields.username,
+        email: updateFields.email,
+        city: updateFields.city,
+        allergens: updateFields.allergens,
+        preferredLanguage: updateFields.preferredLanguage,
+      }, {new: true});
 
-  // return the updated token
-  const token = userData.username ? userData.username : userData.email;
-  return AES.encrypt(token +
-    AES.decrypt(userData.password as string, 'Guardos')
-      .toString(enc.Utf8), 'Guardos')
-    .toString();
+    // return the updated token
+    const token = userData.username ? userData.username : userData.email;
+    return AES.encrypt(token +
+        AES.decrypt(userData.password as string, 'Guardos')
+          .toString(enc.Utf8), 'Guardos')
+      .toString();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function updateRecoveryPassword(userId: number,
@@ -271,10 +290,9 @@ export async function getAllergens(userID: number) {
 export async function updateAllergens(email: string, allergens: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema
-    .findOneAndUpdate({ email: email }, {
-      allergens: JSON.
-        parse(allergens)
-    }, { new: true });
+    .findOneAndUpdate({email: email}, {
+      allergens: JSON.parse(allergens)
+    }, {new: true});
   return userData;
 }
 
@@ -282,21 +300,25 @@ export async function getUserId(token: string) {
   if (!token) {
     return false;
   }
+  try {
+    const UserSchema = mongoose.model('User', userSchema, 'User');
+    const userData = await UserSchema.find();
 
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.find();
+    for (const elem of userData) {
+      let tokenToCheck = elem.username ? elem.username : elem.email;
+      tokenToCheck += AES.decrypt(elem.password as string, 'Guardos')
+        .toString(enc.Utf8);
 
-  for (const elem of userData) {
-    let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password as string, 'Guardos')
-      .toString(enc.Utf8);
-
-    if (AES.decrypt(token, 'Guardos')
-      .toString(enc.Utf8) === tokenToCheck) {
-      return elem.uid;
+      if (AES.decrypt(token, 'Guardos')
+        .toString(enc.Utf8) === tokenToCheck) {
+        return elem.uid;
+      }
     }
+    return false;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  return false;
 }
 
 export async function deleteUser(userId: number) {
@@ -315,10 +337,7 @@ export async function doesUserExist(username: string, email: string) {
     username: username, 
     email: email
   });
-  if (answer) {
-    return true;
-  }
-  return false;
+  return !!answer;
 }
 
 export async function getUserCookiePreferences(userId: number) {
@@ -350,4 +369,4 @@ export async function setUserCookiePreferences(userId: number,
 
   await user.save();
   return 200;
-  }
+}
