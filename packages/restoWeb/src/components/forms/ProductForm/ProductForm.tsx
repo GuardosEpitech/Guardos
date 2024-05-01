@@ -13,8 +13,6 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { addNewProduct, editProduct } from "@src/services/productCalls";
-import { getAllResto } from "@src/services/restoCalls";
-import { getAllIngredients } from "@src/services/ingredientsCalls";
 import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
   from "shared/models/restaurantInterfaces";
 import { IProductFE }
@@ -22,6 +20,7 @@ import { IProductFE }
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -66,13 +65,15 @@ const ProductForm = (props: IDishFormProps) => {
   const originalName = productName;
   let restoNameListTemp = [] as IRestoName[];
   let selectedResto: string[] = [];
+  const {t} = useTranslation();
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         if (editable) {
-          const newFilteredList = res.filter((option: IRestaurantFrontEnd) => !productRestaurantIds.includes(option.id));
+          const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
+            !productRestaurantIds.includes(option.uid));
           setRestoList(newFilteredList);
         } else {
           setRestoList(res);
@@ -82,6 +83,7 @@ const ProductForm = (props: IDishFormProps) => {
       });
   }, []);
 
+  // TODO: apply i18n
   const ingredients: IIngredient[] = [
     { name: "Milk" },
     { name: "Wheat" },
@@ -141,13 +143,14 @@ const ProductForm = (props: IDishFormProps) => {
           <Grid item xs={4} sm={8} md={12}>
             <FormControl fullWidth>
               <TextField
-                label="Name"
+                label={t('components.ProductForm.name')}
                 defaultValue={productName}
                 id="component-outlined"
                 fullWidth
                 onChange={handleInputChange}
                 error={isInputEmpty}
-                helperText={isInputEmpty ? 'Input cannot be empty' : ''}
+                helperText={isInputEmpty ?
+                  t('components.ProductForm.input-empty-error') : ''}
               />
             </FormControl>
           </Grid>
@@ -167,7 +170,7 @@ const ProductForm = (props: IDishFormProps) => {
                 );
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Ingredients" />
+                <TextField {...params} label={t('common.ingredients')} />
               )}
             />
           </Grid>
@@ -183,12 +186,12 @@ const ProductForm = (props: IDishFormProps) => {
               onChange={(e, value) => {
                 selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
-                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.id);
+                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.uid);
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Restaurant"
+                  label={t('components.ProductForm.resto')}
                 />
               )}
             />
@@ -201,7 +204,7 @@ const ProductForm = (props: IDishFormProps) => {
             sx={{ width: "12.13rem" }}
             onClick={sendRequestAndGoBack}
           >
-            Save
+            {t('common.save')}
           </Button>
         </ThemeProvider>
       </Box>

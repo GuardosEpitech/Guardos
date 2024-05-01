@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { Container, Divider } from '@mui/material';
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Layout from "shared/components/Layout/Layout";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Layout from 'shared/components/Layout/Layout';
 import FacebookLogo from '../../assets/Facebook.png';
 import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const REDIRECT_URI = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/google/callback`;
+const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+
+
 
 interface LoginUser {
   username: string;
@@ -20,26 +29,41 @@ const initialUserState = {
   password: '',
 };
 
-const Login = () => {
+interface LoginPageProps {
+  toggleCookieBanner: (value: boolean) => void;
+}
+
+const Login = (props:LoginPageProps) => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
+  const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const handleFacebookLogin = () => {
-    // Implement Facebook login logic here
-    alert('Redirecting to Facebook login');
+    const clientId = process.env.FACEBOOK_APP_ID;
+    const redirectUri = encodeURIComponent(`${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/facebook/callback`);
+    const scope = encodeURIComponent('email,public_profile');
+    const authUrl =
+        `https://www.facebook.com/v10.0/dialog/oauth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&auth_type=rerequest`;
+
+    window.location.href = authUrl;
   };
 
   const handleGoogleLogin = () => {
-    // Implement Google login logic here
-    alert('Redirecting to Google login');
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&access_type=offline&prompt=consent`;
+    window.location.href = authUrl;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // handle registration logic here
     try {
+      console.log(process.env.GOOGLE_CLIENT_ID);
       const dataStorage = JSON.stringify({
         username: user.username,
         password: user.password
@@ -58,6 +82,7 @@ const Login = () => {
       } else {
         localStorage.setItem('user', response.data);
         setErrorForm(false);
+        props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
           loginName: user.username
         })
@@ -77,54 +102,65 @@ const Login = () => {
     <>
       <Layout>
         <div className={styles.loginForm}>
-          <h2>Login</h2>
+          <h2>{t('pages.LoginPage.login')}</h2>
           <form onSubmit={handleSubmit}>
             <TextField
-              label="Username or Email"
+              label={t('pages.LoginPage.username-or-email')}
               name="username"
               value={user.username}
               onChange={handleChange}
               margin="normal"
               error={errorForm}
-              helperText={errorForm ? 'Invalid Logindata' : ''}
+              helperText={errorForm ? t('pages.LoginPage.invalid-credentials') : ''}
             />
             <TextField
-              label="Password"
+              label={t('pages.LoginPage.password')}
               name="password"
               type="password"
               value={user.password}
               onChange={handleChange}
               margin="normal"
               error={errorForm}
-              helperText={errorForm ? 'Invalid Logindata' : ''}
+              helperText={errorForm ? t('pages.LoginPage.invalid-credentials') : ''}
             />
             <Button type="submit" variant="contained" color="primary" size='large'>
-              Login
+              {t('pages.LoginPage.login')}
             </Button>
             <p className={styles.registerInfo}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              <a className={styles.registerLink} onClick={() => NavigateTo('/account-recovery', navigate, {})}>Trouble logging in?</a>.
+              <a className={styles.registerLink} href="/account-recovery">
+                {t('pages.LoginPage.trouble-logging-in')}
+              </a>.
             </p>
             <p className={styles.registerInfo}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Don't you have an account yet? Register yourself <a className={styles.registerLink} onClick={() => NavigateTo('/register', navigate, {})}>here</a>.
+              {t('pages.LoginPage.register-if-no-account')} <a className={styles.registerLink} href="/register">
+              {t('pages.LoginPage.here')}
+            </a>.
             </p>
             <Container sx={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
               <Divider sx={{ width: '40%', marginY: '20px' }} />
-              <span>Or</span>
+              <span>{t('pages.LoginPage.or')}</span>
               <Divider sx={{ width: '40%', marginY: '20px' }} />
             </Container>
-            <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '25px', justifyContent: 'space-around' }}>
+            <Container maxWidth="xs" sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: '25px',
+              justifyContent: 'space-around'
+            }}>
               <img
-                src={FacebookLogo}
-                alt="Facebook Logo"
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleFacebookLogin}
+                  src={FacebookLogo}
+                  alt={t('pages.LoginPage.facebook-img-alt')}
+                  style={{width: '50px', height: '50px', cursor: 'pointer'}}
+                  onClick={handleFacebookLogin}
               />
               <div className={styles.dividerLogos}></div>
+
               <img
                 src={GoogleLogo}
-                alt="Google Logo"
+                alt={t('pages.LoginPage.google-img-alt')}
                 style={{ width: '50px', height: '50px', cursor: 'pointer' }}
                 onClick={handleGoogleLogin}
               />

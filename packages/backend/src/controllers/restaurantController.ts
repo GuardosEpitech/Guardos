@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 import {
   IOpeningHours, IProduct, IRestaurantBackEnd,
-  IRestaurantFrontEnd
+  IRestaurantFrontEnd,
+  IReview
 } from '../../../shared/models/restaurantInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 import {ICategories} from '../../../shared/models/categoryInterfaces';
@@ -10,12 +11,13 @@ import {IDishBE, IDishFE} from '../../../shared/models/dishInterfaces';
 import {IMealType} from '../../../shared/models/mealTypeInterfaces';
 import {ILocation} from '../../../shared/models/locationInterfaces';
 import {IRestaurantCommunication} from '../models/communicationInterfaces';
+import { v4 as uuidv4 } from 'uuid';
 
-function createBackEndObj(restaurant: IRestaurantBackEnd) {
+export function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
     name: restaurant.name,
     description: restaurant.description,
-    id: restaurant.id,
+    uid: restaurant.uid,
     userID: restaurant.userID,
     website: restaurant.website,
     rating: restaurant.rating,
@@ -29,6 +31,7 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     location: {} as ILocation,
     mealType: [{} as IMealType],
     extras: [{} as IDishBE],
+    menuDesignID: restaurant.menuDesignID,
   };
   restaurantBE.dishes.pop();
   restaurantBE.mealType.pop();
@@ -36,10 +39,9 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
   restaurantBE.products.pop();
   restaurantBE.openingHours.pop();
 
-  let dishId = 0;
   for (const dish of restaurant.dishes) {
     const dishObj: IDishBE = {
-      id: dishId,
+      uid: dish.uid,
       name: dish.name,
       description: dish.description,
       products: dish.products,
@@ -49,7 +51,6 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: dish.allergens,
       category: dish.category
     };
-    dishId++;
     restaurantBE.dishes.push(dishObj);
   }
   for (const openingHoursElement of restaurant.openingHours) {
@@ -62,10 +63,9 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
     restaurantBE.products.push(product);
   }
   restaurantBE.location = restaurant.location;
-  let extraId = 0;
   for (const extra of restaurant.extras) {
     const extraObj: IDishBE = {
-      id: extraId,
+      uid: extra.uid,
       name: extra.name,
       description: extra.description,
       products: extra.products,
@@ -75,7 +75,6 @@ function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: extra.allergens,
       category: extra.category
     };
-    extraId++;
     restaurantBE.extras.push(extraObj);
   }
   return restaurantBE;
@@ -85,6 +84,7 @@ function createRestaurantObjFe(
   restaurant: IRestaurantBackEnd) {
   const obj: IRestaurantFrontEnd = {
     name: restaurant.name,
+    uid: restaurant.uid,
     userID: restaurant.userID,
     website: restaurant.website,
     description: restaurant.description,
@@ -94,12 +94,12 @@ function createRestaurantObjFe(
     picturesId: restaurant.picturesId,
     openingHours: [{} as IOpeningHours],
     products: [{} as IProduct],
-    id: restaurant.id,
     phoneNumber: restaurant.phoneNumber,
     categories: [{} as ICategories],
     dishes: [{} as IDishFE],
     location: restaurant.location,
     range: 0,
+    menuDesignID: restaurant.menuDesignID
   };
   obj.categories.pop();
   obj.products.pop();
@@ -114,7 +114,7 @@ function createRestaurantObjFe(
   for (const x of restaurant.mealType) {
     const categories: ICategories = {
       name: x.name,
-      hitRate: 0,
+      hitRate: x.sortId,
       dishes: [{} as IDishFE]
     };
     categories.dishes.pop();
@@ -124,6 +124,7 @@ function createRestaurantObjFe(
       //      if (dish.category.menuGroup === x.name) {
       const dishObj: IDishFE = {
         name: dish.name,
+        uid: dish.uid,
         description: dish.description,
         price: dish.price,
         pictures: dish.pictures,
@@ -155,7 +156,7 @@ export async function getRestaurantByName(restaurantName: string) {
     description: rest.description as string,
     dishes: rest.dishes as [IDishBE],
     extras: rest.extras as unknown as [IDishBE],
-    id: rest.id,
+    uid: rest._id as number,
     userID: rest.userID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
@@ -167,7 +168,8 @@ export async function getRestaurantByName(restaurantName: string) {
     products: rest.products as [IProduct],
     rating: rest.rating as number,
     ratingCount: rest.ratingCount as number,
-    website: rest.website as string
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
   });
   return createRestaurantObjFe(restaurantBE);
 }
@@ -181,7 +183,7 @@ export async function getRestaurantByID(restaurantID: number) {
     description: rest.description as string,
     dishes: rest.dishes as [IDishBE],
     extras: rest.extras as unknown as [IDishBE],
-    id: rest.id,
+    uid: rest._id as number,
     userID: rest.userID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
@@ -193,7 +195,8 @@ export async function getRestaurantByID(restaurantID: number) {
     products: rest.products as [IProduct],
     rating: rest.rating as number,
     ratingCount: rest.ratingCount as number,
-    website: rest.website as string
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
   });
   return createRestaurantObjFe(restaurantBE);
 }
@@ -210,7 +213,7 @@ export async function getAllRestaurants() {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
-      id: restaurant._id as number,
+      uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name as string,
@@ -221,7 +224,8 @@ export async function getAllRestaurants() {
       products: restaurant.products as [IProduct],
       rating: restaurant.rating as number,
       ratingCount: restaurant.ratingCount as number,
-      website: restaurant.website as string
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
     });
     answer.push(createRestaurantObjFe(restaurantBE));
   }
@@ -240,7 +244,7 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
-      id: restaurant._id as number,
+      uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
       name: restaurant.name as string,
@@ -251,10 +255,54 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
       products: restaurant.products as [IProduct],
       rating: restaurant.rating as number,
       ratingCount: restaurant.ratingCount as number,
-      website: restaurant.website as string
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
     });
     answer.push(createRestaurantObjFe(restaurantBE));
   }
+  return answer;
+}
+
+export async function getAllUserRestaurantsFiltered(loggedInUserId: number,
+  locationOrName?: string): Promise<IRestaurantFrontEnd[]> {
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
+  const query: any = { userID: loggedInUserId };
+
+  if (locationOrName) {
+    query.$or = [
+      { name: { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.streetName': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.city': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.postalCode': { $regex: new RegExp(locationOrName, 'i') } }
+    ];
+  }
+
+  const restaurants = await RestaurantModel.find(query);
+  const answer: IRestaurantFrontEnd[] = [];
+
+  for (const restaurant of restaurants) {
+    const restaurantBE = createBackEndObj({
+      description: restaurant.description as string,
+      dishes: restaurant.dishes as [IDishBE],
+      extras: restaurant.extras as unknown as [IDishBE],
+      userID: restaurant.userID as number,
+      uid: restaurant._id as number,
+      location: restaurant.location as ILocation,
+      mealType: restaurant.mealType as [IMealType],
+      name: restaurant.name as string,
+      openingHours: restaurant.openingHours as [IOpeningHours],
+      phoneNumber: restaurant.phoneNumber as string,
+      pictures: restaurant.pictures as [string],
+      picturesId: restaurant.picturesId as [number],
+      products: restaurant.products as [IProduct],
+      rating: restaurant.rating as number,
+      ratingCount: restaurant.ratingCount as number,
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
+    });
+    answer.push(createRestaurantObjFe(restaurantBE));
+  }
+
   return answer;
 }
 
@@ -279,6 +327,7 @@ export async function createNewRestaurant(
     mealType: obj.mealType ? obj.mealType : [],
     products: obj.products ? obj.products : [],
     extras: obj.extras ? obj.extras : [],
+    menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
   });
   await upload.save();
   console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
@@ -312,7 +361,7 @@ export async function changeRestaurant(
     dishes: restaurant.dishes ?
       restaurant.dishes : oldRest.dishes,
     extras: restaurant.extras ? restaurant.extras : oldRest.extras,
-    id: oldRest.id,
+    uid: oldRest.uid,
     userID: oldRest.userID,
     location: restaurant.location ? restaurant.location : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
@@ -328,6 +377,7 @@ export async function changeRestaurant(
     ratingCount: oldRest.ratingCount,
     website: restaurant.website ? restaurant.website : oldRest.website,
     name: restaurant.name ? restaurant.name : oldRest.name,
+    menuDesignID: restaurant.menuDesignID !== undefined ? restaurant.menuDesignID : oldRest.menuDesignID,
   };
   await updateRestaurantByName(newRest, restaurantName);
   return newRest;
@@ -347,4 +397,113 @@ export async function getAllRestoProducts(restoName: string) {
   const rest = await Restaurant.findOne({name: restoName});
   if (!rest) return null;
   return rest.products;
+}
+
+export async function getAllRestoReviews(restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({name: restoName});
+  if (!rest) return null;
+  return rest.reviews;
+}
+
+export async function addRestoReview(review: IReview, restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  review.date = new Date();
+  review._id = uuidv4();
+  return Restaurant.findOneAndUpdate(
+    {name: restoName},
+    {$push: {reviews: review}},
+    {new: true}
+  );
+}
+
+export async function deleteRestoReview(reviewId: string, restoName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  return Restaurant.findOneAndUpdate(
+    { name: restoName },
+    { $pull: { reviews: { _id: reviewId } } },
+    { new: true }
+  );
+}
+
+export async function modifyRestoReview(
+  reviewId: string, modifiedFields: any, restoName: string
+) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+  // Check if modifiedFields is empty or undefined
+  if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
+    // If modifiedFields is not provided, return the original review
+    return Restaurant.findOne({ name: restoName });
+  }
+
+  // Construct the update query to update only provided fields
+  const updateQuery: any = {};
+  for (const key in modifiedFields) {
+    // Use type assertion here
+    updateQuery[`reviews.$.${key}` as keyof IReview] = modifiedFields[key];
+  }
+
+  // Execute the update operation
+  return Restaurant.findOneAndUpdate(
+    { name: restoName, 'reviews._id': reviewId },
+    { $set: updateQuery },
+    { new: true }
+  );
+}
+
+export async function addCategory(
+  uid: number, newCategories: [{ name: string; hitRate: number }]) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+  try {
+    const rest = await Restaurant.findOne({ _id: uid });
+
+    if (!rest) {
+      throw new Error('Restaurant not found');
+    }
+
+    newCategories.forEach(category => {
+      const existingCategoryIndex = rest.mealType.findIndex(item => item.name === category.name);
+      if (existingCategoryIndex !== -1) {
+        if (rest.mealType[existingCategoryIndex].sortId !== category.hitRate) {
+          rest.mealType[existingCategoryIndex].sortId = category.hitRate;
+        }
+      } else {
+        const newCategory = {
+          _id: rest.mealType.length,
+          name: category.name,
+          sortId: category.hitRate
+        };
+        rest.mealType.push(newCategory);
+      }
+    });
+
+    await rest.save();
+
+    const restaurantBE = createBackEndObj({
+      description: rest.description as string,
+      dishes: rest.dishes as [IDishBE],
+      extras: rest.extras as unknown as [IDishBE],
+      uid: rest._id as number,
+      userID: rest.userID as number,
+      location: rest.location as ILocation,
+      mealType: rest.mealType as [IMealType],
+      name: rest.name as string,
+      openingHours: rest.openingHours as [IOpeningHours],
+      phoneNumber: rest.phoneNumber as string,
+      pictures: rest.pictures as [string],
+      picturesId: rest.picturesId as [number],
+      products: rest.products as [IProduct],
+      rating: rest.rating as number,
+      ratingCount: rest.ratingCount as number,
+      website: rest.website as string,
+      menuDesignID: rest.menuDesignID as number,
+    });
+
+    return createRestaurantObjFe(restaurantBE);
+  } catch (error) {
+    console.error('Error adding/updating category:', error);
+    throw error;
+  }
 }

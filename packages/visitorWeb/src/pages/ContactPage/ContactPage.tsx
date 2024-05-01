@@ -4,6 +4,9 @@ import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import axios from 'axios';
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/sendEmail/`;
 
@@ -13,6 +16,11 @@ const ContactPage = () => {
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const {t} = useTranslation();
+
+    useEffect(() => {
+        checkDarkMode();
+      }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -34,7 +42,6 @@ const ContactPage = () => {
             });
       
             if (response.status >= 200 && response.status < 300) {
-              console.log('Backend response:', response.data);
       
               setShowConfirmation(true);
       
@@ -59,13 +66,13 @@ const ContactPage = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value);
       };
-
+      
     return (
         <div>
             <section className={styles.contact}>
                 <div className={styles.content}>
-                    <h2>Contact Us</h2>
-                    <p>Feel free to reach out to us!</p>
+                    <h2>{t('pages.ContactPage.contact-us')}</h2>
+                    <p>{t('pages.ContactPage.reach-out')}</p>
                 </div>
                 <div className={styles.container}>
                     <div className={styles.contactInfo}>
@@ -74,8 +81,8 @@ const ContactPage = () => {
                                 <PlaceIcon />
                             </div>
                             <div className={styles.text}>
-                                <h3>Address</h3>
-                                <p>Fasanenstraße 86,<br/>10623 Berlin,<br/>Germany</p>
+                                <h3>{t('pages.ContactPage.address')}</h3>
+                                <p>Fasanenstraße 86,<br/>10623 Berlin,<br/>{t('pages.ContactPage.germany')}</p>
                             </div>
                         </div>
                         <div className={styles.box}>
@@ -83,7 +90,7 @@ const ContactPage = () => {
                                 <PhoneIcon />
                             </div>
                             <div className={styles.text}>
-                                <h3>Phone</h3>
+                                <h3>{t('pages.ContactPage.phone')}</h3>
                                 <p>030 1234567</p>
                             </div>
                         </div>
@@ -92,14 +99,14 @@ const ContactPage = () => {
                                 <EmailIcon />
                             </div>
                             <div className={styles.text}>
-                                <h3>Email</h3>
+                                <h3>{t('pages.ContactPage.email')}</h3>
                                 <p>guardos-help@outlook.com</p>
                             </div>
                         </div>
                     </div>
                     <div className={styles.contactForm}>
                         <form onSubmit={handleSubmit}>
-                            <h2>Send Message</h2>
+                            <h2>{t('pages.ContactPage.send-msg')}</h2>
                             <div className={styles.inputBox}>
                                 <input
                                     type="text"
@@ -107,7 +114,7 @@ const ContactPage = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
-                                <span>Full Name:</span>
+                                <span>{t('pages.ContactPage.full-name')}</span>
                             </div>
                             <div className={styles.inputBox}>
                                 <input
@@ -116,7 +123,7 @@ const ContactPage = () => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <span>Email</span>
+                                <span>{t('pages.ContactPage.email')}</span>
                             </div>
                             <div className={styles.inputBox}>
                                 <input
@@ -125,7 +132,7 @@ const ContactPage = () => {
                                     value={subject}
                                     onChange={(e) => setSubject(e.target.value)}
                                 />
-                                <span>Subject</span>
+                                <span>{t('pages.ContactPage.subject')}</span>
                             </div>
                             <div className={styles.inputBox}>
                                 <textarea
@@ -133,7 +140,7 @@ const ContactPage = () => {
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                 ></textarea>
-                                <span>Message:</span>
+                                <span>{t('pages.ContactPage.message')}</span>
                             </div>
                             <div className={styles.inputBox}>
                                 <input type="submit" id="send" name="" value="Send"></input>
@@ -142,7 +149,7 @@ const ContactPage = () => {
                     </div>
                     {showConfirmation && (
                     <div className={styles.confirmationPopup}>
-                        <p>Message successfully sent!</p>
+                        <p>{t('pages.ContactPage.msg-sent-success')}</p>
                     </div>
                     )}
                 </div>

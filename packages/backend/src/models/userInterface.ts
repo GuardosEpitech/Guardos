@@ -6,6 +6,7 @@ export const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
+  permissions: [String],
   city: String,
   allergens: [String],
   // ISearchCommunication
@@ -18,9 +19,23 @@ export const userSchema = new mongoose.Schema({
     categories: [String],
     allergenList: [String],
   }],
+  favouriteLists: {
+    restoIDs: [Number],
+    dishIDs: [{
+      _id: false,
+      restoID: Number,
+      dishID: Number
+    }]
+  },
   profilePicId: {
     type: Number,
     required: false
   },
   preferredLanguage: String,
+  preferencesCookie: {
+    isSet: Boolean,
+    functional: Boolean,
+    statistical: Boolean,
+    marketing: Boolean
+  },
 });

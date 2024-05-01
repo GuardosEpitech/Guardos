@@ -180,3 +180,38 @@ export const deleteSavedFilter = async (token: string, filterName: string) => {
     throw new Error("Error deleting filter");
   }
 };
+
+export const setUserPreferences = async (token: string, body: any) => {
+  try {
+    const response = await axios({
+      method: 'POST',
+      url: baseUrl + 'setCookiePref',
+      params: {key: token},
+      data: body,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error setting Cookie preferences:", error);
+    throw new Error("Error setting Cookie preferences");
+  }
+};
+
+export const getUserPreferences = async (token: string) => {
+  try {
+    const response = await axios({
+      method: 'GET',
+      url: baseUrl + 'getCookiePref',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error getting Cookie preferences:", error);
+    throw new Error("Error getting Cookie preferences");
+  }
+};

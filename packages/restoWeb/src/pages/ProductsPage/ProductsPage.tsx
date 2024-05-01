@@ -10,12 +10,17 @@ import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { IProduct } from "shared/models/restaurantInterfaces";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const ProductsPage = () => {
   const [productData, setProductData] = useState<Array<IProduct>>([]);
+  const {t} = useTranslation();
 
   useEffect(() => {
     updateProductData();
+    checkDarkMode();
   }, []);
 
   const updateProductData = () => {
@@ -26,28 +31,32 @@ const ProductsPage = () => {
         setProductData(res);
       });
   };
-
+  
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My products</span>
+        <span className={styles.TitleSearch}>{t('common.my-products')}</span>
       </div>
       <Layout>
         {productData.length === 0 ?
         (
           <div className={styles.ErrorContainer}>
             <span className={styles.ErrorHeader}>
-              Oops, looks like you dont have any products yet!
+              {t('pages.ProductsPage.noprod')}
             </span>
             <br/>
             <br/>
             <br/>
             <span className={styles.ErrorText}>
-              Add your first product by clicking <a href="/addProduct">here</a>.
+              {t('pages.ProductsPage.noprod2')} 
+              <a href="/addProduct">{t('pages.ProductsPage.noprod2-2')}</a>
+              {t('pages.ProductsPage.noprod2-3')}
             </span>
             <br/>
             <span className={styles.ErrorText}>
-              Be sure to <a href="/addResto">add</a> a restaurant first.
+              {t('pages.ProductsPage.noprod3')} 
+              <a href="/addResto">{t('pages.ProductsPage.noprod3-2')}</a> 
+              {t('pages.ProductsPage.noprod3-3')}
             </span>
           </div>
         ) : (
@@ -55,6 +64,7 @@ const ProductsPage = () => {
           container
           spacing={{ xs: 1, sm: 2, md: 3 }}
           justifyContent="space-between"
+          className={styles.productGrid}
         >
           {productData.map((product, index) => (
             <ProductCard
@@ -68,7 +78,10 @@ const ProductsPage = () => {
         </Grid>
         )}
       </Layout>
-      <FixedBtn title="Add product" redirect="/addProduct" />
+      <FixedBtn
+        title={t('pages.ProductsPage.add-product')}
+        redirect="/addProduct"
+      />
       <SuccessAlert />
     </div>
   );

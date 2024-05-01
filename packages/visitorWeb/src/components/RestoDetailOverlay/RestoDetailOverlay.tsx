@@ -11,9 +11,10 @@ import Typography from '@mui/material/Typography';
 
 import {IOpeningHours, IRestaurantFrontEnd} from '../../../../shared/models/restaurantInterfaces';
 import {NavigateTo} from "@src/utils/NavigateTo";
-import Rating from "@src/components/RestoCard/Rating/Rating";
+import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import ScrollOverlay from '../ScrollOverlay/ScrollOverlay';
 import styles from "./RestoDetailOverlay.module.scss";
+import {useTranslation} from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -65,6 +66,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
   const picture = props.pictureBase64;
   const {streetName, streetNumber, postalCode, city, country} = location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
+  const {t} = useTranslation();
 
   if (!props.restaurant) {
     return null;
@@ -74,7 +76,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
     <ScrollOverlay isOpen={true} onClose={props.onClose}>
       <Grid container>
         {/* left column with image and opening hours */}
-        <Grid item xs={3} className={styles.GridItemImage}>
+        <Grid item xs={12} sm={6} className={styles.GridItemImage}> 
           <div>
             {pictures.length > 0 && (
               <img src={picture} alt={name} className={styles.ImageDimensions}/>
@@ -84,9 +86,9 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             <table className={styles.OpeningHours}>
               <thead>
               <tr>
-                <th className={styles.OpeningHoursColumn}>Day</th>
-                <th className={styles.OpeningHoursColumn}>Opening</th>
-                <th className={styles.OpeningHoursColumn}>Closing</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.day')}</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.opening')}</th>
+                <th className={styles.OpeningHoursColumn}>{t('components.RestoCard.closing')}</th>
               </tr>
               </thead>
               <tbody>
@@ -98,12 +100,12 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
           </div>)}
         </Grid>
         {/* right column with name, rating, address, phone, website, description and menu button */}
-        <Grid item xs={9} className={styles.GridItem}>
+        <Grid item xs={12} sm={6} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <Typography variant="h4" component="h2" className={styles.DishTitle}>
               {name}
             </Typography>
-            <Rating restoRating={rating} restoRatingsCount={ratingCount}/>
+            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon/>
@@ -136,10 +138,11 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
                 onClick={() => NavigateTo("/menu", navigate, {
                   menu: categories,
                   restoName: name,
+                  restoID: props.restaurant.uid,
                   address: address,
                 })}
               >
-                Menu
+                {t('components.RestoCard.menu')}
               </Button>
             </ThemeProvider>
           </div>
@@ -151,6 +154,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
 
 const getDayOpeningHours = (requestedDay: number, openingHours: IOpeningHours[]) => {
   const matchingDay = openingHours.find((item) => item.day === requestedDay);
+  // TODO: apply i18n
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const readableDay = daysOfWeek[requestedDay];
 

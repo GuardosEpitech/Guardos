@@ -7,7 +7,9 @@ import { deleteProduct } from "@src/services/productCalls";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import { IProduct } from "shared/models/restaurantInterfaces";
 import styles from "./ProductCard.module.scss";
-import ProductActions from "@src/components/ProductCard/ProductActions/ProductActions";
+import ProductActions from
+  "@src/components/ProductCard/ProductActions/ProductActions";
+import {useTranslation} from "react-i18next";
 
 interface IProductCardProps {
   index: number;
@@ -20,6 +22,7 @@ const ProductCard = (props: IProductCardProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const { index, product, onUpdate, editable } = props;
+  const {t} = useTranslation();
 
   const handleDeleteClick = (e: any) => {
     e.stopPropagation();
@@ -44,31 +47,32 @@ const ProductCard = (props: IProductCardProps) => {
 
 
   return (
-    <Grid item xs={6} key={index} onClick={handleClick}>
+    <Grid item xs={6} key={index} onClick={handleClick} className={styles.productCard}>
       <Paper className={styles.Product} elevation={3}>
         <div className={styles.ProductHeader}>
           <h3 className={styles.ProductTitle}>{product.name}</h3>
           {editable && (
-                <>
-                  <ProductActions
-                    actionList={[{
-                      actionName: "Edit",
-                      actionIcon: EditIcon,
-                      actionRedirect: "/editProduct",
-                      redirectProps: { product: product }
-                    }]}
-                    onDelete={handleDeleteClick}
-                    onClick={handleChildClick}
-                  />
-                  {showPopup && (
-                    <Popup
-                      message={`Are you sure you want to delete ${product.name}?`}
-                      onConfirm={getOnDelete}
-                      onCancel={() => setShowPopup(false)}
-                    />
-                  )}
-                </>
+            <>
+              <ProductActions
+                actionList={[{
+                  actionName: t('common.edit'),
+                  actionIcon: EditIcon,
+                  actionRedirect: "/editProduct",
+                  redirectProps: { product: product }
+                }]}
+                onDelete={handleDeleteClick}
+                onClick={handleChildClick}
+              />
+              {showPopup && (
+                <Popup
+                  message={t('components.ProductCard.confirm-delete',
+                    {productName: product.name})}
+                  onConfirm={getOnDelete}
+                  onCancel={() => setShowPopup(false)}
+                />
               )}
+            </>
+          )}
         </div>
         {(extended && product.allergens) &&
           <AllergenTags dishAllergens={product.allergens} />}
@@ -76,7 +80,7 @@ const ProductCard = (props: IProductCardProps) => {
           <span className={extended ?
             styles.IngredientList : styles.IngredientListWrap}>
             <b>
-              {"Ingredients: "}
+              {t('components.ProductCard.ingredients')}
             </b>
             {product.ingredients?.join(", ")}</span>}
       </Paper>

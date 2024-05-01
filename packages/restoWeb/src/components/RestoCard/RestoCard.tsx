@@ -9,13 +9,14 @@ import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
 import { deleteResto } from "@src/services/restoCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
-import Rating from "@src/components/RestoCard/Rating/Rating";
 import styles from "./RestoCard.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import {getImages} from "@src/services/callImages";
 import {defaultRestoImage} from 'shared/assets/placeholderImageBase64';
 import { IimageInterface } from "shared/models/imageInterface";
-import { displayImageFromBase64} from "shared/utils/imageConverter";
+import Rating from '@mui/material/Rating';
+import { getRatingData } from "@src/services/ratingCalls";
+import {useTranslation} from "react-i18next";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -28,6 +29,7 @@ interface IDay {
   name?: string;
 }
 
+// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -44,6 +46,8 @@ const RestoCard = (props: IRestoCardProps) => {
   const { onUpdate, resto, editable } = props;
   const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [ratingData, setRatingData] = React.useState([]);
+  const {t} = useTranslation();
 
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
@@ -66,6 +70,26 @@ const RestoCard = (props: IRestoCardProps) => {
     await deleteResto(resto.name);
     await onUpdate();
   }
+  const averageRating = () => {
+    let sum = 0;
+    if (Array.isArray(ratingData)) {
+      ratingData.forEach((data) => {
+        if (data.note === undefined) {
+          sum += 0;
+        } else {
+          sum += data.note;
+        }
+      });
+      return parseFloat((sum / ratingData.length).toFixed(1));
+    } else {
+      return sum;
+    }
+  };
+
+  useState(() => {
+    getRatingData(props.resto.name)
+      .then(res => setRatingData(res));
+  });
 
   useEffect(() => {
     async function callToImages() {
@@ -100,7 +124,7 @@ const RestoCard = (props: IRestoCardProps) => {
 
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
-      <Grid container>
+      <Grid container className={styles.flexContainer}>
         <Grid item xs={3} className={styles.GridItemImage}>
           {
             <img
@@ -114,38 +138,37 @@ const RestoCard = (props: IRestoCardProps) => {
         <Grid item xs={9} className={styles.GridItem}>
           <div className={styles.FlexParent}>
             <h3 className={styles.DishTitle}>{resto.name}</h3>
-            <Rating
-              restoRating={resto.rating}
-              restoRatingsCount={resto.ratingCount}
-            />
             {editable && (
               <>
                 <DishActions
                   actionList={[
                     {
-                      actionName: "Menu",
+                      actionName: t('components.RestoCard.menu'),
                       actionIcon: MenuBookIcon,
                       actionRedirect: "/menu",
                       redirectProps: {
                         menu: resto.categories,
                         restoName: resto.name,
-                        address: address
+                        address: address,
+                        menuDesignID: resto.menuDesignID
                       }
                     },
                     {
-                      actionName: "Edit",
+                      actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editResto",
                       redirectProps: {
                         restoName: resto.name,
-                        phone: resto.name,
+                        phone: resto.phoneNumber,
                         street: resto.location.streetName,
                         streetNumber: resto.location.streetNumber,
                         postalCode: resto.location.postalCode,
                         city: resto.location.city,
                         country: resto.location.country,
                         description: resto.description,
-                        picturesId: resto.picturesId
+                        picturesId: resto.picturesId,
+                        menuDesignID: resto.menuDesignID,
+                        website: resto.website,
                       }
                     }
                   ]}
@@ -155,13 +178,20 @@ const RestoCard = (props: IRestoCardProps) => {
                 />
                 {showPopup && (
                   <Popup
-                    message={`Are you sure you want to delete ${resto.name}?`}
+                    message={t('components.RestoCard.confirm-delete',
+                      {restoName: resto.name})}
                     onConfirm={getOnDelete}
                     onCancel={() => setShowPopup(false)}
                   />
                 )}
               </>
             )}
+          </div>
+          <div className={styles.FlexParent}>
+              <Rating name="read-only" value={averageRating()} readOnly />
+              <span className={styles.AverageTxt}>
+                {Array.isArray(ratingData) ? ratingData.length : 0}
+              </span>
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />
@@ -176,7 +206,7 @@ const RestoCard = (props: IRestoCardProps) => {
           >
             {resto.description}
           </p>
-          <h3>Opening hours</h3>
+          <h3>{t('components.RestoCard.opening-hours')}</h3>
           {resto.openingHours.map((index, key) => (
             <div key={key} className={styles.ContainerOpeningHours}>
               <span className={styles.DaysTextValue}>{days[key].name} :</span>

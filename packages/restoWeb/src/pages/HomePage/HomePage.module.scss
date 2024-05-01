@@ -12,14 +12,13 @@
 
 .TitleSearch {
   font-family: "Montserrat", sans-serif;
-  font-size: 2.188rem;
+  font-size: 2rem;
   color: #ffffff;
 }
 
 .DivContent {
   display: flex;
   align-items: normal;
-  justify-content: center;
 
   p {
     font-size: 26px;
@@ -29,4 +28,15 @@
       cursor: pointer;
     }
   }
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.searchInput {
+  margin-top: 5px;
+  width: 50%;
 }

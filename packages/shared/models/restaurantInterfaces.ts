@@ -9,6 +9,13 @@ export interface IProduct {
   ingredients: string[];
 }
 
+export interface IReview {
+  _id?: String,
+  note?: Number,
+  comment?: String,
+  date?: Date,
+}
+
 export interface IIngredient {
   name: string;
 }
@@ -34,7 +41,7 @@ export interface IOpeningHours {
 
 export interface IRestaurantFrontEnd {
   name: string;
-  id: number;
+  uid: number;
   userID: number;
   phoneNumber: string;
   website: string;
@@ -50,10 +57,11 @@ export interface IRestaurantFrontEnd {
   ratingCount?: number;
   products: IProduct[];
   dishes: IDishFE[];
+  menuDesignID: number;
 }
 
 export interface IRestaurantBackEnd {
-  id: number;
+  uid: number;
   userID: number;
   name: string;
   phoneNumber: string;
@@ -69,6 +77,7 @@ export interface IRestaurantBackEnd {
   mealType: IMealType[];
   extras: IDishBE[];
   products: IProduct[];
+  menuDesignID: number;
 }
 
 export interface IAddResto {
@@ -78,6 +87,7 @@ export interface IAddResto {
   website: string;
   openingHours: IOpeningHours[];
   location: ILocation;
+  menuDesignID: number;
 };
 
 export interface IAddRestoRequest {

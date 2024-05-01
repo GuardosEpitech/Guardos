@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, Container, Button, List, ListItem, ListItemText, Typography, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
@@ -10,22 +10,29 @@ import backgroundImage2 from '../../assets/restaurant.jpg';
 import styles from "./IntroPage.module.scss";
 import 'react-vertical-timeline-component/style.min.css';
 import './timeline.min.css';
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const IntroPage = () => {
   const [opacity1, setOpacity1] = useState(1);
   const [opacity2, setOpacity2] = useState(1);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(0);
   const targetSectionRef = useRef(null);
   const navigate = useNavigate();
   const baseUrlRestaurant = `${process.env.RESTAURANT_URL}`;
+  const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const menuItems = [
-    { title: 'Guardos', text: 
-      'At Guardos, our mission is to empower individuals to lead fulfilling lives by providing them with the knowledge, tools, and support needed to navigate the complexities of food intolerances. We believe that everyone deserves to enjoy a vibrant and healthy life, and that starts with understanding and managing ones relationship with food.' },
-    { title: 'Guardos - Restaurant', text: 
-      'On the Guardos - Restaurant page we will open the possibility to register restaurants. (This registration must be done by the owner) We will then offer you with Guardos a platform to market your business. Features on this page are: Various menus for self-selection and the corresponding self-design of the structure, a QR scanner function with which products and their associated allergens are automatically registered.' },
-    { title: 'Guardos - Visitor', text: 
-      'On the Guardos - Visitor page we offer customers who are looking for a restaurant a filter mask with the corresponding allergens. An exact list of restaurants and a self-designed profile with various customizable settings for reuse. Features here are: Remembering allergens in the profile, favorite restaurants and a transparent view of all dishes.' },
+    { title: 'Guardos', text: t('pages.IntroPage.guardos-intro')},
+    { title: 'Guardos - ' + t('pages.IntroPage.resto'), text:
+        t('pages.IntroPage.resto-intro') },
+    { title: 'Guardos - ' + t('pages.IntroPage.visitor'), text:
+        t('pages.IntroPage.visitor-intro') },
   ];
 
   const handleItemClick = (index:any) => {
@@ -43,6 +50,7 @@ const IntroPage = () => {
   };
 
   const handleMouseLeave = () => {
+    console.log(baseUrlRestaurant);
     setOpacity1(1);
     setOpacity2(1);
   };
@@ -57,10 +65,10 @@ const IntroPage = () => {
       <Box className={styles.root}>
         <Container component="main" maxWidth="xs" className={styles.overlay}>
           <Typography variant="h4" component="h1" className={styles.introText}>
-            Welcome to Guardos!
+            {t('pages.IntroPage.welcome')}
           </Typography>
           <Typography variant="body1" className={styles.introText}>
-            We are delighted to have you here. Help us in our mission to make food easily accessible to everyone.
+            {t('pages.IntroPage.let-us-introduce')}
           </Typography>
           <Button
             variant="contained"
@@ -68,7 +76,7 @@ const IntroPage = () => {
             className={styles.getStartedButton}
             onClick={handleGetStartedClick}
           >
-            Choose your Site
+            {t('pages.IntroPage.choose-site')}
           </Button>
         </Container>
       </Box>
@@ -76,7 +84,7 @@ const IntroPage = () => {
         <div className={styles.whatIsGuardosContainer}>
           <div className={styles.containerHeadline}>
             <h1>
-              What is Guardos?
+              {t('pages.IntroPage.what-is-guardos')}
             </h1>
           </div>
           <div>
@@ -104,7 +112,7 @@ const IntroPage = () => {
         </div>
         <div className={styles.containerHeadline}>
           <h1>
-            What do we provide?
+            {t('pages.IntroPage.what-we-provide')}
           </h1>
         </div>
         <div>
@@ -112,7 +120,7 @@ const IntroPage = () => {
         </div>
         <div className={styles.containerHeadline}>
           <h1>
-            The Team behind Guardos
+            {t('pages.IntroPage.the-team')}
           </h1>
         </div>
         <div>
@@ -123,7 +131,7 @@ const IntroPage = () => {
       <div className={`${styles.fullHeight} ${styles.timelineOfProject}`}>
         <div className={styles.containerHeadline}>
           <h1>
-            Progress of the project
+            {t('pages.IntroPage.progress')}
           </h1>
         </div>
         <VerticalTimeline>
@@ -135,9 +143,8 @@ const IntroPage = () => {
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Test & Learn</h3>
-            <p>Conceptualization and design of the apps for customers and restaurants
-                First development phase of the website (Visitor)</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.test-learn')}</h3>
+            <p>{t('pages.IntroPage.test-learn-text')}</p>
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -147,8 +154,8 @@ const IntroPage = () => {
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Management & Processes</h3>
-            <p>First development phase of the website (Restaurant)</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.mgnt-process')}</h3>
+            <p>{t('pages.IntroPage.mgnt-process-text')}</p>
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -158,8 +165,8 @@ const IntroPage = () => {
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Fast Forward</h3>
-            <p>First development phase of the apps</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.fast-forward')}</h3>
+            <p>{t('pages.IntroPage.fast-forward-text')}</p>
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -169,8 +176,8 @@ const IntroPage = () => {
             iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Beta & Growth Hacking</h3>
-            <p>Fine-tuning and final testing of visitor web and restaurant web</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.beta-growth')}</h3>
+            <p>{t('pages.IntroPage.beta-growth-text')}</p>
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -180,8 +187,8 @@ const IntroPage = () => {
             iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Consolidation</h3>
-            <p>Fine-tuning and final testing of the apps</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.consolidation')}</h3>
+            <p>{t('pages.IntroPage.consolidation-text')}</p>
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
@@ -191,8 +198,8 @@ const IntroPage = () => {
             iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
-            <h3 className="vertical-timeline-element-title">Launch & Metrics</h3>
-            <p>Official launch</p>
+            <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.launch-metrics')}</h3>
+            <p>{t('pages.IntroPage.launch-metrics-text')}</p>
           </VerticalTimelineElement>
           {/* Add similar VerticalTimelineElement components for each phase */}
           
@@ -202,7 +209,7 @@ const IntroPage = () => {
       <div className={styles.fullHeight} ref={targetSectionRef}>
         <div className={styles.containerHeadlineSecond}>
           <h1>
-            Choose the service for your needs!
+            {t('pages.IntroPage.choose-service')}
           </h1>
         </div>
 
@@ -217,17 +224,17 @@ const IntroPage = () => {
             <div className={styles.circleContainer}>
               <img
                 src={backgroundImage1}
-                alt="User Site"
+                alt={t('pages.IntroPage.user-site')}
                 className={styles.circleImage}
               />
             </div>
             <CardContent className={styles.cardContent}> 
               {/* Content for section 1 */}
-              <Typography variant="h5" className={styles.h5}>User Site</Typography>
+              <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.user-site')}</Typography>
               <Typography variant="body1" className={styles.body1}>
-                Having trouble finding good restaurants that respect your food choices?<br></br>
-                With our user page you will find all restaurants based on your food preferences.<br></br>
-                Simply register to keep coming back to your favorite restaurants.
+                {t('pages.IntroPage.user-site-text-1')}<br></br>
+                {t('pages.IntroPage.user-site-text-2')}<br></br>
+                {t('pages.IntroPage.user-site-text-3')}
               </Typography>
             </CardContent>
           </Card>
@@ -244,17 +251,17 @@ const IntroPage = () => {
             <div className={styles.circleContainer}>
               <img
                 src={backgroundImage2}
-                alt="Restaurant Site"
+                alt={t('pages.IntroPage.resto-site')}
                 className={styles.circleImage}
               />
             </div>
             <CardContent className={styles.cardContent}>
               {/* Content for section 2 */}
-              <Typography variant="h5" className={styles.h5}>Restaurant Site</Typography>
+              <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.resto-site')}</Typography>
               <Typography variant="body1" className={styles.body1}>
-                Do you own a restaurant and want to take it to the next medial level?<br></br>
-                However, you have no experience of how to do this?<br></br>
-                Then take a look at the offers on our entrepreneur page and get in tune with your business.
+                {t('pages.IntroPage.resto-site-text-1')}<br></br>
+                {t('pages.IntroPage.resto-site-text-2')}<br></br>
+                {t('pages.IntroPage.resto-site-text-3')}
               </Typography>
             </CardContent>
           </Card>

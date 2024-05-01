@@ -10,6 +10,9 @@ import {
   checkIfVisitorTokenIsValid, updateVisitorPassword
 } from '@src/services/userCalls';
 import { set } from 'cypress/types/lodash';
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const ChangePasswordPage = () => {
   const location = useLocation();
@@ -28,6 +31,7 @@ const ChangePasswordPage = () => {
   const [errorPasswordRepeat, setErrorPasswordRepeat] = useState(false);
   const [open, setOpen] = useState(true);
   const [openFailed, setOpenFailed] = useState(true);
+  const {t} = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +53,7 @@ const ChangePasswordPage = () => {
     }
 
     fetchData();
+    checkDarkMode();
   }, [email]);
 
   function isValidPassword(password: string): boolean {
@@ -118,13 +123,13 @@ const ChangePasswordPage = () => {
         {step === 1 ? (
           <Paper elevation={3} sx={{ padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography component="h1" variant="h5">
-              Your link is invalid. You will be redirected to the Mainpage.
+              {t('pages.ChangePassword.invalid-link-redirect-to-mainpage')}
             </Typography>
           </Paper>
         ) : (
           <Paper elevation={3} sx={{ padding: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Typography component="h1" variant="h5">
-              Change Password
+              {t('pages.ChangePassword.change-pw')}
             </Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <TextField
@@ -133,7 +138,7 @@ const ChangePasswordPage = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email"
+                label={t('pages.ChangePassword.email')}
                 name="email"
                 autoComplete="email"
                 value={formData.email}
@@ -146,14 +151,14 @@ const ChangePasswordPage = () => {
                 required
                 fullWidth
                 name="newPassword"
-                label="New Password"
+                label={t('pages.ChangePassword.new-pw')}
                 type="password"
                 id="newPassword"
                 autoComplete="new-password"
                 value={formData.newPassword}
                 onChange={handleChange}
                 error={errorPassword}
-                helperText={errorPassword ? 'Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters' : ''}
+                helperText={errorPassword ? t('pages.ChangePassword.wrong-pw-format') : ''}
               />
               <TextField
                 variant="outlined"
@@ -161,17 +166,17 @@ const ChangePasswordPage = () => {
                 required
                 fullWidth
                 name="repeatPassword"
-                label="Repeat Password"
+                label={t('pages.ChangePassword.repeat-pw')}
                 type="password"
                 id="repeatPassword"
                 autoComplete="new-password"
                 value={formData.repeatPassword}
                 onChange={handleChange}
                 error={errorPasswordRepeat}
-                helperText={errorPasswordRepeat ? 'Your Password is not the same, please check your repeated password' : ''}
+                helperText={errorPasswordRepeat ? t('pages.ChangePassword.no-match-pw') : ''}
               />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Change Password
+                {t('pages.ChangePassword.change-pw')}
               </Button>
             </Box>
           </Paper>
@@ -179,12 +184,12 @@ const ChangePasswordPage = () => {
         {step === 3 ? (
         <div>
           <Dialog open={open} onClose={handleGoBackToLogin}>
-            <DialogTitle>Change was successful.</DialogTitle>
+            <DialogTitle>{t('pages.ChangePassword.change-pw-success')}</DialogTitle>
             <DialogContent>
-              <p>Please ensure that you save your password anywhere.</p>
+              <p>{t('pages.ChangePassword.save-pw-warning')}</p>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+              <Button onClick={handleGoBackToLogin}>{t('pages.ChangePassword.go-back-to-login')}</Button>
             </DialogActions>
           </Dialog>
         </div>
@@ -196,12 +201,12 @@ const ChangePasswordPage = () => {
         {step === 4 ? (
           <div>
             <Dialog open={openFailed} onClose={handleGoBackToSite}>
-              <DialogTitle>There was an Error.</DialogTitle>
+              <DialogTitle>{t('pages.ChangePassword.error')}</DialogTitle>
               <DialogContent>
-                <p>Please try again to change the password. If the Error appears one more time, please contact us.</p>
+                <p>{t('pages.ChangePassword.change-pw-failed')}</p>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleGoBackToLogin}>Go back to login</Button>
+                <Button onClick={handleGoBackToLogin}>{t('pages.ChangePassword.go-back-to-login')}</Button>
               </DialogActions>
             </Dialog>
           </div>

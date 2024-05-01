@@ -261,11 +261,11 @@ export async function deleteProfilePicture(userId: number) {
   );
 }
 
-export async function getAllergens(email: string) {
+export async function getAllergens(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema.findOne({ email: email })
+  const userData = await UserSchema.findOne({ uid: userID })
     .exec();
-  return userData;
+  return userData?.allergens;
 }
 
 export async function updateAllergens(email: string, allergens: string) {
@@ -279,6 +279,10 @@ export async function updateAllergens(email: string, allergens: string) {
 }
 
 export async function getUserId(token: string) {
+  if (!token) {
+    return false;
+  }
+
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.find();
 
@@ -316,3 +320,34 @@ export async function doesUserExist(username: string, email: string) {
   }
   return false;
 }
+
+export async function getUserCookiePreferences(userId: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const user = await UserSchema.findOne({ uid: userId });
+  if (!user) {
+    return null;
+  }
+  if (user.preferencesCookie.isSet) {
+    return user.preferencesCookie;
+  } else {
+    return false;
+  }
+}
+
+export async function setUserCookiePreferences(userId: number, 
+  data: { functional: boolean, statistical: boolean, marketing: boolean }) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const user = await UserSchema.findOne({ uid: userId });
+  if (!user) {
+    return 404;
+  }
+  user.preferencesCookie = {
+    isSet: true,
+    functional: data.functional,
+    statistical: data.statistical,
+    marketing: data.marketing
+  };
+
+  await user.save();
+  return 200;
+  }

@@ -11,6 +11,7 @@ import { Popup } from "@src/components/dumpComponents/popup/Popup";
 import {getImages} from "@src/services/callImages";
 import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
+import {useTranslation} from "react-i18next";
 
 interface IEditableDishProps {
   dish: IDishFE;
@@ -29,6 +30,7 @@ const Dish = (props: IEditableDishProps) => {
   const priceStr = `${price.toFixed(2)} €`;
   const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const {t} = useTranslation();
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
@@ -95,18 +97,25 @@ const Dish = (props: IEditableDishProps) => {
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       {/*mobile version of dish element*/}
       <div className={styles.MobileVersion}>
-        <Grid container justifyContent="space-between">
+        <Grid container justifyContent="space-between" className={styles.MobileVersion}>
+          <Grid item className={styles.FlexParent}>
+            <img
+              src={pictures[0]?.base64 || defaultDishImage}
+              alt={name}
+              className={styles.ImageDimensions}
+            />
+          </Grid>
           <Grid
             item
             className={extended ? styles.GridItem : styles.FlexGridItem}
           >
-            <div className={styles.FlexParent}>
+            <div className={styles.FlexParentMenu}>
               <h3 className={styles.DishTitle}>{name}</h3>
               {editable && (
                 <>
                   <DishActions
                     actionList={[{
-                      actionName: "Edit",
+                      actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
@@ -116,7 +125,8 @@ const Dish = (props: IEditableDishProps) => {
                   />
                   {showPopup && (
                     <Popup
-                      message={`Are you sure you want to delete ${dish.name}?`}
+                      message={t('components.Dish.confirm-delete',
+                        {dishName: dish.name})}
                       onConfirm={getOnDelete}
                       onCancel={() => setShowPopup(false)}
                     />
@@ -125,13 +135,6 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </div>
             {/* {extended && <AllergenTags dishAllergens={allergens.split(",")} />} */}
-          </Grid>
-          <Grid item className={styles.FlexParent}>
-            <img
-              src={pictures[0]?.base64 || defaultDishImage}
-              alt={name}
-              className={styles.ImageDimensions}
-            />
           </Grid>
           <Grid item xs={12} className={styles.GridItemDescription}>
             <p
@@ -146,7 +149,7 @@ const Dish = (props: IEditableDishProps) => {
             <span className={styles.OptionsText}>
               {options && options.length !== 0 && (
                 <div className={!extended && styles.OptionsWrap}>
-                  <b>{"Options: "}</b>
+                  <b>{t('components.Dish.options')}</b>
                   {options}
                 </div>
               )}
@@ -166,7 +169,7 @@ const Dish = (props: IEditableDishProps) => {
                 <>
                   <DishActions
                     actionList={[{
-                      actionName: "Edit",
+                      actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
@@ -176,7 +179,7 @@ const Dish = (props: IEditableDishProps) => {
                   />
                   {showPopup && (
                     <Popup
-                      message={`Are you sure you want to delete ${dish.name}?`}
+                      message={t('components.Dish.confirm-delete', {dishName: dish.name})}
                       onConfirm={getOnDelete}
                       onCancel={() => setShowPopup(false)}
                     />
@@ -197,7 +200,7 @@ const Dish = (props: IEditableDishProps) => {
             <span className={styles.OptionsText}>
               {options && options.length !== 0 && (
                 <div className={!extended && styles.OptionsWrap}>
-                  <b>{"Options: "}</b>
+                  <b>{t('components.Dish.options')}</b>
                   {options}
                 </div>
               )}

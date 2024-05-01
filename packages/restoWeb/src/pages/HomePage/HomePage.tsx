@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import FixedBtn
   from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
-import { getAllRestaurantsByUser } from "@src/services/restoCalls";
+import {getAllRestaurantsByUserAndFilter} from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
 import Layout from 'shared/components/Layout/Layout';
@@ -11,50 +11,80 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import styles from "./HomePage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
-  const [isUserTokenSet, setIsUserTokenSet] = useState<Boolean>(false);
+  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>(false);
   const navigate = useNavigate();
+  const {t} = useTranslation();
+  const [searchFilter, setSearchFilter] = useState<string>('');
+
 
   useEffect(() => {
-    updateRestoData();
+    updateRestoData("");
+    checkDarkMode();
   }, []);
+  document.addEventListener('loggedOut', function( ) {
+    setRestoData([]);
+    setIsUserTokenSet(false);
+  });
 
-  const updateRestoData = () => {
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFilter = event.target.value;
+    setSearchFilter(newFilter);  
+    updateRestoData(newFilter);
+  };
+  
+  const updateRestoData = (filter: string) => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setIsUserTokenSet(false);
       return;
     }
     setIsUserTokenSet(true);
-    getAllRestaurantsByUser({ key: userToken })
+    getAllRestaurantsByUserAndFilter(userToken, filter)
       .then((res) => {
         setRestoData(res);
       });
   };
 
-  document.addEventListener('loggedOut', function( ) {
-    setRestoData([]);
-    setIsUserTokenSet(false);
-  });
+  useEffect(() => {
+    updateRestoData(searchFilter);
+  }, []);
 
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>My Restaurants</span>
+        <span className={styles.TitleSearch}>{t('common.my-restos')}</span>
+      </div>
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder={t('pages.HomePage.search-restos')}
+          value={searchFilter}
+          onChange={handleSearchChange}
+          className={styles.searchInput}
+        />
       </div>
       <Layout>
         <div className={styles.DivContent}>
           <div>
-            { isUserTokenSet && restoData.length == 0 && (
+            {isUserTokenSet && restoData.length === 0 && (
               <p>
-                You have currently no active restaurant. You can click on the button in the lower right corner to add a new one.
+                {t('pages.HomePage.no-restos-yet')}
               </p>
             )}
-            { !isUserTokenSet && (
+            {!isUserTokenSet && (
               <p>
-                Please <a onClick={() => NavigateTo('/login', navigate, {})}>login</a> to see your restaurants
+                {t('pages.HomePage.please')}
+                <a onClick={() => NavigateTo('/login', navigate, {})}>
+                  {t('pages.HomePage.login')}
+                </a>
+                {t('pages.HomePage.to-see-your-restos')}
               </p>
             )}
             {restoData.map((restaurant, index) => {
@@ -70,10 +100,10 @@ const HomePage = () => {
           </div>
         </div>
       </Layout>
-      { isUserTokenSet && (
-        <FixedBtn title="Add Restaurant" redirect="/addResto" />
+      {isUserTokenSet && (
+        <FixedBtn title={t('pages.HomePage.add-resto')} redirect="/addResto"/>
       )}
-      <SuccessAlert />
+      <SuccessAlert/>
     </div>
   );
 };

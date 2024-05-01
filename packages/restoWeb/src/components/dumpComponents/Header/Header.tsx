@@ -6,21 +6,24 @@ import logo from "@src/assets/logo.png";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { checkIfTokenIsValid } from '../../../services/userCalls';
 import styles from "./Header.module.scss";
+import TranslateIcon from "@mui/icons-material/Translate";
+import {useTranslation} from "react-i18next";
 
 const Header = () => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLogInSite, setIsLogInSite] = useState(false);
 
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const { t, i18n } = useTranslation();
   const usePathPattern = useLocation();
 
   function logoutUser() {
     const event = new Event('loggedOut');
     localStorage.removeItem('user');
-    setIsLogInSite(false);
+    localStorage.removeItem('visitedRestoBefore');
     setLoggedIn(false);
     document.dispatchEvent(event);
-    NavigateTo('/', navigate)
+    NavigateTo('/login', navigate);
   }
 
   const checkUserToken = async () => {
@@ -44,81 +47,79 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (usePathPattern.pathname === "/login") {
-      setIsLogInSite(true);
-    }
     checkUserToken();
   }, [navigate]);
 
+  const changeLanguage = (language: string) => {
+    i18n.changeLanguage(language);
+    setShowLanguageDropdown(false);
+  };
+
   return (
-    <div className={loggedIn ? styles.BackgroundRectLoggedIn : styles.BackgroundRectLoggedOut}>
-      <span className={loggedIn ? styles.NavTitle : styles.NavTitleLogIn}>
-        { loggedIn && (
-          <a onClick={logoutUser}>
-            Logout
-          </a>
-        )}
-        { !loggedIn && !isLogInSite && (
-          <a onClick={() => {
-            setIsLogInSite(true);
-            NavigateTo('/login', navigate, {})
-            }}>
-            Login
-          </a>
-        )}
-        { !loggedIn && isLogInSite && (
-          <a onClick={() => {
-            setIsLogInSite(false);
-            NavigateTo('/', navigate, {})
-            }}>
-            Home
-          </a>
-        )}
-      </span>
-      { loggedIn
-        &&
-          <span
-              className={styles.NavTitle}
-              onClick={() => NavigateTo("/account", navigate)}
-          >
-          My Account
-        </span>
-      }
-      { loggedIn 
-        &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/", navigate)}
-        >
-          My Restaurants
-        </span>
-      }
-      <img className={styles.LogoImg} src={logo} alt="Logo" />
-      { !loggedIn 
-        &&
-        <div
-        className={styles.NavTitle}
-        >
+    <div className={styles.containerHeader}>
+      <div className={styles.header}>
+        <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+          <div className={styles.logo}></div>
         </div>
-      }
-      { loggedIn 
-        &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/dishes", navigate)}
-        >
-          My Dishes
-        </span>
-      }
-      { loggedIn 
-        &&
-        <span
-        className={styles.NavTitle}
-        onClick={() => NavigateTo("/products", navigate)}
-        >
-          My Products
-        </span>
-      }
+        <div className={styles.headerLinks}>
+          <span className={styles.NavTitle}>
+            { !loggedIn ? (
+              <span className={styles.NavTitle} onClick={() => NavigateTo('/login', navigate, {})}>{t('components.Header.login')}</span>
+            ) : (
+              <></>
+            )}
+          </span>
+          { loggedIn && (
+              <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
+            )
+          }
+          { loggedIn && (
+              <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('components.Header.home')}</span>
+            )
+          }
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/account'>{t('components.Header.my-account')}</a>
+            )
+          }
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/'>{t('common.my-restos')}</a>
+            )
+          }
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/addCategory'>{t('common.my-category')}</a>
+            )
+          }
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/dishes'>{t('common.my-dishes')}</a>
+            )
+          }
+          { loggedIn && (
+                <a className={styles.NavTitle} href='/products'>{t('common.my-products')}</a>
+            )
+          }
+          <a
+            className={styles.NavTitle}
+            onClick={() => {
+              setShowLanguageDropdown(!showLanguageDropdown);
+            }}
+          >
+            <TranslateIcon fontSize="medium" />
+            {showLanguageDropdown && (
+              <div className={styles.languageDropdown}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                  {t('common.english')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                  {t('common.german')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                  {t('common.french')}
+                </a>
+              </div>
+            )}
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

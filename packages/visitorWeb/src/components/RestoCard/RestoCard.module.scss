@@ -5,6 +5,8 @@
   background: $white;
   margin-bottom: 1.5rem;
   border-radius: 1.2rem !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .DishBox:hover {
@@ -18,6 +20,9 @@
 
 .GridItem {
   padding: 2rem;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column !important;
 }
 
 .GridItemImage {
@@ -33,9 +38,11 @@
 }
 
 .DishTitle {
-  margin: 0 1rem 0.4rem 0;
+  margin: 0 1rem 0rem 0;
   font-family: "Montserrat", sans-serif;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
 }
 
 .JustificationPrint {
@@ -48,7 +55,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
 }
@@ -71,10 +78,58 @@
 .BtnPage {
   display: flex;
   padding-top: 0.3rem;
-  float: right;
+  justify-content: flex-end;
 }
 
 .RestoBtn {
   margin: 0 0.3rem !important;
   padding: 0.2rem 0.8rem !important;
+}
+
+.FavoriteIcon {
+  cursor: pointer;
+  margin-left: auto;
+  padding: 8px;
+}
+
+@media (max-width: 768px) {
+  .DishBox {
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      border-radius: 1.2rem !important;
+      background: $white;
+      overflow-x: hidden;
+  }
+
+  .GridItem {
+      padding: 1rem;
+  }
+
+  .ImageDimensions {
+      width: 100%;
+      height: auto;
+      max-height: 9rem;
+      object-fit: cover;
+      border-radius: 0.625rem;
+  }
+
+  .DishTitle {
+      font-size: 1.3rem;
+      margin: 0.5rem 0;
+  }
+
+  .JustificationPrint,
+  .JustificationPrintExtended {
+      font-size: 1rem; 
+  }
+
+  .AddressText {
+      font-size: 0.85rem;
+      margin: 0.1rem 0;
+  }
+
+  .RestoBtn {
+      padding: 0.2rem 0.6rem !important;
+      font-size: 0.9rem !important;
+  }
 }

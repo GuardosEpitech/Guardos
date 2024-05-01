@@ -34,3 +34,13 @@
   font-size: 1.8rem;
   color: #6d071a;
 }
+
+.productGrid {
+  flex-wrap: wrap !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .productGrid {
+    justify-content: center !important;
+  }
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useLocation } from "react-router-dom";
 
 import Layout from 'shared/components/Layout/Layout';
@@ -6,6 +6,9 @@ import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
 import styles
   from "@src/pages/EditRestaurantPage/EditRestaurantPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface IEditRestaurantPageProps {
   restoName: string;
@@ -17,6 +20,8 @@ interface IEditRestaurantPageProps {
   country: string;
   description: string;
   picturesId: number[];
+  menuDesignID: number;
+  website: string;
 }
 
 const EditRestaurantPage = () => {
@@ -29,13 +34,22 @@ const EditRestaurantPage = () => {
     city,
     country,
     description,
-    picturesId
+    picturesId,
+    menuDesignID,
+    website
   } = useLocation().state as IEditRestaurantPageProps;
+  const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   return (
     <div>
       <div className={styles.RectOnImg}>
-        <span className={styles.TitleSearch}>Edit restaurant</span>
+        <span className={styles.TitleSearch}>
+          {t('pages.EditRestaurantPage.edit-resto')}
+        </span>
       </div>
       <Layout>
         <RestaurantForm
@@ -48,6 +62,8 @@ const EditRestaurantPage = () => {
           country={country}
           description={description}
           picturesId={picturesId}
+          menuDesignID={menuDesignID}
+          website={website}
         />
       </Layout>
     </div>

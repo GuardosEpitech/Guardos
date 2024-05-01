@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styles from "./AutoComplete.module.scss";
 import inputSyles from "@src/components/InputSearch/InputSearch.module.scss"
+import {useTranslation} from "react-i18next";
 
 const theme = createTheme({
   palette: {
@@ -25,6 +26,7 @@ const AutoComplete = (props: AutoCompleteProps) => {
   const [suggestionIndex, setSuggestionIndex] = useState(0);
   const [suggestionsActive, setSuggestionsActive] = useState(false);
   const [value, setValue] = useState("");
+  const {t} = useTranslation();
 
   const handleChange = (e: any) => {
     const query = e.target.value
@@ -91,14 +93,14 @@ const AutoComplete = (props: AutoCompleteProps) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div className={styles.inputSearchContainer}>
         <TextField
-          label="Location"
-          variant="filled"
+          label={t('components.InputSearch.location')}
           className={inputSyles.InputSearch}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           value={value}
+          focused
         />
         {suggestionsActive && <Suggestions />}
       </div>
