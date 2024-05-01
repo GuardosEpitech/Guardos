@@ -194,8 +194,7 @@
       },
       "HomePage": {
         "what-are-you-looking-for": "Que recherchez-vous ?",
-        "search-result": "Berlin - +12548 Restaurants",
-        "noresto": "Aucun restaurant adapté n'a été trouvé. Veuillez mettre à jour votre filtre."
+        "search-result": "Berlin - +12548 Restaurants"
       },
       "IntroPage": {
         "guardos-intro": "Chez Guardos, notre mission est de permettre aux individus de mener une vie épanouissante en leur fournissant les connaissances, les outils et le soutien nécessaires pour naviguer dans les complexités des intolérances alimentaires. Nous croyons que chacun mérite de profiter d'une vie vibrante et saine, et cela commence par la compréhension et la gestion de sa relation avec la nourriture.",
@@ -333,7 +332,9 @@
         "continue": "Continuer"
       },
       "RestoPage": {
-        "what-you-looking-for": "Que recherchez-vous ?"
+        "what-you-looking-for": "Que recherchez-vous ?",
+        "search-result": "Berlin - +12548 Restaurants",
+        "noresto": "Aucun restaurant adapté n'a été trouvé. Veuillez mettre à jour votre filtre."
       },
       "Privacy": {
         "title": "Déclaration de Confidentialité",

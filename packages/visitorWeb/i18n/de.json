@@ -194,8 +194,7 @@
       },
       "HomePage": {
         "what-are-you-looking-for": "Was suchen Sie?",
-        "search-result": "Berlin - +12548 Restaurants",
-        "noresto": "Keine passenden Restaurants gefunden. Bitte ändern Sie ihren Filter."
+        "search-result": "Berlin - +12548 Restaurants"
       },
       "IntroPage": {
         "guardos-intro": "Bei Guardos ist unsere Mission, Einzelpersonen zu ermächtigen, erfüllte Leben zu führen, indem wir ihnen das Wissen, die Werkzeuge und die Unterstützung bieten, die erforderlich sind, um die Komplexitäten von Lebensmittelunverträglichkeiten zu bewältigen. Wir glauben, dass jeder ein lebendiges und gesundes Leben verdient, und das beginnt mit dem Verständnis und der Verwaltung seiner Beziehung zu Lebensmitteln.",
@@ -333,7 +332,9 @@
         "continue": "Fortfahren"
       },
       "RestoPage": {
-        "what-you-looking-for": "Was suchen Sie?"
+        "what-you-looking-for": "Was suchen Sie?",
+        "search-result": "Berlin - +12548 Restaurants",
+        "noresto": "Keine passenden Restaurants gefunden. Bitte ändern Sie ihren Filter."
       },
       "Privacy": {
         "title": "Datenschutzerklärung",
