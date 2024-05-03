@@ -3,16 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import TranslateIcon from "@mui/icons-material/Translate";
+import Drawer from '@mui/material/Drawer';
+import MenuIcon from '@mui/icons-material/Menu';
 
 import styles from "./Header.module.scss";
-import {checkIfVisitorTokenIsValid} from "@src/services/userCalls";
-import {useTranslation} from "react-i18next";
+import { checkIfVisitorTokenIsValid } from "@src/services/userCalls";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [routeLoggedIn, setRouteLoggedIn] = useState('/login');
   const navigate = useNavigate();
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (language: string) => {
@@ -57,10 +60,43 @@ const Header = () => {
   return (
     <div className={styles.containerHeader}>
       <div className={styles.header}>
+        <a
+          className={styles.NavTitle}
+          onClick={() => {
+            setShowNavigationDrawer(!showNavigationDrawer);
+          }}
+        >
+          <MenuIcon fontSize="large" style={{ color: 'white' }} />
+        </a>
         <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
           <div className={styles.logo}></div>
         </div>
         <div className={styles.headerLinks}>
+          <a
+            className={styles.NavTitle}
+            onClick={() => {
+              setShowLanguageDropdown(!showLanguageDropdown);
+            }}
+          >
+            {showLanguageDropdown && (
+              <div className={styles.languageDropdown}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                  {t('common.english')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                  {t('common.german')}
+                </a>
+                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                  {t('common.french')}
+                </a>
+              </div>
+            )}
+            <TranslateIcon fontSize="medium" />
+          </a>
+        </div>
+      </div>
+      <Drawer anchor="left" open={showNavigationDrawer} onClose={() => setShowNavigationDrawer(false)} classes={{ paper: styles.drawer }}>
+        <div className={styles.drawerContent}>
           <span className={styles.NavTitle}>
             { loggedIn ? (
               <a onClick={logoutUser}>
@@ -77,29 +113,8 @@ const Header = () => {
             )
           }
           <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
-          <a
-            className={styles.NavTitle}
-            onClick={() => {
-              setShowLanguageDropdown(!showLanguageDropdown);
-            }}
-          >
-            <TranslateIcon fontSize="medium" />
-            {showLanguageDropdown && (
-              <div className={styles.languageDropdown}>
-                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
-                  {t('common.english')}
-                </a>
-                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
-                  {t('common.german')}
-                </a>
-                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
-                  {t('common.french')}
-                </a>
-              </div>
-            )}
-          </a>
         </div>
-      </div>
+      </Drawer>
     </div>
   );
 };

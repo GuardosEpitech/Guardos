@@ -7,7 +7,9 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import { checkIfTokenIsValid } from '../../../services/userCalls';
 import styles from "./Header.module.scss";
 import TranslateIcon from "@mui/icons-material/Translate";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ const Header = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const { t, i18n } = useTranslation();
   const usePathPattern = useLocation();
+  const [showDrawer, setShowDrawer] = useState(false);
 
   function logoutUser() {
     const event = new Event('loggedOut');
@@ -53,50 +56,37 @@ const Header = () => {
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language);
     setShowLanguageDropdown(false);
+    setShowDrawer(false);
   };
 
   return (
+    <div>
+    <Drawer anchor="left" open={showDrawer} onClose={() => setShowDrawer(false)} classes={{ paper: styles.drawer }}>
+      <div className={styles.drawerContent}>
+        {!loggedIn ? (
+          <span className={styles.NavTitle} onClick={() => navigate('/login')}>{t('components.Header.login')}</span>
+        ) : (
+          <>
+            <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
+            <span className={styles.NavTitle} onClick={() => navigate('/')} >{t('components.Header.home')}</span>
+            <a className={styles.NavTitle} href='/account'>{t('components.Header.my-account')}</a>
+            <a className={styles.NavTitle} href='/'>{t('common.my-restos')}</a>
+            <a className={styles.NavTitle} href='/addCategory'>{t('common.my-category')}</a>
+            <a className={styles.NavTitle} href='/dishes'>{t('common.my-dishes')}</a>
+            <a className={styles.NavTitle} href='/products'>{t('common.my-products')}</a>
+          </>
+        )}
+      </div>
+    </Drawer>
     <div className={styles.containerHeader}>
       <div className={styles.header}>
-        <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+        <div className={styles.menuIcon} onClick={() => setShowDrawer(true)}>
+          <MenuIcon fontSize="large" style={{ color: 'white' }} />
+        </div>
+        <div className={styles.logoContainer} onClick={() => navigate('/')}>
           <div className={styles.logo}></div>
         </div>
         <div className={styles.headerLinks}>
-          <span className={styles.NavTitle}>
-            { !loggedIn ? (
-              <span className={styles.NavTitle} onClick={() => NavigateTo('/login', navigate, {})}>{t('components.Header.login')}</span>
-            ) : (
-              <></>
-            )}
-          </span>
-          { loggedIn && (
-              <span className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</span>
-            )
-          }
-          { loggedIn && (
-              <span className={styles.NavTitle} onClick={() => NavigateTo('/', navigate, {})}>{t('components.Header.home')}</span>
-            )
-          }
-          { loggedIn && (
-              <a className={styles.NavTitle} href='/account'>{t('components.Header.my-account')}</a>
-            )
-          }
-          { loggedIn && (
-              <a className={styles.NavTitle} href='/'>{t('common.my-restos')}</a>
-            )
-          }
-          { loggedIn && (
-              <a className={styles.NavTitle} href='/addCategory'>{t('common.my-category')}</a>
-            )
-          }
-          { loggedIn && (
-              <a className={styles.NavTitle} href='/dishes'>{t('common.my-dishes')}</a>
-            )
-          }
-          { loggedIn && (
-                <a className={styles.NavTitle} href='/products'>{t('common.my-products')}</a>
-            )
-          }
           <a
             className={styles.NavTitle}
             onClick={() => {
@@ -121,6 +111,7 @@ const Header = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
