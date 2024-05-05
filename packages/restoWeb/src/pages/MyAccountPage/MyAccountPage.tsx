@@ -431,6 +431,12 @@ const MyAccountPage = () => {
           {t('pages.MyAccountPage.delete-account')}
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <Typography variant="body1">{t('pages.MyAccountPage.payment')}</Typography>
+          <Button onClick={() => window.location.href = '/payment'}>
+          {t('pages.MyAccountPage.payBtn')}
+          </Button>
+        </div>   
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}

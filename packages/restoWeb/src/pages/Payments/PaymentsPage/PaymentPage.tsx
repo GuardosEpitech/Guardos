@@ -11,17 +11,6 @@ const PaymentPage = () => {
     const [customerID, setCustomerId] = useState("");
     const [paymentMethods, setPaymentMethods] = useState<IPaymentMethod[]>([]);
 
-    const fetchMethods = async () => {
-        try {
-            const userToken = localStorage.getItem('user');
-            if (userToken === null) { return; }
-            const methods = await getPaymentMethods(userToken);
-            setPaymentMethods(methods);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
     const fetchData = async () => {
         try {
             const userToken = localStorage.getItem('user');
@@ -37,7 +26,18 @@ const PaymentPage = () => {
             console.error('Error fetching data:', error);
         }
     };
-    
+
+    const fetchMethods = async () => {
+        try {
+            const userToken = localStorage.getItem('user');
+            if (userToken === null) { return; }
+            const methods = await getPaymentMethods(userToken);
+            setPaymentMethods(methods);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
     useEffect(() => {
         fetchData();
         fetchMethods();
@@ -74,15 +74,15 @@ const PaymentPage = () => {
                         {t('pages.Payment.nopay')}
                     </div>
                 )}
-                <form className={styles.addButton} action="http://localhost:8081/api/payments/save/create-checkout-session" method="POST">
-                    <input type="hidden" name="customerId" value={customerID} />
-                    <input type="hidden" name="domainURL" value="http://localhost:8082" />
-                    <button type="submit">
-                        {t('pages.Payment.add')}
-                    </button>
-                </form>
             </>
             )}
+            <form className={styles.addButton} action="http://localhost:8081/api/payments/save/create-checkout-session" method="POST">
+                <input type="hidden" name="customerId" value={customerID} />
+                <input type="hidden" name="domainURL" value="http://localhost:8080" />
+                <button type="submit">
+                    {t('pages.Payment.add')}
+                </button>
+            </form>
         </div>
     );
 };

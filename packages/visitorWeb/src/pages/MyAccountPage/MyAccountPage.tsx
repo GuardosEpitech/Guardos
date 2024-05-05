@@ -83,6 +83,7 @@ const MyAccountPage = () => {
 
   const fetchFavoriteDishes = async () => {
     const userToken = localStorage.getItem("user");
+    console.log(userToken);
     if (userToken === null) {
       return;
     }
@@ -130,6 +131,10 @@ const MyAccountPage = () => {
     // Toggle the password change dropdown
     setPasswordChangeOpen(!passwordChangeOpen);
   };
+
+  const handlePaymentPage = () => {
+    NavigateTo('/payment', navigate, {})
+  }
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;
@@ -475,11 +480,17 @@ const MyAccountPage = () => {
           {t('pages.MyAccountPage.delete-account')}
         </button>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Typography variant="body1">{t('pages.MyAccountPage.payment')}</Typography>
+          <Button onClick={() => window.location.href = '/payment'}>
+          {t('pages.MyAccountPage.payBtn')}
+          </Button>
+        </div>   
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
-      </div>   
+        </div>
       </div>         
       <div className={styles.restaurantSection}>
         {/* Tabs for Favorite Restaurants and Dishes */}

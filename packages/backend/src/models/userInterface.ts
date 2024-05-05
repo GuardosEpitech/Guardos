@@ -31,4 +31,5 @@ export const userSchema = new mongoose.Schema({
     required: false
   },
   preferredLanguage: String,
+  customerID: String,
 });

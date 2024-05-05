@@ -320,3 +320,23 @@ export async function doesUserExist(username: string, email: string) {
   }
   return false;
 }
+
+export async function addCustomer(userID: number, customerID: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const answer = await UserSchema.findOneAndUpdate(
+    {uid: userID}, 
+    {$set: { customerID: customerID }}, 
+    {new: true}
+  );
+  return answer;
+}
+
+export async function getCustomer(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const answer = await UserSchema.findOne({uid: userID});
+
+  if (answer.customerID) {
+    return answer.customerID;
+  }
+  return false;
+}

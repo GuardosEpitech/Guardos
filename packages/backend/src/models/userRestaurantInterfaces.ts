@@ -14,4 +14,5 @@ export const userRestoSchema = new mongoose.Schema({
   },
   defaultMenuDesign: String,
   preferredLanguage: String,
+  customerID: String,
 });

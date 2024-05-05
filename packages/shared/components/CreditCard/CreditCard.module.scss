@@ -1,0 +1,130 @@
+.creditCard {
+  width: 350px;
+  height: 200px; 
+  background-color: #f5f5f5;
+  border-radius: 20px; 
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  position: relative; /* Ensure the menu is positioned relative to the card */
+}
+
+.brand {
+  font-size: 24px; 
+  font-weight: bold;
+  align-self: flex-start; /* Position brand to the top left */
+}
+
+.cardNumber {
+  font-family: monospace;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px; 
+  margin-bottom: 10px; 
+}
+
+.last4 {
+  font-family: monospace;
+  font-size: 24px; 
+}
+
+.cardInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.expiresOn {
+  font-size: 16px; 
+  color: #666;
+}
+
+.menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  z-index: 1; /* Ensure the menu is above other elements */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 20px; /* Adjust the distance from the top */
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+}
+
+.menuItem {
+  padding: 5px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.menuItem:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.menuItem:hover {
+  background-color: #f0f0f0;
+}
+
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 150px;
+  background-color: white;
+  outline: #6d071a solid 2px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popupContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.popupContent button {
+  margin: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #6D071A;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popupContent button:hover {
+  background-color: #d0d0d0;
+}

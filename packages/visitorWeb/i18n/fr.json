@@ -100,7 +100,11 @@
         "be-developer": "Développeur Backend",
         "fe-developer": "Développeur Frontend",
         "mobile-developer": "Développeur Mobile"
-      }
+      },
+      "CreditCard": {
+        "expire": "Expire le : ",
+        "msg": "Êtes-vous sûr de vouloir supprimer cette méthode ?"
+    }
     },
     "pages": {
       "AboutUs": {
@@ -258,7 +262,9 @@
         "just-ask": "Demandez simplement !",
         "fav-restos": "Restaurants favoris",
         "fav-dishes": "Plats favoris",
-        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+        "payment": "Méthodes de paiement",
+        "payBtn": "Gérer les méthodes de paiement"
       },
       "Payments": {
         "payment-success": "Paiement réussi",
@@ -390,6 +396,19 @@
         "txtlegal1": "Informations aux consommateurs conformément au règlement (UE) n° 524/2013 : ",
         "txtlegal2": "Dans le cadre du règlement sur la résolution des litiges en ligne en matière de consommation, ",
         "txtlegal3": "une plateforme de résolution des litiges en ligne de la Commission européenne est disponible à l'adresse." 
+      },
+      "Payment": {
+        "title": "Méthodes de paiement",
+        "nopay": "Aucune méthode de paiement ajoutée.",
+        "add": "Ajouter un paiement"
+      },
+      "PaymentAdd": {
+        "title": "Méthode de paiement ajoutée avec succès",
+        "back": "Aller à la page de paiement"
+      },
+      "PaymentCancel": {
+          "title": "Méthode de paiement non ajoutée",
+          "back": "Aller à la page de paiement"
       }
     }
   }

@@ -101,7 +101,11 @@
         "menu": "Menu",
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ restoName }}?",
         "opening-hours": "Heures d'ouverture"
-      }
+      },
+      "CreditCard": {
+        "expire": "Expire le : ",
+        "msg": "Êtes-vous sûr de vouloir supprimer cette méthode ?"
+    }
     },
     "pages": {
       "AddDishPage": {
@@ -210,7 +214,9 @@
         "delete-account": "Supprimer le compte",
         "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité? ",
         "just-ask": "Demandez-la simplement!",
-        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible."
+        "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
+        "payment": "Méthodes de paiement",
+        "payBtn": "Gérer les méthodes de paiement"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit"
@@ -327,6 +333,19 @@
         "name": "Catégorie:",
         "id": "Séquence:",
         "add": "Nouveau"
+      },
+      "Payment": {
+        "title": "Méthodes de paiement",
+        "nopay": "Aucune méthode de paiement ajoutée.",
+        "add": "Ajouter un paiement"
+      },
+      "PaymentAdd": {
+        "title": "Méthode de paiement ajoutée avec succès",
+        "back": "Aller à la page de paiement"
+      },
+      "PaymentCancel": {
+          "title": "Méthode de paiement non ajoutée",
+          "back": "Aller à la page de paiement"
       }
     }
   }

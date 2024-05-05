@@ -23,6 +23,9 @@ import FeatureRequest from "@src/pages/FeatureRequest";
 import PrivacyPage from "@src/pages/PrivacyPage";
 import ImprintPage from "@src/pages/ImprintPage/ImprintPage";
 import AddCategoryPage from "@src/pages/AddCategoryPage";
+import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAddCancel";
+import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
+import PaymentPage from "@src/pages/Payments/PaymentsPage/PaymentPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -78,6 +81,9 @@ const MVPRouter = () => {
           <Route path="/privacy" element={<PrivacyPage />}></Route>
           <Route path="/imprint" element={<ImprintPage />}></Route>
           <Route path="addCategory" element={<AddCategoryPage />}></Route>
+          <Route path="/payment" element={<PaymentPage />}></Route>
+          <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
+          <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

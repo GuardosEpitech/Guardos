@@ -101,7 +101,11 @@
         "menu": "Menü",
         "confirm-delete": "Sind Sie sicher, dass Sie {{ restoName }} löschen möchten?",
         "opening-hours": "Öffnungszeiten"
-      }
+      },
+      "CreditCard": {
+        "expire": "läuft ab am: ",
+        "msg": "Sind Sie sicher, dass Sie diese Methode löschen möchten?"
+    }
     },
     "pages": {
       "AddDishPage": {
@@ -210,7 +214,9 @@
         "delete-account": "Konto löschen",
         "feature-request": "Benötigen Sie ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
-        "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+        "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "payment": "Zahlungsmethoden",
+        "payBtn": "Zahlungsmethoden verwalten"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen"
@@ -327,6 +333,19 @@
         "name": "Kategorie:",
         "id": "Reihenfolge:",
         "add": "Neu"
+      },
+      "Payment": {
+        "title": "Zahlungsmethoden",
+        "nopay": "Es liegen keine Zahlungsmethoden vor.",
+        "add": "Hinzufügen"
+      },
+      "PaymentAdd": {
+        "title": "Zahlungsmethode erfolgreich hinzugefügt",
+        "back": "Zur Zahlungsseite gehen"
+      },
+      "PaymentCancel": {
+          "title": "Zahlungsmethode nicht hinzugefügt",
+          "back": "Zur Zahlungsseite gehen"
       }
     }
   }

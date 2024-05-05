@@ -271,3 +271,23 @@ export async function doesUserRestoExist(username: string, email: string) {
   }
   return false;
 }
+
+export async function addCustomerResto(userID: number, customerID: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOneAndUpdate(
+    {uid: userID}, 
+    {$set: { customerID: customerID }}, 
+    {new: true}
+  );
+  return answer;
+}
+
+export async function getCustomerResto(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOne({uid: userID});
+
+  if (answer.customerID) {
+    return answer.customerID;
+  }
+  return false;
+}
