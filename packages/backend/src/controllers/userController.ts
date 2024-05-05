@@ -323,12 +323,18 @@ export async function doesUserExist(username: string, email: string) {
 
 export async function addCustomer(userID: number, customerID: string) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
-  const answer = await UserSchema.findOneAndUpdate(
-    {uid: userID}, 
-    {$set: { customerID: customerID }}, 
-    {new: true}
-  );
-  return answer;
+  const existingUser = await UserSchema.findOne({ uid: userID });
+
+  if (existingUser && existingUser.customerID) {
+    return existingUser.customerID;
+  } else {
+    const answer = await UserSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { customerID: customerID } },
+      { new: true }
+    );
+    return answer.customerID;
+  }
 }
 
 export async function getCustomer(userID: number) {

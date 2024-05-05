@@ -61,8 +61,8 @@ router.post('/create-checkout-session',
         email: user.email,
         name: user.username,
       });
-      await addCustomer(userID, customer.id);
-      return customer.id;
+      const customerID = await addCustomer(userID, customer.id);
+      return customerID;
     } catch (error) {
       console.error('Error creating Stripe customer:', error);
       throw error;
@@ -208,9 +208,9 @@ async function createCustomerResto(userID: number): Promise<string> {
       name: user.username,
     });
 
-    await addCustomerResto(userID, customer.id);
+    const customerID = await addCustomerResto(userID, customer.id);
 
-    return customer.id;
+    return customerID;
   } catch (error) {
     console.error('Error creating Stripe customer:', error);
     throw error;
