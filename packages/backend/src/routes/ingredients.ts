@@ -8,9 +8,10 @@ import {
   getAllIngredients,
   deleteIngredient,
   findMaxIndexIngredients, getIngredientByName
-} from '../controllers/ingredientsController';
+} from '../controllers/ingredientsControllerMVP';
 import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
+import {detectAllergens} from '../controllers/allergenDetectionController';
 
 const router = express.Router();
 
@@ -26,8 +27,8 @@ router.post('/', async (req, res) => {
       req.body as IIngredientsCommunication)) {
       const id =
         req.body.id ? req.body.id : (await findMaxIndexIngredients() + 1);
+      return await detectAllergens(req, res);
       await createNewIngredient(req.body.name, id, req.body.allergens);
-
       await addRestoProduct({
         name: req.body.name,
         allergens: req.body.allergens,
