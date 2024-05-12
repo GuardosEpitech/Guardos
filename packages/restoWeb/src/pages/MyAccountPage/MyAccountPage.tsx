@@ -458,6 +458,9 @@ const MyAccountPage = () => {
             </div>
           )}
         </div>
+        <button onClick={() => window.location.href = '/subscriptions'}>
+          {t('pages.MyAccountPage.subscriptions')}
+        </button>
         <div>
           <button className={styles.saveButton} onClick={handleSave}>
             {t('pages.MyAccountPage.save-changes')}
