@@ -8,6 +8,7 @@ import {
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
 import {checkIfRestaurantExists} from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
+import {detectAllergens} from '../controllers/allergenDetectionController';
 
 const router = express.Router();
 
@@ -85,6 +86,13 @@ router.post('/:name', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
+
+    const allergensDB = await detectAllergens(req);
+    if (allergensDB.status !== 200) {
+      return allergensDB;
+    }
+    const allergens: [string] = allergensDB.data[0].allergens;
+    dish.allergens.push(...allergens);
     const newDish = await createNewDish(resto, dish, userID as number);
     return res.status(200)
       .send(newDish);

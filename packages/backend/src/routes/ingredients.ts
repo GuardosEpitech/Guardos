@@ -12,6 +12,7 @@ import {
 import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
 import {detectAllergens} from '../controllers/allergenDetectionController';
+import {isArrayOfStrings} from '../controllers/ingredientsController';
 
 const router = express.Router();
 
@@ -27,11 +28,22 @@ router.post('/', async (req, res) => {
       req.body as IIngredientsCommunication)) {
       const id =
         req.body.id ? req.body.id : (await findMaxIndexIngredients() + 1);
-      return await detectAllergens(req, res);
-      await createNewIngredient(req.body.name, id, req.body.allergens);
+      const allergensDB = await detectAllergens(req);
+      if (allergensDB.status !== 200) {
+        return allergensDB;
+      }
+      const allergens: [string] = allergensDB.data[0].allergens;
+
+      if (isArrayOfStrings(req.body.allergens)) {
+        allergens.push(...req.body.allergens);
+      } else if (typeof req.body.allergens === 'string') {
+        allergens.push(req.body.allergens);
+      }
+
+      await createNewIngredient(req.body.name, id, allergens);
       await addRestoProduct({
         name: req.body.name,
-        allergens: req.body.allergens,
+        allergens: allergens,
         ingredients: req.body.ingredients,
       }, req.body.restoName);
       if (!await checkIfRestaurantExists(req.body.restoName)) {
