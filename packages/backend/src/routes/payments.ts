@@ -20,6 +20,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2023-10-16',
 });
 
+router.get('/stripe-key', (_, res) => {
+  return res.send({publishableKey: process.env.STRIPE_PUBLISHABLE_KEY});
+});
+
 router.post('/create-checkout-session',
   async (req: express.Request, res: express.Response) => {
     try {
@@ -297,6 +301,70 @@ router.get('/showPaymentMethodsResto', async (req, res) => {
       res.status(500)
         .send({ error: error.message });
   }
+});
+
+router.post('/payment-sheet-setup-intent-visitor', async (req, res) => {
+  const {
+    userToken,
+  } = req.body;
+
+  if (!userToken) {
+    return res.status(404).send({ error: 'No User Token' });
+  }
+  const userID = await getUserId(userToken);
+  if (typeof userID !== 'number') {
+    return res.status(404).send({ error: 'No UserID' });
+  }
+  const customerID = await getCustomer(userID);
+  if (typeof customerID !== 'string') {
+    return res.status(404).send({ error: 'No CustomerID' });
+  }
+
+  const ephemeralKey = await stripe.ephemeralKeys.create(
+    {customer: customerID},
+    {apiVersion: '2023-10-16'},
+  );
+  const setupIntent = await stripe.setupIntents.create({
+    ...{customer: customerID, payment_method_types: ['card']},
+  });
+
+  return res.json({
+    setupIntent: setupIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: customerID,
+  });
+});
+
+router.post('/payment-sheet-setup-intent-resto', async (req, res) => {
+  const {
+    userToken,
+  } = req.body;
+
+  if (!userToken) {
+    return res.status(404).send({ error: 'No User Token' });
+  }
+  const userID = await getUserIdResto(userToken);
+  if (typeof userID !== 'number') {
+    return res.status(404).send({ error: 'No UserID' });
+  }
+  const customerID = await getCustomerResto(userID);
+  if (typeof customerID !== 'string') {
+    return res.status(404).send({ error: 'No CustomerID' });
+  }
+
+  const ephemeralKey = await stripe.ephemeralKeys.create(
+    {customer: customerID},
+    {apiVersion: '2023-10-16'},
+  );
+  const setupIntent = await stripe.setupIntents.create({
+    ...{customer: customerID, payment_method_types: ['card']},
+  });
+
+  return res.json({
+    setupIntent: setupIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: customerID,
+  });
 });
 
 export default router;

@@ -104,7 +104,7 @@
       "CreditCard": {
         "expire": "läuft ab am: ",
         "msg": "Sind Sie sicher, dass Sie diese Methode löschen möchten?"
-    }
+      }
     },
     "pages": {
       "AboutUs": {
