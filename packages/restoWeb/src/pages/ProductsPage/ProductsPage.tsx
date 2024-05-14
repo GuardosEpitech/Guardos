@@ -38,6 +38,28 @@ const ProductsPage = () => {
         <span className={styles.TitleSearch}>{t('common.my-products')}</span>
       </div>
       <Layout>
+        {productData.length === 0 ?
+        (
+          <div className={styles.ErrorContainer}>
+            <span className={styles.ErrorHeader}>
+              {t('pages.ProductsPage.noprod')}
+            </span>
+            <br/>
+            <br/>
+            <br/>
+            <span className={styles.ErrorText}>
+              {t('pages.ProductsPage.noprod2')} 
+              <a href="/addProduct">{t('pages.ProductsPage.noprod2-2')}</a>
+              {t('pages.ProductsPage.noprod2-3')}
+            </span>
+            <br/>
+            <span className={styles.ErrorText}>
+              {t('pages.ProductsPage.noprod3')} 
+              <a href="/addResto">{t('pages.ProductsPage.noprod3-2')}</a> 
+              {t('pages.ProductsPage.noprod3-3')}
+            </span>
+          </div>
+        ) : (
         <Grid
           container
           spacing={{ xs: 1, sm: 2, md: 3 }}
@@ -54,6 +76,7 @@ const ProductsPage = () => {
             />
           ))}
         </Grid>
+        )}
       </Layout>
       <FixedBtn
         title={t('pages.ProductsPage.add-product')}

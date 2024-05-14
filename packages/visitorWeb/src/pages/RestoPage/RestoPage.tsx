@@ -208,11 +208,15 @@ const RestoPage = () => {
         </div>
         {step === 1 ? (
           <div className={styles.DivContentRestoSection}>
-            <h1 className={styles.TitleCard}>Berlin - +12548 Restaurants</h1>
-            {filteredRestaurants?.map((item, index) => {
-              const isFavourite = isFavouriteRestos.includes(item.uid);
-              return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />
-            })}
+            <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            {filteredRestaurants?.length === 0 ? (
+              <h2>{t('pages.RestoPage.noresto')}</h2>
+            ) : (
+              filteredRestaurants?.map((item, index) => {
+                const isFavourite = isFavouriteRestos.includes(item.uid);
+                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />
+              })
+            )}
           </div>
         ) : (
           <MapView data={filteredRestaurants} />
