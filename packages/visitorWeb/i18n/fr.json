@@ -101,6 +101,10 @@
         "fe-developer": "Développeur Frontend",
         "mobile-developer": "Développeur Mobile"
       },
+      "SubscriptionBox": {
+        "select": "Choisir",
+        "monthly-price": "Prix mensuel"
+      },
       "CookieBanner": {
         "title": "Nous utilisons des cookies",
         "intro": "Nous utilisons des cookies pour collecter des informations vous concernant. Nous utilisons ces informations :",
@@ -279,6 +283,7 @@
         "delete-account": "Supprimer le compte",
         "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité ? ",
         "just-ask": "Demandez simplement !",
+        "subscriptions": "Gérer l'abonnement",
         "fav-restos": "Restaurants favoris",
         "fav-dishes": "Plats favoris",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
@@ -334,6 +339,18 @@
       "RestoPage": {
         "what-you-looking-for": "Que recherchez-vous ?"
       },
+      "SubscriptionPage": {
+        "my-subscription": "Mon Abonnement",
+        "free": "Utilisation Gratuite",
+        "free-description": "Utilisez les fonctionnalités de base gratuitement",
+        "basic": "Abonnement de Base",
+        "description-low-level-1": "Supprimer les publicités",
+        "description-low-level-2": "Recherche en groupe - sauvegardez plusieurs profils alimentaires",
+        "premium": "Abonnement Premium",
+        "description-high-level-1": "Les demandes de fonctionnalités sont prioritaires",
+        "description-high-level-2": "Faire des réservations"
+      },
+
       "Privacy": {
         "title": "Déclaration de Confidentialité",
         "intro": "Cette Déclaration de Confidentialité explique comment Guardos.eu (« Guardos », « nous », « notre ») collecte, utilise et protège vos informations personnelles lorsque vous interagissez avec nos plateformes et services. Nous nous engageons à garantir la confidentialité et la sécurité de vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et aux autres lois applicables en matière de protection des données.",

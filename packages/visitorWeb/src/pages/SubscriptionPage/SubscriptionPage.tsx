@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SubscriptionPage.module.scss";
 import {
-  addRestoUserPermissions,
-  getRestoUserPermission,
-  removeRestoUserPermissions
+  addVisitorUserPermissions,
+  getVisitorUserPermission,
+  removeVisitorUserPermissions
 } from "@src/services/permissionsCalls";
 import SubscriptionBox from "@src/components/SubscriptionBox/SubscriptionBox";
 import {useTranslation} from "react-i18next";
@@ -21,7 +21,7 @@ const SubscriptionPage: React.FC = () => {
           return;
         }
 
-        const permissions = await getRestoUserPermission(userToken);
+        const permissions = await getVisitorUserPermission(userToken);
         setUserPermissions(permissions || []);
       } catch (error) {
         console.error("Error fetching user permissions:", error);
@@ -37,8 +37,8 @@ const SubscriptionPage: React.FC = () => {
         return;
       }
 
-      await addRestoUserPermissions(userToken, permission);
-      const permissions = await getRestoUserPermission(userToken);
+      await addVisitorUserPermissions(userToken, permission);
+      const permissions = await getVisitorUserPermission(userToken);
       setUserPermissions(permissions || []);
     } catch (error) {
       console.error("Error adding user permissions:", error);
@@ -52,8 +52,8 @@ const SubscriptionPage: React.FC = () => {
         return;
       }
 
-      await removeRestoUserPermissions(userToken, permission);
-      const permissions = await getRestoUserPermission(userToken);
+      await removeVisitorUserPermissions(userToken, permission);
+      const permissions = await getVisitorUserPermission(userToken);
       setUserPermissions(permissions || []);
     } catch (error) {
       console.error("Error removing user permissions:", error);
@@ -101,7 +101,7 @@ const SubscriptionPage: React.FC = () => {
               t('pages.SubscriptionPage.description-low-level-1'),
               t('pages.SubscriptionPage.description-low-level-2'),
               t('pages.SubscriptionPage.description-high-level-1'),
-              t('pages.SubscriptionPage.description-high-level-1')
+              t('pages.SubscriptionPage.description-high-level-2')
             ]}
             price="5.99 €"
             onClick={handleSwitchPermissions}

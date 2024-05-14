@@ -101,6 +101,10 @@
         "fe-developer": "Frontend Developer",
         "mobile-developer": "Mobile Developer"
       },
+      "SubscriptionBox": {
+        "select": "Select",
+        "monthly-price": "Monthly price"
+      },
       "CookieBanner": {
         "title": "We use cookies",
         "intro": "We use cookies to collect information about you. We use this information:",
@@ -279,6 +283,7 @@
         "delete-account": "Delete Account",
         "feature-request": "You need a new feature? ",
         "just-ask": "Just ask for it!",
+        "subscriptions": "Manage Subscription",
         "fav-restos": "Favourite Restaurants",
         "fav-dishes": "Favourite Dishes",
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
@@ -333,6 +338,17 @@
       },
       "RestoPage": {
         "what-you-looking-for": "What are you looking for ?"
+      },
+      "SubscriptionPage": {
+        "my-subscription": "My Subscription",
+        "free": "Free usage",
+        "free-description": "Use the basic features for free",
+        "basic": "Basic Subscription",
+        "description-low-level-1": "Remove ads",
+        "description-low-level-2": "Group search - save multiple dietary profiles",
+        "premium": "Premium Subscription",
+        "description-high-level-1": "Feature requests are prioritized",
+        "description-high-level-2": "Make reservations"
       },
       "Privacy": {
         "title": "Privacy Statement",
