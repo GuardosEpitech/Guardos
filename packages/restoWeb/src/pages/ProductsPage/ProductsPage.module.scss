@@ -16,6 +16,25 @@
   color: #ffffff;
 }
 
+.ErrorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.ErrorHeader {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  color: #6d071a;
+}
+
+.ErrorText {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.8rem;
+  color: #6d071a;
+}
+
 .productGrid {
   flex-wrap: wrap !important;
 }

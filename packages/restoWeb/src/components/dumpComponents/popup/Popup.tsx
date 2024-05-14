@@ -1,13 +1,12 @@
-import React  from "react";
-
+import React from "react";
 import styles from "./Popup.module.scss";
 import styled from "styled-components";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 type PopupProps = {
-    message: string;
-    onConfirm: () => void;
-    onCancel: () => void;
+  message: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 };
 
 const PopupContainer = styled.div`
@@ -36,13 +35,12 @@ const PopupButton = styled.button`
   cursor: pointer;
 ` as React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
-export const Popup: React.FC<PopupProps> = (
-  { message, onConfirm, onCancel }) => {
-  const {t} = useTranslation();
+export const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
+  const { t } = useTranslation();
 
   return (
     <PopupContainer>
-      <div className={styles.PopupText} >{message}</div>
+      <div className={styles.PopupText}>{message}</div>
       <div>
         <PopupButton onClick={onConfirm}>{t('common.confirm')}</PopupButton>
         <PopupButton onClick={onCancel}>{t('common.cancel')}</PopupButton>

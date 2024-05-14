@@ -1,4 +1,4 @@
-.create-categories-page {
+.createCategoriesPage {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,10 +11,10 @@
       width: 300px;
     }
   
-    .category-containers {
+    .categoryContainers {
       text-align: center;
   
-      .category-container {
+      .categoryContainer {
         border: 1px solid #ccc;
         border-radius: 8px;
         padding: 10px;
@@ -55,7 +55,7 @@
       }
     }
 
-    .add-new-category-btn-container {
+    .addNewCategoryBtnContainer {
         display: flex;
         justify-content: center; 
         margin-top: 20px; 
@@ -75,4 +75,23 @@
         }
       }
 
+  }
+
+  .ErrorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+  }
+  
+  .ErrorHeader {
+    font-family: "Montserrat", sans-serif;
+    font-size: 2rem;
+    color: #6d071a;
+  }
+  
+  .ErrorText {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.8rem;
+    color: #6d071a;
   }

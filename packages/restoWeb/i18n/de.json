@@ -243,7 +243,14 @@
         "payBtn": "Zahlungsmethoden verwalten"
       },
       "ProductsPage": {
-        "add-product": "Produkt hinzufügen"
+        "add-product": "Produkt hinzufügen",
+        "noprod": "Ups, es sieht so aus, als hätten Sie noch keine Produkte!",
+        "noprod2": "Fügen Sie Ihr erstes Produkt hinzu, indem Sie ",
+        "noprod2-2": "hier",
+        "noprod2-3": " klicken",
+        "noprod3": "Stellen Sie sicher, dass Sie zuerst ein Restaurant ",
+        "noprod3-2": "hinzufügen",
+        "noprod3-3": "."
       },
       "RegistrationPage": {
         "register": "Registrieren",
@@ -356,7 +363,11 @@
       "AddCategory": {
         "name": "Kategorie:",
         "id": "Reihenfolge:",
-        "add": "Neu"
+        "add": "Neu",
+        "noresto": "Ups, es sieht so aus, als hätten Sie noch keine Restaurants!",
+        "noresto2": "Fügen Sie Ihr erstes Restaurant hinzu, indem Sie ",
+        "noresto2-2": "hier",
+        "noresto2-3": " klicken."
       },
       "CookieStatement": {
         "title": "Cookie-Erklärung",

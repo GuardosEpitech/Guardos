@@ -338,7 +338,9 @@
         "continue": "Continuer"
       },
       "RestoPage": {
-        "what-you-looking-for": "Que recherchez-vous ?"
+        "what-you-looking-for": "Que recherchez-vous ?",
+        "search-result": "Berlin - +12548 Restaurants",
+        "noresto": "Aucun restaurant adapté n'a été trouvé. Veuillez mettre à jour votre filtre."
       },
       "Privacy": {
         "title": "Déclaration de Confidentialité",

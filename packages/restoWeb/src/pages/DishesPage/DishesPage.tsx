@@ -38,7 +38,7 @@ const DishesPage = () => {
       </div>
       <Layout>
         {dishData.length === 0 ?
-          (<div>
+          (<div className={styles.ErrorContainer}>
             <span className={styles.ErrorHeader}>
               {t('pages.DishesPage.no-dishes-yet')}
             </span>
@@ -48,6 +48,10 @@ const DishesPage = () => {
             <span className={styles.ErrorText}>
               {t('pages.DishesPage.add-first-dish')}
               <a href="/addDish">{t('pages.DishesPage.here')}</a>.
+            </span>
+            <br/>
+            <span className={styles.ErrorText}>
+              Be sure to <a href="/addResto">add</a> a restaurant first.
             </span>
           </div>)
           :
