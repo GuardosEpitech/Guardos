@@ -9,7 +9,9 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
@@ -17,6 +19,7 @@ const DishesPage = () => {
 
   useEffect(() => {
     updateDishData();
+    checkDarkMode();
   }, []);
 
   const updateDishData = () => {

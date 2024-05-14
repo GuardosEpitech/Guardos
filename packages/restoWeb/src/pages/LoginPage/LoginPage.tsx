@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import TextField from "@mui/material/TextField";
@@ -9,7 +9,9 @@ import GoogleLogo from '../../assets/Google.svg';
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface LoginUser {
   username: string;
@@ -21,12 +23,20 @@ const initialUserState = {
   password: '',
 };
 
-const Login = () => {
+interface LoginPageProps {
+  toggleCookieBanner: (value: boolean) => void;
+}
+
+const Login = (props:LoginPageProps) => {
   const [user, setUser] = useState<LoginUser>(initialUserState);
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/restoWeb`;
   const {t} = useTranslation();
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
   const handleFacebookLogin = () => {
     // Implement Facebook login logic here
@@ -60,9 +70,10 @@ const Login = () => {
       } else {
         localStorage.setItem('user', response.data);
         setErrorForm(false);
+        props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
           loginName: user.username
-        });
+        })
       }
     } catch (error) {
       console.error(`Error in Post Route: ${error}`);
@@ -114,26 +125,6 @@ const Login = () => {
                 {t('pages.LoginPage.here')}
               </a>.
             </p>
-            <Container sx={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
-              <Divider sx={{ width: '40%', marginY: '20px' }} />
-              <span>{t('pages.LoginPage.or')}</span>
-              <Divider sx={{ width: '40%', marginY: '20px' }} />
-            </Container>
-            <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '25px', justifyContent: 'space-around' }}>
-              <img
-                src={FacebookLogo}
-                alt={t('pages.LoginPage.facebook-img-alt')}
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleFacebookLogin}
-              />
-              <div className={styles.dividerLogos}></div>
-              <img
-                src={GoogleLogo}
-                alt={t('pages.LoginPage.google-img-alt')}
-                style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-                onClick={handleGoogleLogin}
-              />
-            </Container>
           </form>
         </div>
       </Layout>

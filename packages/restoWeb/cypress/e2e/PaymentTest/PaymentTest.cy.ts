@@ -3,6 +3,7 @@ describe('add payment method', function() {
         cy.viewport(1710, 948);
         cy.visit('http://localhost:8080/login');
         cy.wait(100);
+        cy.get('.DRUy7_aUpQqc0JJUgAth > .umVQd8j1fjybEvsKw7LS > .AZOPDytOtJBsl4kzgkej > .MuiButtonBase-root:nth-child(1)').click();
         cy.get('#\\:r0\\:').type('CookieTest');
         cy.wait(100);
         cy.get('#\\:r1\\:').type('Password1');
@@ -21,6 +22,7 @@ describe('delete payment method', function() {
         cy.viewport(1710, 948);
         cy.visit('http://localhost:8080/login');
         cy.wait(100);
+        cy.get('.DRUy7_aUpQqc0JJUgAth > .umVQd8j1fjybEvsKw7LS > .AZOPDytOtJBsl4kzgkej > .MuiButtonBase-root:nth-child(1)').click();
         cy.get('#\\:r0\\:').type('CookieTest');
         cy.wait(100);
         cy.get('#\\:r1\\:').type('Password1');

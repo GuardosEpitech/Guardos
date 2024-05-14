@@ -47,56 +47,69 @@ export async function addUserResto(username: string,
 
 export async function loginUserResto(username: string,
   password: string) {
-  const UserRestoSchema = mongoose
-    .model('UserResto', userRestoSchema, 'UserResto');
-  const userData = await UserRestoSchema.find();
+  try {
+    const UserRestoSchema = mongoose
+      .model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.find();
 
-  for (const elem of userData) {
-    if ((elem.username === username ||
-      elem.email === username) &&
-      AES.decrypt(elem.password as string, 'GuardosResto')
-        .toString(enc.Utf8) === password) {
-      const token = elem.username ? elem.username : elem.email;
+    for (const elem of userData) {
+      if ((elem.username === username ||
+              elem.email === username) &&
+          AES.decrypt(elem.password as string, 'GuardosResto')
+            .toString(enc.Utf8) === password) {
+        const token = elem.username ? elem.username : elem.email;
 
-      return AES.encrypt(token + password, 'GuardosResto')
-        .toString();
+        return AES.encrypt(token + password, 'GuardosResto')
+          .toString();
+      }
     }
+    return false;
+  }  catch (error) {
+    console.error(error);
   }
-  return false;
 }
 
 export async function getUserTokenResto(username:string) {
-  const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  const userData = await UserSchema.find();
-  for (const elem of userData) {
-    if (elem.username === username || elem.email === username) {
-      const token = elem.username ? elem.username : elem.email;
-      const password = AES.decrypt(elem.password as string, 'GuardosResto')
-        .toString(enc.Utf8);
-      return AES.encrypt(token + password, 'GuardosResto')
-        .toString();
+  try {
+    const UserSchema =
+        mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserSchema.find();
+    for (const elem of userData) {
+      if (elem.username === username || elem.email === username) {
+        const token = elem.username ? elem.username : elem.email;
+        const password = AES.decrypt(elem.password as string, 'GuardosResto')
+          .toString(enc.Utf8);
+        return AES.encrypt(token + password, 'GuardosResto')
+          .toString();
+      }
     }
+    return false;
+  } catch (error) {
+    console.error(error);
   }
-  return false;
 }
 
 export async function logoutUserResto(token: string) {
-  const UserRestoSchema = mongoose
-    .model('UserResto', userRestoSchema, 'UserResto');
-  const userData = await UserRestoSchema.find();
+  try {
+    const UserRestoSchema = mongoose
+      .model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.find();
 
-  for (const elem of userData) {
-    let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
-      .toString(enc.Utf8);
+    for (const elem of userData) {
+      let tokenToCheck = elem.username ? elem.username : elem.email;
+      tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
+        .toString(enc.Utf8);
 
-    if (AES.decrypt(token, 'GuardosResto')
-      .toString(enc.Utf8) === tokenToCheck) {
-      return true;
+      if (AES.decrypt(token, 'GuardosResto')
+        .toString(enc.Utf8) === tokenToCheck) {
+        return true;
+      }
     }
-  }
 
-  return false;
+    return false;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function getRestoProfileDetails(userId: number) {
@@ -122,21 +135,25 @@ export async function getRestoProfileDetails(userId: number) {
 // update username, email, preferred language
 export async function updateRestoProfileDetails(userId: number,
   updateFields: Partial<IRestoProfileCommunication>) {
-  const UserRestoSchema =
-    mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  const userData = await UserRestoSchema
-    .findOneAndUpdate({ uid: userId }, {
-      username: updateFields.username,
-      email: updateFields.email,
-      defaultMenuDesign: updateFields.defaultMenuDesign,
-      preferredLanguage: updateFields.preferredLanguage,
-    }, { new: true });
-  const token = userData.username ? userData.username : userData.email;
+  try {
+    const UserRestoSchema =
+        mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema
+      .findOneAndUpdate({uid: userId}, {
+        username: updateFields.username,
+        email: updateFields.email,
+        defaultMenuDesign: updateFields.defaultMenuDesign,
+        preferredLanguage: updateFields.preferredLanguage,
+      }, {new: true});
+    const token = userData.username ? userData.username : userData.email;
 
-  return AES.encrypt(token +
-    AES.decrypt(userData.password as string, 'GuardosResto')
-      .toString(enc.Utf8), 'GuardosResto')
-    .toString();
+    return AES.encrypt(token +
+        AES.decrypt(userData.password as string, 'GuardosResto')
+          .toString(enc.Utf8), 'GuardosResto')
+      .toString();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function updateRestoPassword(userId: number, password: string,
@@ -173,14 +190,14 @@ export async function updateRestoPassword(userId: number, password: string,
       .toString();
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
 export async function updateRecoveryPasswordResto(userId: number,
   newPassword: string) {
   try {
-    const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const UserSchema =
+        mongoose.model('UserResto', userRestoSchema, 'UserResto');
     const userData = await UserSchema.findOne({ uid: userId });
 
     if (!userData) {
@@ -196,7 +213,6 @@ export async function updateRecoveryPasswordResto(userId: number,
     return true;
   } catch (error) {
     console.error(error);
-    throw error;
   }
 }
 
@@ -232,21 +248,29 @@ export async function deleteRestoProfilePic(userId: number, pictureId: number) {
 }
 
 export async function getUserIdResto(token: string) {
-  const UserRestoSchema = mongoose
-    .model('UserResto', userRestoSchema, 'UserResto');
-  const userData = await UserRestoSchema.find();
-
-  for (const elem of userData) {
-    let tokenToCheck = elem.username ? elem.username : elem.email;
-    tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
-      .toString(enc.Utf8);
-
-    if (AES.decrypt(token, 'GuardosResto')
-      .toString(enc.Utf8) === tokenToCheck) {
-      return elem.uid;
-    }
+  if (!token) {
+    return false;
   }
-  return false;
+  try {
+    const UserRestoSchema = mongoose
+      .model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.find();
+
+    for (const elem of userData) {
+      let tokenToCheck = elem.username ? elem.username : elem.email;
+      tokenToCheck += AES.decrypt(elem.password as string, 'GuardosResto')
+        .toString(enc.Utf8);
+
+      if (AES.decrypt(token, 'GuardosResto')
+        .toString(enc.Utf8) === tokenToCheck) {
+        return elem.uid;
+      }
+    }
+    return false;
+  }
+  catch (error) {
+    console.error(error);
+  }
 }
 
 export async function deleteUserResto(userId: number) {
@@ -266,10 +290,40 @@ export async function doesUserRestoExist(username: string, email: string) {
     username: username, 
     email: email
   });
-  if (answer) {
-    return true;
+  return !!answer;
+}
+
+export async function getUserRestoCookiePreferences(userId: number) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const user = await UserRestoSchema.findOne({ uid: userId });
+  if (!user) {
+    return null;
   }
-  return false;
+  if (user.preferencesCookie.isSet) {
+    return user.preferencesCookie;
+  } else {
+    return false;
+  }
+}
+
+export async function setUserRestoCookiePreferences(userId: number, 
+  data: { functional: boolean, statistical: boolean, marketing: boolean }) {
+  const UserRestoSchema = mongoose
+    .model('UserResto', userRestoSchema, 'UserResto');
+  const user = await UserRestoSchema.findOne({ uid: userId });
+  if (!user) {
+    return 404;
+  }
+  user.preferencesCookie = {
+    isSet: true,
+    functional: data.functional,
+    statistical: data.statistical,
+    marketing: data.marketing
+  };
+
+  await user.save();
+  return 200;
 }
 
 export async function addCustomerResto(userID: number, customerID: string) {

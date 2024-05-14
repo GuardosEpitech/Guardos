@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./HomePage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import RestoCard from "@src/components/RestoCard/RestoCard";
@@ -7,8 +7,10 @@ import Filter from "@src/components/Filter/Filter";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
-import { getRestoFavourites } from "@src/services/favourites";
-import { useTranslation } from "react-i18next";
+import {getRestoFavourites} from "@src/services/favourites";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 type color =
   | "primary"
@@ -46,6 +48,9 @@ const HomePage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    fetchFavourites().then(r => console.log("Loaded favourite resto list"));
+    loadFilter().then(r => console.log("Loaded search data."));
+    checkDarkMode();
     fetchFavourites().then((r) => console.log("Loaded favourite resto list"));
     loadFilter().then((r) => console.log("Loaded search data."));
   }, []);
@@ -217,6 +222,7 @@ const HomePage = () => {
     localStorage.setItem("filter", JSON.stringify(inter));
     setFilteredRestaurants(await getFilteredRestos(inter));
   }
+  // until here -> more dynamic
 
   return (
     <div className={styles.HomePage}>

@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
-import {TextField, Button} from '@mui/material';
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import { TextField, Button } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
-import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss";
+import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 interface RequestUser {
   name: string;
@@ -30,6 +32,11 @@ const FeatureRequest = () => {
     setRequest((prevState) => ({...prevState, [name]: value}));
   };
 
+    useEffect(() => {
+        checkDarkMode();
+      }, []);
+
+      
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {

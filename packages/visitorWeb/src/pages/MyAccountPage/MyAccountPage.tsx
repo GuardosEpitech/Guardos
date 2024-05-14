@@ -6,6 +6,8 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import {Button,Typography} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from "./MyAccountPage.module.scss";
 import {deleteAccount} from "@src/services/userCalls";
@@ -19,12 +21,15 @@ import TextField from "@mui/material/TextField";
 import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import Dish from "@src/components/menu/Dish/Dish";
+import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
+
 import { IimageInterface } from "shared/models/imageInterface";
 import {addProfileImage, deleteProfileImage, getImages} from "@src/services/imageCalls";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
+import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -50,7 +55,10 @@ const MyAccountPage = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [favoriteDishes, setFavoriteDishes] = useState([]);
   const [activeTab, setActiveTab] = useState("restaurants");
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+
 
   useEffect(() => {
     fetchProfileData();
@@ -220,6 +228,7 @@ const MyAccountPage = () => {
       if (res !== null) {
         const event = new Event('loggedOut');
         localStorage.removeItem('user');
+        localStorage.removeItem('visitedBefore');
         document.dispatchEvent(event);
         NavigateTo('/', navigate, {})
       }
@@ -235,6 +244,37 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
+  const toggleDarkMode = () => {
+    const darkModeEnabled = localStorage.getItem('darkMode');    
+    setDarkMode(!darkMode);
+    if (darkModeEnabled == 'false') {
+      enableDarkMode();
+    } else {
+      disableDarkMode();
+    }
+  };
+
+  const enableDarkMode = () => {
+    setFetchMethod((url) => {
+      return fetch(url, {
+        mode: 'no-cors',
+      });
+    });
+    localStorage.setItem('darkMode', JSON.stringify(true));
+    setIsDarkMode(true);
+    enable({
+      brightness: 100,
+      contrast: 100,
+      darkSchemeBackgroundColor: '#181a1b',
+      darkSchemeTextColor: '#e8e6e3'
+    },);
+  };
+
+  const disableDarkMode = () => {
+    localStorage.setItem('darkMode', JSON.stringify(false));
+    setIsDarkMode(false);
+    disable();
+  };
   useEffect(() => {
     const loadImages = async () => {
       if (picture) {
@@ -485,13 +525,19 @@ const MyAccountPage = () => {
           {t('pages.MyAccountPage.payBtn')}
           </Button>
         </div>   
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
+         </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+        <FormControlLabel
+          control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
+          label={t('pages.MyAccountPage.enable-dark-mode')}
+        />
         </div>
-      </div>         
+        </div>      
       <div className={styles.restaurantSection}>
         {/* Tabs for Favorite Restaurants and Dishes */}
         <div className={styles.tabs}>

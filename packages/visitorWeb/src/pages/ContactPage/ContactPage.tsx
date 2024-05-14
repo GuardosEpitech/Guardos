@@ -4,7 +4,9 @@ import PlaceIcon from "@mui/icons-material/Place";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import axios from 'axios';
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/sendEmail/`;
 
@@ -15,6 +17,10 @@ const ContactPage = () => {
     const [message, setMessage] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const {t} = useTranslation();
+
+    useEffect(() => {
+        checkDarkMode();
+      }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,7 +42,6 @@ const ContactPage = () => {
             });
       
             if (response.status >= 200 && response.status < 300) {
-              console.log('Backend response:', response.data);
       
               setShowConfirmation(true);
       
@@ -61,7 +66,7 @@ const ContactPage = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value);
       };
-
+      
     return (
         <div>
             <section className={styles.contact}>

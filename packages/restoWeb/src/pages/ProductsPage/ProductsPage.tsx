@@ -10,7 +10,9 @@ import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { IProduct } from "shared/models/restaurantInterfaces";
+import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const ProductsPage = () => {
   const [productData, setProductData] = useState<Array<IProduct>>([]);
@@ -18,6 +20,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     updateProductData();
+    checkDarkMode();
   }, []);
 
   const updateProductData = () => {
@@ -28,7 +31,7 @@ const ProductsPage = () => {
         setProductData(res);
       });
   };
-
+  
   return (
     <div>
       <div className={styles.RectOnImg}>

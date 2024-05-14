@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import styles from "./AboutUsPage.module.scss";
 import josi from "@src/assets/profile/josi.png";
 import gylian from "@src/assets/profile/gylian.png";
@@ -7,6 +7,7 @@ import ramon from "@src/assets/profile/ramon.png";
 import renan from "@src/assets/profile/renan.png";
 import alban from "@src/assets/profile/alban.png";
 import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
 
 const AboutUsPage = () => {
   const [activeSection, setActiveSection] = useState('introduction');
@@ -43,6 +44,10 @@ const AboutUsPage = () => {
       description: t('pages.AboutUs.french-team-member'),
     },
   ];
+
+  useEffect(() => {
+    checkDarkMode();
+  }, []);
 
     return (
         <div>
