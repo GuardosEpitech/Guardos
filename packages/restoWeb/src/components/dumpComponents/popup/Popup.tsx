@@ -30,11 +30,11 @@ const PopupButton = styled.button`
   margin: 10px;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: #6D071A;
+  background-color: #6d071a;
   color: white;
   font-size: 16px;
   cursor: pointer;
-`;
+` as React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
 export const Popup: React.FC<PopupProps> = (
   { message, onConfirm, onCancel }) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './PaymentPage.module.scss';
 import { useTranslation } from 'react-i18next';
 import { getCustomer, addCustomer, deletePaymentMethod, getPaymentMethods } from '@src/services/userCalls';
-import CreditCard from '../../../../../shared/components/CreditCard/CreditCard';
+import CreditCard from '../../../components//CreditCard/CreditCard';
 import { IPaymentMethod } from '../../../../../shared/models/paymentInterfaces';
 
 const PaymentPage = () => {
