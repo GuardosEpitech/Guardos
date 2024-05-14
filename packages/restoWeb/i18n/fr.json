@@ -242,7 +242,14 @@
         "enable-dark-mode": "Activer le mode sombre"
       },
       "ProductsPage": {
-        "add-product": "Ajouter un produit"
+        "add-product": "Ajouter un produit",
+        "noprod": "Oups, on dirait que vous n'avez pas encore de produits!",
+        "noprod2": "Ajoutez votre premier produit en cliquant ",
+        "noprod2-2": "ici",
+        "noprod2-3": ".",
+        "noprod3": "Veillez à ",
+        "noprod3-2": "ajouter",
+        "noprod3-3": " d'abord un restaurant."
       },
       "RegistrationPage": {
         "register": "S'inscrire",
@@ -366,7 +373,11 @@
       "AddCategory": {
         "name": "Catégorie:",
         "id": "Séquence:",
-        "add": "Nouveau"
+        "add": "Nouveau",
+        "noresto": "Oups, on dirait que vous n'avez pas encore de restaurants !",
+        "noresto2": "Ajoutez votre premier restaurant en cliquant ",
+        "noresto2-2": "ici",
+        "noresto2-3": "."
       },
       "CookieStatement": {
         "title": "Déclaration relative aux cookies",
