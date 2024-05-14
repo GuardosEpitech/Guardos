@@ -46,6 +46,9 @@ const HomePage = () => {
       return;
     }
     setIsUserTokenSet(true);
+    if (filter === undefined) {
+      filter = "";
+    }
     getAllRestaurantsByUserAndFilter(userToken, filter)
       .then((res) => {
         setRestoData(res);
