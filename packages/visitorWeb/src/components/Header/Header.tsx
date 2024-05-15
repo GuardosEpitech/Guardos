@@ -24,6 +24,7 @@ const Header = () => {
   };
   
   function logoutUser() {
+    handleOptionClick();
     const event = new Event('loggedOut');
     localStorage.removeItem('user');
     localStorage.removeItem('visitedBefore');
@@ -53,6 +54,10 @@ const Header = () => {
     }
   };
 
+  const handleOptionClick = () => {
+    setShowNavigationDrawer(false);
+  };
+
   useEffect(() => {
     checkUserToken();
   }, [navigate]);
@@ -68,7 +73,7 @@ const Header = () => {
         >
           <MenuIcon fontSize="large" style={{ color: 'white' }} />
         </a>
-        <div className={styles.logoContainer} onClick={() => NavigateTo('/', navigate, {})}>
+        <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null}>
           <div className={styles.logo}></div>
         </div>
         <div className={styles.headerLinks}>
@@ -109,7 +114,8 @@ const Header = () => {
             )}
           </span>
           { loggedIn && (
-              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a>
+              <><a className={styles.NavTitle} href='/'>{t('components.Header.home')}</a>
+              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a></>
             )
           }
           <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
