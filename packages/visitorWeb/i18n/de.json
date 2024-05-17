@@ -101,6 +101,10 @@
         "fe-developer": "Frontend-Entwickler",
         "mobile-developer": "Mobile Entwickler"
       },
+      "SubscriptionBox": {
+        "select": "Auswählen",
+        "monthly-price": "Monatlicher Preis"
+      },
       "CookieBanner": {
         "title": "Wir verwenden Cookies",
         "intro": "Wir verwenden Cookies, um Informationen über Sie zu sammeln. Wir verwenden diese Informationen:",
@@ -283,6 +287,7 @@
         "delete-account": "Konto löschen",
         "feature-request": "Sie benötigen ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
+        "subscriptions": "Abonnement verwalten",
         "fav-restos": "Lieblingsrestaurants",
         "fav-dishes": "Lieblingsgerichte",
         "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -341,6 +346,17 @@
         "what-you-looking-for": "Was suchen Sie?",
         "search-result": "Berlin - +12548 Restaurants",
         "noresto": "Keine passenden Restaurants gefunden. Bitte ändern Sie ihren Filter."
+      },
+      "SubscriptionPage": {
+        "my-subscription": "Mein Abonnement",
+        "free": "Kostenlose Nutzung",
+        "free-description": "Nutzen Sie die Grundfunktionen kostenlos",
+        "basic": "Basis Abonnement",
+        "description-low-level-1": "Werbung entfernen",
+        "description-low-level-2": "Gruppensuche - speichere mehrere Ernährungsprofile",
+        "premium": "Premium-Abonnement",
+        "description-high-level-1": "Feature-Anfragen werden priorisiert",
+        "description-high-level-2": "Reservierungen vornehmen"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",
