@@ -140,10 +140,6 @@ const MyAccountPage = () => {
     setPasswordChangeOpen(!passwordChangeOpen);
   };
 
-  const handlePaymentPage = () => {
-    NavigateTo('/payment', navigate, {})
-  }
-
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;
     const lowercaseRegex = /[a-z]/;
@@ -515,6 +511,9 @@ const MyAccountPage = () => {
           <button onClick={() => window.location.href = '/subscriptions'}>
             {t('pages.MyAccountPage.subscriptions')}
           </button>
+          <button onClick={() => window.location.href = '/payment'}>
+            {t('pages.MyAccountPage.payBtn')}
+          </button>
           <button className={styles.saveButton} onClick={handleSave}>
             {t('pages.MyAccountPage.save-changes')}
           </button>
@@ -522,12 +521,6 @@ const MyAccountPage = () => {
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>
           {t('pages.MyAccountPage.delete-account')}
         </button>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-          <Typography variant="body1">{t('pages.MyAccountPage.payment')}</Typography>
-          <Button onClick={() => window.location.href = '/payment'}>
-          {t('pages.MyAccountPage.payBtn')}
-          </Button>
-        </div>   
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
