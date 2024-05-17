@@ -108,7 +108,7 @@ const Header = () => {
                 {t('components.Header.logout')}
               </a>
             ) : (
-              <a onClick={() => NavigateTo('/login', navigate, {})}>
+              <a onClick={() => {handleOptionClick(); NavigateTo('/login', navigate, {});}}>
                 {t('components.Header.login')}
               </a>
             )}
