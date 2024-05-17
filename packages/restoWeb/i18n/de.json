@@ -102,6 +102,10 @@
         "confirm-delete": "Sind Sie sicher, dass Sie {{ restoName }} löschen möchten?",
         "opening-hours": "Öffnungszeiten"
       },
+      "SubscriptionBox": {
+        "select": "Auswählen",
+        "monthly-price": "Monatlicher Preis"
+      },
       "CookieBanner": {
         "title": "Wir verwenden Cookies",
         "intro": "Wir verwenden Cookies, um Informationen über Sie zu sammeln. Wir verwenden diese Informationen:",
@@ -233,6 +237,7 @@
         "delete-account": "Konto löschen",
         "feature-request": "Benötigen Sie ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
+        "subscriptions": "Abonnement verwalten",
         "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "enable-dark-mode": "Dunkles Design aktivieren"
       },
@@ -272,6 +277,17 @@
         "retry-recovery-link": "Versuchen Sie erneut, einen Wiederherstellungslink zu erhalten. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte.",
         "send-recovery-link": "Senden Sie meinen Passwort-Wiederherstellungslink",
         "continue": "Fortfahren"
+      },
+      "SubscriptionPage": {
+        "my-subscription": "Mein Abonnement",
+        "free": "Kostenlose Nutzung",
+        "free-description": "Nutzen Sie die Grundfunktionen kostenlos",
+        "basic": "Basis Abonnement",
+        "description-low-level-1": "Werbung entfernen",
+        "description-low-level-2": "Personalisiertes Menü",
+        "premium": "Premium-Abonnement",
+        "description-high-level-1": "Feature-Anfragen werden priorisiert",
+        "description-high-level-2": "Detaillierte Analyse-Einblicke"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",
