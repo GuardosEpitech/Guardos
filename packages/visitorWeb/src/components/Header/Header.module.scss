@@ -8,6 +8,7 @@
   align-items: center;
   height: 100%;
   padding: 0 40px;
+  justify-content: space-between;
 }
 
 .headerLinks {
@@ -29,6 +30,7 @@
   color: #ffffff;
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
+  margin-bottom: 10px;
 }
 
 .NavTitle:hover {
@@ -65,11 +67,14 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  flex-shrink: 0;
+  margin-left: auto;
 
   .logo {
     width: 100%;
     height: 100%;
-    background: url(../../assets/logo_processed.png) center/cover no-repeat;  }
+    background: url(../../assets/logo_processed.png) center/cover no-repeat;  
+  }
 }
 
 .languageDropdown {
@@ -81,6 +86,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
   padding: 8px;
+  top: calc(100% + 10px);
 }
 
 .languageOption {
@@ -94,4 +100,18 @@
 
 .languageOption:hover {
   background-color: #f0f0f0;
+}
+
+.drawer {
+  background-color: transparent;
+}
+
+
+.drawerContent {
+  background-color: #6d071a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px 20px;
+  height: 100%;
 }
