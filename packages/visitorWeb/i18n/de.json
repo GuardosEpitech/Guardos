@@ -56,6 +56,7 @@
       "Header": {
         "login": "Einloggen",
         "logout": "Ausloggen",
+        "home": "Startseite",
         "my-account": "Mein Konto",
         "welcome": "Willkommen bei Guardos"
       },
