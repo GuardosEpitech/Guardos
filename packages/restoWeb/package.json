@@ -38,7 +38,8 @@
     "build:prod": "webpack --mode=production --define-process-env-node-env=production",
     "watch": "webpack --watch",
     "serve": "webpack serve",
-    "test": "cypress run"
+    "test": "cypress run",
+    "test:coverage": "nyc --reporter=html --reporter=text cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +60,8 @@
     ]
   },
   "devDependencies": {
+    "@cypress/browserify-preprocessor": "^3.0.2",
+    "@cypress/code-coverage": "^3.12.39",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
@@ -81,6 +84,7 @@
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.2",
+    "tsify": "^5.0.4",
     "typescript": "^4.8.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
