@@ -79,7 +79,7 @@ const PaymentPage = () => {
                 )}
                 <form className={styles.addButton} action={baseURL} method='POST'>
                     <input type='hidden' name='customerId' value={customerID} />
-                    <input type='hidden' name='domainURL' value='http://localhost:8082' />
+                    <input type='hidden' name='domainURL' value={process.env.VISITOR_URL} />
                     <button type='submit'>
                         {t('pages.Payment.add')}
                     </button>
