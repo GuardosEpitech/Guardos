@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './PaymentAddCancel.module.scss';
-import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
-import { NavigateTo } from "@src/utils/NavigateTo";
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router-dom';
+import { NavigateTo } from '@src/utils/NavigateTo';
 
 const PaymentAddCancelPage: React.FC = () => {
     const {t} = useTranslation();

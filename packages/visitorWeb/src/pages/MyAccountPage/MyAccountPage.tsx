@@ -91,7 +91,6 @@ const MyAccountPage = () => {
 
   const fetchFavoriteDishes = async () => {
     const userToken = localStorage.getItem("user");
-    console.log(userToken);
     if (userToken === null) {
       return;
     }

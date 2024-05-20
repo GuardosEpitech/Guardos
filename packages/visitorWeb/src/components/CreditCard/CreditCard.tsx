@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './CreditCard.module.scss';
-import DeleteIcon from "@mui/icons-material/Delete";
-import {useTranslation} from "react-i18next";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {useTranslation} from 'react-i18next';
 
 interface ICreditCardProps {
   name: string;
