@@ -217,13 +217,17 @@ export async function updateRecoveryPasswordResto(userId: number,
 }
 
 export async function addRestoProfilePic(userId: number, pictureId: number) {
-  const UserRestoSchema =
-    mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  return UserRestoSchema.findOneAndUpdate(
-    { uid: userId },
-    { $set: { profilePicId: [pictureId] } },
-    { new: true }
-  );
+  try {
+    const UserRestoSchema =
+      mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    return UserRestoSchema.findOneAndUpdate(
+      { uid: userId },
+      { $set: { profilePicId: [pictureId] } },
+      { new: true }
+    );
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function editRestoProfilePic(userId: number, oldPictureId: number,
