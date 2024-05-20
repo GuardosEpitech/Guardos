@@ -1,5 +1,4 @@
 const browserify = require('@cypress/browserify-preprocessor');
-const path = require('path');
 
 module.exports = (on, config) => {
   require('@cypress/code-coverage/task')(on, config);

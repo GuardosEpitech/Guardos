@@ -4,6 +4,9 @@
       ".js",
       ".tsx"
     ],
+    "include": [
+      "./src/**"
+    ],
     "require": [
       "ts-node/register"
     ],
