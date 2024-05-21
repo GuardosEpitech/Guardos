@@ -24,6 +24,9 @@ import CookieStatement from "@src/pages/CookieStatement/CookiePage";
 import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
 import {getUserPreferences} from "@src/services/profileCalls";
 import SubscriptionPage from "@src/pages/SubscriptionPage/SubscriptionPage";
+import PaymentPage from "@src/pages/Payments/PaymentsPage/PaymentPage";
+import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAddCancel";
+import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -105,7 +108,10 @@ const MVPRouter = () => {
             <Route path="/cookiestatement" element={<CookieStatement/>}></Route>
             <Route path="/technologies" element={<TechnologyList/>}></Route>
             <Route path="/subscriptions" element={<SubscriptionPage/>}></Route>
-          </Route>
+            <Route path="/payment" element={<PaymentPage />}></Route>
+          <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
+          <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
+        </Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -329,3 +329,29 @@ export async function setUserRestoCookiePreferences(userId: number,
   await user.save();
   return 200;
 }
+
+export async function addCustomerResto(userID: number, customerID: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser && existingUser.customerID) {
+    return existingUser.customerID as string;
+  } else {
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { customerID: customerID } },
+      { new: true }
+    );
+    return answer.customerID as string;
+  }
+}
+
+export async function getCustomerResto(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOne({uid: userID});
+
+  if (answer.customerID) {
+    return answer.customerID;
+  }
+  return false;
+}

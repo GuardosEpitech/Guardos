@@ -1,0 +1,25 @@
+.PaymentSuccessPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.backButton {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.backButton button {
+    font-size: 18px;
+    background-color: #6d071a !important;
+    color: #fff !important;
+}
+
+.backButton button:hover {
+    background-color: brown !important;
+}

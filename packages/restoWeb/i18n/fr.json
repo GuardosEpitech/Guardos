@@ -127,7 +127,11 @@
         "decline": "REFUSER TOUT",
         "and": " et ",
         "strictly": "Strictement nécessaire"
-        }
+        },
+      "CreditCard": {
+        "expire": "Expire le : ",
+        "msg": "Êtes-vous sûr de vouloir supprimer cette méthode ?"
+    }
     },
     "pages": {
       "AddDishPage": {
@@ -239,7 +243,8 @@
         "just-ask": "Demandez-la simplement!",
         "subscriptions": "Gérer l'abonnement",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
-        "enable-dark-mode": "Activer le mode sombre"
+        "enable-dark-mode": "Activer le mode sombre",
+        "payBtn": "Gérer les méthodes de paiement"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit",
@@ -447,7 +452,20 @@
         "introAnalytical": "Nous analysons vos interactions sur le site Web à l'aide de cookies et de trackers pour améliorer et adapter notre site Web à vos préférences. Grâce à cette analyse, nous nous efforçons de rendre notre site Web aussi convivial que possible. Les technologies suivantes sont utilisées à des fins analytiques :",
         "marketing": "Technologies marketing",
         "introMarketing": "Naturellement, nous visons une utilisation fréquente de notre site Web et utilisons donc des cookies et des trackers pour le promouvoir auprès de vous. Les technologies suivantes sont utilisées à des fins marketing :"
-        }
+        },
+      "Payment": {
+        "title": "Méthodes de paiement",
+        "nopay": "Aucune méthode de paiement ajoutée.",
+        "add": "Ajouter un paiement"
+      },
+      "PaymentAdd": {
+        "title": "Méthode de paiement ajoutée avec succès",
+        "back": "Aller à la page de paiement"
+      },
+      "PaymentCancel": {
+          "title": "Méthode de paiement non ajoutée",
+          "back": "Aller à la page de paiement"
+      }
     }
   }
 }

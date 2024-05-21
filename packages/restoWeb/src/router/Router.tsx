@@ -28,6 +28,9 @@ import CookieBanner from "@src/components/CookieBanner/CookieBanner";
 import { getUserRestoPreferences } from "@src/services/profileCalls";
 import AddCategoryPage from "@src/pages/AddCategoryPage";
 import SubscriptionPage from "@src/pages/SubscriptionPage/SubscriptionPage";
+import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAddCancel";
+import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
+import PaymentPage from "@src/pages/Payments/PaymentsPage/PaymentPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -110,6 +113,9 @@ const MVPRouter = () => {
           <Route path="/cookiestatement" element={<CookieStatement />}></Route>
           <Route path="/technologies" element={<TechnologyList />}></Route>
           <Route path="/subscriptions" element={<SubscriptionPage />}></Route>
+          <Route path="/payment" element={<PaymentPage />}></Route>
+          <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
+          <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

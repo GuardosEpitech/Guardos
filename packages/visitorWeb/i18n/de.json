@@ -127,7 +127,11 @@
         "decline": "ALLE ABLEHNEN",
         "and": " und ",
         "strictly": "Unbedingt erforderlich"
-        }
+        },
+      "CreditCard": {
+        "expire": "läuft ab am: ",
+        "msg": "Sind Sie sicher, dass Sie diese Methode löschen möchten?"
+      }
     },
     "pages": {
       "AboutUs": {
@@ -288,7 +292,8 @@
         "fav-restos": "Lieblingsrestaurants",
         "fav-dishes": "Lieblingsgerichte",
         "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-        "enable-dark-mode": "Dunkles Design aktivieren"
+        "enable-dark-mode": "Dunkles Design aktivieren",
+        "payBtn": "Zahlungsmethoden verwalten"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",
@@ -505,7 +510,20 @@
         "introAnalytical": "Wir analysieren Ihre Interaktionen auf der Website mithilfe von Cookies und Trackern, um unsere Website an Ihre Vorlieben anzupassen und zu verbessern. Durch diese Analyse streben wir an, sicherzustellen, dass unsere Website so benutzerfreundlich wie möglich ist. Die folgenden Technologien werden für analytische Zwecke eingesetzt:",
         "marketing": "Marketing-Technologien",
         "introMarketing": "Natürlich streben wir eine häufige Nutzung unserer Website an und setzen daher Cookies und Tracker ein, um sie Ihnen zu bewerben. Die folgenden Technologien werden für Marketingziele eingesetzt:"
-        }
+        },
+      "Payment": {
+        "title": "Zahlungsmethoden",
+        "nopay": "Es liegen keine Zahlungsmethoden vor.",
+        "add": "Hinzufügen"
+      },
+      "PaymentAdd": {
+        "title": "Zahlungsmethode erfolgreich hinzugefügt",
+        "back": "Zur Zahlungsseite gehen"
+      },
+      "PaymentCancel": {
+          "title": "Zahlungsmethode nicht hinzugefügt",
+          "back": "Zur Zahlungsseite gehen"
+      }
     }
   }
 }
