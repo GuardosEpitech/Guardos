@@ -8,7 +8,6 @@
   align-items: center;
   height: 100%;
   padding: 0 40px;
-  justify-content: space-between;
 }
 
 .headerLinks {
@@ -28,9 +27,55 @@
   position: relative;
   text-decoration: none;
   color: #ffffff;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-weight: 500;
   margin-bottom: 10px;
+}
+
+.NavTitleDropDown {
+  position: relative;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Calibri", sans-serif;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.NavTitleDropDown::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 0.125rem;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.NavTitleDropDown:hover::before {
+  transform: scaleX(1);
+}
+
+.NavTitleHamburger {
+  position: relative;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Calibri", sans-serif;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.NavTitleHamburger:hover {
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.NavTitleDropDown:hover {
+  cursor: pointer;
+  color: #ffffff;
 }
 
 .NavTitle:hover {
@@ -67,8 +112,6 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  flex-shrink: 0;
-  margin-left: auto;
 
   .logo {
     width: 100%;
@@ -104,6 +147,7 @@
 
 .drawer {
   background-color: transparent;
+  display: none;
 }
 
 
@@ -114,4 +158,26 @@
   flex-direction: column;
   padding: 40px 20px 20px;
   height: 100%;
+}
+
+@media (max-width: 750px) {
+  .drawer {
+    display: block;
+  }
+
+  .NavTitleHamburger {
+    display: block;
+  }
+
+  .NavTitle {
+    display: none;
+  }
+
+  .header {
+    justify-content: space-between;
+  }
+
+  .headerLinks {
+    margin-left: 0;
+  }
 }

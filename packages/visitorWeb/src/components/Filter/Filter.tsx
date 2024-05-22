@@ -36,7 +36,7 @@ const GlobalStyle = () => {
           colorPrimary: {
             backgroundColor: '#FFFFFF',
             color: "#000000",
-            fontFamily: "Montserrat",
+            fontFamily: "Calibri",
             textTransform: "none",
             fontSize: "1rem",
             fontWeight: "400",
@@ -44,7 +44,7 @@ const GlobalStyle = () => {
           colorSecondary: {
             backgroundColor: '#AC2A37',
             color: "#ffffff",
-            fontFamily: "Montserrat",
+            fontFamily: "Calibri",
             textTransform: "none",
             fontSize: "1rem",
             fontWeight: "400",

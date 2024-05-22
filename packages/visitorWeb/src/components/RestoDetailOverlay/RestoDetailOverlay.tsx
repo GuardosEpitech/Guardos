@@ -20,7 +20,7 @@ const PageBtn = () => {
   return createTheme({
     typography: {
       button: {
-        fontFamily: "Montserrat",
+        fontFamily: "Calibri",
         textTransform: "none",
         fontSize: "1.13rem",
         fontWeight: "500",
@@ -74,7 +74,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
 
   return (
     <ScrollOverlay isOpen={true} onClose={props.onClose}>
-      <Grid container>
+      <Grid container className={styles.GridContainer}>
         {/* left column with image and opening hours */}
         <Grid item xs={12} sm={6} className={styles.GridItemImage}> 
           <div>
@@ -105,6 +105,8 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             <Typography variant="h4" component="h2" className={styles.DishTitle}>
               {name}
             </Typography>
+          </div>
+          <div className={styles.FlexParent}>
             <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
           </div>
           <div className={styles.FlexParent}>

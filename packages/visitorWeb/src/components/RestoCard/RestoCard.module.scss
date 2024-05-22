@@ -39,7 +39,7 @@
 
 .DishTitle {
   margin: 0 1rem 0rem 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.5rem;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
 .JustificationPrint {
   text-align: justify;
   text-justify: inter-word;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.1rem;
   margin-bottom: 0.4rem;
   margin-top: 0.4rem;
@@ -63,14 +63,14 @@
 .JustificationPrintExtended {
   text-align: justify;
   text-justify: inter-word;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.1rem;
   margin-bottom: 0.4rem;
   margin-top: 0.4rem;
 }
 
 .AddressText {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 0.95rem;
   margin: 0.1rem 0 0 0.3rem;
 }
@@ -84,6 +84,8 @@
 .RestoBtn {
   margin: 0 0.3rem !important;
   padding: 0.2rem 0.8rem !important;
+  font-family: "Calibri", sans-serif !important;
+  font-size: 16px !important;
 }
 
 .FavoriteIcon {
