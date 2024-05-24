@@ -96,7 +96,8 @@ const Header = () => {
           }
           <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
           <a
-            className={styles.NavTitleDropDown}
+            className={styles.NavTitleLanguage}
+            id="language"
             onClick={() => {
               setShowLanguageDropdown(!showLanguageDropdown);
             }}

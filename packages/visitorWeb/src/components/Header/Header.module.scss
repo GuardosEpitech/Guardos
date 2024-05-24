@@ -21,6 +21,8 @@
   height: 5rem;
   width: 100%;
   background-color: #6d071a;
+  position: fixed;
+  top: 0;
 }
 
 .NavTitle {
@@ -29,7 +31,36 @@
   color: #ffffff;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
-  margin-bottom: 10px;
+}
+
+.NavTitleLanguage {
+  position: relative;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Calibri", sans-serif;
+  font-weight: 500;
+}
+
+.NavTitleLanguage::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 0.125rem;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.NavTitleLanguage:hover::before {
+  transform: scaleX(1);
+}
+
+.NavTitleLanguage:hover {
+  cursor: pointer;
+  color: #ffffff;
 }
 
 .NavTitleDropDown {
@@ -64,7 +95,6 @@
   color: #ffffff;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
-  margin-bottom: 10px;
   display: none;
 }
 
