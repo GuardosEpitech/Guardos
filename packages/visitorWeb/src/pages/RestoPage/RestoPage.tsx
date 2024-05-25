@@ -150,8 +150,8 @@ const RestoPage = () => {
     const newFilter = {
       range: rangeValue,
       rating: [rating, 5],
-      name: inputFields[0],
-      location: inputFields[1],
+      name: filter.name,
+      location: filter.location,
       categories: updatedCategories.filter(category => 
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
