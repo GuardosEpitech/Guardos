@@ -17,7 +17,6 @@ const Header = () => {
   const navigate = useNavigate();
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showNavigationDrawer, setShowNavigationDrawer] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (language: string) => {

@@ -1,66 +1,48 @@
 .createCategoriesPage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-  
-    select {
-      margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  width: 100%;
+
+  select {
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 20px;
+    max-width: 300px;
+  }
+
+  .categoryContainers {
+    text-align: center;
+    width: 100%;
+
+    .categoryContainer {
+      border: 1px solid #ccc;
+      border-radius: 8px;
       padding: 10px;
-      font-size: 20px;
-      width: 300px;
-    }
-  
-    .categoryContainers {
-      text-align: center;
-  
-      .categoryContainer {
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        padding: 10px;
-        margin-bottom: 10px;
-        width: 100%;
-        min-width: 500px;
-        display: flex;
-        align-items: center; 
-        justify-content: space-between;
-  
-        div {
-          margin-bottom: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center; 
+      justify-content: space-between;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+
+      div {
+        margin-bottom: 5px;
+      }
+
+      input {
+          margin-top: auto; 
+          margin-bottom: auto;
+          margin-right: 10px;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 200px;
+          font-size: 16px;
         }
 
-        input {
-            margin-top: auto; 
-            margin-bottom: auto;
-            margin-right: 10px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 200px;
-            font-size: 16px;
-          }
-
-          button {
-            padding: 10px 20px;
-            background-color: #6d071a;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-    
-            &:hover {
-              background-color: #540413;
-            }
-          }
-      }
-    }
-
-    .addNewCategoryBtnContainer {
-        display: flex;
-        justify-content: center; 
-        margin-top: 20px; 
-        margin-bottom: 20px;
-        
         button {
           padding: 10px 20px;
           background-color: #6d071a;
@@ -68,30 +50,65 @@
           border: none;
           border-radius: 4px;
           cursor: pointer;
-      
+  
           &:hover {
             background-color: #540413;
           }
         }
-      }
-
+    }
   }
 
-  .ErrorContainer {
+  .addNewCategoryBtnContainer {
     display: flex;
-    flex-direction: column;
-    align-items: center; 
     justify-content: center; 
-  }
+    margin-top: 20px; 
+    margin-bottom: 20px;
+    
+    button {
+      padding: 10px 20px;
+      background-color: #6d071a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
   
-  .ErrorHeader {
-    font-family: "Calibri", sans-serif;
-    font-size: 2rem;
-    color: #6d071a;
+      &:hover {
+        background-color: #540413;
+      }
+    }
   }
-  
-  .ErrorText {
-    font-family: "Calibri", sans-serif;
-    font-size: 1.8rem;
-    color: #6d071a;
+}
+
+.ErrorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.ErrorHeader {
+  font-family: "Calibri", sans-serif;
+  font-size: 2rem;
+  color: #6d071a;
+}
+
+.ErrorText {
+  font-family: "Calibri", sans-serif;
+  font-size: 1.8rem;
+  color: #6d071a;
+}
+
+.categoriesContainer {
+  padding: 20px;
+}
+
+@media (max-width: 650px) {
+  .createCategoriesPage {
+    width: 100%;
   }
+
+  .categoryContainer {
+    min-width: unset !important;
+    width: unset !important;
+  }
+}
