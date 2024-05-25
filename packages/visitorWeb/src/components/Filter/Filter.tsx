@@ -530,7 +530,7 @@ const Filter = (props: FilterProps) => {
           </div>
           <div className={styles.DivSlider}>
             <ThemeProvider theme={GlobalStyle()}>
-              <Box sx={{ width: "20rem" }}>
+              <Box sx={{ width: "20rem" }} className={styles.sliderWidth}>
                 <Slider 
                   defaultValue={100}
                   value={range}

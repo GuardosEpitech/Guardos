@@ -165,7 +165,8 @@
         "welcomeSite": "Bienvenue à Guardos",
         "instagram": "Notre Instagram",
         "linkedIn": "Notre linkedIn",
-        "cookieStatement": "Politique des cookies"
+        "cookieStatement": "Politique des cookies",
+        "contactPage": "Contact forme"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Votre lien est invalide. Vous serez redirigé vers la Page Principale.",

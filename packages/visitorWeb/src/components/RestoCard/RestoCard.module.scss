@@ -94,6 +94,12 @@
   padding: 8px;
 }
 
+@media (max-width: 500px) {
+  .DishBox {
+    padding: 0 !important;
+  }
+}
+
 @media (max-width: 768px) {
   .DishBox {
       margin: 0 auto 1.5rem;

@@ -96,6 +96,10 @@
   margin-left: 20px !important;
 }
 
+.sliderWidth {
+  width: 100% !important;
+}
+
 @media (max-width: 768px) {
   .RectFilter {
     width: calc(100% - 40px);
@@ -140,11 +144,11 @@
   .DivSlider {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    width: calc(100% - 40px);
+    width: 100%;
     max-width: 100%;
     margin-left: 0rem;
-    margin-right: 1.5rem;
   }
+
   .allergenChips {
     display: inline-block !important;
   }

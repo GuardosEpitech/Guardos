@@ -69,6 +69,12 @@
     margin-left: 20px;
 }
 
+@media (max-width: 768px) {
+  .DivRect {
+    width: 100%;
+  }
+}
+
 @media (max-width: 1200px) {
     .RectOnImg {
       gap: 1rem;
