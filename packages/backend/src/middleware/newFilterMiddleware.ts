@@ -46,7 +46,6 @@ async function retrieveAllRestaurantsAsBE() {
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
-    console.log(searchParams);
     
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
 
