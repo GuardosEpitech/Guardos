@@ -153,9 +153,9 @@ const CookieBanner: React.FC = () => {
     });
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
-      localStorage.setItem('functional', data['functional'].toString());
-      localStorage.setItem('statistical', data['statistical'].toString());
-      localStorage.setItem('marketing', data['marketing'].toString());
+      localStorage.setItem('functional', data[sliderButtons[1].name.toLocaleLowerCase()].toString());
+      localStorage.setItem('statistical', data[sliderButtons[2].name.toLocaleLowerCase()].toString());
+      localStorage.setItem('marketing', data[sliderButtons[3].name.toLocaleLowerCase()].toString());
       handleClose();
       return;
     }
@@ -227,7 +227,7 @@ const CookieBanner: React.FC = () => {
               {sliderButtons.map((button, index) => (
                 <SliderButton
                 key={button.name}
-                name={t(button.name)}
+                name={button.name}
                 isActive={button.isActive}
                 onClick={() => handleSliderButtonClick(index)}
                 />
