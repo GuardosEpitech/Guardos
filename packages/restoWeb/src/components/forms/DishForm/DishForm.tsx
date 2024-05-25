@@ -17,6 +17,7 @@ import {addNewDish, editDish} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
+import { ICategories } from "shared/models/categoryInterfaces";
 import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
@@ -67,6 +68,7 @@ interface IDishFormProps {
   restoName?: string[];
   picturesId?: number[];
 }
+
 // TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
@@ -91,13 +93,15 @@ const DishForm = (props: IDishFormProps) => {
   let allRestoNames: string[] = [];
   let allDishProd: string[] = [];
   // TODO: apply i18n
-  const suggestions: string[] = ["Appetizer", "Maindish", "Dessert"];
+  const [suggestions, setSuggestions] = useState<string[]>(props.selectCategory || ['Appetizer', 'Maindish', 'Dessert']);
   const suggestionsAller: string[] = ["No Allergens", "Celery", "Gluten",
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
     "Nuts", "Peanuts", "Sesame seeds", "Soya", "Sulphur dioxide", "Lactose"];
   const dishList: IDishFE[] = [];
   const picturesId: number[] = props.picturesId || [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [categories, setCategories] = useState<{ name: string; categories: string[]; }[]>([]);
+
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -110,11 +114,17 @@ const DishForm = (props: IDishFormProps) => {
   }, []);
 
   useEffect(() => {
+    console.log(JSON.stringify(props.selectCategory));
     const userToken = localStorage.getItem('user');
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         allRestoNames = res.map((item: IRestaurantFrontEnd) => item.name);
         setRestoList(allRestoNames);
+        const mappedCategories = res.map((restaurant: IRestaurantFrontEnd) => ({
+          name: restaurant.name,
+          categories: restaurant.categories.map((cat: ICategories) => cat.name)
+        }));
+        setCategories(mappedCategories);
       });
   }, []);
 
@@ -275,6 +285,15 @@ const DishForm = (props: IDishFormProps) => {
       console.log("No image to delete");
     }
   }
+
+  const handleRestoChange = (event: React.ChangeEvent<{}>, value: string[]) => {
+    setDishResto(value);
+    const selectedCategories = categories
+      .filter(resto => value.includes(resto.name))
+      .flatMap(resto => resto.categories);
+      
+    setSuggestions(selectedCategories);
+  };
 
   return (
     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
@@ -452,10 +471,7 @@ const DishForm = (props: IDishFormProps) => {
                 getOptionLabel={(option) => (option ? (option as string) : "")}
                 defaultValue={dishResto}
                 filterSelectedOptions
-                onChange={(e, value) => {
-                  setDishResto(value.map((restoNameVar: string) =>
-                    restoNameVar));
-                }}
+                onChange={handleRestoChange}
                 renderInput={(params) => (
                   <TextField
                     {...params}

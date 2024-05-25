@@ -32,6 +32,8 @@ export async function getDishByUser(loggedInUserId: number) {
   const restaurants = await getAllUserRestaurants(loggedInUserId);
   const dishes: IDishFE[] = [];
   for (const rest of restaurants) {
+    console.log('resto name: ' + rest.name);
+    console.log('resto num dishes: ' + rest.dishes.length);
     for (const dish of rest.dishes) {
       // prevent parsing empty objects - name is always mandatory
       if (!dish.name) {
@@ -53,7 +55,7 @@ export async function getDishByUser(loggedInUserId: number) {
       dishFE.allergens.pop();
       dishFE.picturesId?.pop();
 
-      dishFE.category = dishFE.category = dishFE.category ? dishFE.category : {
+      dishFE.category = dish.category ? dish.category : {
         menuGroup: '',
         foodGroup: '',
         extraGroup: [''],
@@ -154,13 +156,16 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
       { $push: { mealType: newMealType } },
       { new: true }
     );
+  }
 
+    let highestDishId = 0;
     const dishes = restaurant?.dishes;
-    const highestDishId =
-      Math.max(...dishes.map((dish) => dish.uid));
+    if (dishes.length > 0) {
+      highestDishId =
+        Math.max(...dishes.map((dish) => dish.uid));
+    }
     const newDishId = highestDishId + 1;
     dish.uid = newDishId;
-  }
   return Restaurant.findOneAndUpdate(
     { name: restaurantName },
     { $push: { dishes: dish } },
