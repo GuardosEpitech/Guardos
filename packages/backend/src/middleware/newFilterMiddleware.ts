@@ -46,15 +46,17 @@ async function retrieveAllRestaurantsAsBE() {
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
-    
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
 
     let filteredRestaurants: IRestaurantBackEnd[] = restoData;
 
-    if (searchParams.name)
-        filteredRestaurants = filteredRestaurants
-            .filter(restaurant => restaurant.name?.toLowerCase()
-                .includes(searchParams.name?.toLowerCase()));
+    if (searchParams.name) {
+        const searchName = searchParams.name.toLowerCase();
+        filteredRestaurants = filteredRestaurants.filter(restaurant => {
+            const restaurantName = restaurant.name?.toLowerCase() || '';
+            return restaurantName.includes(searchName);
+        });
+    }
 
 
     // do range here
