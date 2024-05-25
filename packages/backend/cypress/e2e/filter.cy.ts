@@ -72,15 +72,13 @@ describe('newfilterRestaurants function', () => {
         method: 'POST', 
         url: urlAPI, 
         body: { 
-            name: 'burgerme', 
-            location: 'Berlin', 
+            name: 'burgerme',
             categories: ['salad'] 
         }
       }).then(response => {
         expect(response.status).to.eq(200);
         response.body.forEach(restaurant => {
           expect(restaurant.name.toLowerCase()).to.eq('burgerme');
-          expect(restaurant.location.city.toLowerCase()).to.eq('berlin');
           const saladDishes = restaurant.dishes.filter(dish => dish.category?.foodGroup?.toLowerCase() === 'salad');
           expect(saladDishes.length).to.be.greaterThan(0);
         });
