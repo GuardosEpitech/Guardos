@@ -46,6 +46,7 @@ async function retrieveAllRestaurantsAsBE() {
 
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
+    console.log(searchParams);
     
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
 
@@ -70,24 +71,23 @@ export async function newfilterRestaurants
             .filter(restaurant => restaurant.location?.city?.toLowerCase() 
             === searchParams.location?.toLowerCase());
 
-    if (searchParams.categories && searchParams.categories.length > 0)
+    if (searchParams.categories && searchParams.categories.length > 0) {
+        const categoriesLowerCase = searchParams.categories.map(category => category.toLowerCase());
         filteredRestaurants = filteredRestaurants.filter(restaurant => {
-            const restaurantCategories = restaurant.dishes?.map
-                (dish => dish.category.foodGroup?.toLowerCase()) ?? [];
-            return searchParams.categories.every(category => 
-                restaurantCategories.includes(category.toLowerCase()));
+            const restaurantCategories = restaurant.dishes?.map(dish => dish.category.foodGroup?.toLowerCase()) ?? [];
+            return restaurantCategories.some(category => categoriesLowerCase.includes(category));
         });
-
-    if (searchParams.allergenList && searchParams.allergenList.length > 0)
+    }
+        
+    if (searchParams.allergenList && searchParams.allergenList.length > 0) {
         filteredRestaurants = filteredRestaurants.filter(restaurant => {
-            const hasAllergen = (dish: any) => 
-                dish.allergens?.some((allergen: string) => 
-                searchParams.allergenList?.includes(allergen.toLowerCase())) ?? 
-                false;
-            return !restaurant.dishes?.some(hasAllergen);
+            const totalDishes = restaurant.dishes?.length || 1;
+            const dishesWithoutAllergen = restaurant.dishes?.filter(dish => 
+                !dish.allergens?.some(allergen => searchParams.allergenList?.includes(allergen.toLowerCase()))) || [];
+            const percentageWithoutAllergen = (dishesWithoutAllergen.length / totalDishes) * 100;
+            return percentageWithoutAllergen >= 50;
         });
-    
-    
+    }
     
     const result: IRestaurantFrontEnd[] = 
         transformToIRestaurantFrontend(filteredRestaurants);
