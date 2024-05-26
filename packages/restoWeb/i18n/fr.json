@@ -161,6 +161,9 @@
         "to-see-your-restos": " pour voir vos restaurants.",
         "add-resto": "Ajouter un restaurant"
       },
+      "MenuPage": {
+        "qr-code": "Afficher mon QR Code"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
         "redirect-google-login": "Redirection vers la connexion Google",

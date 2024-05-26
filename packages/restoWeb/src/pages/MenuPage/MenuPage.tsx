@@ -11,6 +11,7 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 
 import { ICategories } from "shared/models/categoryInterfaces";
+import {useTranslation} from "react-i18next";
 import { getQRCodeByName } from "@src/services/qrcodeCall";
 
 const theme = createTheme({
@@ -32,6 +33,7 @@ const MenuPage = () => {
   const { menu, restoName, address } = useLocation().state as IMenuPageProps;
   const [URL, setURL] = useState(null);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   useState(() => {
     getQRCodeByName(restoName)
@@ -73,7 +75,7 @@ const MenuPage = () => {
           sx={{width: "12.13rem"}}
           onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.name}`}
         >
-          Get my Menu QRCODE
+          {t('pages.MenuPage.qr-code')}
         </Button>
       </Layout>
     </>
