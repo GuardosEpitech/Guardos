@@ -45,6 +45,9 @@ const MenuPage = () => {
     padding: '40px',
     borderRadius: '10px',
   }
+  const fourthLayout = {
+    fontFamily: 'Lucida Handwriting, sans-serif'
+  }
   const [restoMenu, setRestoMenu] = React.useState(menu);
   const {t} = useTranslation();
 
@@ -195,7 +198,7 @@ const MenuPage = () => {
           </div>
         )}
         {menuDesignID >= 1 ? (
-          <div className={styles.secondLayout} style={menuDesignID === 2 ? thirdLayout : null}>
+          <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
             <div className={styles.secondLayoutList}>
               <ul>
                 {restoMenu.map((category: ICategories, index: number) => {

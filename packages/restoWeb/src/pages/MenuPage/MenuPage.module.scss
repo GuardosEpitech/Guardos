@@ -56,6 +56,21 @@
   flex: 0.7;
 }
 
+.fancyLayout {
+  li {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
+  h2 {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
+  h3 {
+    font-family: 'Lucida Handwriting';
+  }
+  span {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
+}
+
 @media (max-width: 750px) {
   .secondLayout {
     flex-direction: column;
