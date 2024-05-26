@@ -95,7 +95,7 @@ const MenuPage = () => {
           </div>
         )}
         {menuDesignID >= 1 ? (
-          <div className={styles.secondLayout} style={menuDesignID === 2 ? thirdLayout : null}>
+          <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
             <div className={styles.secondLayoutList}>
               <ul>
                 {menu.map((category: ICategories, index: number) => {

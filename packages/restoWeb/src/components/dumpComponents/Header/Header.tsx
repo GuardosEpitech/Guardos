@@ -65,40 +65,40 @@ const Header = () => {
   };
 
   return (
-    <div>
-      <Drawer anchor="left" open={showDrawer} onClose={() => setShowDrawer(false)} classes={{ paper: styles.drawer }}>
-        <div className={styles.drawerContent}>
-          {!loggedIn ? (
-            <span className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/login'); }}>{t('components.Header.login')}</span>
-          ) : (
-              <>
-                <a className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/'); }}>{t('components.Header.home')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/'); }}>{t('common.my-restos')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
-                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
-              </>
-            )}
-        </div>
-      </Drawer>
     <div className={styles.containerHeader}>
       <div className={styles.header}>
-        <div className={styles.menuIcon} onClick={() => setShowDrawer(true)}>
+        <a
+          className={styles.NavTitleHamburger}
+          onClick={() => {
+            setShowDrawer(!showDrawer);
+          }}
+        >
           <MenuIcon fontSize="large" style={{ color: 'white' }} />
-        </div>
+        </a>
         <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null}>
           <div className={styles.logo}></div>
         </div>
         <div className={styles.headerLinks}>
+          {!loggedIn ? (
+            <span className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/login'); }}>{t('components.Header.login')}</span>
+          ) : (
+            <>
+              <a className={styles.NavTitle} onClick={logoutUser}>{t('components.Header.logout')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/'); }}>{t('common.my-restos')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
+            </>
+          )}
           <a
-            className={styles.NavTitle}
+            className={styles.NavTitleLanguage}
+            id="language"
             onClick={() => {
               setShowLanguageDropdown(!showLanguageDropdown);
             }}
           >
-            <TranslateIcon fontSize="medium" />
+            <TranslateIcon fontSize="medium" className={styles.logo}/>
             {showLanguageDropdown && (
               <div className={styles.languageDropdown}>
                 <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
@@ -115,8 +115,23 @@ const Header = () => {
           </a>
         </div>
       </div>
+      <Drawer anchor="left" open={showDrawer} onClose={() => setShowDrawer(false)} classes={{ paper: styles.drawer }}>
+        <div className={styles.drawerContent}>
+          {!loggedIn ? (
+            <span className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/login'); }}>{t('components.Header.login')}</span>
+          ) : (
+              <>
+                <a className={styles.NavTitleDropDown} onClick={logoutUser}>{t('components.Header.logout')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/'); }}>{t('common.my-restos')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
+                <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
+              </>
+            )}
+        </div>
+      </Drawer>
     </div>
-  </div>
   );
 };
 

@@ -12,7 +12,7 @@
 }
 
 .TitleFilter {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: #000000;
@@ -25,7 +25,7 @@
 }
 
 .TitleSubFilter {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.06rem;
   font-weight: 600;
   color: #000000;
@@ -47,7 +47,7 @@
 
 .TitleCheck {
   color: #000000;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1rem;
   font-weight: 400;
 }
@@ -96,6 +96,10 @@
   margin-left: 20px !important;
 }
 
+.sliderWidth {
+  width: 100% !important;
+}
+
 @media (max-width: 768px) {
   .RectFilter {
     width: calc(100% - 40px);
@@ -140,11 +144,11 @@
   .DivSlider {
     margin-top: 1rem;
     margin-bottom: 1rem;
-    width: calc(100% - 40px);
+    width: 100%;
     max-width: 100%;
     margin-left: 0rem;
-    margin-right: 1.5rem;
   }
+
   .allergenChips {
     display: inline-block !important;
   }

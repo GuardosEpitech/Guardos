@@ -139,7 +139,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: '#4caf50', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  #4caf50' }}
-            date="Week 1-4"
+            date="04/2024 - 06/2024"
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
@@ -150,7 +150,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: '#4caf50', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  #4caf50' }}
-            date="Week 5-8"
+            date="06/2024 - 07/2024"
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
@@ -161,7 +161,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: '#4caf50', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  #4caf50' }}
-            date="Week 9-12"
+            date="08/2024 - 09/2024"
             iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
@@ -172,7 +172,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-            date="Week 13-17"
+            date="10/2025  - 12/2025"
             iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
@@ -183,7 +183,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: 'rgb(233, 30, 99)', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  rgb(233, 30, 99)' }}
-            date="Week 18-22"
+            date="01/2025  - 02/2025"
             iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
@@ -194,7 +194,7 @@ const IntroPage = () => {
             className="vertical-timeline-element--work"
             contentStyle={{ background: 'rgb(233, 30, 99)', color: '#fff' }}
             contentArrowStyle={{ borderRight: '7px solid  rgb(233, 30, 99)' }}
-            date="Week 22-26"
+            date="09/2025  - 11/2025"
             iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >

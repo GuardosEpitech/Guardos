@@ -6,7 +6,7 @@
 
 .RatingCount {
   padding: 0.5rem 0 0 0.3rem;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 0.8rem;
 }
 
@@ -19,13 +19,20 @@
   background-color: #6D071A !important;
   margin-left: 1rem !important;
   text-transform: none !important;
-  font-size: 0.9rem !important;
   width: auto !important;
-  height: 2rem !important;
+  line-height: normal !important;
+  font-size: 16px !important;
+  font-family: "Calibri", sans-serif !important; 
 }
 
 .ReviewContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 850px) {
+  .ReviewContainer {
+    justify-content: unset !important;
+  }
 }

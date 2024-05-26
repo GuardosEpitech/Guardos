@@ -6,6 +6,7 @@ import TranslateIcon from "@mui/icons-material/Translate";
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 
+
 import styles from "./Header.module.scss";
 import { checkIfVisitorTokenIsValid } from "@src/services/userCalls";
 import { useTranslation } from "react-i18next";
@@ -66,7 +67,7 @@ const Header = () => {
     <div className={styles.containerHeader}>
       <div className={styles.header}>
         <a
-          className={styles.NavTitle}
+          className={styles.NavTitleHamburger}
           onClick={() => {
             setShowNavigationDrawer(!showNavigationDrawer);
           }}
@@ -77,12 +78,30 @@ const Header = () => {
           <div className={styles.logo}></div>
         </div>
         <div className={styles.headerLinks}>
+          <span className={styles.NavTitle}>
+            { loggedIn ? (
+              <a onClick={logoutUser}>
+                {t('components.Header.logout')}
+              </a>
+            ) : (
+              <a onClick={() => NavigateTo('/login', navigate, {})}>
+                {t('components.Header.login')}
+              </a>
+            )}
+          </span>
+          { loggedIn && (
+              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a>
+            )
+          }
+          <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
           <a
-            className={styles.NavTitle}
+            className={styles.NavTitleLanguage}
+            id="language"
             onClick={() => {
               setShowLanguageDropdown(!showLanguageDropdown);
             }}
           >
+            <TranslateIcon fontSize="medium" className={styles.logo}/>
             {showLanguageDropdown && (
               <div className={styles.languageDropdown}>
                 <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
@@ -96,13 +115,12 @@ const Header = () => {
                 </a>
               </div>
             )}
-            <TranslateIcon fontSize="medium" />
           </a>
         </div>
       </div>
       <Drawer anchor="left" open={showNavigationDrawer} onClose={() => setShowNavigationDrawer(false)} classes={{ paper: styles.drawer }}>
         <div className={styles.drawerContent}>
-          <span className={styles.NavTitle}>
+          <span className={styles.NavTitleDropDown}>
             { loggedIn ? (
               <a onClick={logoutUser}>
                 {t('components.Header.logout')}
@@ -114,11 +132,11 @@ const Header = () => {
             )}
           </span>
           { loggedIn && (
-              <><a className={styles.NavTitle} href='/'>{t('components.Header.home')}</a>
-              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a></>
+              <><a className={styles.NavTitleDropDown} href='/'>{t('components.Header.home')}</a>
+              <a className={styles.NavTitleDropDown} href='/my-account'>{t('components.Header.my-account')}</a></>
             )
           }
-          <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
+          <a className={styles.NavTitleDropDown} href='/intropage'>{t('components.Header.welcome')}</a>
         </div>
       </Drawer>
     </div>
