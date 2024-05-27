@@ -102,6 +102,10 @@
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ restoName }}?",
         "opening-hours": "Heures d'ouverture"
       },
+      "SubscriptionBox": {
+        "select": "Choisir",
+        "monthly-price": "Prix mensuel"
+      },
       "CookieBanner": {
         "title": "Nous utilisons des cookies",
         "intro": "Nous utilisons des cookies pour collecter des informations vous concernant. Nous utilisons ces informations :",
@@ -123,7 +127,11 @@
         "decline": "REFUSER TOUT",
         "and": " et ",
         "strictly": "Strictement nécessaire"
-        }
+        },
+      "CreditCard": {
+        "expire": "Expire le : ",
+        "msg": "Êtes-vous sûr de vouloir supprimer cette méthode ?"
+    }
     },
     "pages": {
       "AddDishPage": {
@@ -233,11 +241,20 @@
         "delete-account": "Supprimer le compte",
         "feature-request": "Vous avez besoin d'une nouvelle fonctionnalité? ",
         "just-ask": "Demandez-la simplement!",
+        "subscriptions": "Gérer l'abonnement",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
-        "enable-dark-mode": "Activer le mode sombre"
+        "enable-dark-mode": "Activer le mode sombre",
+        "payBtn": "Gérer les méthodes de paiement"
       },
       "ProductsPage": {
-        "add-product": "Ajouter un produit"
+        "add-product": "Ajouter un produit",
+        "noprod": "Oups, on dirait que vous n'avez pas encore de produits!",
+        "noprod2": "Ajoutez votre premier produit en cliquant ",
+        "noprod2-2": "ici",
+        "noprod2-3": ".",
+        "noprod3": "Veillez à ",
+        "noprod3-2": "ajouter",
+        "noprod3-3": " d'abord un restaurant."
       },
       "RegistrationPage": {
         "register": "S'inscrire",
@@ -265,6 +282,17 @@
         "retry-recovery-link": "Veuillez réessayer pour obtenir un lien de récupération. Si l'erreur se produit à nouveau, veuillez nous contacter.",
         "send-recovery-link": "Envoyer mon lien de réinitialisation de mot de passe",
         "continue": "Continuer"
+      },
+      "SubscriptionPage": {
+        "my-subscription": "Mon abonnement",
+        "free": "Utilisation gratuite",
+        "free-description": "Utilisez les fonctionnalités de base gratuitement",
+        "basic": "Abonnement de base",
+        "description-low-level-1": "Supprimer les publicités",
+        "description-low-level-2": "Menu personnalisé",
+        "premium": "Abonnement Premium",
+        "description-high-level-1": "Prioriser les demandes de fonctionnalités",
+        "description-high-level-2": "Informations détaillées"
       },
       "Privacy": {
         "title": "Déclaration de Confidentialité",
@@ -350,7 +378,11 @@
       "AddCategory": {
         "name": "Catégorie:",
         "id": "Séquence:",
-        "add": "Nouveau"
+        "add": "Nouveau",
+        "noresto": "Oups, on dirait que vous n'avez pas encore de restaurants !",
+        "noresto2": "Ajoutez votre premier restaurant en cliquant ",
+        "noresto2-2": "ici",
+        "noresto2-3": "."
       },
       "CookieStatement": {
         "title": "Déclaration relative aux cookies",
@@ -420,7 +452,20 @@
         "introAnalytical": "Nous analysons vos interactions sur le site Web à l'aide de cookies et de trackers pour améliorer et adapter notre site Web à vos préférences. Grâce à cette analyse, nous nous efforçons de rendre notre site Web aussi convivial que possible. Les technologies suivantes sont utilisées à des fins analytiques :",
         "marketing": "Technologies marketing",
         "introMarketing": "Naturellement, nous visons une utilisation fréquente de notre site Web et utilisons donc des cookies et des trackers pour le promouvoir auprès de vous. Les technologies suivantes sont utilisées à des fins marketing :"
-        }
+        },
+      "Payment": {
+        "title": "Méthodes de paiement",
+        "nopay": "Aucune méthode de paiement ajoutée.",
+        "add": "Ajouter un paiement"
+      },
+      "PaymentAdd": {
+        "title": "Méthode de paiement ajoutée avec succès",
+        "back": "Aller à la page de paiement"
+      },
+      "PaymentCancel": {
+          "title": "Méthode de paiement non ajoutée",
+          "back": "Aller à la page de paiement"
+      }
     }
   }
 }

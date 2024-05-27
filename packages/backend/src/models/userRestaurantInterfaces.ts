@@ -21,4 +21,5 @@ export const userRestoSchema = new mongoose.Schema({
     statistical: Boolean,
     marketing: Boolean
   },
+  customerID: String,
 });

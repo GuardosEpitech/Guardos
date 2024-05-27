@@ -102,6 +102,10 @@
         "confirm-delete": "Sind Sie sicher, dass Sie {{ restoName }} löschen möchten?",
         "opening-hours": "Öffnungszeiten"
       },
+      "SubscriptionBox": {
+        "select": "Auswählen",
+        "monthly-price": "Monatlicher Preis"
+      },
       "CookieBanner": {
         "title": "Wir verwenden Cookies",
         "intro": "Wir verwenden Cookies, um Informationen über Sie zu sammeln. Wir verwenden diese Informationen:",
@@ -123,7 +127,11 @@
         "decline": "ALLE ABLEHNEN",
         "and": " und ",
         "strictly": "Unbedingt erforderlich"
-        }
+        },
+      "CreditCard": {
+        "expire": "läuft ab am: ",
+        "msg": "Sind Sie sicher, dass Sie diese Methode löschen möchten?"
+    }
     },
     "pages": {
       "AddDishPage": {
@@ -233,11 +241,20 @@
         "delete-account": "Konto löschen",
         "feature-request": "Benötigen Sie ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
+        "subscriptions": "Abonnement verwalten",
         "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-        "enable-dark-mode": "Dunkles Design aktivieren"
+        "enable-dark-mode": "Dunkles Design aktivieren",
+        "payBtn": "Zahlungsmethoden verwalten"
       },
       "ProductsPage": {
-        "add-product": "Produkt hinzufügen"
+        "add-product": "Produkt hinzufügen",
+        "noprod": "Ups, es sieht so aus, als hätten Sie noch keine Produkte!",
+        "noprod2": "Fügen Sie Ihr erstes Produkt hinzu, indem Sie ",
+        "noprod2-2": "hier",
+        "noprod2-3": " klicken",
+        "noprod3": "Stellen Sie sicher, dass Sie zuerst ein Restaurant ",
+        "noprod3-2": "hinzufügen",
+        "noprod3-3": "."
       },
       "RegistrationPage": {
         "register": "Registrieren",
@@ -265,6 +282,17 @@
         "retry-recovery-link": "Versuchen Sie erneut, einen Wiederherstellungslink zu erhalten. Wenn der Fehler erneut auftritt, kontaktieren Sie uns bitte.",
         "send-recovery-link": "Senden Sie meinen Passwort-Wiederherstellungslink",
         "continue": "Fortfahren"
+      },
+      "SubscriptionPage": {
+        "my-subscription": "Mein Abonnement",
+        "free": "Kostenlose Nutzung",
+        "free-description": "Nutzen Sie die Grundfunktionen kostenlos",
+        "basic": "Basis Abonnement",
+        "description-low-level-1": "Werbung entfernen",
+        "description-low-level-2": "Personalisiertes Menü",
+        "premium": "Premium-Abonnement",
+        "description-high-level-1": "Feature-Anfragen werden priorisiert",
+        "description-high-level-2": "Detaillierte Analyse-Einblicke"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",
@@ -350,7 +378,11 @@
       "AddCategory": {
         "name": "Kategorie:",
         "id": "Reihenfolge:",
-        "add": "Neu"
+        "add": "Neu",
+        "noresto": "Ups, es sieht so aus, als hätten Sie noch keine Restaurants!",
+        "noresto2": "Fügen Sie Ihr erstes Restaurant hinzu, indem Sie ",
+        "noresto2-2": "hier",
+        "noresto2-3": " klicken."
       },
       "CookieStatement": {
         "title": "Cookie-Erklärung",
@@ -420,7 +452,20 @@
         "introAnalytical": "Wir analysieren Ihre Interaktionen auf der Website mithilfe von Cookies und Trackern, um unsere Website an Ihre Vorlieben anzupassen und zu verbessern. Durch diese Analyse streben wir an, sicherzustellen, dass unsere Website so benutzerfreundlich wie möglich ist. Die folgenden Technologien werden für analytische Zwecke eingesetzt:",
         "marketing": "Marketing-Technologien",
         "introMarketing": "Natürlich streben wir eine häufige Nutzung unserer Website an und setzen daher Cookies und Tracker ein, um sie Ihnen zu bewerben. Die folgenden Technologien werden für Marketingziele eingesetzt:"
-        }
+        },
+      "Payment": {
+        "title": "Zahlungsmethoden",
+        "nopay": "Es liegen keine Zahlungsmethoden vor.",
+        "add": "Hinzufügen"
+      },
+      "PaymentAdd": {
+        "title": "Zahlungsmethode erfolgreich hinzugefügt",
+        "back": "Zur Zahlungsseite gehen"
+      },
+      "PaymentCancel": {
+          "title": "Zahlungsmethode nicht hinzugefügt",
+          "back": "Zur Zahlungsseite gehen"
+      }
     }
   }
 }

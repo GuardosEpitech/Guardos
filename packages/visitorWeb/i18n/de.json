@@ -56,6 +56,7 @@
       "Header": {
         "login": "Einloggen",
         "logout": "Ausloggen",
+        "home": "Startseite",
         "my-account": "Mein Konto",
         "welcome": "Willkommen bei Guardos"
       },
@@ -101,6 +102,10 @@
         "fe-developer": "Frontend-Entwickler",
         "mobile-developer": "Mobile Entwickler"
       },
+      "SubscriptionBox": {
+        "select": "Auswählen",
+        "monthly-price": "Monatlicher Preis"
+      },
       "CookieBanner": {
         "title": "Wir verwenden Cookies",
         "intro": "Wir verwenden Cookies, um Informationen über Sie zu sammeln. Wir verwenden diese Informationen:",
@@ -122,7 +127,11 @@
         "decline": "ALLE ABLEHNEN",
         "and": " und ",
         "strictly": "Unbedingt erforderlich"
-        }
+        },
+      "CreditCard": {
+        "expire": "läuft ab am: ",
+        "msg": "Sind Sie sicher, dass Sie diese Methode löschen möchten?"
+      }
     },
     "pages": {
       "AboutUs": {
@@ -279,10 +288,12 @@
         "delete-account": "Konto löschen",
         "feature-request": "Sie benötigen ein neues Feature? ",
         "just-ask": "Fragen Sie einfach danach!",
+        "subscriptions": "Abonnement verwalten",
         "fav-restos": "Lieblingsrestaurants",
         "fav-dishes": "Lieblingsgerichte",
         "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-        "enable-dark-mode": "Dunkles Design aktivieren"
+        "enable-dark-mode": "Dunkles Design aktivieren",
+        "payBtn": "Zahlungsmethoden verwalten"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",
@@ -332,7 +343,20 @@
         "continue": "Fortfahren"
       },
       "RestoPage": {
-        "what-you-looking-for": "Was suchen Sie?"
+        "what-you-looking-for": "Was suchen Sie?",
+        "search-result": "Berlin - +12548 Restaurants",
+        "noresto": "Keine passenden Restaurants gefunden. Bitte ändern Sie ihren Filter."
+      },
+      "SubscriptionPage": {
+        "my-subscription": "Mein Abonnement",
+        "free": "Kostenlose Nutzung",
+        "free-description": "Nutzen Sie die Grundfunktionen kostenlos",
+        "basic": "Basis Abonnement",
+        "description-low-level-1": "Werbung entfernen",
+        "description-low-level-2": "Gruppensuche - speichere mehrere Ernährungsprofile",
+        "premium": "Premium-Abonnement",
+        "description-high-level-1": "Feature-Anfragen werden priorisiert",
+        "description-high-level-2": "Reservierungen vornehmen"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",
@@ -486,7 +510,20 @@
         "introAnalytical": "Wir analysieren Ihre Interaktionen auf der Website mithilfe von Cookies und Trackern, um unsere Website an Ihre Vorlieben anzupassen und zu verbessern. Durch diese Analyse streben wir an, sicherzustellen, dass unsere Website so benutzerfreundlich wie möglich ist. Die folgenden Technologien werden für analytische Zwecke eingesetzt:",
         "marketing": "Marketing-Technologien",
         "introMarketing": "Natürlich streben wir eine häufige Nutzung unserer Website an und setzen daher Cookies und Tracker ein, um sie Ihnen zu bewerben. Die folgenden Technologien werden für Marketingziele eingesetzt:"
-        }
+        },
+      "Payment": {
+        "title": "Zahlungsmethoden",
+        "nopay": "Es liegen keine Zahlungsmethoden vor.",
+        "add": "Hinzufügen"
+      },
+      "PaymentAdd": {
+        "title": "Zahlungsmethode erfolgreich hinzugefügt",
+        "back": "Zur Zahlungsseite gehen"
+      },
+      "PaymentCancel": {
+          "title": "Zahlungsmethode nicht hinzugefügt",
+          "back": "Zur Zahlungsseite gehen"
+      }
     }
   }
 }

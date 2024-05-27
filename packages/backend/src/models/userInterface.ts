@@ -38,4 +38,5 @@ export const userSchema = new mongoose.Schema({
     statistical: Boolean,
     marketing: Boolean
   },
+  customerID: String,
 });

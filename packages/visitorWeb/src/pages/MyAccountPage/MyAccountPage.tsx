@@ -507,6 +507,12 @@ const MyAccountPage = () => {
           )}
         </div>
         <div>
+          <button onClick={() => window.location.href = '/subscriptions'}>
+            {t('pages.MyAccountPage.subscriptions')}
+          </button>
+          <button onClick={() => window.location.href = '/payment'}>
+            {t('pages.MyAccountPage.payBtn')}
+          </button>
           <button className={styles.saveButton} onClick={handleSave}>
             {t('pages.MyAccountPage.save-changes')}
           </button>
@@ -514,17 +520,19 @@ const MyAccountPage = () => {
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>
           {t('pages.MyAccountPage.delete-account')}
         </button>
+         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+          <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
+          <Button onClick={() => window.location.href = '/feature-request'}>
+            {t('pages.MyAccountPage.just-ask')}
+          </Button>
+         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <FormControlLabel
           control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
           label={t('pages.MyAccountPage.enable-dark-mode')}
         />
-          <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
-          <Button onClick={() => window.location.href = '/feature-request'}>
-            {t('pages.MyAccountPage.just-ask')}
-          </Button>
-      </div>   
-      </div>         
+        </div>
+        </div>      
       <div className={styles.restaurantSection}>
         {/* Tabs for Favorite Restaurants and Dishes */}
         <div className={styles.tabs}>

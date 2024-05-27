@@ -77,7 +77,6 @@ const AddCategoryPage = () => {
       
         const existingCategory = newCategories.find(category => category.name.toLowerCase() === newCategoryName.toLowerCase());
         if (existingCategory) {
-          // If category name already exists, do nothing
           return;
         }
       
@@ -85,7 +84,6 @@ const AddCategoryPage = () => {
       
         const existingSortIdIndex = updatedCategories.findIndex(category => category.hitRate === Number(newCategoryHitRate));
         if (existingSortIdIndex !== -1) {
-          // If sort ID already exists, increase sort ID of existing entry and following entries
           updatedCategories = updatedCategories.map(category => {
             if (category.hitRate >= Number(newCategoryHitRate)) {
               return { ...category, hitRate: category.hitRate + 1 };
@@ -94,14 +92,11 @@ const AddCategoryPage = () => {
           });
         }
       
-        // Add new category with the updated sort ID
         const newCategory = { name: newCategoryName, hitRate: Number(newCategoryHitRate) };
         updatedCategories.push(newCategory);
       
-        // Sort categories based on hitRate
         updatedCategories.sort((a, b) => a.hitRate - b.hitRate);
         const updatedResto = await updateRestoCategories(userToken, activeRestaurant, updatedCategories);
-        // Update state
         setNewCategories(updatedCategories);
         setNewCategoryName('');
         setNewCategoryHitRate('');
@@ -109,31 +104,49 @@ const AddCategoryPage = () => {
       };
   
     return (
-        <div className={styles['create-categories-page']}>
+        <div className={styles.createCategoriesPage}>
+          {restoData.length === 0 ?
+        (
+          <div className={styles.ErrorContainer}>
+            <span className={styles.ErrorHeader}>
+              {t('pages.AddCategory.noresto')}
+            </span>
+            <br/>
+            <br/>
+            <br/>
+            <span className={styles.ErrorText}>
+              {t('pages.AddCategory.noresto2')} 
+              <a href="/addResto">{t('pages.AddCategory.noresto2-2')}</a>
+              {t('pages.AddCategory.noresto2-3')}
+            </span>
+            <br/>
+          </div>
+        ) : (
         <select value={activeRestaurant} onChange={handleRestaurantChange}>
           {restoData.map((restaurant) => (
             <option key={restaurant.uid} value={restaurant.uid}>{restaurant.name}</option>
           ))}
         </select>
+        )}
         {activeRestaurant !== -1 && (
-          <div className={styles['category-containers']}>
+          <div className={styles.categoryContainers}>
             {newCategories.map((category, index) => (
-              <div key={index} className={styles['category-container']}>
+              <div key={index} className={styles.categoryContainer}>
                 <div>{t('pages.AddCategory.name')} {category.name}</div>
                 <div>{t('pages.AddCategory.id')} {category.hitRate}</div>
               </div>
             ))}
             {showNewCategoryInput && (
-              <div className={styles['category-container']}>
+              <div className={styles.categoryContainer}>
                 <input
                     type="text"
                     placeholder={t('pages.AddCategory.name')}
                     value={newCategoryName}
                     onChange={(e) => {
                         setNewCategoryName(e.target.value);
-                        setNewCategoryNameError(false); // Reset error when user types
+                        setNewCategoryNameError(false); 
                     }}
-                    style={{ borderColor: newCategoryNameError ? 'red' : '' }} // Add style for red border
+                    style={{ borderColor: newCategoryNameError ? 'red' : '' }} 
                 />
 
                     <input
@@ -142,15 +155,15 @@ const AddCategoryPage = () => {
                     value={newCategoryHitRate}
                     onChange={(e) => {
                         setNewCategoryHitRate(parseInt(e.target.value));
-                        setNewCategoryHitRateError(false); // Reset error when user types
+                        setNewCategoryHitRateError(false); 
                     }}
-                    style={{ borderColor: newCategoryHitRateError ? 'red' : '' }} // Add style for red border
+                    style={{ borderColor: newCategoryHitRateError ? 'red' : '' }} 
                     />
                 <button onClick={handleSaveCategory}>{t('common.save')}</button>
               </div>
             )}
             {!showNewCategoryInput && (
-              <div className={styles['add-new-category-btn-container']}>
+              <div className={styles.addNewCategoryBtnContainer}>
                 <button onClick={handleAddNewCategory}>{t('pages.AddCategory.add')}</button>
               </div>
             )}

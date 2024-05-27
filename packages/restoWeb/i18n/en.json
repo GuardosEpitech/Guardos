@@ -102,6 +102,14 @@
         "confirm-delete": "Are you sure you want to delete {{ restoName }}?",
         "opening-hours": "Opening hours"
       },
+      "SubscriptionBox": {
+        "select": "Select",
+        "monthly-price": "Monthly price"
+      },
+      "CreditCard": {
+        "expire": "Expires on: ",
+        "msg": "Are you sure you want to delete this method?"
+      },
       "CookieBanner": {
         "title": "We use cookies",
         "intro": "We use cookies to collect information about you. We use this information:",
@@ -233,11 +241,20 @@
         "delete-account": "Delete Account",
         "feature-request": "You need a new feature? ",
         "just-ask": "Just ask for it!",
+        "subscriptions": "Manage Subscription",
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
-        "enable-dark-mode": "Enable Dark Mode"
+        "enable-dark-mode": "Enable Dark Mode",
+        "payBtn": "Manage payment methods"
       },
       "ProductsPage": {
-        "add-product": "Add product"
+        "add-product": "Add product",
+        "noprod": "Oops, looks like you dont have any products yet!",
+        "noprod2": "Add your first product by clicking ",
+        "noprod2-2": "here",
+        "noprod2-3": ".",
+        "noprod3": "Be sure to ",
+        "noprod3-2": "add",
+        "noprod3-3": " a restaurant first."
       },
       "RegistrationPage": {
         "register": "Register",
@@ -265,6 +282,17 @@
         "retry-recovery-link": "Please try again to get a recovery link. If the Error appears one more time, please contact us.",
         "send-recovery-link": "Send My Password Reset Link",
         "continue": "Continue"
+      },
+      "SubscriptionPage": {
+        "my-subscription": "My subscription",
+        "free": "Free usage",
+        "free-description": "Use the basic features for free",
+        "basic": "Basic Subscription",
+        "description-low-level-1": "remove ads",
+        "description-low-level-2": "personalized menu",
+        "premium": "Premium Subscription",
+        "description-high-level-1": "prioritize feature requests",
+        "description-high-level-2": "detailed insights"
       },
       "Privacy": {
         "title": "Privacy Statement",
@@ -350,7 +378,11 @@
       "AddCategory": {
         "name": "Category:",
         "id": "Order:",
-        "add": "New"
+        "add": "New",
+        "noresto": "Oops, looks like you dont have any restaurants yet!",
+        "noresto2": "Add your first restaurant by clicking ",
+        "noresto2-2": "here",
+        "noresto2-3": "."
       },
       "CookieStatement": {
         "title": "Cookie Statement",
@@ -420,6 +452,19 @@
         "introAnalytical": "We analyze your website interactions using cookies and trackers to enhance and tailor our website to your preferences. Through this analysis, we endeavor to ensure that our website is as user-friendly as possible. The following technologies are utilized for analytical purposes:",
         "marketing": "Marketing Technologies",
         "introMarketing": "Naturally, we aim for frequent usage of our website and thus employ cookies and trackers to promote it to you. The subsequent technologies are utilized for marketing objectives:"
+      },
+      "Payment": {
+        "title": "Payment methods",
+        "nopay": "No payment methods added.",
+        "add": "Add payment"
+      },
+      "PaymentAdd": {
+        "title": "Payment method successfully added",
+        "back": "Go to Payment Page"
+      },
+      "PaymentCancel": {
+        "title": "Payment method not added",
+        "back": "Go to Payment Page"
       }
     }
   }

@@ -56,6 +56,7 @@
       "Header": {
         "login": "Login",
         "logout": "Logout",
+        "home": "Home",
         "my-account": "My Account",
         "welcome": "Welcome to Guardos"
       },
@@ -101,6 +102,10 @@
         "fe-developer": "Frontend Developer",
         "mobile-developer": "Mobile Developer"
       },
+      "SubscriptionBox": {
+        "select": "Select",
+        "monthly-price": "Monthly price"
+      },
       "CookieBanner": {
         "title": "We use cookies",
         "intro": "We use cookies to collect information about you. We use this information:",
@@ -122,6 +127,10 @@
         "decline": "DECLINE ALL",
         "and": " and ",
         "strictly": "Strictly necessary"
+      },
+      "CreditCard": {
+        "expire": "Expires on: ",
+        "msg": "Are you sure you want to delete this method?"
       }
     },
     "pages": {
@@ -279,10 +288,12 @@
         "delete-account": "Delete Account",
         "feature-request": "You need a new feature? ",
         "just-ask": "Just ask for it!",
+        "subscriptions": "Manage Subscription",
         "fav-restos": "Favourite Restaurants",
         "fav-dishes": "Favourite Dishes",
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
-        "enable-dark-mode": "Enable Dark Mode"
+        "enable-dark-mode": "Enable Dark Mode",
+        "payBtn": "Manage payment methods"
       },
       "Payments": {
         "payment-success": "Payment Successful",
@@ -332,7 +343,20 @@
         "continue": "Continue"
       },
       "RestoPage": {
-        "what-you-looking-for": "What are you looking for ?"
+        "what-you-looking-for": "What are you looking for ?",
+        "search-result": "Berlin - +12548 Restauarants",
+        "noresto": "No fitting restaurants found. Please update your filter."
+      },
+      "SubscriptionPage": {
+        "my-subscription": "My Subscription",
+        "free": "Free usage",
+        "free-description": "Use the basic features for free",
+        "basic": "Basic Subscription",
+        "description-low-level-1": "Remove ads",
+        "description-low-level-2": "Group search - save multiple dietary profiles",
+        "premium": "Premium Subscription",
+        "description-high-level-1": "Feature requests are prioritized",
+        "description-high-level-2": "Make reservations"
       },
       "Privacy": {
         "title": "Privacy Statement",
@@ -486,6 +510,19 @@
         "introAnalytical": "We analyze your website interactions using cookies and trackers to enhance and tailor our website to your preferences. Through this analysis, we endeavor to ensure that our website is as user-friendly as possible. The following technologies are utilized for analytical purposes:",
         "marketing": "Marketing Technologies",
         "introMarketing": "Naturally, we aim for frequent usage of our website and thus employ cookies and trackers to promote it to you. The subsequent technologies are utilized for marketing objectives:"
+      },
+      "Payment": {
+        "title": "Payment methods",
+        "nopay": "No payment methods added.",
+        "add": "Add payment"
+      },
+      "PaymentAdd": {
+        "title": "Payment method successfully added",
+        "back": "Go to Payment Page"
+      },
+      "PaymentCancel": {
+        "title": "Payment method not added",
+        "back": "Go to Payment Page"
       }
     }
   }
