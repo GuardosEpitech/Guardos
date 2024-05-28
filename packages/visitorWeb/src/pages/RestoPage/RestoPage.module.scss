@@ -13,13 +13,13 @@
 }
 
 .TitleSearch {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Calibri", sans-serif;
     font-size: 2.188rem;
     color: #ffffff;
 }
 
 .TitleCard {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Calibri", sans-serif;
     font-size: 2.19rem;
     font-weight: bold;
     color: #000000;
@@ -27,14 +27,14 @@
 }
 
 .MapTitle {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Calibri", sans-serif;
     font-size: 2.188rem;
     color: #ffffff;
     margin: 0;
 }
 
 .RestaurantAddress {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Calibri", sans-serif;
     font-size: 1.8rem;
     color: #ffffff;
     margin-left: 1rem;
@@ -67,6 +67,12 @@
     border-radius: 0.625rem;
     flex-shrink: 0;
     margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .DivRect {
+    width: 100%;
+  }
 }
 
 @media (max-width: 1200px) {

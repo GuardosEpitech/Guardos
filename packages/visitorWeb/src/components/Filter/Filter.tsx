@@ -36,7 +36,7 @@ const GlobalStyle = () => {
           colorPrimary: {
             backgroundColor: '#FFFFFF',
             color: "#000000",
-            fontFamily: "Montserrat",
+            fontFamily: "Calibri",
             textTransform: "none",
             fontSize: "1rem",
             fontWeight: "400",
@@ -44,7 +44,7 @@ const GlobalStyle = () => {
           colorSecondary: {
             backgroundColor: '#AC2A37',
             color: "#ffffff",
-            fontFamily: "Montserrat",
+            fontFamily: "Calibri",
             textTransform: "none",
             fontSize: "1rem",
             fontWeight: "400",
@@ -530,7 +530,7 @@ const Filter = (props: FilterProps) => {
           </div>
           <div className={styles.DivSlider}>
             <ThemeProvider theme={GlobalStyle()}>
-              <Box sx={{ width: "20rem" }}>
+              <Box sx={{ width: "20rem" }} className={styles.sliderWidth}>
                 <Slider 
                   defaultValue={100}
                   value={range}

@@ -12,6 +12,7 @@ import {IMealType} from '../../../shared/models/mealTypeInterfaces';
 import {ILocation} from '../../../shared/models/locationInterfaces';
 import {IRestaurantCommunication} from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
+import { geocodeAddress } from './mapController';
 
 export function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
@@ -309,9 +310,20 @@ export async function getAllUserRestaurantsFiltered(loggedInUserId: number,
   return answer;
 }
 
+function formatLocation(location: ILocation): string {
+  const formattedAddress = `${location.streetName} ${location.streetNumber}, 
+  ${location.postalCode} ${location.city}, ${location.country}`;
+  return formattedAddress;
+}
+
 export async function createNewRestaurant(
   obj: IRestaurantCommunication, userID: number, id: number) {
   const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
+  let loc = obj.location;
+  const address = formatLocation(obj.location); 
+  const coordinates = await geocodeAddress(address);
+  loc.latitude = coordinates.lat;
+  loc.longitude = coordinates.lng;
   const upload = new RestaurantSchema({
     _id: id,
     name: obj.name,
@@ -326,7 +338,7 @@ export async function createNewRestaurant(
     picturesId: obj.picturesId ? obj.picturesId : [],
     openingHours: obj.openingHours ? obj.openingHours : [
       {open: '11:00', close: '22:00', day: 0}],
-    location: obj.location ? obj.location : {},
+    location: obj.location ? loc : {},
     mealType: obj.mealType ? obj.mealType : [],
     products: obj.products ? obj.products : [],
     extras: obj.extras ? obj.extras : [],
