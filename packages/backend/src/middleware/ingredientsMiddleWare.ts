@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 
-import {findMaxIndexIngredients} from '../controllers/ingredientsController';
+import {findMaxIndexIngredients} from '../controllers/ingredientsControllerMVP';
 import {IIngredientsCommunication} from '../models/communicationInterfaces';
-import {ingredientsSchema} from '../models/ingredientsInterfaces';
+import {ingredientsSchemaMVP} from '../models/ingredientsInterfaces';
 
 export async function checkIfIdExists(id: number) {
   const IngredientSchema = mongoose.model('IngredientsMVP',
-    ingredientsSchema);
+    ingredientsSchemaMVP);
   return await IngredientSchema.findOne({_id: id})
     .then((result) => {
       return result;
