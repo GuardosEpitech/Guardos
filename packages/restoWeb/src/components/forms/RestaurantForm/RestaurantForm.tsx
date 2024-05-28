@@ -97,7 +97,7 @@ const days: IDay[] = [
 
 const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
-  let {
+  const {
     restaurantName,
     street,
     streetNumber,
@@ -173,6 +173,17 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
         }
       });
+
+    setSelectedRestaurantName(restaurantName);
+    setSelectedStreet(street);
+    setSelectedStreetNumber(streetNumber);
+    setSelectedPostalCode(postalCode);
+    setSelectedCity(city);
+    setSelectedCountry(country);
+    setSelectedDescription(description);
+    setSelectedPhone(phone);
+    setSelectedWebsite(website);
+    setSelectedOpeningHours(openingHours);
 
     fetchImages();
   }, [props.picturesId]);
