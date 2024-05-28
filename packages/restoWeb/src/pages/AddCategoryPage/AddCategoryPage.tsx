@@ -104,6 +104,7 @@ const AddCategoryPage = () => {
       };
   
     return (
+      <div className={styles.categoriesContainer}>
         <div className={styles.createCategoriesPage}>
           {restoData.length === 0 ?
         (
@@ -169,6 +170,7 @@ const AddCategoryPage = () => {
             )}
           </div>
         )}
+      </div>
       </div>
     );
   };

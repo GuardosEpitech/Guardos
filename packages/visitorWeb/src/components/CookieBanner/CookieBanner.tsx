@@ -10,7 +10,7 @@ const OkBtn = () => {
     return createTheme({
       typography: {
         button: {
-          fontFamily: "Montserrat",
+          fontFamily: "Calibri",
           textTransform: "none",
           fontSize: "1.13rem",
           fontWeight: "500",
@@ -37,7 +37,7 @@ const OkBtn = () => {
     return createTheme({
       typography: {
         button: {
-          fontFamily: "Montserrat",
+          fontFamily: "Calibri",
           textTransform: "none",
           fontSize: "1.13rem",
           fontWeight: "500",

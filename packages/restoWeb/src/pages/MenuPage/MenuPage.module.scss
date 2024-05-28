@@ -12,14 +12,14 @@
 }
 
 .RestaurantTitle {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 2.188rem;
   color: #ffffff;
   margin: 0;
 }
 
 .RestaurantAddress {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 1.8rem;
   color: #ffffff;
   margin-left: 1rem;
@@ -54,6 +54,21 @@
 
 .secondLayoutDishes {
   flex: 0.7;
+}
+
+.fancyLayout {
+  li {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
+  h2 {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
+  h3 {
+    font-family: 'Lucida Handwriting';
+  }
+  span {
+    font-family: 'Lucida Handwriting', sans-serif;
+  }
 }
 
 @media (max-width: 750px) {
