@@ -25,10 +25,12 @@ const InputSearch = (props: any) => {
 
   function onChangeName(event: any) {
     setName(event.target.value);
+    props.onChange(event.target.value, location);
   }
 
   function onChangeLocation(event: any) {
     setLocation(event);
+    props.onChange(name, event);
   }
 
   function sendButtonData(name: string, location: string) {
@@ -36,7 +38,7 @@ const InputSearch = (props: any) => {
       name: name,
       location: location,
     };
-    props.onChange(inter);
+    props.onClick(inter);
   }
 
   return (
