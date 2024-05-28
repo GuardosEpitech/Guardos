@@ -20,7 +20,6 @@ export const getProfileDetails = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the User Details:", error);
-    throw new Error("Error fetching the User Details");
   }
 };
 
@@ -42,7 +41,6 @@ export const editProfileDetails = async (token: string, body: any) => {
     }
   } catch (error) {
     console.error("Error editing the User Details:", error);
-    throw new Error("Error editing the User Details");
   }
 };
 
@@ -68,7 +66,6 @@ export const changePassword = async (token: string, oldPassword: string,
     }
   } catch (error) {
     console.error("Error changing the password of the Users:", error);
-    throw new Error("Error changing the password of the Users");
   }
 };
 
@@ -86,7 +83,6 @@ export const setUserRestoPreferences = async (token: string, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error setting Cookie preferences:", error);
-    throw new Error("Error setting Cookie preferences");
   }
 };
 
@@ -103,6 +99,5 @@ export const getUserRestoPreferences = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error getting Cookie preferences:", error);
-    throw new Error("Error getting Cookie preferences");
   }
 };

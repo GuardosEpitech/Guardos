@@ -51,6 +51,10 @@ router.post('/', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
+    if (resto.name === '') {
+      return res.status(404)
+        .send({ error: 'empty Resto name' });
+    }
     const restaurant = await createNewRestaurant(
       resto, userID as number, maxID + 1);
     await addProductsFromRestaurantToOwnDB(restaurant.id);

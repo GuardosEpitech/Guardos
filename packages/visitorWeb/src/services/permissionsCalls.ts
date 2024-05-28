@@ -20,7 +20,6 @@ export const getVisitorUserPermission = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the User Permissions:", error);
-    throw new Error("Error fetching the User Permissions");
   }
 };
 
@@ -40,7 +39,6 @@ export const addVisitorUserPermissions = async (token: string, permissions: stri
     return response.data;
   } catch (error) {
     console.error("Error adding user permissions:", error);
-    throw new Error("Error adding user permissions");
   }
 };
 
@@ -64,7 +62,6 @@ export const removeVisitorUserPermissions = async (token: string, permissions: s
     }
   } catch (error) {
     console.error("Error removing user permissions:", error);
-    throw new Error("Error removing user permissions");
   }
 };
 
@@ -81,6 +78,5 @@ export const deleteAllVisitorUserPermissions = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting all user permissions:", error);
-    throw new Error("Error deleting all user permissions");
   }
 };

@@ -22,6 +22,5 @@ export const getRestosMenu = async (restoId: number, allergenList: string[]) => 
     }
   } catch (error) {
     console.error("Error fetching the Users:", error);
-    throw new Error("Error fetching the Users");
   }
 };

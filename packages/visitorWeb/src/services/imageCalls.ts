@@ -15,7 +15,6 @@ export const getImages = async (imageIds: number[]) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching images:", error);
-    throw new Error("Failed to fetch images");
   }
 };
 
@@ -43,7 +42,6 @@ export const addProfileImage = async (userToken: string,
   }
   catch (error) {
     console.error("Error adding image:", error);
-    throw new Error("Failed to add image");
   }
 };
 
@@ -62,6 +60,5 @@ export const deleteProfileImage = async (imageId: number,
     return response.data;
   } catch (error) {
     console.error("Error deleting image:", error);
-    throw new Error("Failed to delete image");
   }
 };

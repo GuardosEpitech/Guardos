@@ -80,46 +80,57 @@ async function main() {
       return console.log(`Backend is listening at http://localhost:${process.env.PORTBE}`);
     });
 
-    app.use('/api/logout', logout);
-    app.use('/api/products', products);
-    app.use('/api/dishes', dishes);
-    app.use('/api/restaurants', restaurants);
-    app.use('/api/search/restaurants', restaurantsSearch);
-    app.use('/api/menu', menu);
-    app.use('/api/ingredients', basicApiIngredients);
-    app.use('/api/filter', filter);
-    app.use('/api/register', register);
-    app.use('/api/login', login);
-    app.use('/api/user', user);
-    app.use('/api/images', images);
-    app.use('/api/sendEmail', email);
-    app.use('/api/delete/', deleteUser);
-    app.use('/api/profile', visitorProfile);
-    app.use('/api/foodCategorie', foodCategorie);
-    app.use('/api/profile/resto', restoProfile);
-    app.use('/api/permissions/visitor', visitorPermissions);
-    app.use('/api/permissions/resto', restoPermissions);
-    app.use('/api/payments', payments);
-    app.use('/api/featureRequest', featureRequest);
-    app.use('/api/review', review);
-    app.use('/api/favourites', favourites);
-    app.use('/api/menuDesigns', menuDesigns);
+    const asyncHandler = (fn:any) => (req:any, res:any, next:any) => {
+      Promise.resolve(fn(req, res, next)).catch(next);
+    };
+
+    app.use('/api/logout', asyncHandler(logout));
+    app.use('/api/products', asyncHandler(products));
+    app.use('/api/dishes', asyncHandler(dishes));
+    app.use('/api/restaurants', asyncHandler(restaurants));
+    app.use('/api/search/restaurants', asyncHandler(restaurantsSearch));
+    app.use('/api/menu', asyncHandler(menu));
+    app.use('/api/ingredients', asyncHandler(basicApiIngredients));
+    app.use('/api/filter', asyncHandler(filter));
+    app.use('/api/register', asyncHandler(register));
+    app.use('/api/login', asyncHandler(login));
+    app.use('/api/user', asyncHandler(user));
+    app.use('/api/images', asyncHandler(images));
+    app.use('/api/sendEmail', asyncHandler(email));
+    app.use('/api/delete/', asyncHandler(deleteUser));
+    app.use('/api/profile', asyncHandler(visitorProfile));
+    app.use('/api/foodCategorie', asyncHandler(foodCategorie));
+    app.use('/api/profile/resto', asyncHandler(restoProfile));
+    app.use('/api/permissions/visitor', asyncHandler(visitorPermissions));
+    app.use('/api/permissions/resto', asyncHandler(restoPermissions));
+    app.use('/api/payments', asyncHandler(payments));
+    app.use('/api/featureRequest', asyncHandler(featureRequest));
+    app.use('/api/review', asyncHandler(review));
+    app.use('/api/favourites', asyncHandler(favourites));
+    app.use('/api/menuDesigns', asyncHandler(menuDesigns));
   }
 
-  app.use(function (_req, _res, next) {
+  // Catch 404 and forward to error handler
+  app.use((_req, _res, next) => {
     const err = createError(404);
     next(err);
   });
 
-  // error handler
-  app.use(function (err: any, req: any, res: any) { /* eslint-disable-line */
-    // set locals, only providing error in development
+  // Error handler
+  app.use((err:any, req:any, res:any, _next:any) => {
+    // Log the error for internal use
+    console.error(err);
+
+    // Set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-    // render the error page
+    // Respond with a user-friendly message
     res.status(err.status || 500);
-    res.render('error');
+    res.json({
+      message: 'An error occurred. Please try again later.',
+      error: req.app.get('env') === 'development' ? err.message : {},
+    });
   });
 }
 
