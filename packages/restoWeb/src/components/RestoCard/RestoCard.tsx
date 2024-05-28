@@ -48,6 +48,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
+  const [openingHours, setOpeningHours] = useState(resto.openingHours);
 
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
@@ -169,6 +170,7 @@ const RestoCard = (props: IRestoCardProps) => {
                         picturesId: resto.picturesId,
                         menuDesignID: resto.menuDesignID,
                         website: resto.website,
+                        openingHours: openingHours
                       }
                     }
                   ]}

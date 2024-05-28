@@ -32,6 +32,7 @@ import restoPermissions from './routes/restoPermissions';
 import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
+import map from './routes/map';
 
 function constructAllowedOrigins(): string[] {
   const domains: { [key: string]: string | undefined } = {
@@ -108,6 +109,7 @@ async function main() {
     app.use('/api/review', asyncHandler(review));
     app.use('/api/favourites', asyncHandler(favourites));
     app.use('/api/menuDesigns', asyncHandler(menuDesigns));
+    app.use('/api/map', asyncHandler(map));
   }
 
   // Catch 404 and forward to error handler
