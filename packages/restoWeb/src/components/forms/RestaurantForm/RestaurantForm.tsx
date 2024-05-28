@@ -184,7 +184,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     setSelectedDescription(description);
     setSelectedPhone(phone);
     setSelectedWebsite(website);
-    setSelectedOpeningHours(openingHours);
+    if (openingHours) {
+      setSelectedOpeningHours(openingHours);
+    }
     fetchImages();
   }, [props.picturesId]);
 
