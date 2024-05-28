@@ -217,6 +217,8 @@ export async function changeDishByName(
     price: dish.price ? dish.price : oldDish.price as number,
     products: dish.products ? dish.products : oldDish.products as [string],
     pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+    picturesId: dish.picturesId
+      ? dish.picturesId as [number] : oldDish.picturesId as [number],
     allergens: dish.allergens ? dish.allergens as [string] :
       oldDish.allergens as [string],
     category: dish.category ? dish.category : oldDish.category as {

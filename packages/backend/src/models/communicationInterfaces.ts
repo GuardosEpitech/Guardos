@@ -17,6 +17,7 @@ export interface IDishesCommunication {
   price?: number;
   products?: string[];
   pictures?: string[];
+  picturesId?: number[];
   allergens?: string[];
   category?: {
     menuGroup: string,
