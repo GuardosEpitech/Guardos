@@ -19,7 +19,6 @@ export const checkIfVisitorTokenIsValid = async (body: any) => {
     }
   } catch (error) {
     console.error("Error fetching the Users:", error);
-    throw new Error("Error fetching the Users");
   }
 };
 
@@ -36,7 +35,6 @@ export const checkIfVisitorUserExist = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
-    throw new Error("Error checking visitor user");
   }
 };
 
@@ -53,7 +51,6 @@ export const sendRecoveryLinkForVisitorUser = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
-    throw new Error("Error checking visitor user");
   }
 }
 
@@ -74,7 +71,6 @@ export const updateVisitorPassword = async (token: string,
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
-    throw new Error("Error checking visitor user");
   }
 }
 
@@ -95,7 +91,6 @@ export const deleteAccount = async (token: string) => {
     }
   } catch (error) {
     console.error("Error deleting the User:", error);
-    throw new Error("Error deleting the User");
   }
 };
 
@@ -116,7 +111,6 @@ export const getUserAllergens = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the User allergens:", error);
-    throw new Error("Error fetching the User allergens");
   }
 };
 
@@ -140,7 +134,6 @@ export const addCustomer = async (token: string) => {
     }
   } catch (error) {
     console.error("Error adding Customer:", error);
-    throw new Error("Error adding Customer");
   }
 };
 
@@ -161,7 +154,6 @@ export const getCustomer = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching Customer:", error);
-    throw new Error("Error fetching Customer");
   }
 };
 
@@ -182,7 +174,6 @@ export const getPaymentMethods = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
-    throw new Error("Error fetching payment methods");
   }
 };
 
@@ -202,10 +193,8 @@ export const deletePaymentMethod = async (paymentID: string) => {
       return true;
     } else {
       console.error("Unexpected status code:", response.status);
-      throw new Error("Unexpected status code");
     }
   } catch (error) {
     console.error("Error deleting payment method:", error);
-    throw new Error("Error deleting payment method");
   }
 };

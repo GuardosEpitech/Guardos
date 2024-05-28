@@ -13,7 +13,6 @@ export const getAllRestoProducts = async (restoName: string) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurant products:", error);
-    throw new Error("Failed to fetch all restaurant products");
   }
 };
 
@@ -26,7 +25,6 @@ export const getAllProducts = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all products:", error);
-    throw new Error("Failed to fetch all products");
   }
 };
 
@@ -43,7 +41,6 @@ export const getProductsByUser = async (userToken: string) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all products from user:", error);
-    throw new Error("Failed to fetch all products from user");
   }
 };
 
@@ -51,7 +48,7 @@ export const addNewProduct = async (product: IProduct, restoName: string) => {
   try {
     if (!product.name) {
       console.error("Error adding new product:");
-      throw new Error("Failed to add new product");
+      return;
     }
     const response = await axios({
       url: baseUrl + "api/products/" + restoName,
@@ -69,7 +66,6 @@ export const addNewProduct = async (product: IProduct, restoName: string) => {
     return response.data;
   } catch (error) {
     console.error("Error adding new product:", error);
-    throw new Error("Failed to add new product");
   }
 };
 
@@ -86,7 +82,6 @@ export const deleteProduct = async (product: any) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting product:", error);
-    throw new Error("Failed to delete product");
   }
 };
 
@@ -103,6 +98,5 @@ export const editProduct = async (product: IProductFE, originalProductName: stri
     return response.data;
   } catch (error) {
     console.error("Error editing product:", error);
-    throw new Error("Failed to edit product");
   }
 };

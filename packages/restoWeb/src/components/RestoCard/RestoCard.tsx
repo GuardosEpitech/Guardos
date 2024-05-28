@@ -209,19 +209,24 @@ const RestoCard = (props: IRestoCardProps) => {
             {resto.description}
           </p>
           <h3>{t('components.RestoCard.opening-hours')}</h3>
-          {resto.openingHours.map((index, key) => (
-            <div key={key} className={styles.ContainerOpeningHours}>
-              <span className={styles.DaysTextValue}>{days[key].name} :</span>
-              <div>
-                <span className={styles.OpenCloseTextValue}>
-                  {index?.open}
-                </span>
-                <span className={styles.OpenCloseTextValue}>
-                  {index?.close}
-                </span>
+          <div className={styles.ContainerOpeningHours}>
+            {resto.openingHours.map((index, key) => (
+              <div key={key} className={styles.ContainerOpeningHoursDetails}>
+                <span className={styles.DaysTextValue}>{days[key].name} :</span>
+                <div>
+                  <span className={styles.OpenCloseTextValue}>
+                    {index?.open}
+                  </span>
+                  <span className={styles.OpenCloseDelim}>
+                    -
+                  </span>
+                  <span className={styles.OpenCloseTextValue}>
+                    {index?.close}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </Grid>
       </Grid>
     </Paper>

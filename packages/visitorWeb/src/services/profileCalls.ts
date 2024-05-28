@@ -20,7 +20,6 @@ export const getVisitorProfileDetails = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the Users Details:", error);
-    throw new Error("Error fetching the Users Details");
   }
 };
 
@@ -42,7 +41,6 @@ export const editVisitorProfileDetails = async (token: string, body: any) => {
     }
   } catch (error) {
     console.error("Error editing the Users Details:", error);
-    throw new Error("Error editing the Users Details");
   }
 };
 
@@ -68,7 +66,6 @@ export const changeVisitorPassword = async (token: string, oldPassword: string,
     }
   } catch (error) {
     console.error("Error changing the password of the Users:", error);
-    throw new Error("Error changing the password of the Users");
   }
 };
 
@@ -89,7 +86,6 @@ export const getSavedFilters = async (token: string) => {
     }
   } catch (error) {
     console.error("Error saving filter:", error);
-    throw new Error("Error saving filter");
   }
 };
 
@@ -111,7 +107,6 @@ export const getSavedFilter = async (token: string, filterName: string) => {
     }
   } catch (error) {
     console.error("Error saving filter:", error);
-    throw new Error("Error saving filter");
   }
 };
 
@@ -133,7 +128,6 @@ export const addSavedFilter = async (token: string, body: any) => {
     }
   } catch (error) {
     console.error("Error saving filter:", error);
-    throw new Error("Error saving filter");
   }
 };
 
@@ -155,7 +149,6 @@ export const editSavedFilter = async (token: string, body: any) => {
     }
   } catch (error) {
     console.error("Error editing filter:", error);
-    throw new Error("Error editing filter");
   }
 };
 
@@ -177,7 +170,6 @@ export const deleteSavedFilter = async (token: string, filterName: string) => {
     }
   } catch (error) {
     console.error("Error deleting filter:", error);
-    throw new Error("Error deleting filter");
   }
 };
 
@@ -195,7 +187,6 @@ export const setUserPreferences = async (token: string, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error setting Cookie preferences:", error);
-    throw new Error("Error setting Cookie preferences");
   }
 };
 
@@ -212,6 +203,5 @@ export const getUserPreferences = async (token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error getting Cookie preferences:", error);
-    throw new Error("Error getting Cookie preferences");
   }
 };

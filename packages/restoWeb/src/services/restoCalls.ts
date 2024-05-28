@@ -16,7 +16,6 @@ export const getAllResto = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
-    throw new Error("Failed to fetch all restaurants");
   }
 };
 
@@ -33,7 +32,6 @@ export const addNewResto = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error adding new restaurant:", error);
-    throw new Error("Failed to add new restaurant");
   }
 };
 
@@ -50,7 +48,6 @@ export const editResto = async (restoName: string, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error editing restaurant:", error);
-    throw new Error("Failed to edit restaurant");
   }
 };
 
@@ -63,7 +60,6 @@ export const deleteResto = async (restoName: string) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting restaurant:", error);
-    throw new Error("Failed to delete restaurant");
   }
 };
 
@@ -80,7 +76,6 @@ export const getAllRestaurantsByUser = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
-    throw new Error("Failed to fetch all restaurants");
   }
 };
 
@@ -95,7 +90,6 @@ export const getAllRestaurantsByUserAndFilter = async (userToken: string,
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
-    throw new Error("Failed to fetch all restaurants");
   }
 };
 
@@ -108,7 +102,6 @@ export const getAllMenuDesigns = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all menu designs:", error);
-    throw new Error("Failed to fetch all menu designs");
   }
 };
 
@@ -129,6 +122,5 @@ export const updateRestoCategories = async (userToken: string, uid: number, newC
     return response.data;
   } catch (error) {
     console.error('Error updating user categories:', error);
-    throw new Error('Failed to update user categories');
   }
 };
