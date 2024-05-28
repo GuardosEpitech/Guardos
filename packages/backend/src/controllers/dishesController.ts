@@ -75,8 +75,10 @@ export async function getDishByUser(loggedInUserId: number) {
           dishFE.picturesId.push(pictId as number);
         }
       }
-
-      dishes.push(dishFE);
+      const dishExists = dishes.find((d) => d.name === dishFE.name);
+      if (!dishExists) {
+        dishes.push(dishFE);
+      }
     }
   }
   return dishes;
