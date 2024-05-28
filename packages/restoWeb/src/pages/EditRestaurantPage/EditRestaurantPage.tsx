@@ -10,6 +10,12 @@ import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
 
+interface IOpeningHours {
+  open?: string;
+  close?: string;
+  day?: number;
+}
+
 interface IEditRestaurantPageProps {
   restoName: string;
   phone: string;
@@ -22,6 +28,7 @@ interface IEditRestaurantPageProps {
   picturesId: number[];
   menuDesignID: number;
   website: string;
+  openingHours: IOpeningHours[];
 }
 
 const EditRestaurantPage = () => {
@@ -36,7 +43,8 @@ const EditRestaurantPage = () => {
     description,
     picturesId,
     menuDesignID,
-    website
+    website,
+    openingHours
   } = useLocation().state as IEditRestaurantPageProps;
   const {t} = useTranslation();
 
@@ -64,6 +72,7 @@ const EditRestaurantPage = () => {
           picturesId={picturesId}
           menuDesignID={menuDesignID}
           website={website}
+          openingHours={openingHours}
         />
       </Layout>
     </div>
