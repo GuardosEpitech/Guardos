@@ -32,6 +32,7 @@ import restoPermissions from './routes/restoPermissions';
 import featureRequest from './routes/featureRequest';
 import review from './routes/review';
 import menu from './routes/menu';
+import map from './routes/map';
 
 function constructAllowedOrigins(): string[] {
   const domains: { [key: string]: string | undefined } = {
@@ -104,6 +105,7 @@ async function main() {
     app.use('/api/review', review);
     app.use('/api/favourites', favourites);
     app.use('/api/menuDesigns', menuDesigns);
+    app.use('/api/map', map);
   }
 
   app.use(function (_req, _res, next) {
