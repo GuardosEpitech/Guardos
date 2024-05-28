@@ -12,7 +12,6 @@ export const getImage = async (imageId: number) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching image:", error);
-    throw new Error("Failed to fetch image");
   }
 };
 
@@ -28,7 +27,6 @@ export const getImages = async (imageIds: number[]) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching images:", error);
-    throw new Error("Failed to fetch images");
   }
 };
 
@@ -55,7 +53,6 @@ export const addImageResto = async (restaurantName: string,
     return response.data;
   } catch (error) {
     console.error("Error adding image:", error);
-    throw new Error("Failed to add image");
   }
 };
 
@@ -102,7 +99,6 @@ export const addImageDish = async (restaurantName: string, dishName: string,
   }
   catch (error) {
     console.error("Error adding image:", error);
-    throw new Error("Failed to add image");
   }
 };
 
@@ -122,7 +118,6 @@ export const deleteImageDish = async (imageId: number, restaurantName: string,
     return response.data;
   } catch (error) {
     console.error("Error deleting image:", error);
-    throw new Error("Failed to delete image");
   }
 };
 
@@ -150,7 +145,6 @@ export const addRestoProfileImage = async (userToken: string,
   }
   catch (error) {
     console.error("Error adding image:", error);
-    throw new Error("Failed to add image");
   }
 };
 
@@ -169,6 +163,5 @@ export const deleteRestoProfileImage = async (imageId: number,
     return response.data;
   } catch (error) {
     console.error("Error deleting image:", error);
-    throw new Error("Failed to delete image");
   }
 };

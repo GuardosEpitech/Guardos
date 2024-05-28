@@ -12,7 +12,6 @@ export const getAllDishes = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all dishes:", error);
-    throw new Error("Failed to fetch all dishes");
   }
 };
 
@@ -29,7 +28,6 @@ export const getDishesByUser = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all dishes from user:", error);
-    throw new Error("Failed to fetch all dishes from user");
   }
 };
 
@@ -46,7 +44,6 @@ export const addNewDish = async (body: IAddDish) => {
     return response.data;
   } catch (error) {
     console.error("Error adding dish:", error);
-    throw new Error("Failed to add dish");
   }
 };
 
@@ -63,7 +60,6 @@ export const editDish = async (restoName: string, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error editing dish:", error);
-    throw new Error("Failed to edit dish");
   }
 };
 
@@ -80,6 +76,5 @@ export const deleteDish = async (restoName: string, dishName: string) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting dish:", error);
-    throw new Error("Failed to delete dish");
   }
 };

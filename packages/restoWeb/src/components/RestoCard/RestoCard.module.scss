@@ -35,6 +35,9 @@
   max-height: 11rem;
   object-fit: cover;
   border-radius: 0.625rem;
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
 }
 
 .DishTitle {
@@ -98,13 +101,25 @@
   padding: 8px;
 }
 
+.ContainerOpeningHours {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.OpenCloseDelim {
+  padding: 0 2px;
+}
+
+
 @media (max-width: 768px) {
   .DishBox {
-      margin: 0 auto 1.5rem;
-      padding: 1rem;
-      border-radius: 1.2rem !important;
-      background: $white;
-      overflow-x: hidden;
+    margin: 0 auto 1.5rem;
+    padding: 1rem;
+    border-radius: 1.2rem !important;
+    background: $white;
+    overflow-x: hidden;
   }
 
   .flexContainer {
@@ -112,36 +127,40 @@
   }
 
   .GridItem {
-      padding: 1rem;
-      max-width: 100% !important;
+    padding: 1rem;
+    max-width: 100% !important;
   }
 
   .ImageDimensions {
-      width: 100%;
-      height: auto;
-      max-height: 9rem;
-      object-fit: cover;
-      border-radius: 0.625rem;
+    width: 100%;
+    height: auto;
+    max-height: 9rem;
+    object-fit: cover;
+    border-radius: 0.625rem;
+
+    top: unset;
+    position: unset;
+    transform: unset;
   }
 
   .DishTitle {
-      font-size: 1.3rem;
-      margin: 0.5rem 0;
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
   }
 
   .JustificationPrint,
   .JustificationPrintExtended {
-      font-size: 1rem; 
+    font-size: 1rem; 
   }
 
   .AddressText {
-      font-size: 0.85rem;
-      margin: 0.1rem 0;
+    font-size: 0.85rem;
+    margin: 0.1rem 0;
   }
 
   .RestoBtn {
-      padding: 0.2rem 0.6rem !important;
-      font-size: 0.9rem !important;
+    padding: 0.2rem 0.6rem !important;
+    font-size: 0.9rem !important;
   }
 
   .GridItemImage {
