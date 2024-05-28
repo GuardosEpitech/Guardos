@@ -32,8 +32,6 @@ export async function getDishByUser(loggedInUserId: number) {
   const restaurants = await getAllUserRestaurants(loggedInUserId);
   const dishes: IDishFE[] = [];
   for (const rest of restaurants) {
-    console.log('resto name: ' + rest.name);
-    console.log('resto num dishes: ' + rest.dishes.length);
     for (const dish of rest.dishes) {
       // prevent parsing empty objects - name is always mandatory
       if (!dish.name) {
