@@ -124,9 +124,11 @@ const RestoPage = () => {
     await handleFilterChange(filter);
   };
 
+  const updateNameLocation = (name: string, location: string) => {
+    setInputFields([name, location]);
+  }
+
   const handleFilterChange = async (filter: ISearchCommunication) => {
-    if (filter.name) setInputFields([filter.name, inputFields[1]]);
-    if (filter.location) setInputFields([inputFields[0], filter.location]);
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
 
@@ -183,7 +185,7 @@ const RestoPage = () => {
     <>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>{t('pages.RestoPage.what-you-looking-for')}</span>
-        <InputSearch onChange={handleFilterChange} />
+        <InputSearch onChange={updateNameLocation} onClick={handleFilterChange} />
       </div>
       <div className={styles.DivContent}>
         <div className={styles.DivMapBtn}>

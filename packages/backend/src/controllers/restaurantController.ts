@@ -105,9 +105,12 @@ function createRestaurantObjFe(
   obj.categories.pop();
   obj.products.pop();
   obj.openingHours.pop();
+  obj.dishes.pop();
+
   for (const product of restaurant.products) {
     obj.products.push(product);
   }
+
   for (const openingHoursElement of restaurant.openingHours) {
     obj.openingHours.push(openingHoursElement);
   }
@@ -119,32 +122,32 @@ function createRestaurantObjFe(
       dishes: [{} as IDishFE]
     };
     categories.dishes.pop();
-    obj.dishes.pop();
     for (const dish of restaurant.dishes) {
       // fix to get all dishes ?!? !?!??!?!??!!?! investigate later TODO: !!!
-      //      if (dish.category.menuGroup === x.name) {
-      const dishObj: IDishFE = {
-        name: dish.name,
-        uid: dish.uid,
-        description: dish.description,
-        price: dish.price,
-        pictures: dish.pictures,
-        picturesId: dish.picturesId,
-        allergens: dish.allergens,
-        category: {
-          foodGroup: dish.category.foodGroup,
-          extraGroup: dish.category.extraGroup,
-          menuGroup: dish.category.menuGroup
-        },
-        resto: restaurant.name,
-        products: dish.products,
-      };
-      categories.dishes.push(dishObj);
-      obj.dishes.push(dishObj);
+      if (dish.category.menuGroup === x.name) {
+        const dishObj: IDishFE = {
+          name: dish.name,
+          uid: dish.uid,
+          description: dish.description,
+          price: dish.price,
+          pictures: dish.pictures,
+          picturesId: dish.picturesId,
+          allergens: dish.allergens,
+          category: {
+            foodGroup: dish.category.foodGroup,
+            extraGroup: dish.category.extraGroup,
+            menuGroup: dish.category.menuGroup
+          },
+          resto: restaurant.name,
+          products: dish.products,
+        };
+        categories.dishes.push(dishObj);
+        obj.dishes.push(dishObj);
+      }
     }
-    //}
     obj.categories.push(categories);
   }
+
   return obj;
 }
 

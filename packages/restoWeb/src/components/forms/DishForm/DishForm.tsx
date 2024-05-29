@@ -17,6 +17,7 @@ import {addNewDish, editDish} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
+import { ICategories } from "shared/models/categoryInterfaces";
 import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
@@ -67,6 +68,7 @@ interface IDishFormProps {
   restoName?: string[];
   picturesId?: number[];
 }
+
 // TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
@@ -91,13 +93,15 @@ const DishForm = (props: IDishFormProps) => {
   let allRestoNames: string[] = [];
   let allDishProd: string[] = [];
   // TODO: apply i18n
-  const suggestions: string[] = ["Appetizer", "Maindish", "Dessert"];
+  const [suggestions, setSuggestions] = useState<string[]>(props.selectCategory || []);
   const suggestionsAller: string[] = ["No Allergens", "Celery", "Gluten",
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
     "Nuts", "Peanuts", "Sesame seeds", "Soya", "Sulphur dioxide", "Lactose"];
   const dishList: IDishFE[] = [];
   const picturesId: number[] = props.picturesId || [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [categories, setCategories] = useState<{ name: string; categories: string[]; }[]>([]);
+
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -115,6 +119,11 @@ const DishForm = (props: IDishFormProps) => {
       .then((res) => {
         allRestoNames = res.map((item: IRestaurantFrontEnd) => item.name);
         setRestoList(allRestoNames);
+        const mappedCategories = res.map((restaurant: IRestaurantFrontEnd) => ({
+          name: restaurant.name,
+          categories: restaurant.categories.map((cat: ICategories) => cat.name)
+        }));
+        setCategories(mappedCategories);
       });
   }, []);
 
@@ -276,6 +285,16 @@ const DishForm = (props: IDishFormProps) => {
     }
   }
 
+  const handleRestoChange = (event: React.ChangeEvent<{}>, value: string[]) => {
+    setDishResto(value);
+    const selectedCategories = categories
+      .filter(resto => value.includes(resto.name))
+      .flatMap(resto => resto.categories);
+    const filteredCategories = selectedCategories.filter((item, index, self) =>
+      index === self.findIndex((t) => t.toLowerCase() === item.toLowerCase()));
+    setSuggestions(filteredCategories);
+  };
+
   return (
     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
       <Grid
@@ -425,6 +444,27 @@ const DishForm = (props: IDishFormProps) => {
               <Autocomplete
                 multiple
                 id="tags-outlined"
+                options={restoList}
+                getOptionLabel={(option) => (option ? (option as string) : "")}
+                defaultValue={dishResto}
+                filterSelectedOptions
+                onChange={handleRestoChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={t('components.DishForm.resto')}
+                    required
+                    error={invalidResto}
+                    helperText={invalidResto ?
+                      t('components.DishForm.select-min-one-resto') : ""}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={4} sm={8} md={12}>
+              <Autocomplete
+                multiple
+                id="tags-outlined"
                 options={suggestions}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
                 defaultValue={dishCategory}
@@ -440,30 +480,6 @@ const DishForm = (props: IDishFormProps) => {
                     error={invalidCategory}
                     helperText={invalidCategory ?
                       t('components.DishForm.select-min-one-category') : null}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={4} sm={8} md={12}>
-              <Autocomplete
-                multiple
-                id="tags-outlined"
-                options={restoList}
-                getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={dishResto}
-                filterSelectedOptions
-                onChange={(e, value) => {
-                  setDishResto(value.map((restoNameVar: string) =>
-                    restoNameVar));
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={t('components.DishForm.resto')}
-                    required
-                    error={invalidResto}
-                    helperText={invalidResto ?
-                      t('components.DishForm.select-min-one-resto') : ""}
                   />
                 )}
               />

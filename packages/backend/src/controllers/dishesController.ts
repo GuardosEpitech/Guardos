@@ -53,7 +53,7 @@ export async function getDishByUser(loggedInUserId: number) {
       dishFE.allergens.pop();
       dishFE.picturesId?.pop();
 
-      dishFE.category = dishFE.category = dishFE.category ? dishFE.category : {
+      dishFE.category = dish.category ? dish.category : {
         menuGroup: '',
         foodGroup: '',
         extraGroup: [''],
@@ -156,13 +156,16 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
       { $push: { mealType: newMealType } },
       { new: true }
     );
+  }
 
+    let highestDishId = 0;
     const dishes = restaurant?.dishes;
-    const highestDishId =
-      Math.max(...dishes.map((dish) => dish.uid));
+    if (dishes.length > 0) {
+      highestDishId =
+        Math.max(...dishes.map((dish) => dish.uid));
+    }
     const newDishId = highestDishId + 1;
     dish.uid = newDishId;
-  }
   return Restaurant.findOneAndUpdate(
     { name: restaurantName },
     { $push: { dishes: dish } },
