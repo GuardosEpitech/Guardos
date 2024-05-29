@@ -59,15 +59,19 @@ const MenuPage = () => {
   }, [])
 
   const fetchMenu = async () => {
-    // const filter = JSON.parse(localStorage.getItem('filter') || '{}');
-    // const allergenList = filter.allergenList;
+    const filter = JSON.parse(localStorage.getItem('filter') || '{}');
+    const allergenList = filter.allergenList;
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       return;
     }
 
-    const userAllergens = await getUserAllergens(userToken);
-    setRestoMenu(await getRestosMenu(restoID, userAllergens));
+    // if (allergenList.size > 0) {
+      setRestoMenu(await getRestosMenu(restoID, allergenList));
+    // } else {
+    //   const userAllergens = await getUserAllergens(userToken);
+    //   setRestoMenu(await getRestosMenu(restoID, userAllergens));
+    // }
   }
 
   const fetchFavourites = async () => {
