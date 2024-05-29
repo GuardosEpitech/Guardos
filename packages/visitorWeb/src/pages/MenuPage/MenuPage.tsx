@@ -66,12 +66,12 @@ const MenuPage = () => {
       return;
     }
 
-    // if (allergenList.size > 0) {
+    if (allergenList.size > 0) {
       setRestoMenu(await getRestosMenu(restoID, allergenList));
-    // } else {
-    //   const userAllergens = await getUserAllergens(userToken);
-    //   setRestoMenu(await getRestosMenu(restoID, userAllergens));
-    // }
+    } else {
+      const userAllergens = await getUserAllergens(userToken);
+      setRestoMenu(await getRestosMenu(restoID, userAllergens));
+    }
   }
 
   const fetchFavourites = async () => {
