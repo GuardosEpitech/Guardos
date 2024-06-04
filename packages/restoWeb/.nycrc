@@ -18,7 +18,8 @@
       "node_modules",
       "cypress",
       "coverage",
-      "**/*.spec.ts"
+      "**/*.spec.ts",
+      "**/*.d.ts"
     ],
     "all": true,
     "extends": "@istanbuljs/nyc-config-typescript"
