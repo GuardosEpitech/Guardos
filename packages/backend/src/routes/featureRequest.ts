@@ -20,12 +20,14 @@ router.post('/', async function (req: Request, res: Response) {
 
     const transporter = nodemailer.createTransport(smtpConfig);
 
+    const headers = data.isPremium ? { 'X-Priority': '1 (Highest)' } : {};
   
     const mailOptions: nodemailer.SendMailOptions = {
       from: process.env.SMTP_USER,
       to: process.env.SMTP_USER,
-      subject: data.subject,
-      text: `Name: ${data.name}\nRequest:${data.request}`,
+      subject: data.isPremium ? `[IMPORTANT] ${data.subject}` : data.subject,
+      text: `Name: ${data.name}\nRequest: ${data.request}`,
+      headers: headers,
     };
   
     await transporter.sendMail(mailOptions);
