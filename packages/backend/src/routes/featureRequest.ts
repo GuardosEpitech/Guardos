@@ -17,12 +17,9 @@ function toBoolean(value: string | boolean): boolean {
       } else if (lowerValue === 'false') {
           return false;
       } else {
-          // Handle invalid input as needed, e.g., throw an error, return a default value, etc.
           throw new Error('Invalid boolean string');
       }
   }
-
-  // Handle unexpected types, though this case should be unreachable
   throw new Error('Invalid input type');
 }
 
