@@ -7,6 +7,7 @@ import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
+import { getVisitorUserPermission } from '@src/services/permissionsCalls';
 
 interface RequestUser {
     name: string;
@@ -26,15 +27,32 @@ const FeatureRequest = () => {
     const navigate = useNavigate();
     const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
     const {t} = useTranslation();
-
-    useEffect(() => {
-        checkDarkMode();
-      }, []);
+    const userToken = localStorage.getItem('user');
+    const [premium, setPremium] = useState<boolean>(false);
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setRequest((prevState) => ({ ...prevState, [name]: value }));
     };
+
+    const getPremium = async () => {
+        try {
+          const permissions = await getVisitorUserPermission(userToken);
+          const isPremiumUser = permissions.includes('premiumUser');
+          if (isPremiumUser) {
+            setPremium(true);
+          } else {
+            setPremium(false);
+          }
+        } catch (error) {
+          console.error("Error getting permissions: ", error);
+        }
+      }
+
+      useEffect(() => {
+        getPremium();
+        checkDarkMode();
+      }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -42,7 +60,8 @@ const FeatureRequest = () => {
             const dataStorage = JSON.stringify({
                 name: request.name,
                 subject: request.subject,
-                request: request.request
+                request: request.request,
+                isPremium: premium,
             });
             await axios({
                 method: 'POST',
