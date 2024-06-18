@@ -14,7 +14,8 @@ export async function connectDataBase() {
   const userName = process.env.dbUser;
   const password = process.env.dbPassword;
   const cluster = process.env.dbCluster;
-  const uri = `mongodb+srv://${userName}:${password}@${cluster}/Guardos?retryWrites=true&w=majority`;
+  const dbName = process.env.dbName;
+  const uri = `mongodb+srv://${userName}:${password}@${cluster}/${dbName}?retryWrites=true&w=majority`;
 
   try {
     console.log('Connecting to database...');
