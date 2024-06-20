@@ -194,7 +194,7 @@ const CookieBanner: React.FC = () => {
             </ul>
             <p>
               {t('components.CookieBanner.txt4')}
-              <strong>{t('components.CookieBanner.ok')}</strong>
+              <strong>{t('components.CookieBanner.acceptOption')}</strong>
               {t('components.CookieBanner.txt5')}
             </p>
             <p>
@@ -219,7 +219,7 @@ const CookieBanner: React.FC = () => {
                     variant="contained"
                     onClick={() => handleOk()}
                 >
-                    {t('components.CookieBanner.ok')}
+                    {t('components.CookieBanner.acceptOption')}
                 </Button>
               </ThemeProvider>
             </div>

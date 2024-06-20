@@ -167,6 +167,28 @@ const CookieBanner: React.FC = () => {
     }
   };
 
+  const handleAllAccept = async () => {
+    const data: { [key: string]: boolean } = {};
+
+    sliderButtons.slice(1).forEach(button => {
+      data[button.name.toLowerCase()] = button.isActive;
+    });
+    const userToken = localStorage.getItem("user");
+    if (userToken === null) {
+      localStorage.setItem('functional', "true");
+      localStorage.setItem('statistical', "true");
+      localStorage.setItem('marketing', "true");
+      handleClose();
+      return;
+    }
+    
+    const response = await setUserPreferences(userToken, data);
+    if (response == "OK") {
+      localStorage.setItem('visitedBefore', 'true');
+      handleClose();
+    }
+  };
+
   return (
     <>
       {isOpen && (
@@ -194,7 +216,7 @@ const CookieBanner: React.FC = () => {
             </ul>
             <p>
               {t('components.CookieBanner.txt4')}
-              <strong>{t('components.CookieBanner.ok')}</strong>
+              <strong>{t('components.CookieBanner.acceptOption')}</strong>
               {t('components.CookieBanner.txt5')}
             </p>
             <p>
@@ -206,7 +228,7 @@ const CookieBanner: React.FC = () => {
             <div className={styles.buttonContainer}>
                 <ThemeProvider theme={DeclineBtn()}>
                 <Button
-                    className={styles.declineButton}
+                    className={styles.RestoBtn}
                     variant="contained"
                     onClick={() => handleDeclineAll()}
                 >
@@ -219,7 +241,16 @@ const CookieBanner: React.FC = () => {
                     variant="contained"
                     onClick={() => handleOk()}
                 >
-                    {t('components.CookieBanner.ok')}
+                    {t('components.CookieBanner.acceptOption')}
+                </Button>
+              </ThemeProvider>
+              <ThemeProvider theme={OkBtn()}>
+                <Button
+                    className={styles.RestoBtn}
+                    variant="contained"
+                    onClick={() => handleAllAccept()}
+                >
+                    {t('components.CookieBanner.acceptAllOptions')}
                 </Button>
               </ThemeProvider>
             </div>
