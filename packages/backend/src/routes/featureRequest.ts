@@ -5,9 +5,27 @@ import 'dotenv/config';
 
 const router = express.Router();
 
+function toBoolean(value: string | boolean): boolean {
+  if (typeof value === 'boolean') {
+      return value;
+  }
+  
+  if (typeof value === 'string') {
+      const lowerValue = value.toLowerCase();
+      if (lowerValue === 'true') {
+          return true;
+      } else if (lowerValue === 'false') {
+          return false;
+      } else {
+          throw new Error('Invalid boolean string');
+      }
+  }
+  throw new Error('Invalid input type');
+}
+
 router.post('/', async function (req: Request, res: Response) {
   try {
-    const data = req.body
+    const data = req.body;
     const smtpConfig = {
       host: 'smtp.office365.com',
       port: 587,
@@ -20,12 +38,14 @@ router.post('/', async function (req: Request, res: Response) {
 
     const transporter = nodemailer.createTransport(smtpConfig);
 
+    const headers = toBoolean(data.isPremium) ? { 'X-Priority': '1 (Highest)' } : {};
   
     const mailOptions: nodemailer.SendMailOptions = {
       from: process.env.SMTP_USER,
       to: process.env.SMTP_USER,
-      subject: data.subject,
-      text: `Name: ${data.name}\nRequest:${data.request}`,
+      subject: toBoolean(data.isPremium) ? `[IMPORTANT] ${data.subject}` : data.subject,
+      text: `Name: ${data.name}\nRequest: ${data.request}`,
+      headers: headers,
     };
   
     await transporter.sendMail(mailOptions);
