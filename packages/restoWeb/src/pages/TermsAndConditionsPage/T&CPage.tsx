@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './T&CPage.module.scss';
+import styles from "./T&CPage.module.scss";
 import {useTranslation} from "react-i18next";
 
 
@@ -9,77 +9,172 @@ const TermsPage: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h2 className={styles.title}>{t('pages.Privacy.title')}</h2>
+        <h2 className={styles.title}>{t('pages.T&C.title')}</h2>
+        <hr className={styles.line} />
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.intro')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.intro')}</p>
+          <p>{t('pages.T&C.introTxt')}</p>
         </div>
-        <h2 className={styles.title}>{t('pages.Privacy.controller')}</h2>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.definitions')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.controllertxt')}</p>
-        </div>
-        <h2 className={styles.title}>{t('pages.Privacy.types')}</h2>
-        <hr className={styles.line} />
-        <div className={styles.text}>
-          <p>{t('pages.Privacy.typestxt')}</p>
-          <br />
           <ul className={styles.indentedList}>
-            <li><strong>{t('pages.Privacy.type1')}</strong> {t('pages.Privacy.type1txt')}</li>
-            <li><strong>{t('pages.Privacy.type2')}</strong> {t('pages.Privacy.type2txt')}</li>
-            <li><strong>{t('pages.Privacy.type3')}</strong> {t('pages.Privacy.type3txt')}</li>
-            <li><strong>{t('pages.Privacy.type4')}</strong> {t('pages.Privacy.type4txt')}</li>
+            <li>{t('pages.T&C.service')}</li>
+            <li>{t('pages.T&C.user')}</li>
+            <li>{t('pages.T&C.profile')}</li>
+            <li>{t('pages.T&C.content')}</li>
+            <li>{t('pages.T&C.premium')}</li>
           </ul>
         </div>
-        <h2 className={styles.title}>{t('pages.Privacy.legal')}</h2>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.responibilities')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.reg')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.legaltxt')}</p>
-          <br />
+          <p>{t('pages.T&C.regTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.add')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.addTxt')}</p>
           <ul className={styles.indentedList}>
-            <li><strong>{t('pages.Privacy.legal1')}</strong> {t('pages.Privacy.legal1txt')}</li>
-            <li><strong>{t('pages.Privacy.legal2')}</strong> {t('pages.Privacy.legal2txt')}</li>
-            <li><strong>{t('pages.Privacy.legal3')}</strong> {t('pages.Privacy.legal3txt')}</li>
+            <li>{t('pages.T&C.details')}</li>
+            <li>{t('pages.T&C.dishes')}</li>
+            <li>{t('pages.T&C.allergens')}</li>
           </ul>
         </div>
-        <h2 className={styles.title}>{t('pages.Privacy.data')}</h2>
+        <h2 className={styles.title}>{t('pages.T&C.payment')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.datatxt')}</p>
+          <p>{t('pages.T&C.paymentTxt')}</p>
         </div>
-        <h2 className={styles.title}>{t('pages.Privacy.sharing')}</h2>
+        <h2 className={styles.title}>{t('pages.T&C.conduct')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.sharingtxt')}</p>
-        </div>
-        <h2 className={styles.title}>{t('pages.Privacy.rights')}</h2>
-        <hr className={styles.line} />
-        <div className={styles.text}>
-          <p>{t('pages.Privacy.rightstxt')}</p>
-          <br />
+          <p>{t('pages.T&C.conductTxt')}</p>
           <ul className={styles.indentedList}>
-            <li><strong>{t('pages.Privacy.right1')}</strong> {t('pages.Privacy.right1txt')}</li>
-            <li><strong>{t('pages.Privacy.right2')}</strong> {t('pages.Privacy.right2txt')}</li>
-            <li><strong>{t('pages.Privacy.right3')}</strong> {t('pages.Privacy.right3txt')}</li>
-            <li><strong>{t('pages.Privacy.right4')}</strong> {t('pages.Privacy.right4txt')}</li>
-            <li><strong>{t('pages.Privacy.right5')}</strong> {t('pages.Privacy.right5txt')}</li>
-            <li><strong>{t('pages.Privacy.right6')}</strong> {t('pages.Privacy.right6txt')}</li>
-            <li><strong>{t('pages.Privacy.right7')}</strong> {t('pages.Privacy.right7txt')}</li>
+            <li>{t('pages.T&C.conductOpt1')}</li>
+            <li>{t('pages.T&C.conductOpt2')}</li>
+            <li>{t('pages.T&C.conductOpt3')}</li>
           </ul>
-          <p>{t('pages.Privacy.rightend')}</p>
         </div>
-        <h2 className={styles.title}>{t('pages.Privacy.contact')}</h2>
+        <h2 className={styles.title}>{t('pages.T&C.upload')}</h2>
         <hr className={styles.line} />
         <div className={styles.text}>
-          <p>{t('pages.Privacy.contacttxt')}</p>
-          <br />
-          <p>{t('pages.Privacy.address')}</p>
-          <p>{t('pages.Privacy.email')}</p>
-          <p>{t('pages.Privacy.phone')}</p>
-          <br />
-          <p>{t('pages.Privacy.end')}</p>
+          <p>{t('pages.T&C.uploadTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.property')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.ownership')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.ownershipTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.license')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.licenseTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.restriction')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.restrictionTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.privacy')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.privacyTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.diclaimer')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.serviceAvailability')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.availabilityTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.thirdParty')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.thirdPartyTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.warranty')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.warrantyTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.limit')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.limitTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.termination')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.right')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.rightTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.effect')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.effectTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.law')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.jurisdiction')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.jurisdictionTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.dispute')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.disputeTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.contact')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.contactTxt')}</p>
+          <p>{t('pages.T&C.name')}</p>
+          <p>{t('pages.T&C.address')}</p>
+          <p>{t('pages.T&C.email')}</p>
           <br />
         </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.app')}</h2>
+        <hr className={styles.line} />
+        <h2 className={styles.title}>{t('pages.T&C.purchase')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.purchaseTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.appTerms')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.appTermsTxt')}</p>
+        </div>
+        <h2 className={styles.title}>{t('pages.T&C.device')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.deviceTxt')}</p>
+        </div>
+        <br/>
+        <h2 className={styles.title}>{t('pages.T&C.update')}</h2>
+        <hr className={styles.line} />
+        <div className={styles.text}>
+          <p>{t('pages.T&C.updateTxt')}</p>
+        </div>
+        <br/>
       </div>
     </div>
   );

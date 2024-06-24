@@ -166,7 +166,8 @@
         "instagram": "Our Instagram",
         "linkedIn": "Our linkedIn",
         "cookieStatement": "Cookie statement",
-        "contactPage": "Contact form"
+        "contactPage": "Contact form",
+        "terms": "Terms and Conditions"
       },
       "ChangePassword": {
         "invalid-link-redirect-to-mainpage": "Your link is invalid. You will be redirected to the Mainpage.",
@@ -526,7 +527,7 @@
         "back": "Go to Payment Page"
       },
       "T&C": {
-        "heading": "Guardos Terms and Conditions",
+        "title": "Guardos Terms and Conditions",
         "intro": "1. Introduction",
         "introTxt": "Welcome to Guardos! These Terms and Conditions (\"Terms\") govern your use of our website and mobile application (collectively, the \"Service\"). By accessing or using Guardos, you agree to comply with and be bound by these Terms. If you do not agree with these Terms, you may not use our Service.",
         "definitions": "2. Definitions",
@@ -586,7 +587,9 @@
         "appTerms": "10.2 App Store Terms",
         "appTermsTxt": "Your use of the app is also subject to the terms and conditions of the platform from which you downloaded the app (e.g., Apple App Store, Google Play Store).",
         "device": "10.3 Device Access",
-        "deviceTxt": "The app may request access to certain features on your device (e.g., location services, camera) to provide the Service. You can manage these permissions through your device settings."
+        "deviceTxt": "The app may request access to certain features on your device (e.g., location services, camera) to provide the Service. You can manage these permissions through your device settings.",
+        "update": "11. Changes to Terms and Conditions",
+        "updateTxt": "Guardos reserves the right to update or modify these Terms at any time without prior notice. Your continued use of the Service after any changes constitutes your acceptance of the new Terms. It is your responsibility to review these Terms periodically for any updates or changes."
       }
     }
   }
