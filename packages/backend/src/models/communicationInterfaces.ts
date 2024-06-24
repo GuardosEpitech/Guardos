@@ -25,6 +25,7 @@ export interface IDishesCommunication {
     extraGroup: string[],
   },
   userID: number;
+  discount: number;
 }
 
 export interface IRestaurantCommunication {

@@ -182,6 +182,7 @@ const DishForm = (props: IDishFormProps) => {
           menuGroup: dishCategory[0]
         },
         resto: dishResto[i],
+        discount: -1,
       };
     }
 
