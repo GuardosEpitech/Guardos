@@ -91,7 +91,7 @@ const UserSupportPage = () => {
               {(t('pages.UserSupport.support-description2'))}
             </p>
                 <div className={styles.requestform}>
-                    <h2>{t('pages.UserSupport.user-support')}</h2>
+                    <h2 style={{ marginTop: '10px' }}>{t('pages.UserSupport.user-support')}</h2>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             label={t('pages.UserSupport.name')}

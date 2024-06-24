@@ -88,11 +88,11 @@ const UserSupportPage = () => {
             <p>
               {(t('pages.UserSupport.support-description1'))}
               <a href='/Q&A'>{t('pages.UserSupport.Q&A')}</a>
-              {(t('pages.UserSupport.support-description2'))}
+                {(t('pages.UserSupport.support-description2'))}
             </p>
                 <div className={styles.requestform}>
-                    <h2>{t('pages.UserSupport.user-support')}</h2>
-                    <form onSubmit={handleSubmit}>
+                <h2 style={{ marginTop: '10px' }}>{t('pages.UserSupport.user-support')}</h2>
+                <form onSubmit={handleSubmit}>
                         <TextField
                             label={t('pages.UserSupport.name')}
                             name="name"
