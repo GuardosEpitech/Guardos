@@ -200,6 +200,16 @@
         "add-resto": "Add Restaurant",
         "search-restos": "Search restaurants or locations"
       },
+      "UserSupport": {
+        "user-support": "User Support",
+        "support-description1": "We are here to help you with any questions or concerns you may have. Take a minute to have a look at our ",
+        "support-description2": " otherwise feel free to reach out to us using the contact form below, and we will get back to you as soon as possible.",
+        "Q&A": "Q&A",
+        "name": "Full Name",
+        "subject": "Subject",
+        "request": "Message",
+        "email-sent-success": "Message successfully sent!"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Redirecting to Facebook login",
         "redirect-google-login": "Redirecting to Google login",
@@ -244,7 +254,8 @@
         "subscriptions": "Manage Subscription",
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
         "enable-dark-mode": "Enable Dark Mode",
-        "payBtn": "Manage payment methods"
+        "payBtn": "Manage payment methods",
+        "User-Support": "User Support"
       },
       "ProductsPage": {
         "add-product": "Add product",

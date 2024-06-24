@@ -200,6 +200,16 @@
         "add-resto": "Ajouter un restaurant",
         "search-restos": "Cherchez des restaurants ou des lieux"
       },
+      "UserSupport": {
+        "user-support": "Support utilisateur",
+        "support-description1": "Nous sommes là pour vous aider à répondre à toutes vos questions ou préoccupations. Prenez une minute pour jeter un coup d'œil à notre ",
+        "support-description2": " sinon, n'hésitez pas à nous contacter en utilisant le formulaire de contact ci-dessous, et nous vous répondrons dans les plus brefs délais.",
+        "Q&A": "FAQ",
+        "name": "Nom complet",
+        "subject": "Object",
+        "request": "Message",
+        "email-sent-success": "Email envoyé avec succès !"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
         "redirect-google-login": "Redirection vers la connexion Google",
@@ -244,7 +254,8 @@
         "subscriptions": "Gérer l'abonnement",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
         "enable-dark-mode": "Activer le mode sombre",
-        "payBtn": "Gérer les méthodes de paiement"
+        "payBtn": "Gérer les méthodes de paiement",
+        "User-Support": "Aide utilisateurs"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit",
