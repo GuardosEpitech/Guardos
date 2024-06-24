@@ -295,7 +295,18 @@
         "fav-dishes": "Lieblingsgerichte",
         "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
         "enable-dark-mode": "Dunkles Design aktivieren",
-        "payBtn": "Zahlungsmethoden verwalten"
+        "payBtn": "Zahlungsmethoden verwalten",
+        "User-Support": "Benutzerunterstützung"
+      },
+      "UserSupport": {
+        "user-support": "Benutzerunterstützung",
+        "support-description1": "Wir sind hier, um Ihnen bei allen Fragen und Anliegen zu helfen, die Sie haben. Nehmen Sie sich eine Minute Zeit und werfen Sie einen Blick auf unsere ",
+        "support-description2": " Andernfalls können Sie uns gerne über das unten stehende Kontaktformular erreichen, und wir werden uns so schnell wie möglich bei Ihnen melden",
+        "Q&A": "Q&A",
+        "name": "Name",
+        "subject": "Betreff",
+        "request": "Nachricht",
+        "email-sent-success": "Nachricht erfolgreich gesendet!"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",
