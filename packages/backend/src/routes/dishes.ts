@@ -2,27 +2,28 @@ import * as express from 'express';
 
 import {
   changeDishByName, createNewDish, deleteDishByName,
-  getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName
+  getDishByName, getDishByUser
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
 import {checkIfRestaurantExists} from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
 import {detectAllergens} from '../controllers/allergenDetectionController';
+import {doesUserOwnRestaurantByName} from '../controllers/restaurantController';
 
 const router = express.Router();
 
-router.get('/', async (_req, res) => {
-  try {
-    const dishes = await getAllDishes();
-    return res.status(200)
-      .send(dishes);
-  } catch (error) {
-    console.error("Error in '/dishes' route:", error);
-    return res.status(500)
-      .send('An error occurred while processing your request');
-  }
-});
+// router.get('/', async (_req, res) => {
+//   try {
+//     const dishes = await getAllDishes();
+//     return res.status(200)
+//       .send(dishes);
+//   } catch (error) {
+//     console.error("Error in '/dishes' route:", error);
+//     return res.status(500)
+//       .send('An error occurred while processing your request');
+//   }
+// });
 
 router.get('/user/dish', async (req, res) => {
   try {
@@ -48,26 +49,27 @@ router.get('/user/dish', async (req, res) => {
   }
 });
 
-router.get('/:name', async (req, res) => {
-  try {
-    if (!await checkIfRestaurantExists(req.params.name)) {
-      return res.status(404)
-        .send('Coudnt find restaurant named ' + req.params.name);
-    }
-    const dishes = await getDishesByRestaurantName(req.params.name);
-    return res.status(200)
-      .send(dishes);
-  } catch (error) {
-    console.error("Error in 'dishes/:name' route:", error);
-
-    return res.status(500)
-      .send({ error: 'Internal Server Error' });
-  }
-});
+// router.get('/:name', async (req, res) => {
+//   try {
+//     if (!await checkIfRestaurantExists(req.params.name)) {
+//       return res.status(404)
+//         .send('Coudnt find restaurant named ' + req.params.name);
+//     }
+//     const dishes = await getDishesByRestaurantName(req.params.name);
+//     return res.status(200)
+//       .send(dishes);
+//   } catch (error) {
+//     console.error("Error in 'dishes/:name' route:", error);
+//
+//     return res.status(500)
+//       .send({ error: 'Internal Server Error' });
+//   }
+// });
 
 router.post('/:name', async (req, res) => {
   try {
-    const { userToken, resto, dish } = req.body;
+    const { resto, dish } = req.body;
+    const userToken = String(req.query.key);
     if (!await checkIfRestaurantExists(req.params.name)) {
       return res.status(404)
         .send('Coudnt find restaurant named ' + req.params.name);
@@ -105,13 +107,24 @@ router.post('/:name', async (req, res) => {
 
 router.delete('/:name', async (req, res) => {
   try {
-    if (!await checkIfRestaurantExists(req.params.name)) {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send('Coudnt find restaurant named ' + req.params.name);
+        .send({ error: 'User not found' });
     }
-    const dish = await deleteDishByName(req.params.name, req.body.name);
+    if (!(await doesUserOwnRestaurantByName(req.params.name,
+      userID as number))) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+
+    const response = await deleteDishByName(req.params.name, req.body.name);
     return res.status(200)
-      .send(dish);
+      .send(response);
   } catch (error) {
     console.error("Error in 'dishes/:name' route:", error);
     return res.status(500)
@@ -122,10 +135,27 @@ router.delete('/:name', async (req, res) => {
 
 router.put('/:name', async (req, res) => {
   try {
-    if (!await checkIfRestaurantExists(req.params.name)) {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send('Coudnt find restaurant named ' + req.params.name);
+        .send({ error: 'User not found' });
     }
+    const restaurant = await doesUserOwnRestaurantByName(req.params.name,
+      userID as number);
+    if (!restaurant) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+    if (restaurant.userID !== userID) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+
     if (!await getDishByName(req.params.name, req.body.name)) {
       return res.status(404)
         .send('Coundt find dish named ' + req.body.name);

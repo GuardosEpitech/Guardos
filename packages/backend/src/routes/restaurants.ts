@@ -2,8 +2,8 @@ import * as express from 'express';
 
 import {
   changeRestaurant, createNewRestaurant, deleteRestaurantByName,
-  getAllRestaurants, getRestaurantByName, getAllUserRestaurants, 
-  addCategory
+  getAllRestaurants, getRestaurantByName, getAllUserRestaurants,
+  addCategory, doesUserOwnRestaurantByName
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -95,10 +95,21 @@ router.get('/user/resto', async (req, res) => {
 
 router.delete('/:name', async (req, res) => {
   try {
-    const restaurant = await getRestaurantByName(req.params.name);
-    if (!restaurant)
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send('Coudnt find restaurant named ' + req.params.name);
+        .send({ error: 'User not found' });
+    }
+    if (!(await doesUserOwnRestaurantByName(req.params.name,
+      userID as number))) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+
     const answerRestaurant = deleteRestaurantByName(req.params.name);
     return res.status(200)
       .send(answerRestaurant);
@@ -112,10 +123,21 @@ router.delete('/:name', async (req, res) => {
 
 router.put('/:name', async (req, res) => {
   try {
-    const restaurant = await getRestaurantByName(req.params.name);
-    if (!restaurant)
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
       return res.status(404)
-        .send('Coudnt find restaurant named ' + req.params.name);
+        .send({ error: 'User not found' });
+    }
+    if (!(await doesUserOwnRestaurantByName(req.params.name,
+      userID as number))) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+
     const answer = await changeRestaurant(req.body, req.params.name);
     await addProductsFromRestaurantToOwnDB(answer.uid);
     return res.status(200)

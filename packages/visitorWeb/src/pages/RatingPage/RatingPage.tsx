@@ -47,7 +47,9 @@ const RatingPage = () => {
 
   const addReview = () => {
     try {
-      postRatingData(restoName, comment, note);
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) { return; }
+      postRatingData(restoName, comment, note, userToken);
       setOpen(true);
     }
     catch (err) {

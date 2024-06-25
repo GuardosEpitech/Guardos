@@ -2,9 +2,10 @@ import express, { Router } from 'express';
 import {
   getAllRestoReviews,
   addRestoReview,
-  deleteRestoReview,
-  modifyRestoReview,
+  // deleteRestoReview,
+  // modifyRestoReview,
 } from '../controllers/restaurantController';
+import {getUserId} from '../controllers/userController';
 
 const router: Router = express.Router();
 
@@ -29,6 +30,14 @@ router.get('/restaurants/:restoName', async (req, res) => {
 // Route to add a review to a restaurant
 router.post('/restaurants/:restoName', async (req, res) => {
   try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
     const { restoName } = req.params;
     const review = req.body;
     const newReview = await addRestoReview(review, restoName);
@@ -41,35 +50,35 @@ router.post('/restaurants/:restoName', async (req, res) => {
   }
 });
 
-// Route to delete a review from a restaurant
-router.delete('/restaurants/:restoName/:reviewId', async (
-  req, res) => {
-  try {
-    const { restoName, reviewId } = req.params;
-    const result = await deleteRestoReview(reviewId, restoName);
-    return res.status(200)
-      .send(result);
-  } catch (error) {
-    console.error(error);
-    res.status(500)
-      .json({ message: 'Server Error' });
-  }
-});
-
-// Route to modify a review of a restaurant
-router.put('/restaurants/:restoName/:reviewId', async (
-  req, res) => {
-  try {
-    const { restoName, reviewId } = req.params;
-    const modifiedReview = req.body;
-    const result = await modifyRestoReview(reviewId, modifiedReview, restoName);
-    return res.status(200)
-      .send(result);
-  } catch (error) {
-    console.error(error);
-    res.status(500)
-      .json({ message: 'Server Error' });
-  }
-});
+// // Route to delete a review from a restaurant
+// router.delete('/restaurants/:restoName/:reviewId', async (
+//   req, res) => {
+//   try {
+//     const { restoName, reviewId } = req.params;
+//     const result = await deleteRestoReview(reviewId, restoName);
+//     return res.status(200)
+//       .send(result);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500)
+//       .json({ message: 'Server Error' });
+//   }
+// });
+//
+// // Route to modify a review of a restaurant
+// router.put('/restaurants/:restoName/:reviewId', async (
+//   req, res) => {
+//   try {
+//     const { restoName, reviewId } = req.params;
+//     const modifiedReview = req.body;
+//     const result = await modifyRestoReview(reviewId, modifiedReview, restoName);
+//     return res.status(200)
+//       .send(result);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500)
+//       .json({ message: 'Server Error' });
+//   }
+// });
 
 export default router;

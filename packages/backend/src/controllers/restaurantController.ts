@@ -522,3 +522,17 @@ export async function addCategory(
     throw error;
   }
 }
+
+export async function doesUserOwnRestaurantByName(restoName: string,
+  userID: number) {
+  try {
+    const restaurant = await getRestaurantByName(restoName);
+    if (!restaurant || restaurant.userID !== userID) {
+      return null;
+    }
+    return restaurant;
+  } catch (error) {
+    console.error('Error finding restaurant for user:', error);
+    throw error;
+  }
+}

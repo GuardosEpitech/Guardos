@@ -34,7 +34,13 @@ const ProductCard = (props: IProductCardProps) => {
   };
 
   async function getOnDelete() {
-    await deleteProduct(product);
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+
+    await deleteProduct(product, userToken);
     if (onUpdate) {
       setShowPopup(false);
       await onUpdate();
