@@ -139,7 +139,9 @@ const TermsPage: React.FC = () => {
           <br />
           <p>{t('pages.T&C.name')}</p>
           <p>{t('pages.T&C.address')}</p>
-          <p>{t('pages.T&C.email')}</p>
+          <p>{t('pages.T&C.email')}
+            <a href='/contact'>{t('pages.T&C.email1')}</a>
+          </p>
           <br />
         </div>
         <br/>
