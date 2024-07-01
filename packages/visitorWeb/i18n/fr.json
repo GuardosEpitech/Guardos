@@ -119,7 +119,8 @@
         "marketing": "(marketing)",
         "Marketing": "Marketing",
         "txt4": "Cliquez sur \"",
-        "ok": "OK",
+        "acceptOption": "Paramètres de confidentialité personnalisés",
+        "acceptAllOptions": "Accepter tous",
         "txt5": "\" pour nous donner votre consentement à l'utilisation de cookies à toutes ces fins. Vous pouvez également utiliser les cases à cocher pour consentir à des finalités spécifiques.",
         "txt6": "Retirez ou modifiez votre consentement à tout moment. En savoir plus sur la manière dont nous utilisons les cookies et d'autres technologies pour collecter des données personnelles : ",
         "privacy": "Politique de confidentialité",
@@ -295,7 +296,18 @@
         "fav-dishes": "Plats favoris",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
         "enable-dark-mode": "Activer le mode sombre",
-        "payBtn": "Gérer les méthodes de paiement"
+        "payBtn": "Gérer les méthodes de paiement",
+        "User-Support": "Aide utilisateurs"
+      },
+      "UserSupport": {
+        "user-support": "Support utilisateur",
+        "support-description1": "Nous sommes là pour vous aider à répondre à toutes vos questions ou préoccupations. Prenez une minute pour jeter un coup d'œil à notre ",
+        "support-description2": " sinon, n'hésitez pas à nous contacter en utilisant le formulaire de contact ci-dessous, et nous vous répondrons dans les plus brefs délais.",
+        "Q&A": "FAQ",
+        "name": "Nom complet",
+        "subject": "Object",
+        "request": "Message",
+        "email-sent-success": "Email envoyé avec succès !"
       },
       "Payments": {
         "payment-success": "Paiement réussi",

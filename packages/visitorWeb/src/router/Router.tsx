@@ -27,6 +27,7 @@ import SubscriptionPage from "@src/pages/SubscriptionPage/SubscriptionPage";
 import PaymentPage from "@src/pages/Payments/PaymentsPage/PaymentPage";
 import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAddCancel";
 import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
+import UserSupportPage from "@src/pages/UserSupport/UserSupportPage";
 import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 
 const MVPRouter = () => {
@@ -99,6 +100,7 @@ const MVPRouter = () => {
             <Route path="/contact" element={<ContactPage/>}/>
             <Route path="/account-recovery" element={<ResetPassword/>}/>
             <Route path="/feature-request" element={<FeatureRequest/>}> </Route>
+            <Route path="/support" element={<UserSupportPage/>}></Route>
             <Route path="/account-recovery" element={<ResetPassword/>}></Route>
             <Route path="/payment-success" Component={PaymentSuccessPage}/>
             <Route path="/payment-failed" Component={PaymentFailedPage}/>

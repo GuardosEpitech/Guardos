@@ -10,6 +10,7 @@ export interface IDishBE {
   picturesId?: number[];
   products: string[];
   category: ICategoryBE;
+  discount: number;
 }
 
 export interface IDishFE {
@@ -24,6 +25,7 @@ export interface IDishFE {
   category: ICategoryFE;
   resto: string;
   products: string[];
+  discount: number;
 }
 
 export interface IAddDish {

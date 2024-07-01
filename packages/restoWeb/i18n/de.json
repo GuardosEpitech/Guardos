@@ -119,7 +119,8 @@
         "marketing": "(Marketing)",
         "Marketing": "Marketing",
         "txt4": "Klicken Sie auf \"",
-        "ok": "OK",
+        "acceptOption": "Individuelle Datenschutzeinstellungen",
+        "acceptAllOptions": "Alles akzeptieren",
         "txt5": "\" um uns Ihre Zustimmung zur Verwendung von Cookies für all diese Zwecke zu geben. Sie können auch die Kontrollkästchen verwenden, um der Verwendung bestimmter Zwecke zuzustimmen.",
         "txt6": "Ziehen Sie Ihre Zustimmung jederzeit zurück oder ändern Sie sie. Erfahren Sie mehr darüber, wie wir Cookies und andere Technologien zur Sammlung personenbezogener Daten verwenden: ",
         "privacy": "Datenschutzerklärung",
@@ -201,6 +202,16 @@
         "add-resto": "Restaurant hinzufügen",
         "search-restos": "Suchen Sie nach Restaurants oder Orten"
       },
+      "UserSupport": {
+        "user-support": "Benutzerunterstützung",
+        "support-description1": "Wir sind hier, um Ihnen bei allen Fragen und Anliegen zu helfen, die Sie haben. Nehmen Sie sich eine Minute Zeit und werfen Sie einen Blick auf unsere ",
+        "support-description2": " Andernfalls können Sie uns gerne über das unten stehende Kontaktformular erreichen, und wir werden uns so schnell wie möglich bei Ihnen melden",
+        "Q&A": "Q&A",
+        "name": "Name",
+        "subject": "Betreff",
+        "request": "Nachricht",
+        "email-sent-success": "Nachricht erfolgreich gesendet!"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",
         "redirect-google-login": "Weiterleitung zur Google-Anmeldung",
@@ -245,7 +256,8 @@
         "subscriptions": "Abonnement verwalten",
         "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "enable-dark-mode": "Dunkles Design aktivieren",
-        "payBtn": "Zahlungsmethoden verwalten"
+        "payBtn": "Zahlungsmethoden verwalten",
+        "User-Support": "Benutzerunterstützung"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen",
