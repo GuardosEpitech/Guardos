@@ -8,6 +8,7 @@ import { IRestaurantBackEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
 import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
+import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -49,6 +50,7 @@ export async function getDishByUser(loggedInUserId: number) {
         resto: rest.name as string,
         products: dish.products as string[],
         discount: dish.discount,
+        validTill: dish.validTill
       };
       dishFE.pictures.pop();
       dishFE.allergens.pop();
@@ -103,6 +105,7 @@ export async function getAllDishes() {
         resto: rest.name as string,
         products: dish.products as string[],
         discount: dish.discount as number,
+        validTill: dish.validTill as string,
       };
       dishFE.pictures.pop();
       dishFE.allergens.pop();
@@ -192,6 +195,7 @@ export async function createNewDish(
     },
     userID: userID,
     discount: -1,
+    validTill: ''
   };
   await createDish(restaurantName, dish);
   return dish;
@@ -234,7 +238,8 @@ export async function changeDishByName(
       foodGroup: string;
       extraGroup: [string];
     },
-    discount: -1
+    discount: dish.discount,
+    validTill: dish.validTill as string
   };
   await updateDish(restaurantName, newDish);
   return newDish;
@@ -263,6 +268,7 @@ export async function addDishDiscount(
       extraGroup: [string];
     },
     discount: dish.discount,
+    validTill: dish.validTill as string,
   };
   await updateDish(restaurant.name, newDish);
   return newDish;
@@ -291,6 +297,7 @@ export async function removeDishDiscount(
         extraGroup: [string];
       },
       discount: -1,
+      validTill: '',
     };
     await updateDish(restaurant.name, newDish);
     return newDish;

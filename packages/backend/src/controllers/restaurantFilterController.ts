@@ -86,6 +86,7 @@ export default class Filter {
         allergens: dish.allergens,
         category: dish.category,
         discount: dish.discount,
+        validTill: dish.validTill
       };
       restaurantBE.dishes.push(dishObj);
     }
@@ -110,6 +111,7 @@ export default class Filter {
         allergens: extra.allergens,
         category: extra.category,
         discount: extra.discount,
+        validTill: extra.validTill
       };
       restaurantBE.extras.push(extraObj);
     }
@@ -179,6 +181,7 @@ export default class Filter {
             resto: restaurant.name,
             products: dish.products,
             discount: dish.discount,
+            validTill: dish.validTill
           };
           categories.dishes.push(dishObj);
         }

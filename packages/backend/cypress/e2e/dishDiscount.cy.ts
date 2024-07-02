@@ -4,8 +4,8 @@ describe('adds and removes discount from dish', () => {
         "dish": {
             "name": "Coke",
             "uid": 1,
-            "discount": 5
-
+            "discount": 5,
+            "validTill": "2024/10/10"
         }
     };
     const dataRemove = {

@@ -11,6 +11,7 @@ export interface IDishBE {
   products: string[];
   category: ICategoryBE;
   discount: number;
+  validTill: string;
 }
 
 export interface IDishFE {
@@ -26,6 +27,7 @@ export interface IDishFE {
   resto: string;
   products: string[];
   discount: number;
+  validTill: string;
 }
 
 export interface IAddDish {
