@@ -3,11 +3,12 @@ import { TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
-import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
+import styles from './UserSupportPage.module.scss';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
+import UserSupport from '.';
 
 interface RequestUser {
     name: string;
@@ -21,11 +22,11 @@ const initialRequestState = {
     request: '',
 }
 
-const FeatureRequest = () => {
+const UserSupportPage = () => {
     const [request, setRequest] = useState<RequestUser>(initialRequestState);
     const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
-    const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
+    const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/userSupport`;
     const {t} = useTranslation();
     const userToken = localStorage.getItem('user');
     const [premium, setPremium] = useState<boolean>(false);
@@ -81,15 +82,19 @@ const FeatureRequest = () => {
             throw error;
         }
     };
-
     return (
         <>
             <Layout>
+            <p>
+              {(t('pages.UserSupport.support-description1'))}
+              <a href='/Q&A'>{t('pages.UserSupport.Q&A')}</a>
+              {(t('pages.UserSupport.support-description2'))}
+            </p>
                 <div className={styles.requestform}>
-                    <h2>{t('pages.FeatureRequest.feature-request')}</h2>
+                    <h2 style={{ marginTop: '10px' }}>{t('pages.UserSupport.user-support')}</h2>
                     <form onSubmit={handleSubmit}>
                         <TextField
-                            label={t('pages.FeatureRequest.name')}
+                            label={t('pages.UserSupport.name')}
                             name="name"
                             value={request.name}
                             onChange={handleChange}
@@ -97,7 +102,7 @@ const FeatureRequest = () => {
                             sx={{ width: 'calc(20% - 8px)', marginRight: '16px' }}
                         />
                         <TextField
-                            label={t('pages.FeatureRequest.subject')}
+                            label={t('pages.UserSupport.subject')}
                             name="subject"
                             value={request.subject}
                             onChange={handleChange}
@@ -105,7 +110,7 @@ const FeatureRequest = () => {
                             sx={{ width: 'calc(20% - 8px)', marginRight: '16px' }}
                         />
                         <TextField
-                            label={t('pages.FeatureRequest.request')}
+                            label={t('pages.UserSupport.request')}
                             name="request"
                             value={request.request}
                             onChange={handleChange}
@@ -121,7 +126,7 @@ const FeatureRequest = () => {
                 </div>
                 {showPopup && (
                     <div className={styles.popup}>
-                        <p>{t('pages.FeatureRequest.email-sent-success')}</p>
+                        <p>{t('pages.UserSupport.email-sent-success')}</p>
                     </div>
                 )}
             </Layout>
@@ -129,4 +134,4 @@ const FeatureRequest = () => {
     );
 };
 
-export default FeatureRequest;
+export default UserSupportPage;

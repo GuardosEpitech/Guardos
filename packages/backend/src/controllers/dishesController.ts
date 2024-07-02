@@ -8,6 +8,7 @@ import { IRestaurantBackEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
 import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
+import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);

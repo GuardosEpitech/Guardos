@@ -161,6 +161,10 @@
   z-index: 1;
   padding: 8px;
   top: calc(100% + 10px);
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .languageOption {
