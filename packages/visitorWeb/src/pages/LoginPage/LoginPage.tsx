@@ -98,6 +98,22 @@ const Login = (props:LoginPageProps) => {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const handleKeyDownGoogle = (event:any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      handleGoogleLogin();
+      // Prevent default action if the key was a space to avoid scrolling
+      event.preventDefault();
+    }
+  };
+
+  const handleKeyDownFacebook = (event:any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      handleFacebookLogin();
+      // Prevent default action if the key was a space to avoid scrolling
+      event.preventDefault();
+    }
+  };
+
   return (
     <>
       <Layout>
@@ -155,6 +171,10 @@ const Login = (props:LoginPageProps) => {
                   alt={t('pages.LoginPage.facebook-img-alt')}
                   style={{width: '50px', height: '50px', cursor: 'pointer'}}
                   onClick={handleFacebookLogin}
+                  onKeyDown={handleKeyDownFacebook}
+                  tabIndex={0}
+                  aria-label='facebook logo'
+                  title='facebook logo'
               />
               <div className={styles.dividerLogos}></div>
 
@@ -163,6 +183,11 @@ const Login = (props:LoginPageProps) => {
                 alt={t('pages.LoginPage.google-img-alt')}
                 style={{ width: '50px', height: '50px', cursor: 'pointer' }}
                 onClick={handleGoogleLogin}
+                onKeyDown={handleKeyDownGoogle}
+                tabIndex={0}
+                aria-label='google logo'
+                title='google logo'
+                role='button'
               />
             </Container>
           </form>

@@ -57,8 +57,10 @@
 .cookieBanner .buttonContainer {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   margin-top: 20px;
   margin-bottom: 20px;
+  gap: 20px;
 }
 
 .cookieBanner .declineButton {
@@ -68,7 +70,6 @@
   border-radius: 8px;
   padding: 10px 20px;
   cursor: pointer;
-  margin-right: 10px;
 }
 
 .cookieBanner .okButton {
@@ -79,11 +80,16 @@
   padding: 10px 20px;
   cursor: pointer;
   margin-left: 10px;
+  padding: 10px 20px;
 }
 
 .declineButton,
 .RestoBtn {
   flex: 1;
+}
+
+.RestoBtn {
+  
 }
 
 .sliderContainer {

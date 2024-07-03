@@ -29,6 +29,7 @@ import restoProfile from './routes/restoProfile';
 import visitorPermissions from './routes/visitorPermissions';
 import restoPermissions from './routes/restoPermissions';
 import featureRequest from './routes/featureRequest';
+import userSupport from './routes/userSupport';
 import review from './routes/review';
 import menu from './routes/menu';
 import map from './routes/map';
@@ -104,6 +105,7 @@ async function main() {
     app.use('/api/permissions/resto', asyncHandler(restoPermissions));
     app.use('/api/payments', asyncHandler(payments));
     app.use('/api/featureRequest', asyncHandler(featureRequest));
+    app.use('/api/userSupport', asyncHandler(userSupport));
     app.use('/api/review', asyncHandler(review));
     app.use('/api/favourites', asyncHandler(favourites));
     app.use('/api/menuDesigns', asyncHandler(menuDesigns));

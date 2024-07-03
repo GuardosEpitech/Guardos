@@ -63,6 +63,14 @@ const Header = () => {
     checkUserToken();
   }, [navigate]);
 
+  const handleKeyDown = (event:any) => {
+    if ((event.key === 'Enter' || event.key === ' ') && loggedIn) {
+      navigate('/');
+      // Prevent default action if the key was a space to avoid scrolling
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className={styles.containerHeader}>
       <div className={styles.header}>
@@ -74,21 +82,19 @@ const Header = () => {
         >
           <MenuIcon fontSize="large" style={{ color: 'white' }} />
         </a>
-        <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null}>
-          <div className={styles.logo}></div>
+        <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null} onKeyDown={handleKeyDown} aria-label='guardos logo' title='guardos logo' tabIndex={0}>
+          <div className={styles.logo} role="img"></div>
         </div>
         <div className={styles.headerLinks}>
-          <span className={styles.NavTitle}>
-            { loggedIn ? (
-              <a onClick={logoutUser}>
-                {t('components.Header.logout')}
-              </a>
-            ) : (
-              <a onClick={() => NavigateTo('/login', navigate, {})}>
-                {t('components.Header.login')}
-              </a>
-            )}
-          </span>
+          { loggedIn ? (
+            <a className={styles.NavTitle} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">
+              {t('components.Header.logout')}
+            </a>
+          ) : (
+            <a className={styles.NavTitle} onClick={() => NavigateTo('/login', navigate, {})} role='link' tabIndex={0} href="javascript:void(0);">
+              {t('components.Header.login')}
+            </a>
+          )}
           { loggedIn && (
               <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a>
             )
@@ -100,17 +106,19 @@ const Header = () => {
             onClick={() => {
               setShowLanguageDropdown(!showLanguageDropdown);
             }}
+            tabIndex={0}
+            href="javascript:void(0);"
           >
             <TranslateIcon fontSize="medium" className={styles.logo}/>
             {showLanguageDropdown && (
               <div className={styles.languageDropdown}>
-                <a className={styles.languageOption} onClick={() => changeLanguage('en')}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('en')} href="javascript:void(0);">
                   {t('common.english')}
                 </a>
-                <a className={styles.languageOption} onClick={() => changeLanguage('de')}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('de')} href="javascript:void(0);">
                   {t('common.german')}
                 </a>
-                <a className={styles.languageOption} onClick={() => changeLanguage('fr')}>
+                <a className={styles.languageOption} onClick={() => changeLanguage('fr')} href="javascript:void(0);">
                   {t('common.french')}
                 </a>
               </div>

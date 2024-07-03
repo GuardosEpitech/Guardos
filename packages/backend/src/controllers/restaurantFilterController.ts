@@ -84,7 +84,9 @@ export default class Filter {
         picturesId: dish.picturesId,
         price: dish.price,
         allergens: dish.allergens,
-        category: dish.category
+        category: dish.category,
+        discount: dish.discount,
+        validTill: dish.validTill
       };
       restaurantBE.dishes.push(dishObj);
     }
@@ -107,7 +109,9 @@ export default class Filter {
         price: extra.price,
         pictures: extra.pictures,
         allergens: extra.allergens,
-        category: extra.category
+        category: extra.category,
+        discount: extra.discount,
+        validTill: extra.validTill
       };
       restaurantBE.extras.push(extraObj);
     }
@@ -175,7 +179,9 @@ export default class Filter {
               menuGroup: dish.category.menuGroup
             },
             resto: restaurant.name,
-            products: dish.products
+            products: dish.products,
+            discount: dish.discount,
+            validTill: dish.validTill
           };
           categories.dishes.push(dishObj);
         }
