@@ -10,6 +10,9 @@ import {
   updatePassword, setUserCookiePreferences,
   updateProfileDetails, updateRecoveryPassword
 } from '../controllers/userController';
+import {
+  getVisitorPermissions
+} from '../controllers/visitorPermissionController';
 
 const router = express.Router();
 
@@ -182,6 +185,23 @@ router.post('/filter', async (req, res) => {
     if (filterName === null || filterName === '' ||
       (await getSavedFilter(userID, filterName)) !== undefined) {
       return res.send('Invalid name or filterName already exists.');
+    }
+
+    const permissionsResponse = await getVisitorPermissions(userID);
+    const permissions : string[] = permissionsResponse ? permissionsResponse : [];
+    let filterLimit = 3;
+
+    if (!permissions.includes('premiumUser')) {
+      filterLimit = 2;
+      if (!permissions.includes('basicSubscription')) {
+        filterLimit = 1;
+      }
+    }
+
+    const savedFilters = await getSavedFilters(userID);
+    if (savedFilters.length >= filterLimit) {
+      return res.status(500)
+        .send('Reached the maximum amount of saved filters.');
     }
 
     const profileDetails = await addSavedFilter(userID, filter);
