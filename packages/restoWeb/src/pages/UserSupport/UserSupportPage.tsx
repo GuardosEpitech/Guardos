@@ -7,7 +7,7 @@ import styles from './UserSupportPage.module.scss';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
-import { getVisitorUserPermission } from '@src/services/permissionsCalls';
+import { getRestoUserPermission } from '@src/services/permissionsCalls';
 import UserSupport from '.';
 
 interface RequestUser {
@@ -38,7 +38,7 @@ const UserSupportPage = () => {
 
     const getPremium = async () => {
         try {
-          const permissions = await getVisitorUserPermission(userToken);
+          const permissions = await getRestoUserPermission(userToken);
           const isPremiumUser = permissions.includes('premiumUser');
           if (isPremiumUser) {
             setPremium(true);
