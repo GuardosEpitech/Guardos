@@ -46,7 +46,11 @@ const Dish = (props: IEditableDishProps) => {
   };
 
   async function getOnDelete() {
-    await deleteDish(dish.resto, name);
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+    await deleteDish(dish.resto, name, userToken);
     if (onUpdate) {
       await onUpdate();
       setShowPopup(false);

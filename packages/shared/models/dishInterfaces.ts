@@ -31,7 +31,6 @@ export interface IDishFE {
 }
 
 export interface IAddDish {
-  userToken: string;
   resto: string;
   dish: IDishFE;
 }

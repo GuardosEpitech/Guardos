@@ -35,11 +35,12 @@ export const addNewResto = async (body: any) => {
   }
 };
 
-export const editResto = async (restoName: string, body: any) => {
+export const editResto = async (restoName: string, body: any, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + restoName,
       method: "PUT",
+      params: {key: token},
       data: JSON.stringify(body),
       headers: {
         "content-type": "application/json",
@@ -51,11 +52,12 @@ export const editResto = async (restoName: string, body: any) => {
   }
 };
 
-export const deleteResto = async (restoName: string) => {
+export const deleteResto = async (restoName: string, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + restoName,
       method: "DELETE",
+      params: {key: token},
     });
     return response.data;
   } catch (error) {
@@ -93,11 +95,12 @@ export const getAllRestaurantsByUserAndFilter = async (userToken: string,
   }
 };
 
-export const getAllMenuDesigns = async () => {
+export const getAllMenuDesigns = async (token: string) => {
   try {
     const response = await axios({
       method: "GET",
-      url: menuDesignUrl
+      url: menuDesignUrl,
+      params: {key: token}
     });
     return response.data;
   } catch (error) {

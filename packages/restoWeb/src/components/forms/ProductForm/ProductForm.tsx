@@ -152,6 +152,11 @@ const ProductForm = (props: IDishFormProps) => {
     if (isInputEmpty) {
       return;
     }
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
     const product: IProduct = {
       name: productName,
       ingredients: productIngredients,
@@ -167,10 +172,10 @@ const ProductForm = (props: IDishFormProps) => {
         restaurantId: productRestaurantIds,
         id: 0
       };
-      await editProduct(product, originalName);
+      await editProduct(product, originalName, userToken);
     } else {
       for (let i = 0; i < selectedResto.length; i++) {
-        await addNewProduct(product, selectedResto[i]);
+        await addNewProduct(product, selectedResto[i], userToken);
         // insert to new product here
 
       }
