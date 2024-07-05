@@ -7,8 +7,10 @@ router.post('/', async (req, res) => {
   try {
     const restoID = Number(req.body.restoID);
     const allergenList = req.body.allergenList;
+    const dislikedIngredientsList = req.body.dislikedIngredientsList;
 
-    const menu = await getMenuByRestoID(restoID, allergenList);
+    const menu = await getMenuByRestoID(restoID, allergenList,
+      dislikedIngredientsList);
     return res.status(200)
       .send(menu);
   } catch (error) {
