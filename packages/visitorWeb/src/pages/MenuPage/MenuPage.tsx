@@ -56,6 +56,8 @@ const MenuPage = () => {
     fetchFavourites().then(r => console.log("Loaded favourite dish list"));
     fetchFavouriteRestos().then(r => console.log("Checked if resto is favourite."));
     checkDarkMode();
+    console.log(window.location.pathname);
+    console.log(window.location.href); 
   }, [])
 
   const fetchMenu = async () => {

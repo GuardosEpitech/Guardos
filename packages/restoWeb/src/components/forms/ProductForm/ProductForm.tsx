@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import {
   Autocomplete,
   Box,
@@ -9,18 +8,18 @@ import {
   FormControl,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { addNewProduct, editProduct } from "@src/services/productCalls";
-import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName }
-  from "shared/models/restaurantInterfaces";
-import { IProductFE }
-  from "shared/models/productInterfaces";
+import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName } from "shared/models/restaurantInterfaces";
+import { IProductFE } from "shared/models/productInterfaces";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { getAllIngredients, addIngredient } from "@src/services/ingredientsCalls";
+import { add } from "cypress/types/lodash";
 
 const PageBtn = () => {
   return createTheme({
@@ -59,13 +58,15 @@ interface IDishFormProps {
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  let { productName, productIngredients, productAllergens, productRestaurant, productRestaurantIds, editable } = props;
+  const { productName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
-  const originalName = productName;
-  let restoNameListTemp = [] as IRestoName[];
+  const [ingredientFeedback, setIngredientFeedback] = useState<string>("");
+  const [apiIngredients, setApiIngredients] = useState<IIngredient[]>([]);
+  const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
+  const originalName = productName || "";
   let selectedResto: string[] = [];
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -73,17 +74,25 @@ const ProductForm = (props: IDishFormProps) => {
       .then((res) => {
         if (editable) {
           const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
-            !productRestaurantIds.includes(option.uid));
+            !productRestaurantIds?.includes(option.uid || 0));
           setRestoList(newFilteredList);
         } else {
           setRestoList(res);
         }
-        restoNameListTemp = res.map((restaurant: IRestaurantFrontEnd) =>
-          ({ name: restaurant.name }));
+      })
+      .catch((error) => {
+        console.error("Error fetching restaurants:", error);
+      });
+
+    getAllIngredients()
+      .then((ingredientsFromAPI) => {
+        setApiIngredients(ingredientsFromAPI || []);
+      })
+      .catch((error) => {
+        console.error("Error fetching ingredients:", error);
       });
   }, []);
 
-  // TODO: apply i18n
   const ingredients: IIngredient[] = [
     { name: "Milk" },
     { name: "Wheat" },
@@ -144,46 +153,63 @@ const ProductForm = (props: IDishFormProps) => {
     { name: "Coriander" },
     { name: "Cumin" },
   ];
-  const productIngredientsList = ingredients.filter((product) =>
-    productIngredients?.includes(product.name)
-  );
+  
+  const allIngredients = [...ingredients, ...apiIngredients];
 
   async function sendRequestAndGoBack() {
     if (isInputEmpty) {
       return;
     }
     const product: IProduct = {
-      name: productName,
+      name: productName || "",
       ingredients: productIngredients,
       allergens: []
     };
 
     if (editable) {
       const product: IProductFE = {
-        name: productName,
+        name: productName || "",
         userID: 0,
         ingredients: productIngredients,
         allergens: [],
-        restaurantId: productRestaurantIds,
+        restaurantId: productRestaurantIds || [],
         id: 0
       };
       await editProduct(product, originalName);
     } else {
       for (let i = 0; i < selectedResto.length; i++) {
         await addNewProduct(product, selectedResto[i]);
-        // insert to new product here
-
       }
     }
     return NavigateTo("/products", navigate, { successfulForm: true });
   }
 
-  const handleInputChange = (event:any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    productName = value;
-    
-    // Check if the input is empty
     setIsInputEmpty(value.trim() === '');
+  };
+
+  const handleIngredientChange = async (event: React.ChangeEvent<{}>, value: string[]) => {
+    try {
+      setProductIngredients(value);
+      setIsInputEmpty(value.length === 0);
+
+      for (let ingredient of value) {
+        if (!allIngredients.some(ing => ing.name === ingredient)) {
+          const response = await addIngredient(ingredient);
+          if (response.ok) {
+            setIngredientFeedback(`Ingredient ${ingredient} has been added to the database.`);
+            const updatedIngredients = await getAllIngredients();
+            setApiIngredients(updatedIngredients || []);
+          } else {
+            throw new Error(`Failed to add ingredient ${ingredient}`);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error handling ingredient change:", error);
+      setIngredientFeedback(`Error: ${error.message}`);
+    }
   };
 
   return (
@@ -213,21 +239,17 @@ const ProductForm = (props: IDishFormProps) => {
             <Autocomplete
               multiple
               id="tags-outlined"
-              options={ingredients}
-              getOptionLabel={(option) =>
-                option ? (option as IIngredient).name : ""
-              }
-              defaultValue={productIngredientsList}
-              filterSelectedOptions
-              onChange={(e, value) => {
-                productIngredients = value.map(
-                  (ingredient: IProduct) => ingredient.name
-                );
-              }}
+              options={allIngredients.map((option) => option.name)}
+              value={productIngredients}
+              onChange={handleIngredientChange}
+              freeSolo
               renderInput={(params) => (
                 <TextField {...params} label={t('common.ingredients')} />
               )}
             />
+            <Typography variant="body2" color="textSecondary">
+              {ingredientFeedback}
+            </Typography>
           </Grid>
           <Grid item xs={4} sm={8} md={12}>
             <Autocomplete
@@ -241,7 +263,6 @@ const ProductForm = (props: IDishFormProps) => {
               onChange={(e, value) => {
                 selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
-                productRestaurantIds = value.map((restoNameVar: IRestaurantFrontEnd) => restoNameVar.uid);
               }}
               renderInput={(params) => (
                 <TextField

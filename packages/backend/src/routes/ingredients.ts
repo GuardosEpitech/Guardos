@@ -40,18 +40,24 @@ router.post('/', async (req, res) => {
         allergens.push(req.body.allergens);
       }
 
-      await createNewIngredient(req.body.name, id, allergens);
+      const createResult = await createNewIngredient(req.body.name, id, allergens);
+      if (createResult.status !== 200) {
+        return res.status(createResult.status).send(createResult.message);
+      }
+
       await addRestoProduct({
         name: req.body.name,
         allergens: allergens,
         ingredients: req.body.ingredients,
       }, req.body.restoName);
+
       if (!await checkIfRestaurantExists(req.body.restoName)) {
         return res.status(200)
-          .send('Coudnt find restaurant named ' +
+          .send('Couldn’t find restaurant named ' +
             req.body.restoName +
             ' but added ingredient to ingredients database');
       }
+
       res.status(200)
         .send('Ingredient '
           + req.body.name + ' saved ' + ' with id ' + id);
