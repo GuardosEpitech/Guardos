@@ -58,13 +58,13 @@ interface IDishFormProps {
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  const { productName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
+  const { productName: initialProductName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
   const [ingredientFeedback, setIngredientFeedback] = useState<string>("");
   const [apiIngredients, setApiIngredients] = useState<IIngredient[]>([]);
   const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
-  const originalName = productName || "";
+  const [productName, setProductName] = useState<string>(initialProductName || "");
   let selectedResto: string[] = [];
   const { t } = useTranslation();
 
@@ -161,21 +161,21 @@ const ProductForm = (props: IDishFormProps) => {
       return;
     }
     const product: IProduct = {
-      name: productName || "",
+      name: productName,
       ingredients: productIngredients,
       allergens: []
     };
 
     if (editable) {
       const product: IProductFE = {
-        name: productName || "",
+        name: productName,
         userID: 0,
         ingredients: productIngredients,
         allergens: [],
         restaurantId: productRestaurantIds || [],
         id: 0
       };
-      await editProduct(product, originalName);
+      await editProduct(product, initialProductName);
     } else {
       for (let i = 0; i < selectedResto.length; i++) {
         await addNewProduct(product, selectedResto[i]);
@@ -186,6 +186,7 @@ const ProductForm = (props: IDishFormProps) => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    setProductName(value);
     setIsInputEmpty(value.trim() === '');
   };
 
@@ -225,7 +226,7 @@ const ProductForm = (props: IDishFormProps) => {
             <FormControl fullWidth>
               <TextField
                 label={t('components.ProductForm.name')}
-                defaultValue={productName}
+                value={productName}
                 id="component-outlined"
                 fullWidth
                 onChange={handleInputChange}
