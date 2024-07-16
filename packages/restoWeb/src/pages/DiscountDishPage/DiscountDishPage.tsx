@@ -27,7 +27,7 @@ interface IDiscountDishPageProps {
   dish: IDishFE;
 }
 
-const DiscountDishPage: React.FC<IDiscountDishPageProps> = () => {
+const DiscountDishPage = () => {
   const { dish } = useLocation().state as IDiscountDishPageProps;
   const { name, uid, products, description, price, allergens, resto,
     category, picturesId, discount, validTill }
@@ -63,12 +63,18 @@ const DiscountDishPage: React.FC<IDiscountDishPageProps> = () => {
   const handleToggleDiscountType = () => {
     setDiscountType(prevType => {
       const newType = prevType === 'percent' ? 'price' : 'percent';
-      if (newType === 'price') {
-        const priceDiscount = (parseFloat(discountValue as string) / 100) * price;
-        setDiscountValue(priceDiscount.toFixed(2));
+      if (discountValue !== '' && !isNaN(Number(discountValue))) {
+        if (newType === 'price') {
+          // Convert percentage to price when switching to price mode
+          const priceDiscount = (parseFloat(discountValue as string) / 100) * price;
+          setDiscountValue(priceDiscount.toFixed(2));
+        } else {
+          // Convert price to percentage when switching to percentage mode
+          const percentage = (parseFloat(discountValue as string) / price) * 100;
+          setDiscountValue(percentage.toFixed(2));
+        }
       } else {
-        const percentage = (parseFloat(discountValue as string) / price) * 100;
-        setDiscountValue(percentage.toFixed(2));
+        setDiscountValue(''); // Clear the value if it's empty or not a number
       }
       return newType;
     });

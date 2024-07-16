@@ -27,7 +27,7 @@ const Dish = (props: IEditableDishProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, dish, editable } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price } = dish;
+  const { name, description, price, discount, validTill } = dish;
   const priceStr = `${price.toFixed(2)} €`;
   const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
@@ -59,6 +59,7 @@ const Dish = (props: IEditableDishProps) => {
   }
 
   useEffect(() => {
+    console.log(name, " ", discount, " ", validTill);
     const loadImages = async () => {
       if (dish.picturesId && dish.picturesId.length > 0) {
         try {
@@ -166,6 +167,12 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </span>
             <h3>{`${price.toFixed(2)} €`}</h3>
+            {discount !== -1 && (
+              <div>
+                <h3>Discounted price: {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
@@ -222,6 +229,12 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </span>
             <h3 className={styles.DishPrice}>{priceStr}</h3>
+            {discount !== -1 && (
+              <div>
+                <h3>Discounted price: {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
