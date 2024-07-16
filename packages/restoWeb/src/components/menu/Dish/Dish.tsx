@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 
 import { Grid, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import PercentIcon from '@mui/icons-material/Percent';
 
 import { deleteDish } from "@src/services/dishCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
@@ -118,11 +119,17 @@ const Dish = (props: IEditableDishProps) => {
               {editable && (
                 <>
                   <DishActions
-                    actionList={[{
+                    actionList={[
+                      {
                       actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
+                    }, {
+                      actionName: t('common.discount'),
+                      actionIcon: PercentIcon,
+                      actionRedirect: "/discount",
+                      redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
@@ -177,6 +184,11 @@ const Dish = (props: IEditableDishProps) => {
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
+                    }, {
+                      actionName: t('common.discount'),
+                      actionIcon: PercentIcon,
+                      actionRedirect: "/discount",
+                      redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}

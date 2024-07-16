@@ -36,7 +36,8 @@
       "error": "Error",
       "unexpected-error": "An unexpected error occurred",
       "all-fields-mandatory": "All fields are mandatory.",
-      "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!"
+      "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!",
+      "discount": "Discount"
     },
     "components": {
       "MapButton": {
@@ -548,6 +549,16 @@
         "deviceTxt": "The app may request access to certain features on your device (e.g., location services, camera) to provide the Service. You can manage these permissions through your device settings.",
         "update": "11. Changes to Terms and Conditions",
         "updateTxt": "Guardos reserves the right to update or modify these Terms at any time without prior notice. Your continued use of the Service after any changes constitutes your acceptance of the new Terms. It is your responsibility to review these Terms periodically for any updates or changes."
+      },
+      "DiscountDishPage": {
+        "title": "Manage discount",
+        "valid": "Valid until",
+        "percent": "Enter percentage",
+        "price": "Enter price",
+        "switchPrice": "Switch to Price",
+        "switchPercent": "Switch to Percent",
+        "enterPercent": "Enter percentage",
+        "enterPrice": "Enter price"
       }
     }
   }
