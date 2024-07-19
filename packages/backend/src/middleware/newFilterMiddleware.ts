@@ -153,7 +153,8 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
                     resto: restaurant.name,
                     products: dish.products,
                     discount: dish.discount,
-                    validTill: dish.validTill
+                    validTill: dish.validTill,
+                    combo: dish.combo
                 };
                 obj.dishes.push(dishObj);
                 category.dishes.push(dishObj);

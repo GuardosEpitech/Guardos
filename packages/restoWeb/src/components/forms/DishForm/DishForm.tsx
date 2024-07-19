@@ -183,7 +183,8 @@ const DishForm = (props: IDishFormProps) => {
         },
         resto: dishResto[i],
         discount: -1,
-        validTill: ""
+        validTill: "",
+        combo: []
       };
     }
 
