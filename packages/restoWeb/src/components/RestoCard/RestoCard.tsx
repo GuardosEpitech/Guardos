@@ -68,7 +68,12 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   async function getOnDelete() {
-    await deleteResto(resto.name);
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+    await deleteResto(resto.name, userToken);
     await onUpdate();
   }
   const averageRating = () => {

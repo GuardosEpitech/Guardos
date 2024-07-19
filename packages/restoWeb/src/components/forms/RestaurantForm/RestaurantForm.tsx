@@ -166,15 +166,6 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       }
     };
 
-    getAllMenuDesigns()
-      .then((res) => {
-        setMenuDesigns(res);
-
-        if (menuDesignID !== undefined) {
-          setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
-        }
-      });
-
     setSelectedRestaurantName(restaurantName);
     setSelectedStreet(street);
     setSelectedStreetNumber(streetNumber);
@@ -188,6 +179,20 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       setSelectedOpeningHours(openingHours);
     }
     fetchImages();
+
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+    getAllMenuDesigns(userToken)
+      .then((res) => {
+        setMenuDesigns(res);
+
+        if (menuDesignID !== undefined) {
+          setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
+        }
+      });
   }, [props.picturesId]);
 
   function addTimeOpen(data: IOpeningHours) {
@@ -259,7 +264,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     if (props.add) {
       await addNewResto(data);
     } else {
-      await editResto(origRestoName, resto);
+      await editResto(origRestoName, resto, userToken);
     }
     return NavigateTo("/", navigate, { successfulForm: true });
   }
