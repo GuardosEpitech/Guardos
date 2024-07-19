@@ -1,17 +1,17 @@
 import * as express from 'express';
 
-// import { addRestoProduct } from '../controllers/restaurantController';
-// import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
-//   from '../middleware/ingredientsMiddleWare';
+import { addRestoProduct } from '../controllers/restaurantController';
+import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
+  from '../middleware/ingredientsMiddleWare';
 import {
   getAllIngredients,
-  // deleteIngredient, createNewIngredient
-  // findMaxIndexIngredients, getIngredientByName
+  deleteIngredient, createNewIngredient,
+  findMaxIndexIngredients, getIngredientByName
 } from '../controllers/ingredientsControllerMVP';
-// import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
-// import { IIngredientsCommunication } from '../models/communicationInterfaces';
-// import {detectAllergens} from '../controllers/allergenDetectionController';
-// import {isArrayOfStrings} from '../controllers/ingredientsController';
+import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
+import { IIngredientsCommunication } from '../models/communicationInterfaces';
+import {detectAllergens} from '../controllers/allergenDetectionController';
+import {isArrayOfStrings} from '../controllers/ingredientsController';
 
 const router = express.Router();
 
