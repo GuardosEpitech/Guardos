@@ -197,7 +197,7 @@ export async function changeProductByName(product: IProductBE, oldProductsName:s
   const oldProduct = await getProductByName(oldProductsName);
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
-    userID: product.userID,
+    userID: oldProduct.userID,
     id: oldProduct.id,
     allergens: product.allergens ? product.allergens : oldProduct.allergens,
     ingredients: product.ingredients ? product.ingredients :

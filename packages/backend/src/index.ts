@@ -10,7 +10,6 @@ import images from './routes/images';
 import logout from './routes/logout';
 import deleteUser from './routes/deleteUsers';
 import payments from './routes/payments';
-import foodCategorie from './routes/foodCategories';
 import favourites from './routes/favourites';
 import menuDesigns from './routes/menuDesigns';
 import logger from 'morgan';
@@ -101,7 +100,6 @@ async function main() {
     app.use('/api/sendEmail', asyncHandler(email));
     app.use('/api/delete/', asyncHandler(deleteUser));
     app.use('/api/profile', asyncHandler(visitorProfile));
-    app.use('/api/foodCategorie', asyncHandler(foodCategorie));
     app.use('/api/profile/resto', asyncHandler(restoProfile));
     app.use('/api/permissions/visitor', asyncHandler(visitorPermissions));
     app.use('/api/permissions/resto', asyncHandler(restoPermissions));

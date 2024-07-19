@@ -1,19 +1,7 @@
 import axios from "axios";
-import { IAddDish } from "shared/models/dishInterfaces";
+import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/dishes/`;
-
-export const getAllDishes = async () => {
-  try {
-    const response = await axios({
-      method: "GET",
-      url: baseUrl,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all dishes:", error);
-  }
-};
 
 export const getDishesByUser = async (body: any) => {
   try {
@@ -31,11 +19,12 @@ export const getDishesByUser = async (body: any) => {
   }
 };
 
-export const addNewDish = async (body: IAddDish) => {
+export const addNewDish = async (body: IAddDish, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + body.resto,
       method: "POST",
+      params: {key: token},
       data: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
@@ -47,12 +36,13 @@ export const addNewDish = async (body: IAddDish) => {
   }
 };
 
-export const editDish = async (restoName: string, body: any) => {
+export const editDish = async (restoName: string, dish: IDishFE, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + restoName,
       method: "PUT",
-      data: JSON.stringify(body),
+      params: {key: token},
+      data: JSON.stringify(dish),
       headers: {
         "content-type": "application/json",
       },
@@ -63,7 +53,7 @@ export const editDish = async (restoName: string, body: any) => {
   }
 };
 
-export const deleteDish = async (restoName: string, dishName: string) => {
+export const deleteDish = async (restoName: string, dishName: string, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + restoName,
@@ -71,6 +61,7 @@ export const deleteDish = async (restoName: string, dishName: string) => {
       headers: {
         "Content-Type": "application/json",
       },
+      params: {key: token},
       data: JSON.stringify({ name: dishName }),
     });
     return response.data;
