@@ -586,6 +586,8 @@ const MyAccountPage = () => {
                     price={dish.dish.price}
                     restoID={dish.restoID}
                     dishID={dish.dish.uid}
+                    discount={dish.discount}
+                    validTill={dish.validTill}
                     isFavourite={true}
                   />
                 )

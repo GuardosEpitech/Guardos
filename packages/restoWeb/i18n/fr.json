@@ -91,7 +91,8 @@
       },
       "Dish": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ dishName }}?",
-        "options": "Options: "
+        "options": "Options: ",
+        "discount": "Prix réduit: "
       },
       "ProductCard": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ productName }}?",

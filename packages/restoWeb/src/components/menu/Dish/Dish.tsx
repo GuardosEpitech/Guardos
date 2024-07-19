@@ -167,9 +167,9 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </span>
             <h3>{`${price.toFixed(2)} €`}</h3>
-            {discount !== -1 && (
+            {discount !== -1 && discount != null && (
               <div>
-                <h3>Discounted price: {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
                 <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
               </div>
             )}
@@ -229,9 +229,9 @@ const Dish = (props: IEditableDishProps) => {
               )}
             </span>
             <h3 className={styles.DishPrice}>{priceStr}</h3>
-            {discount !== -1 && (
+            {discount !== -1 && discount != null && (
               <div>
-                <h3>Discounted price: {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
                 <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
               </div>
             )}
