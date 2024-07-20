@@ -1,3 +1,5 @@
+@import "../../general.scss";
+
 .createCategoriesPage {
   display: flex;
   flex-direction: column;
@@ -45,7 +47,7 @@
 
         button {
           padding: 10px 20px;
-          background-color: #6d071a;
+          background-color: $burgundy;
           color: #fff;
           border: none;
           border-radius: 4px;
@@ -66,7 +68,7 @@
     
     button {
       padding: 10px 20px;
-      background-color: #6d071a;
+      background-color: $burgundy;
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -89,13 +91,13 @@
 .ErrorHeader {
   font-family: "Calibri", sans-serif;
   font-size: 2rem;
-  color: #6d071a;
+  color: $burgundy;
 }
 
 .ErrorText {
   font-family: "Calibri", sans-serif;
   font-size: 1.8rem;
-  color: #6d071a;
+  color: $burgundy;
 }
 
 .categoriesContainer {

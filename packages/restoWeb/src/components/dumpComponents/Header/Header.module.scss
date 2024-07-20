@@ -1,3 +1,5 @@
+@import "../../../general.scss";
+
 .header {
   display: flex;
   max-width: 1300px;
@@ -17,7 +19,7 @@
 .containerHeader {
   height: 5rem;
   width: 100%;
-  background-color: #6d071a;
+  background-color: $burgundy;
   position: fixed;
   top: 0;
   z-index: 1000;
@@ -160,6 +162,10 @@
   z-index: 1;
   padding: 8px;
   top: calc(100% + 10px);
+
+  a {
+    text-decoration: none;
+  }
 }
 
 .languageOption {
@@ -182,7 +188,7 @@
 
 
 .drawerContent {
-  background-color: #6d071a;
+  background-color: $burgundy;
   color: white;
   display: flex;
   flex-direction: column;

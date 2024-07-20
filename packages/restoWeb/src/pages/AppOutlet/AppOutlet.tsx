@@ -13,6 +13,7 @@ import linkedIn from "../../../../shared/assets/linkedin.png";
 const AppOutlet = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const visitorIntroPageURL = `${process.env.RESTAURANT_URL}/intropage`;
 
   useEffect(() => {
     checkDarkMode();
@@ -39,13 +40,13 @@ const AppOutlet = () => {
               <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
               <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
               <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
-              <li><a className={styles.links} onClick={() => NavigateTo('/intropage', navigate, {})}>{t('pages.AppOutlet.welcomeSite')}</a></li>
+              <li><a className={styles.links} href={visitorIntroPageURL}>{t('pages.AppOutlet.welcomeSite')}</a></li>
             </ul>
           </div>
           <div>
             <div className={styles.footerIcons}>
-              <a className={styles.links}><img src={instagram} alt={t('pages.AppOutlet.instagram')} /></a>
-              <a className={styles.links}><img src={linkedIn} alt={t('pages.AppOutlet.linkedIn')} /></a>
+              <a className={styles.links}><img src={instagram} alt={t('pages.AppOutlet.instagram')} tabIndex={0}/></a>
+              <a className={styles.links}><img src={linkedIn} alt={t('pages.AppOutlet.linkedIn')} tabIndex={0}/></a>
             </div>
             <p className={styles.footerTrademark}>{t('pages.AppOutlet.tradeMark')}</p>
           </div>

@@ -64,7 +64,7 @@ const Dish = (props: IDishProps) => {
     setIsFavorite(props.isFavourite);
   }, [props.isFavourite, picturesId]);
 
-  const handleFavoriteClick = (event: React.MouseEvent) => {
+  const handleFavoriteClick = (event:any) => {
     event.stopPropagation(); // Prevents the card click event from triggering
 
     // Toggle the favorite status
@@ -98,7 +98,14 @@ const Dish = (props: IDishProps) => {
           >
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              <div 
+                className={styles.FavoriteIcon} 
+                tabIndex={0} 
+                onClick={handleFavoriteClick} 
+                onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+                role="button"
+                aria-pressed={isFavorite}
+              >
                 {isFavorite ? (
                   <FavoriteIcon id="favourite" color="error" />
                 ) : (
@@ -143,7 +150,14 @@ const Dish = (props: IDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              <div 
+                className={styles.FavoriteIcon} 
+                tabIndex={0} 
+                onClick={handleFavoriteClick} 
+                onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+                role="button"
+                aria-pressed={isFavorite}
+              >
                 {isFavorite ? (
                   <FavoriteIcon id="favourite" color="error" />
                 ) : (
