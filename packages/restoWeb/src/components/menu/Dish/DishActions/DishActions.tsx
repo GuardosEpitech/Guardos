@@ -16,7 +16,6 @@ import styles from "./DishActions.module.scss";
 import { IAction }
   from "shared/models/restaurantInterfaces";
 import {useTranslation} from "react-i18next";
-import { useEffect } from "react";
 
 interface IDishActionsProps {
   actionList?: IAction[];

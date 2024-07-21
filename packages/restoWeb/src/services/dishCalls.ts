@@ -83,7 +83,7 @@ export const addDiscount = async (body: any, token: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error adding dish:", error);
+    console.error("Error adding dish discount:", error);
   }
 };
 
@@ -100,6 +100,6 @@ export const removeDiscount = async (body: any, token: string) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error adding dish:", error);
+    console.error("Error deleting dish discount:", error);
   }
 };

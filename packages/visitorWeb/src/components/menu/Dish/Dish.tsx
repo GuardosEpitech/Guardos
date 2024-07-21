@@ -38,8 +38,6 @@ const Dish = (props: IDishProps) => {
   const {t} = useTranslation();
 
   useEffect(() => {
-    console.log("hi")
-    console.log(dishName, " ", discount);
     async function fetchImages() {
       if (picturesId.length > 0) {
         const fetchedImages = await getImages(picturesId);
@@ -187,8 +185,8 @@ const Dish = (props: IDishProps) => {
             ) : (
               <div>
                 <h3 className={styles.discount}>{priceStr}</h3>
-                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3>{t('components.Dish.valid')} {validTill}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
               </div>
             )}
           </Grid>

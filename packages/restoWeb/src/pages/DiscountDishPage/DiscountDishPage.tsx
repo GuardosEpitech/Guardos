@@ -4,7 +4,7 @@ import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/pages/DiscountDishPage/DiscountDishPage.module.scss";
 import { useTranslation } from "react-i18next";
 import { checkDarkMode } from "../../utils/DarkMode";
-import DatePicker from 'react-datepicker'; // Ensure react-datepicker is installed
+import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { addDiscount, removeDiscount } from "@src/services/dishCalls";
 import { parse } from 'date-fns';
@@ -29,6 +29,8 @@ interface IDiscountDishPageProps {
 
 const DiscountDishPage = () => {
   const { dish } = useLocation().state as IDiscountDishPageProps;
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const { name, uid, products, description, price, allergens, resto,
     category, picturesId, discount, validTill }
     = dish;
@@ -37,7 +39,7 @@ const DiscountDishPage = () => {
   const navigate = useNavigate();
 
   const [discountType, setDiscountType] = useState<'percent' | 'price'>('percent');
-  const [discountValue, setDiscountValue] = useState<number | string>(discount !== -1 ? discount : '');
+  const [discountValue, setDiscountValue] = useState<string>(discount !== -1 ? discount.toString() : '');
   const [startDate, setStartDate] = useState<Date | null>(() => {
     if (validTill) {
       try {
@@ -65,59 +67,84 @@ const DiscountDishPage = () => {
       const newType = prevType === 'percent' ? 'price' : 'percent';
       if (discountValue !== '' && !isNaN(Number(discountValue))) {
         if (newType === 'price') {
-          // Convert percentage to price when switching to price mode
           const priceDiscount = (parseFloat(discountValue as string) / 100) * price;
           setDiscountValue(priceDiscount.toFixed(2));
         } else {
-          // Convert price to percentage when switching to percentage mode
           const percentage = (parseFloat(discountValue as string) / price) * 100;
           setDiscountValue(percentage.toFixed(2));
         }
       } else {
-        setDiscountValue(''); // Clear the value if it's empty or not a number
+        setDiscountValue('');
       }
       return newType;
     });
   };
 
   const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDiscountValue(e.target.value);
+    const value = e.target.value;
+    if (value === '' || !isNaN(Number(value))) {
+      setDiscountValue(value);
+    }
   };
 
-  const handleDateChange = (date: Date) => {
-    setStartDate(date);
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setStartDate(date);
+    }
   };
+
 
   const handleSave = async () => {
-    if (!discountValue || !startDate) {
+    if (discountValue === '' || startDate === null || isNaN(Number(discountValue))) {
+      setErrorMessage('Invalid discount value or date');
       return;
     }
 
+    const discountNumber = parseFloat(discountValue);
+
     if (discountType === 'percent') {
-      const discountPercent = parseFloat(discountValue as string);
-      const discountPrice = (discountPercent / 100) * price;
+      if (discountNumber <= 0 || discountNumber >= 100) {
+        setErrorMessage(t('pages.DiscountDishPage.errorPercent'));
+        return;
+      }
+
+      const discountPrice = (discountNumber / 100) * price;
       dish.discount = parseFloat(discountPrice.toFixed(2));
     } else {
-      dish.discount = parseFloat(discountValue as string);
+      if (discountNumber <= 0 || discountNumber >= price) {
+        setErrorMessage(t('pages.DiscountDishPage.errorPrice'));
+        return;
+      }
+      dish.discount = discountNumber;
     }
+
     dish.validTill = formatDate(startDate);
 
     const userToken = localStorage.getItem('user');
     try {
       await addDiscount({ restoName: resto, dish }, userToken);
-      navigate('/dishes');
+      setSuccessMessage(t('pages.DiscountDishPage.successAdd'));
+      setTimeout(() => {
+        navigate('/dishes'); 
+      }, 1500);  
     } catch (error) {
       console.error('Failed to save discount', error);
+      setErrorMessage('Failed to save discount');
     }
   };
 
   const handleRemove = async () => {
+    setErrorMessage('');
+    setSuccessMessage('');
     const userToken = localStorage.getItem('user');
     dish.discount = -1;
     dish.validTill = "";
     try {
       await removeDiscount({ restoName: resto, dish }, userToken);
-      navigate('/dishes'); 
+      setSuccessMessage(t('pages.DiscountDishPage.successDelete'));
+      setTimeout(() => {
+        navigate('/dishes'); 
+      }, 1500); 
     } catch (error) {
       console.error('Failed to remove discount', error);
     }
@@ -147,8 +174,11 @@ const DiscountDishPage = () => {
             dateFormat="dd/MM/yyyy"
             placeholderText={t('pages.DiscountDishPage.valid')}
             className={styles.input}
+            minDate={new Date()}
           />
         </div>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        {successMessage && <p className={styles.success}>{successMessage}</p>}
         <button className={styles.saveButton} onClick={handleSave}>{t('common.save')}</button>
         {discount !== -1 && <button className={styles.removeButton} onClick={handleRemove}>{t('common.delete')}</button>}
       </div>

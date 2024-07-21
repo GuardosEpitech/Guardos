@@ -32,13 +32,13 @@
 .button, .input, .saveButton, .removeButton {
   margin: 10px 0;
   width: 100%; 
-  max-width: 300px; /* Set a maximum width for better control */
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width */
+  max-width: 300px; 
+  box-sizing: border-box; 
 }
 
 input, button, .react-datepicker__input-container input {
-  width: 100%; /* Ensure inputs and buttons don't stretch the entire width */
-  max-width: 300px; /* Match the max width for consistency */
+  width: 100%; 
+  max-width: 300px; 
 }
 
 .datepicker {
@@ -46,4 +46,16 @@ input, button, .react-datepicker__input-container input {
   max-width: 300px;
   display: flex;
   justify-content: center;
+}
+
+.error {
+  color: red;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.success {
+  color: green;
+  font-size: 1rem;
+  margin-top: 10px;
 }

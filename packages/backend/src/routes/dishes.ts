@@ -134,15 +134,12 @@ router.post('/addDiscount', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
-    console.log(userToken);
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
     const { restoName, dish } = req.body;
-    console.log(restoName);
-    console.log(JSON.stringify(dish));
     const restaurant = await doesUserOwnRestaurantByName(restoName,
       userID as number);
     if (!restaurant || restaurant.userID !== userID) {

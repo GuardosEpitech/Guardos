@@ -93,7 +93,8 @@
       "Dish": {
         "confirm-delete": "Are you sure you want to delete {{ dishName }}?",
         "options": "Options: ",
-        "discount": "Discounted price: "
+        "discount": "Discounted price: ",
+        "valid": "Valid until"
       },
       "ProductCard": {
         "confirm-delete": "Are you sure you want to delete {{ productName }}?",
@@ -559,7 +560,11 @@
         "switchPrice": "Switch to Price",
         "switchPercent": "Switch to Percent",
         "enterPercent": "Enter percentage",
-        "enterPrice": "Enter price"
+        "enterPrice": "Enter price",
+        "errorPrice": "Discount price must be greater than 0 and less than the original price",
+        "errorPercent": "Percentage must be greater than 0 and less than 100",
+        "successAdd": "Discount saved successfully",
+        "successDelete": "Discount removed successfully"
       }
     }
   }

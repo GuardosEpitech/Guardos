@@ -36,7 +36,8 @@
       "error": "Fehler",
       "unexpected-error": "Ein unerwarteter Fehler ist aufgetreten",
       "all-fields-mandatory": "Alle Felder sind Pflichtfelder.",
-      "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für den Kamerazugriff, damit dies funktioniert!"
+      "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für den Kamerazugriff, damit dies funktioniert!",
+      "discount": "Rabatt"
     },
     "components": {
       "MapButton": {
@@ -92,7 +93,8 @@
       "Dish": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ dishName }} löschen möchten?",
         "options": "Optionen: ",
-        "discount": "Heruntergesetzter Preis: "
+        "discount": "Heruntergesetzter Preis: ",
+        "valid": "Gültig bis"
       },
       "ProductCard": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ productName }} löschen möchten?",
@@ -558,7 +560,11 @@
         "switchPrice": "Zu Preis wechseln",
         "switchPercent": "Zu Prozent wechseln",
         "enterPercent": "Prozentsatz eingeben",
-        "enterPrice": "Preis eingeben"
+        "enterPrice": "Preis eingeben",
+        "errorPrice": "Rabattpreis muss größer als 0 und kleiner als der ursprüngliche Preis sein",
+        "errorPercent": "Der Prozentsatz muss größer als 0 und kleiner als 100 sein.",
+        "successAdd": "Rabatt erfolgreich gespeichert",
+        "successDelete": "Rabatt erfolgreich entfernt"
       }
 
     }

@@ -36,7 +36,8 @@
       "error": "Erreur",
       "unexpected-error": "Une erreur inattendue s'est produite",
       "all-fields-mandatory": "Tous les champs sont obligatoires.",
-      "need-cam-permissions": "Désolé, nous avons besoin des autorisations d'accès à la galerie pour que cela fonctionne correctement!"
+      "need-cam-permissions": "Désolé, nous avons besoin des autorisations d'accès à la galerie pour que cela fonctionne correctement!",
+      "discount": "Réduction"
     },
     "components": {
       "MapButton": {
@@ -92,7 +93,8 @@
       "Dish": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ dishName }}?",
         "options": "Options: ",
-        "discount": "Prix réduit: "
+        "discount": "Prix réduit: ",
+        "valid": "Valable jusqu'au"
       },
       "ProductCard": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ productName }}?",
@@ -558,7 +560,11 @@
         "switchPrice": "Passer au Prix",
         "switchPercent": "Passer au Pourcentage",
         "enterPercent": "Entrer le pourcentage",
-        "enterPrice": "Entrer le prix"
+        "enterPrice": "Entrer le prix",
+        "errorPrice": "Le prix d'escompte doit être supérieur à 0 et inférieur au prix d'origine.",
+        "errorPercent": "Le pourcentage doit être supérieur à 0 et inférieur à 100",
+        "successAdd": "La réduction a été enregistrée avec succès",
+        "successDelete": "Remise supprimée avec succès"
       }
       
     }

@@ -59,7 +59,6 @@ const Dish = (props: IEditableDishProps) => {
   }
 
   useEffect(() => {
-    console.log(name, " ", discount, " ", validTill);
     const loadImages = async () => {
       if (dish.picturesId && dish.picturesId.length > 0) {
         try {
@@ -166,11 +165,13 @@ const Dish = (props: IEditableDishProps) => {
                 </div>
               )}
             </span>
-            <h3>{`${price.toFixed(2)} €`}</h3>
-            {discount !== -1 && discount != null && (
+            {discount === -1 || discount == null ? (
+              <h3>{priceStr}</h3>
+            ) : (
               <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
                 <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
+                <h3>{t('components.Dish.valid')} {validTill}</h3>
               </div>
             )}
           </Grid>
@@ -228,11 +229,13 @@ const Dish = (props: IEditableDishProps) => {
                 </div>
               )}
             </span>
-            <h3 className={styles.DishPrice}>{priceStr}</h3>
-            {discount !== -1 && discount != null && (
+            {discount === -1 || discount == null ? (
+              <h3 className={styles.DishPrice}>{priceStr}</h3>
+            ) : (
               <div>
-                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3>{t('pages.DiscountDishPage.valid')} {validTill}</h3>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
               </div>
             )}
           </Grid>
