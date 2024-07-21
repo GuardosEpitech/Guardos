@@ -231,13 +231,16 @@ const Filter = (props: FilterProps) => {
       if (!res || !filter.filterName || res.status == 500) {
         setChangeStatus("failed");
         setChangeStatusMsg(t('components.Filter.save-filter-failure'));
+        setNewFilterName("");
       } else if (res.status == 203) {
         setChangeStatus("failed");
         setChangeStatusMsg(t('components.Filter.save-filter-limit-reached'));
+        setNewFilterName("");
       } else {
         savedFilters.push(filter);
         setChangeStatus("success");
         setChangeStatusMsg(t('components.Filter.save-filter-success'));
+        setNewFilterName("");
       }
     })
   };
