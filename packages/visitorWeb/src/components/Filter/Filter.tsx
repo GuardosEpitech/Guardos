@@ -228,7 +228,7 @@ const Filter = (props: FilterProps) => {
     }
 
     addSavedFilter(userToken, filter).then((res) => {
-      if (!res || res.status == 500) {
+      if (!res || !filter.filterName || res.status == 500) {
         setChangeStatus("failed");
         setChangeStatusMsg(t('components.Filter.save-filter-failure'));
       } else if (res.status == 203) {
