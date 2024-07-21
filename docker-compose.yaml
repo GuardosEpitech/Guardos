@@ -26,13 +26,19 @@ services:
       - prometheus
 
   cadvisor:
-    image: google/cadvisor
+    image: google/cadvisor:latest
     ports:
       - "8083:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup/cpu:/sys/fs/cgroup/cpu:ro
+    depends_on:
+      - wholeproject
+      - prometheus
+      - grafana
 
 volumes:
   grafana-storage:
