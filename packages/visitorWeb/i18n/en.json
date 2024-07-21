@@ -80,7 +80,9 @@
       },
       "Dish": {
         "img-alt": "Dish Image {{ index }}",
-        "options": "Options: "
+        "options": "Options: ",
+        "discount": "Discounted price: ",
+        "valid": "Valid until:"
       },
       "RestoCard": {
         "add-review": "Add a review",

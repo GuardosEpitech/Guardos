@@ -25,13 +25,15 @@ interface IDishProps {
   restoID: number;
   dishID: number;
   isFavourite: boolean;
+  discount: number;
+  validTill: string;
 }
 
 const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { dishName, dishAllergens, dishDescription, options, price, picturesId } = props;
+  const { dishName, dishAllergens, dishDescription, options, price, picturesId, discount, validTill } = props;
   const priceStr = `${price.toFixed(2)} €`;
   const {t} = useTranslation();
 
@@ -132,7 +134,15 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
-            <h3>{priceStr}</h3>
+            {discount === -1 || discount == null ? (
+              <h3>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
@@ -170,7 +180,15 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
-            <h3 className={styles.DishPrice}>{priceStr}</h3>
+            {discount === -1 || discount == null ? (
+              <h3 className={styles.DishPrice}>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>

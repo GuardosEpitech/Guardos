@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 
 import { Grid, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import PercentIcon from '@mui/icons-material/Percent';
 
 import { deleteDish } from "@src/services/dishCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
@@ -26,7 +27,7 @@ const Dish = (props: IEditableDishProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, dish, editable } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price } = dish;
+  const { name, description, price, discount, validTill } = dish;
   const priceStr = `${price.toFixed(2)} €`;
   const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
@@ -118,11 +119,17 @@ const Dish = (props: IEditableDishProps) => {
               {editable && (
                 <>
                   <DishActions
-                    actionList={[{
+                    actionList={[
+                      {
                       actionName: t('common.edit'),
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
+                    }, {
+                      actionName: t('common.discount'),
+                      actionIcon: PercentIcon,
+                      actionRedirect: "/discount",
+                      redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
@@ -158,7 +165,15 @@ const Dish = (props: IEditableDishProps) => {
                 </div>
               )}
             </span>
-            <h3>{`${price.toFixed(2)} €`}</h3>
+            {discount === -1 || discount == null ? (
+              <h3>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
@@ -177,6 +192,11 @@ const Dish = (props: IEditableDishProps) => {
                       actionIcon: EditIcon,
                       actionRedirect: "/editDish",
                       redirectProps: { dish: dish }
+                    }, {
+                      actionName: t('common.discount'),
+                      actionIcon: PercentIcon,
+                      actionRedirect: "/discount",
+                      redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
@@ -209,7 +229,15 @@ const Dish = (props: IEditableDishProps) => {
                 </div>
               )}
             </span>
-            <h3 className={styles.DishPrice}>{priceStr}</h3>
+            {discount === -1 || discount == null ? (
+              <h3 className={styles.DishPrice}>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>

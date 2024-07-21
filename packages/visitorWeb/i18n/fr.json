@@ -80,7 +80,9 @@
       },
       "Dish": {
         "img-alt": "Image du Plat {{ index }}",
-        "options": "Options : "
+        "options": "Options : ",
+        "discount": "Prix réduit: ",
+        "valid": "Valable jusqu'au"
       },
       "RestoCard": {
         "add-review": "Ajouter un avis",

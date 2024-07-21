@@ -80,7 +80,9 @@
       },
       "Dish": {
         "img-alt": "Gerichtsbild {{ index }}",
-        "options": "Optionen: "
+        "options": "Optionen: ",
+        "discount": "Heruntergesetzter Preis: ",
+        "valid": "Gültig bis"
       },
       "RestoCard": {
         "add-review": "Eine Bewertung hinzufügen",
