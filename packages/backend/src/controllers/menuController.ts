@@ -5,7 +5,7 @@ import {getProductByName} from './productsController';
 export async function getMenuByRestoID(restoID: number, allergenList: string[],
   dislikedIngredientsList: string[]) {
   const restaurant : IRestaurantFrontEnd = await getRestaurantByID(restoID);
-  const dislikedIngredients = dislikedIngredientsList.length > 0 ?
+  const dislikedIngredients = dislikedIngredientsList ?
     dislikedIngredientsList.map(a => a.toLowerCase()) : [];
 
   for (let i = 0; i < restaurant.categories.length; i++) {

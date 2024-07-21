@@ -78,7 +78,8 @@
       },
       "Dish": {
         "img-alt": "Dish Image {{ index }}",
-        "options": "Options: "
+        "options": "Options: ",
+        "disliked-ingredients": "Hidden due to disliked ingredients: "
       },
       "RestoCard": {
         "add-review": "Add a review",
@@ -285,6 +286,10 @@
         "name": "Name:",
         "city": "City",
         "allergens": "Allergens",
+        "disliked-ingredients": "avoid the following ingredients",
+        "ingredient-not-found": "Ingredient not found? Add new one here",
+        "add-new-ingredient": "Add new ingredient to selection",
+        "enter-ingredient": "Enter ingredient",
         "preferred-language": "Preferred language",
         "language": "Language",
         "change-pw": "Change Password",

@@ -18,6 +18,7 @@ import {useTranslation} from "react-i18next";
 interface IDishProps {
   dishName: string;
   dishAllergens: string[];
+  dislikedIngredients?: string[];
   dishDescription: string;
   options?: string;
   picturesId: number[];
@@ -31,7 +32,7 @@ const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { dishName, dishAllergens, dishDescription, options, price, picturesId } = props;
+  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId } = props;
   const priceStr = `${price.toFixed(2)} €`;
   const {t} = useTranslation();
 
@@ -132,6 +133,14 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
+            <span className={styles.OptionsText}>
+              {dislikedIngredients && dislikedIngredients.length != 0 && (
+                <div className={!extended && styles.OptionsWrap}>
+                  <b>{t('components.Dish.disliked-ingredients')}</b>
+                  {dislikedIngredients.join(', ')}
+                </div>
+              )}
+            </span>
             <h3>{priceStr}</h3>
           </Grid>
         </Grid>
@@ -167,6 +176,14 @@ const Dish = (props: IDishProps) => {
                 <div className={!extended && styles.OptionsWrap}>
                   <b>{t('components.Dish.options')}</b>
                   {options}
+                </div>
+              )}
+            </span>
+            <span className={styles.OptionsText}>
+              {dislikedIngredients && dislikedIngredients.length !== 0 && (
+                <div className={!extended && styles.OptionsWrap}>
+                  <b>{t('components.Dish.disliked-ingredients')}</b>
+                  {dislikedIngredients.join(', ')}
                 </div>
               )}
             </span>

@@ -25,7 +25,7 @@ import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {getRestosMenu} from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import {useTranslation} from "react-i18next";
-import {getUserAllergens} from "@src/services/userCalls";
+import {getUserAllergens, getUserDislikedIngredients} from "@src/services/userCalls";
 import {checkDarkMode} from "../../utils/DarkMode";
 
 const theme = createTheme({
@@ -49,6 +49,7 @@ const MenuPage = () => {
     fontFamily: 'Lucida Handwriting, sans-serif'
   }
   const [restoMenu, setRestoMenu] = React.useState(menu);
+  const [dislikedIngredients, setDislikedIngredients] = React.useState([]);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -67,7 +68,9 @@ const MenuPage = () => {
     }
 
     const userAllergens = await getUserAllergens(userToken);
-    setRestoMenu(await getRestosMenu(restoID, userAllergens));
+    const ingredients = await getUserDislikedIngredients(userToken);
+    setDislikedIngredients(ingredients);
+    setRestoMenu(await getRestosMenu(restoID, userAllergens, ingredients));
   }
 
   const fetchFavourites = async () => {
@@ -176,6 +179,7 @@ const MenuPage = () => {
                             key={dish.name + dishIndex}
                             dishName={dish.name}
                             dishAllergens={dish.allergens}
+                            dislikedIngredients={dislikedIngredients}
                             dishDescription={dish.description}
                             options={dish.category.extraGroup.join(", ")}
                             price={dish.price}
@@ -263,6 +267,7 @@ const MenuPage = () => {
                                 key={dish.name + dishIndex}
                                 dishName={dish.name}
                                 dishAllergens={dish.allergens}
+                                dislikedIngredients={dislikedIngredients}
                                 dishDescription={dish.description}
                                 options={dish.category.extraGroup.join(", ")}
                                 price={dish.price}

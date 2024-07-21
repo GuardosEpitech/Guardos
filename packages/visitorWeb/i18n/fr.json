@@ -78,7 +78,8 @@
       },
       "Dish": {
         "img-alt": "Image du Plat {{ index }}",
-        "options": "Options : "
+        "options": "Options : ",
+        "disliked-ingredients": "Caché en raison des ingrédients indésirables: "
       },
       "RestoCard": {
         "add-review": "Ajouter un avis",
@@ -275,6 +276,10 @@
         "name": "Nom :",
         "city": "Ville",
         "allergens": "Allergènes",
+        "disliked-ingredients": "évitez les ingrédients suivants",
+        "ingredient-not-found": "Ingrédient introuvable? Ajoutez-en un nouveau ici",
+        "add-new-ingredient": "Ajouter un nouvel ingrédient à la sélection",
+        "enter-ingredient": "Entrez un ingrédient",
         "preferred-language": "Langue préférée",
         "language": "Langue",
         "change-pw": "Changer le mot de passe",
