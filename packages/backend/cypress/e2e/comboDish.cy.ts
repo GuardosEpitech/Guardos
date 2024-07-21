@@ -1,6 +1,5 @@
 describe('BE Resto Test combo dish', () => {
     it('should add a combo to a dish', () => {
-        // Update the userToken value to match the format from the front end
         const requestBody = {
             restoName: "Ramon‘s Diner",
             dish: {
@@ -10,7 +9,6 @@ describe('BE Resto Test combo dish', () => {
             combo: [1]
         };
 
-        // Make the request and assert the response
         cy.request({
             method: 'POST',
             url:   'http://localhost:8081/api/dishes/addCombo?key=U2FsdGVkX18Itu7yuvWaLN3wgLfyty5rsTawjFt6%2BfI%3D',
@@ -26,7 +24,6 @@ describe('BE Resto Test combo dish', () => {
     });
 
     it('should remove a combo to a dish', () => {
-        // Update the userToken value to match the format from the front end
         const requestBody = {
             restoName: "Ramon‘s Diner",
             dish: {
@@ -35,7 +32,6 @@ describe('BE Resto Test combo dish', () => {
             }
         };
 
-        // Make the request and assert the response
         cy.request({
             method: 'POST',
             url:   'http://localhost:8081/api/dishes/removeCombo?key=U2FsdGVkX18Itu7yuvWaLN3wgLfyty5rsTawjFt6%2BfI%3D',
