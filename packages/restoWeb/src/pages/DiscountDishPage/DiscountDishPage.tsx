@@ -39,7 +39,13 @@ const DiscountDishPage = () => {
   const navigate = useNavigate();
 
   const [discountType, setDiscountType] = useState<'percent' | 'price'>('percent');
-  const [discountValue, setDiscountValue] = useState<string>(discount !== -1 ? discount.toString() : '');
+  const [discountValue, setDiscountValue] = useState<string>(() => {
+    if (discount) {
+      return discount !== -1 ? discount.toString() : '';
+    } else {
+      return ''
+    }
+  });
   const [startDate, setStartDate] = useState<Date | null>(() => {
     if (validTill) {
       try {
@@ -56,9 +62,11 @@ const DiscountDishPage = () => {
   useEffect(() => {
     checkDarkMode();
 
-    if (discount !== -1 && discountType === 'percent') {
-      const percentage = (discount / price) * 100;
-      setDiscountValue(percentage.toFixed(2));
+    if (discount) {
+      if (discount !== -1 && discountType === 'percent') {
+        const percentage = (discount / price) * 100;
+        setDiscountValue(percentage.toFixed(2));
+      }
     }
   }, [discount, discountType, price]);
 
