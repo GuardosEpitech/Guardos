@@ -81,7 +81,7 @@
       "Dish": {
         "img-alt": "Image du Plat {{ index }}",
         "options": "Options : ",
-        "disliked-ingredients": "Caché en raison des ingrédients indésirables: "
+        "disliked-ingredients": "Caché en raison des ingrédients indésirables: ",
         "discount": "Prix réduit: ",
         "valid": "Valable jusqu'au"
       },

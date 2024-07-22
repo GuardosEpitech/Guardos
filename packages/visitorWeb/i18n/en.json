@@ -81,7 +81,7 @@
       "Dish": {
         "img-alt": "Dish Image {{ index }}",
         "options": "Options: ",
-        "disliked-ingredients": "Hidden due to disliked ingredients: "
+        "disliked-ingredients": "Hidden due to disliked ingredients: ",
         "discount": "Discounted price: ",
         "valid": "Valid until:"
       },

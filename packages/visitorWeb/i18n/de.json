@@ -81,7 +81,7 @@
       "Dish": {
         "img-alt": "Gerichtsbild {{ index }}",
         "options": "Optionen: ",
-        "disliked-ingredients": "Versteckt wegen nicht gemochter Zutaten: "
+        "disliked-ingredients": "Versteckt wegen nicht gemochter Zutaten: ",
         "discount": "Heruntergesetzter Preis: ",
         "valid": "Gültig bis"
       },
