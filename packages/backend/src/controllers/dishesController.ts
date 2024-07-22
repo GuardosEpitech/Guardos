@@ -4,7 +4,7 @@ import { ICategoryFE } from '../../../shared/models/categoryInterfaces';
 import { IDishesCommunication } from '../models/communicationInterfaces';
 import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
-import { IRestaurantBackEnd }
+import { IRestaurantBackEnd, IRestaurantFrontEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
 import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
@@ -49,7 +49,8 @@ export async function getDishByUser(loggedInUserId: number) {
         resto: rest.name as string,
         products: dish.products as string[],
         discount: dish.discount,
-        validTill: dish.validTill
+        validTill: dish.validTill,
+        combo: dish.combo
       };
       dishFE.pictures.pop();
       dishFE.allergens.pop();
@@ -105,6 +106,7 @@ export async function getAllDishes() {
         products: dish.products as string[],
         discount: dish.discount as number,
         validTill: dish.validTill as string,
+        combo: dish.combo as number[]
       };
       dishFE.pictures.pop();
       dishFE.allergens.pop();
@@ -238,7 +240,8 @@ export async function changeDishByName(
       extraGroup: [string];
     },
     discount: dish.discount,
-    validTill: dish.validTill as string
+    validTill: dish.validTill as string,
+    combo: oldDish.combo as [number]
   };
   await updateDish(restaurantName, newDish);
   return newDish;
@@ -268,6 +271,7 @@ export async function addDishDiscount(
     },
     discount: dish.discount,
     validTill: dish.validTill as string,
+    combo: oldDish.combo as [number]
   };
   await updateDish(restaurant.name, newDish);
   return newDish;
@@ -297,7 +301,66 @@ export async function removeDishDiscount(
       },
       discount: -1,
       validTill: '',
+      combo: oldDish.combo as [number]
     };
     await updateDish(restaurant.name, newDish);
     return newDish;
   }
+
+export async function addDishCombo(
+  resto: IRestaurantFrontEnd, dish: IDishesCommunication, combo: number[]) {
+    const oldDish = await getDishByName(resto.name, dish.name);
+    const newDish: IDishBE = {
+      //if the new dish has a property, use it, else use the old one
+      name: dish.name ? dish.name : oldDish.name as string,
+      uid: oldDish.uid as number,
+      description: dish.description ?
+        dish.description : oldDish.description as string,
+      price: dish.price ? dish.price : oldDish.price as number,
+      products: dish.products ? dish.products : oldDish.products as [string],
+      pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+      picturesId: dish.picturesId
+        ? dish.picturesId as [number] : oldDish.picturesId as [number],
+      allergens: dish.allergens ? dish.allergens as [string] :
+        oldDish.allergens as [string],
+      category: dish.category ? dish.category : oldDish.category as {
+        menuGroup: string;
+        foodGroup: string;
+        extraGroup: [string];
+      },
+      discount: oldDish.discount as number,
+      validTill: oldDish.validTill as string,
+      combo: combo
+    };
+    await updateDish(resto.name, newDish);
+    return newDish;
+}
+
+export async function removeDishCombo(
+  resto: IRestaurantFrontEnd, dish: IDishesCommunication) {
+    const oldDish = await getDishByName(resto.name, dish.name);
+    const newDish: IDishBE = {
+      //if the new dish has a property, use it, else use the old one
+      name: dish.name ? dish.name : oldDish.name as string,
+      uid: oldDish.uid as number,
+      description: dish.description ?
+        dish.description : oldDish.description as string,
+      price: dish.price ? dish.price : oldDish.price as number,
+      products: dish.products ? dish.products : oldDish.products as [string],
+      pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+      picturesId: dish.picturesId
+        ? dish.picturesId as [number] : oldDish.picturesId as [number],
+      allergens: dish.allergens ? dish.allergens as [string] :
+        oldDish.allergens as [string],
+      category: dish.category ? dish.category : oldDish.category as {
+        menuGroup: string;
+        foodGroup: string;
+        extraGroup: [string];
+      },
+      discount: oldDish.discount as number,
+      validTill: oldDish.validTill as string,
+      combo: []
+    };
+    await updateDish(resto.name, newDish);
+    return newDish;
+}

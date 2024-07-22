@@ -40,6 +40,8 @@
       "Filter": {
         "save-filter-failure": "Échec de l'enregistrement du filtre",
         "save-filter-success": "Filtre enregistré avec succès",
+        "saved-filters": "{{used}} / {{limit}} filtres enregistrés",
+        "save-filter-limit-reached": "Vous avez atteint la limite des filtres enregistrés",
         "load-filter-success": "Filtre chargé avec succès",
         "delete-filter-success": "Filtre supprimé avec succès",
         "delete-filter-failure": "Échec de la suppression du filtre",
@@ -78,7 +80,9 @@
       },
       "Dish": {
         "img-alt": "Image du Plat {{ index }}",
-        "options": "Options : "
+        "options": "Options : ",
+        "discount": "Prix réduit: ",
+        "valid": "Valable jusqu'au"
       },
       "RestoCard": {
         "add-review": "Ajouter un avis",
@@ -373,7 +377,9 @@
         "description-low-level-2": "Recherche en groupe - sauvegardez plusieurs profils alimentaires",
         "premium": "Abonnement Premium",
         "description-high-level-1": "Les demandes de fonctionnalités sont prioritaires",
-        "description-high-level-2": "Faire des réservations"
+        "description-high-level-2": "Faire des réservations",
+        "save-filter": "Enregistrer un filtre",
+        "save-filters": "Enregistrer jusqu'à {{filterNumber}} filtres"
       },
 
       "Privacy": {

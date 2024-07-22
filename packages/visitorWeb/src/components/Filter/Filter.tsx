@@ -19,7 +19,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import {addSavedFilter, deleteSavedFilter, getSavedFilters} from "@src/services/profileCalls";
+import {addSavedFilter, deleteSavedFilter, getSavedFilters, getSavedFilterLimit} from "@src/services/profileCalls";
 import {useTranslation} from "react-i18next";
 
 const GlobalStyle = () => {
@@ -97,6 +97,7 @@ const Filter = (props: FilterProps) => {
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/user/allergen`;
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [savedFilters, setSavedFilters] = useState<ISearchCommunication[]>([]);
+  const [filterLimit, setFilterLimit] = useState<number | null>(null);
   const [newFilterName, setNewFilterName] = useState('');
   const [openLoadDialog, setOpenLoadDialog] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -119,6 +120,11 @@ const Filter = (props: FilterProps) => {
     getSavedFilters(userToken)
       .then((res) => {
         setSavedFilters(res);
+      });
+
+    getSavedFilterLimit(userToken)
+      .then((res) => {
+        setFilterLimit((res && res.filterLimit) ? res.filterLimit : 0);
       });
   };
 
@@ -214,21 +220,27 @@ const Filter = (props: FilterProps) => {
     setMenuAnchorEl(null);
   };
 
-  const saveFilter = (filter: ISearchCommunication) => {
+  const saveFilter = async (filter: ISearchCommunication) => {
     setChangeStatus(null);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       return;
     }
 
-    savedFilters.push(filter);
     addSavedFilter(userToken, filter).then((res) => {
-      if (res == null) {
+      if (!res || !filter.filterName || res.status == 500) {
         setChangeStatus("failed");
         setChangeStatusMsg(t('components.Filter.save-filter-failure'));
+        setNewFilterName("");
+      } else if (res.status == 203) {
+        setChangeStatus("failed");
+        setChangeStatusMsg(t('components.Filter.save-filter-limit-reached'));
+        setNewFilterName("");
       } else {
+        savedFilters.push(filter);
         setChangeStatus("success");
         setChangeStatusMsg(t('components.Filter.save-filter-success'));
+        setNewFilterName("");
       }
     })
   };
@@ -452,6 +464,9 @@ const Filter = (props: FilterProps) => {
                 fullWidth
               />
             </MenuItem>
+            <div className={styles.filterLimit}>
+              {t('components.Filter.saved-filters', { used: savedFilters.length, limit: filterLimit })}
+            </div>
             {savedFilters.map((filter, index) => (
               <MenuItem key={index}>
                 <span>{filter.filterName}</span>

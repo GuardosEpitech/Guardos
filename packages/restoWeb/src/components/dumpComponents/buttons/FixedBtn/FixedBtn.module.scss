@@ -1,10 +1,12 @@
+@import "../../../../general.scss";
+
 .FixedBtn {
   position: fixed;
   bottom: 0;
   right: 0;
   margin-bottom: 2rem;
   margin-right: 2rem;
-  border: #fafafa solid 1px;
+  border: $white solid 1px;
   border-radius: 0.36rem;
   z-index: 100;
 }
