@@ -1,3 +1,5 @@
+@import "../../general.scss";
+
 .overlay {
   position: fixed;
   top: 0;
@@ -73,7 +75,7 @@
 }
 
 .cookieBanner .okButton {
-  background-color: #6d071a;
+  background-color: $burgundy;
   color: white;
   border: none;
   border-radius: 8px;

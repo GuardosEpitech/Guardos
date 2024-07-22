@@ -214,57 +214,69 @@ const IntroPage = () => {
         </div>
 
         <div className={styles.container}>
-          <Card
-            className={styles.card}
-            style={{ opacity: opacity1 }}
-            onMouseEnter={() => handleMouseEnter(1)}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => NavigateTo('/', navigate, {})}
+          <div
+              className={styles.cardContainer}
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && NavigateTo('/', navigate, {})}
+              onClick={() => NavigateTo('/', navigate, {})}
           >
-            <div className={styles.circleContainer}>
-              <img
-                src={backgroundImage1}
-                alt={t('pages.IntroPage.user-site')}
-                className={styles.circleImage}
-              />
-            </div>
-            <CardContent className={styles.cardContent}> 
-              {/* Content for section 1 */}
-              <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.user-site')}</Typography>
-              <Typography variant="body1" className={styles.body1}>
-                {t('pages.IntroPage.user-site-text-1')}<br></br>
-                {t('pages.IntroPage.user-site-text-2')}<br></br>
-                {t('pages.IntroPage.user-site-text-3')}
-              </Typography>
-            </CardContent>
-          </Card>
-
-          <Card
-            className={styles.card}
-            style={{ opacity: opacity2 }}
-            onMouseEnter={() => handleMouseEnter(2)}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => 
-              window.location.href = baseUrlRestaurant
-            }
+            <Card
+              className={styles.card}
+              style={{ opacity: opacity1 }}
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <div className={styles.circleContainer}>
+                <img
+                  src={backgroundImage1}
+                  alt={t('pages.IntroPage.user-site')}
+                  className={styles.circleImage}
+                />
+              </div>
+              <CardContent className={styles.cardContent}> 
+                {/* Content for section 1 */}
+                <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.user-site')}</Typography>
+                <Typography variant="body1" className={styles.body1}>
+                  {t('pages.IntroPage.user-site-text-1')}<br></br>
+                  {t('pages.IntroPage.user-site-text-2')}<br></br>
+                  {t('pages.IntroPage.user-site-text-3')}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
+          <div
+              className={styles.cardContainer}
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' ? window.location.href = baseUrlRestaurant: ''}
+              onClick={() => window.location.href = baseUrlRestaurant}
           >
-            <div className={styles.circleContainer}>
-              <img
-                src={backgroundImage2}
-                alt={t('pages.IntroPage.resto-site')}
-                className={styles.circleImage}
-              />
-            </div>
-            <CardContent className={styles.cardContent}>
-              {/* Content for section 2 */}
-              <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.resto-site')}</Typography>
-              <Typography variant="body1" className={styles.body1}>
-                {t('pages.IntroPage.resto-site-text-1')}<br></br>
-                {t('pages.IntroPage.resto-site-text-2')}<br></br>
-                {t('pages.IntroPage.resto-site-text-3')}
-              </Typography>
-            </CardContent>
-          </Card>
+            <Card
+              className={styles.card}
+              style={{ opacity: opacity2 }}
+              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() => 
+                window.location.href = baseUrlRestaurant
+              }
+            >
+              <div className={styles.circleContainer}>
+                <img
+                  src={backgroundImage2}
+                  alt={t('pages.IntroPage.resto-site')}
+                  className={styles.circleImage}
+                />
+              </div>
+              <CardContent className={styles.cardContent}>
+                {/* Content for section 2 */}
+                <Typography variant="h5" className={styles.h5}>{t('pages.IntroPage.resto-site')}</Typography>
+                <Typography variant="body1" className={styles.body1}>
+                  {t('pages.IntroPage.resto-site-text-1')}<br></br>
+                  {t('pages.IntroPage.resto-site-text-2')}<br></br>
+                  {t('pages.IntroPage.resto-site-text-3')}
+                </Typography>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

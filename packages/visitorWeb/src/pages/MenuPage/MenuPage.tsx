@@ -95,7 +95,7 @@ const MenuPage = () => {
     }
   };
 
-  const handleFavoriteClick = async (event: React.MouseEvent) => {
+  const handleFavoriteClick = async (event:any) => {
     event.stopPropagation(); // Prevents the card click event from triggering
 
     // Toggle the favorite status
@@ -126,11 +126,18 @@ const MenuPage = () => {
         <List>
           <ListItem>
             <h2 className={styles.RestaurantTitle}>{restoName}</h2>
-            <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+            <div 
+              className={styles.FavoriteIcon} 
+              tabIndex={0} 
+              onClick={handleFavoriteClick} 
+              onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+              role="button"
+              aria-pressed={isFavouriteResto}
+            >
               {isFavouriteResto ? (
-                <FavoriteIcon id="favourite-resto" color="error" />
+                <FavoriteIcon id="favourite" color="error" />
               ) : (
-                <FavoriteBorderIcon id="no-favourite-resto" color="error" />
+                <FavoriteBorderIcon id="no-favourite" color="error" />
               )}
             </div>
           </ListItem>

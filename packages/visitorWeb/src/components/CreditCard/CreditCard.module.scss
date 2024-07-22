@@ -1,3 +1,5 @@
+@import "../../general.scss";
+
 .creditCard {
   width: 350px;
   height: 200px; 
@@ -97,7 +99,7 @@
   width: 300px;
   height: 150px;
   background-color: white;
-  outline: #6d071a solid 2px;
+  outline: $burgundy solid 2px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -119,7 +121,7 @@
   margin: 10px;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: #6D071A;
+  background-color: $burgundy;
   color: white;
   font-size: 16px;
   cursor: pointer;

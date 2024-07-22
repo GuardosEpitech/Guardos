@@ -175,9 +175,9 @@ const CookieBanner: React.FC = () => {
     });
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
-      localStorage.setItem('functional', "true");
-      localStorage.setItem('statistical', "true");
-      localStorage.setItem('marketing', "true");
+      localStorage.setItem('functional', 'true');
+      localStorage.setItem('statistical', 'true');
+      localStorage.setItem('marketing', 'true');
       handleClose();
       return;
     }

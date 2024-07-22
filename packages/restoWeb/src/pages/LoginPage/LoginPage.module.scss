@@ -1,3 +1,5 @@
+@import "../../general.scss";
+
 .loginForm form {
   display: flex;
   flex-direction: column;
@@ -11,7 +13,7 @@
 
 .registerLink {
   cursor: pointer;
-  color: #6d071a;
+  color: $burgundy;
   text-decoration: underline;
 }
 
