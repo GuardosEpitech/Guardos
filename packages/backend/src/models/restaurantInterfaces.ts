@@ -40,6 +40,9 @@ export const restaurantSchema = new mongoose.Schema({
       extraGroup: [String],
     },
     userID: Number,
+    discount: Number,
+    validTill: String,
+    combo: [Number]
   }],
   location: {
     streetName: String,

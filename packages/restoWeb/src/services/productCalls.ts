@@ -4,29 +4,29 @@ import { IProductFE } from "shared/models/productInterfaces";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/`;
 
-export const getAllRestoProducts = async (restoName: string) => {
-  try {
-    const response = await axios({
-      method: "GET",
-      url: baseUrl + "api/products/" + restoName,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all restaurant products:", error);
-  }
-};
-
-export const getAllProducts = async () => {
-  try {
-    const response = await axios({
-      method: "GET",
-      url: baseUrl + "api/products" + "/",
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching all products:", error);
-  }
-};
+// export const getAllRestoProducts = async (restoName: string) => {
+//   try {
+//     const response = await axios({
+//       method: "GET",
+//       url: baseUrl + "api/products/" + restoName,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching all restaurant products:", error);
+//   }
+// };
+//
+// export const getAllProducts = async () => {
+//   try {
+//     const response = await axios({
+//       method: "GET",
+//       url: baseUrl + "api/products" + "/",
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching all products:", error);
+//   }
+// };
 
 export const getProductsByUser = async (userToken: string) => {
   try {
@@ -44,7 +44,7 @@ export const getProductsByUser = async (userToken: string) => {
   }
 };
 
-export const addNewProduct = async (product: IProduct, restoName: string) => {
+export const addNewProduct = async (product: IProduct, restoName: string, token: string) => {
   try {
     if (!product.name) {
       console.error("Error adding new product:");
@@ -53,6 +53,7 @@ export const addNewProduct = async (product: IProduct, restoName: string) => {
     const response = await axios({
       url: baseUrl + "api/products/" + restoName,
       method: "POST",
+      params: {key: token},
       data: JSON.stringify({
         name: product.name,
         ingredients: product.ingredients,
@@ -69,11 +70,12 @@ export const addNewProduct = async (product: IProduct, restoName: string) => {
   }
 };
 
-export const deleteProduct = async (product: any) => {
+export const deleteProduct = async (product: any, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + "api/products/" + product.name,
       method: "DELETE",
+      params: {key: token},
       headers: {
         "Content-Type": "application/json",
       },
@@ -85,12 +87,18 @@ export const deleteProduct = async (product: any) => {
   }
 };
 
-export const editProduct = async (product: IProductFE, originalProductName: string) => {
+export const editProduct = async (product: IProductFE, originalProductName: string, token: string) => {
   try {
     const response = await axios({
       url: baseUrl + "api/products/" + originalProductName,
       method: "PUT",
-      data: JSON.stringify(product),
+      params: {key: token},
+      data: JSON.stringify({
+        name: product.name,
+        ingredients: product.ingredients,
+        allergens: product.allergens,
+        restaurantId: product.restaurantId
+      }),
       headers: {
         "content-type": "application/json",
       },

@@ -151,7 +151,10 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
                     allergens: dish.allergens,
                     category: dish.category,
                     resto: restaurant.name,
-                    products: dish.products
+                    products: dish.products,
+                    discount: dish.discount,
+                    validTill: dish.validTill,
+                    combo: dish.combo
                 };
                 obj.dishes.push(dishObj);
                 category.dishes.push(dishObj);

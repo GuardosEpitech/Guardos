@@ -1,30 +1,32 @@
 import * as express from 'express';
 
 import {
-  addRestoProduct,
-  getAllRestoProducts, getRestaurantByName
+  addRestoProduct, doesUserOwnRestaurantByName,
+  // getAllRestoProducts, getRestaurantByName
 } from '../controllers/restaurantController';
 import {
   changeProductByName, createOrUpdateProduct, deleteProductByName,
-  getAllProducts, getProductByName, getProductsByUser
+  // getAllProducts,
+  getProductByName, getProductsByUser
 } from '../controllers/productsController';
 import {getUserIdResto} from '../controllers/userRestoController';
+import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
 
 const router = express.Router();
 
-router.get('/', async (_req, res) => {
-  try {
-    const products = await getAllProducts();
-    if (!products)
-      return res.status(404);
-    return res.status(200)
-      .send(products);
-  } catch (error) {
-    console.error("Error in 'products' route:", error);
-    return res.status(500)
-      .send({ error: 'Internal Server Error' });
-  }
-});
+// router.get('/', async (_req, res) => {
+//   try {
+//     const products = await getAllProducts();
+//     if (!products)
+//       return res.status(404);
+//     return res.status(200)
+//       .send(products);
+//   } catch (error) {
+//     console.error("Error in 'products' route:", error);
+//     return res.status(500)
+//       .send({ error: 'Internal Server Error' });
+//   }
+// });
 
 router.get('/user/product', async (req, res) => {
   try {
@@ -52,24 +54,38 @@ router.get('/user/product', async (req, res) => {
   }
 });
 
-router.get('/:name', async (req, res) => {
-  try {
-    const products = await getAllRestoProducts(req.params.name);
-    return res.status(200)
-      .send(products);
-  } catch (error) {
-    console.error("Error in 'products/:name' route:", error);
-    return res.status(500)
-      .send({ error: 'Internal Server Error' });
-  }
-});
+// router.get('/:name', async (req, res) => {
+//   try {
+//     const products = await getAllRestoProducts(req.params.name);
+//     return res.status(200)
+//       .send(products);
+//   } catch (error) {
+//     console.error("Error in 'products/:name' route:", error);
+//     return res.status(500)
+//       .send({ error: 'Internal Server Error' });
+//   }
+// });
 
 router.post('/:name', async (req, res) => {
   try {
-    const restaurant = req.params.name;
-    const restaurantId = await getRestaurantByName(restaurant);
-    const product = await createOrUpdateProduct(req.body, restaurantId.uid);
-    await addRestoProduct(req.body, restaurant);
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    const restaurant : IRestaurantFrontEnd = await doesUserOwnRestaurantByName(
+      req.params.name, userID as number);
+    if (!restaurant) {
+      return res.status(404)
+        .send('Coudnt find restaurant named '
+          + req.params.name + ' for this user');
+    }
+
+    const product = await createOrUpdateProduct(req.body, restaurant.uid);
+    await addRestoProduct(req.body, restaurant.name);
     return res.status(200)
       .send(product);
   } catch (error) {
@@ -81,6 +97,15 @@ router.post('/:name', async (req, res) => {
 
 router.delete('/:name', async (req, res) => {
   try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
     const productName = req.params.name;
     if (await deleteProductByName(productName) === true)
       return res.status(200)
@@ -96,6 +121,15 @@ router.delete('/:name', async (req, res) => {
 
 router.put('/:name', async (req, res) => {
   try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
     if (!await getProductByName(req.params.name)) {
       return res.status(404)
         .send('Coundt find product named ' + req.params.name);

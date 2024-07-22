@@ -37,6 +37,7 @@ const AppOutlet = () => {
           </div>
           <div>
             <ul className={styles.ListLinks}>
+              <li><a href="/terms" className={styles.links}>{t('pages.AppOutlet.terms')}</a></li>
               <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
               <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
               <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>

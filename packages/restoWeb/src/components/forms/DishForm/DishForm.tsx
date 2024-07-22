@@ -67,6 +67,9 @@ interface IDishFormProps {
   selectAllergene?: string[];
   restoName?: string[];
   picturesId?: number[];
+  discount?: number;
+  validTill?: string;
+  combo?: number[];
 }
 
 // TODO: on creation of dish, add dish image and send it to backend
@@ -182,21 +185,23 @@ const DishForm = (props: IDishFormProps) => {
           menuGroup: dishCategory[0]
         },
         resto: dishResto[i],
+        discount: props.discount ? props.discount : -1,
+        validTill: props.validTill ? props.validTill : "",
+        combo: props.combo ? props.combo : []
       };
     }
 
     if (props.add) {
       for (let i = 0; i < dishList.length; i++) {
         const data: IAddDish = {
-          userToken: userToken,
           resto: dishList[i].resto,
           dish: dishList[i],
         };
-        await addNewDish(data);
+        await addNewDish(data, userToken);
       }
     } else {
       for (let i = 0; i < dishList.length; i++) {
-        await editDish(dishList[i].resto, dishList[i]);
+        await editDish(dishList[i].resto, dishList[i], userToken);
       }
     }
     return NavigateTo("/dishes", navigate, {successfulForm: true});

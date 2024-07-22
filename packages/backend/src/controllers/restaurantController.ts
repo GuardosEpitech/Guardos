@@ -50,7 +50,10 @@ export function createBackEndObj(restaurant: IRestaurantBackEnd) {
       picturesId: dish.picturesId,
       price: dish.price,
       allergens: dish.allergens,
-      category: dish.category
+      category: dish.category,
+      discount: dish.discount,
+      validTill: dish.validTill,
+      combo: dish.combo
     };
     restaurantBE.dishes.push(dishObj);
   }
@@ -74,7 +77,10 @@ export function createBackEndObj(restaurant: IRestaurantBackEnd) {
       pictures: extra.pictures,
       picturesId: extra.picturesId,
       allergens: extra.allergens,
-      category: extra.category
+      category: extra.category,
+      discount: extra.discount,
+      validTill: extra.validTill,
+      combo: extra.combo
     };
     restaurantBE.extras.push(extraObj);
   }
@@ -140,6 +146,9 @@ function createRestaurantObjFe(
           },
           resto: restaurant.name,
           products: dish.products,
+          discount: dish.discount,
+          validTill: dish.validTill,
+          combo: dish.combo
         };
         categories.dishes.push(dishObj);
         obj.dishes.push(dishObj);
@@ -519,6 +528,20 @@ export async function addCategory(
     return createRestaurantObjFe(restaurantBE);
   } catch (error) {
     console.error('Error adding/updating category:', error);
+    throw error;
+  }
+}
+
+export async function doesUserOwnRestaurantByName(restoName: string,
+  userID: number) {
+  try {
+    const restaurant = await getRestaurantByName(restoName);
+    if (!restaurant || restaurant.userID !== userID) {
+      return null;
+    }
+    return restaurant;
+  } catch (error) {
+    console.error('Error finding restaurant for user:', error);
     throw error;
   }
 }

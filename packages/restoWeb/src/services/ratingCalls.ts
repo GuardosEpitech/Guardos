@@ -11,14 +11,3 @@ export const getRatingData = async (name: string) => (
       console.log(error);
     }) 
 );
-
-export const postRatingData = async (name: string,
-  comment: string, note: number) => (
-  axios.post(`${baseUrl}/review/restaurants/${name}`, { comment, note })
-    .then(function (response) {
-      return response.data;
-    })
-    .catch(function (error) {
-      console.log(error);
-    }) 
-);

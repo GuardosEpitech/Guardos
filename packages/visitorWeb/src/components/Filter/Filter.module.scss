@@ -101,6 +101,13 @@
   width: 100% !important;
 }
 
+.filterLimit {
+  color: #666;
+  font-size: 0.875rem;
+  margin: 8px 0;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .RectFilter {
     width: calc(100% - 40px);

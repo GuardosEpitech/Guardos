@@ -74,7 +74,8 @@ const SubscriptionPage: React.FC = () => {
           <SubscriptionBox
             title={t('pages.SubscriptionPage.free')}
             description={[
-              t('pages.SubscriptionPage.free-description')
+              t('pages.SubscriptionPage.free-description'),
+              t('pages.SubscriptionPage.save-filter')
             ]}
             price="0.00 €"
             onClick={handleSwitchPermissions}
@@ -87,8 +88,9 @@ const SubscriptionPage: React.FC = () => {
             title={t('pages.SubscriptionPage.basic')}
             description={[
               t('pages.SubscriptionPage.description-low-level-1'),
-              t('pages.SubscriptionPage.description-low-level-2')
-            ]}
+              t('pages.SubscriptionPage.description-low-level-2'),
+              t('pages.SubscriptionPage.save-filters', { filterNumber: 2})
+              ]}
             price="2.99 €"
             onClick={handleSwitchPermissions}
             isActive={userPermissions.includes("basicSubscription")}
@@ -101,7 +103,8 @@ const SubscriptionPage: React.FC = () => {
               t('pages.SubscriptionPage.description-low-level-1'),
               t('pages.SubscriptionPage.description-low-level-2'),
               t('pages.SubscriptionPage.description-high-level-1'),
-              t('pages.SubscriptionPage.description-high-level-2')
+              t('pages.SubscriptionPage.description-high-level-2'),
+              t('pages.SubscriptionPage.save-filters', { filterNumber: 3})
             ]}
             price="5.99 €"
             onClick={handleSwitchPermissions}

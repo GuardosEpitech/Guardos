@@ -526,6 +526,11 @@ const MyAccountPage = () => {
             {t('pages.MyAccountPage.just-ask')}
           </Button>
          </div>
+         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px' }}>
+          <Button onClick={() => window.location.href = '/support'}>
+            {t('pages.MyAccountPage.User-Support')}
+          </Button>
+         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
         <FormControlLabel
           control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
@@ -581,6 +586,8 @@ const MyAccountPage = () => {
                     price={dish.dish.price}
                     restoID={dish.restoID}
                     dishID={dish.dish.uid}
+                    discount={dish.dish.discount}
+                    validTill={dish.dish.validTill}
                     isFavourite={true}
                   />
                 )
