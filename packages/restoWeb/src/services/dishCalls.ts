@@ -69,3 +69,37 @@ export const deleteDish = async (restoName: string, dishName: string, token: str
     console.error("Error deleting dish:", error);
   }
 };
+
+export const addDiscount = async (body: any, token: string) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'addDiscount',
+      method: "POST",
+      params: {key: token},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding dish discount:", error);
+  }
+};
+
+export const removeDiscount = async (body: any, token: string) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'removeDiscount',
+      method: "POST",
+      params: {key: token},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting dish discount:", error);
+  }
+};

@@ -40,6 +40,8 @@
       "Filter": {
         "save-filter-failure": "Failed to save filter",
         "save-filter-success": "Successfully saved filter",
+        "saved-filters": "{{used}} / {{limit}} filters saved",
+        "save-filter-limit-reached": "You reached the limit of saved filters",
         "load-filter-success": "Successfully loaded filter",
         "delete-filter-success": "Successfully deleted filter",
         "delete-filter-failure": "Failed to delete filter",
@@ -80,6 +82,8 @@
         "img-alt": "Dish Image {{ index }}",
         "options": "Options: ",
         "disliked-ingredients": "Hidden due to disliked ingredients: "
+        "discount": "Discounted price: ",
+        "valid": "Valid until:"
       },
       "RestoCard": {
         "add-review": "Add a review",
@@ -375,7 +379,9 @@
         "description-low-level-2": "Group search - save multiple dietary profiles",
         "premium": "Premium Subscription",
         "description-high-level-1": "Feature requests are prioritized",
-        "description-high-level-2": "Make reservations"
+        "description-high-level-2": "Make reservations",
+        "save-filter": "Save one filter",
+        "save-filters": "Save up to {{filterNumber}} filters"
       },
       "Privacy": {
         "title": "Privacy Statement",

@@ -12,6 +12,7 @@ export interface IDishBE {
   category: ICategoryBE;
   discount: number;
   validTill: string;
+  combo: number[];
 }
 
 export interface IDishFE {
@@ -28,6 +29,7 @@ export interface IDishFE {
   products: string[];
   discount: number;
   validTill: string;
+  combo: number[];
 }
 
 export interface IAddDish {

@@ -1,3 +1,5 @@
+@import "../../../general.scss";
+
 .PaymentFailPage {
     display: flex;
     flex-direction: column;
@@ -16,7 +18,7 @@
 
 .backButton button {
     font-size: 18px;
-    background-color: #6d071a !important;
+    background-color: $burgundy !important;
     color: #fff !important;
 }
 

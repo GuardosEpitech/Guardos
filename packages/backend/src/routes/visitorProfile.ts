@@ -16,6 +16,10 @@ import {
 
 const router = express.Router();
 
+const premiumUserFilterAmount = 3;
+const basicUserFilterAmount = 2;
+const defaultUserFilterAmount = 1;
+
 router.get('/', async (req, res) => {
   try {
     const userToken = String(req.query.key);
@@ -189,18 +193,18 @@ router.post('/filter', async (req, res) => {
 
     const permissionsResponse = await getVisitorPermissions(userID);
     const permissions : string[] = permissionsResponse ? permissionsResponse : [];
-    let filterLimit = 3;
+    let filterLimit = premiumUserFilterAmount;
 
     if (!permissions.includes('premiumUser')) {
-      filterLimit = 2;
+      filterLimit = basicUserFilterAmount;
       if (!permissions.includes('basicSubscription')) {
-        filterLimit = 1;
+        filterLimit = defaultUserFilterAmount;
       }
     }
 
     const savedFilters = await getSavedFilters(userID);
     if (savedFilters.length >= filterLimit) {
-      return res.status(500)
+      return res.status(203)
         .send('Reached the maximum amount of saved filters.');
     }
 
@@ -210,6 +214,41 @@ router.post('/filter', async (req, res) => {
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in POST '/api/profile/filter' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/filterLimit', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found from filterLimit' });
+    }
+
+    const permissionsResponse = await getVisitorPermissions(userID);
+    const permissions : string[] = permissionsResponse ? permissionsResponse : [];
+
+    let filterLimit = premiumUserFilterAmount;
+
+    if (!permissions.includes('premiumUser')) {
+      filterLimit = basicUserFilterAmount;
+      if (!permissions.includes('basicSubscription')) {
+        filterLimit = defaultUserFilterAmount;
+      }
+    }
+
+    return res.status(200)
+      .send({filterLimit: filterLimit});
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in Get '/api/profile/filterLimit' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
     return res.status(500)

@@ -36,7 +36,8 @@
       "error": "Fehler",
       "unexpected-error": "Ein unerwarteter Fehler ist aufgetreten",
       "all-fields-mandatory": "Alle Felder sind Pflichtfelder.",
-      "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für den Kamerazugriff, damit dies funktioniert!"
+      "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für den Kamerazugriff, damit dies funktioniert!",
+      "discount": "Rabatt"
     },
     "components": {
       "MapButton": {
@@ -91,7 +92,9 @@
       },
       "Dish": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ dishName }} löschen möchten?",
-        "options": "Optionen: "
+        "options": "Optionen: ",
+        "discount": "Heruntergesetzter Preis: ",
+        "valid": "Gültig bis"
       },
       "ProductCard": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ productName }} löschen möchten?",
@@ -548,7 +551,22 @@
         "deviceTxt": "Die App kann den Zugriff auf bestimmte Funktionen Ihres Geräts anfordern (z.B. Standortdienste, Kamera), um den Service bereitzustellen. Sie können diese Berechtigungen über die Geräteeinstellungen verwalten.",
         "update": "11. Änderungen der Geschäftsbedingungen",
         "updateTxt": "Guardos behält sich das Recht vor, diese Bedingungen jederzeit ohne Vorankündigung zu aktualisieren oder zu ändern. Ihre fortgesetzte Nutzung des Service nach Änderungen stellt Ihre Zustimmung zu den neuen Bedingungen dar. Es liegt in Ihrer Verantwortung, diese Bedingungen regelmäßig auf Updates oder Änderungen zu überprüfen."
+      },
+      "DiscountDishPage": {
+        "title": "Rabatt verwalten",
+        "valid": "Gültig bis",
+        "percent": "Prozentsatz eingeben",
+        "price": "Preis eingeben",
+        "switchPrice": "Zu Preis wechseln",
+        "switchPercent": "Zu Prozent wechseln",
+        "enterPercent": "Prozentsatz eingeben",
+        "enterPrice": "Preis eingeben",
+        "errorPrice": "Rabattpreis muss größer als 0 und kleiner als der ursprüngliche Preis sein",
+        "errorPercent": "Der Prozentsatz muss größer als 0 und kleiner als 100 sein.",
+        "successAdd": "Rabatt erfolgreich gespeichert",
+        "successDelete": "Rabatt erfolgreich entfernt"
       }
+
     }
   }
 }

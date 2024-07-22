@@ -26,13 +26,15 @@ interface IDishProps {
   restoID: number;
   dishID: number;
   isFavourite: boolean;
+  discount: number;
+  validTill: string;
 }
 
 const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId } = props;
+  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId, discount, validTill } = props;
   const priceStr = `${price.toFixed(2)} €`;
   const {t} = useTranslation();
 
@@ -65,7 +67,7 @@ const Dish = (props: IDishProps) => {
     setIsFavorite(props.isFavourite);
   }, [props.isFavourite, picturesId]);
 
-  const handleFavoriteClick = (event: React.MouseEvent) => {
+  const handleFavoriteClick = (event:any) => {
     event.stopPropagation(); // Prevents the card click event from triggering
 
     // Toggle the favorite status
@@ -99,7 +101,14 @@ const Dish = (props: IDishProps) => {
           >
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              <div
+                className={styles.FavoriteIcon}
+                tabIndex={0}
+                onClick={handleFavoriteClick}
+                onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+                role="button"
+                aria-pressed={isFavorite}
+              >
                 {isFavorite ? (
                   <FavoriteIcon id="favourite" color="error" />
                 ) : (
@@ -141,7 +150,15 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
-            <h3>{priceStr}</h3>
+            {discount === -1 || discount == null ? (
+              <h3>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
@@ -152,7 +169,14 @@ const Dish = (props: IDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div className={styles.FavoriteIcon} onClick={handleFavoriteClick}>
+              <div
+                className={styles.FavoriteIcon}
+                tabIndex={0}
+                onClick={handleFavoriteClick}
+                onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+                role="button"
+                aria-pressed={isFavorite}
+              >
                 {isFavorite ? (
                   <FavoriteIcon id="favourite" color="error" />
                 ) : (
@@ -187,7 +211,15 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
-            <h3 className={styles.DishPrice}>{priceStr}</h3>
+            {discount === -1 || discount == null ? (
+              <h3 className={styles.DishPrice}>{priceStr}</h3>
+            ) : (
+              <div>
+                <h3 className={styles.discount}>{priceStr}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
+                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
+              </div>
+            )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>

@@ -52,7 +52,8 @@ export function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: dish.allergens,
       category: dish.category,
       discount: dish.discount,
-      validTill: dish.validTill
+      validTill: dish.validTill,
+      combo: dish.combo
     };
     restaurantBE.dishes.push(dishObj);
   }
@@ -78,7 +79,8 @@ export function createBackEndObj(restaurant: IRestaurantBackEnd) {
       allergens: extra.allergens,
       category: extra.category,
       discount: extra.discount,
-      validTill: extra.validTill
+      validTill: extra.validTill,
+      combo: extra.combo
     };
     restaurantBE.extras.push(extraObj);
   }
@@ -145,7 +147,8 @@ function createRestaurantObjFe(
           resto: restaurant.name,
           products: dish.products,
           discount: dish.discount,
-          validTill: dish.validTill
+          validTill: dish.validTill,
+          combo: dish.combo
         };
         categories.dishes.push(dishObj);
         obj.dishes.push(dishObj);

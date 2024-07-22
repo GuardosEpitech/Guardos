@@ -1,3 +1,5 @@
+@import "../../general.scss";
+
 @keyframes clickAnimation {
   0% {
     transform: scale(1);
@@ -27,6 +29,10 @@
   padding: 0 32px 0 32px;
   display: flex;
   justify-content: center;
+}
+
+.cardContainer {
+  flex: 0.5;
 }
 
 .button {
@@ -115,9 +121,9 @@
 
 .getStartedButton {
   margin-top: 24px !important;
-  background-color: #6D071A !important;
+  background-color: $burgundy !important;
   &:hover {
-    background-color: #AC2A37 !important;
+    background-color: $light-red !important;
   }
 }
 
