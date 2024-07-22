@@ -9,6 +9,7 @@ export const userSchema = new mongoose.Schema({
   permissions: [String],
   city: String,
   allergens: [String],
+  dislikedIngredients: [String],
   // ISearchCommunication
   savedFilter: [{
     filterName: String,

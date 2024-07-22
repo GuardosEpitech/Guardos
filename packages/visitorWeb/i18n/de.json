@@ -81,6 +81,7 @@
       "Dish": {
         "img-alt": "Gerichtsbild {{ index }}",
         "options": "Optionen: ",
+        "disliked-ingredients": "Versteckt wegen nicht gemochter Zutaten: ",
         "discount": "Heruntergesetzter Preis: ",
         "valid": "Gültig bis"
       },
@@ -279,6 +280,10 @@
         "name": "Name:",
         "city": "Stadt",
         "allergens": "Allergene",
+        "disliked-ingredients": "Vermeide folgende Zutaten",
+        "ingredient-not-found": "Zutat nicht gefunden? Hier neue hinzufügen",
+        "add-new-ingredient": "Neues Zutat zur Auswahl hinzufügen",
+        "enter-ingredient": "Zutat eingeben",
         "preferred-language": "Bevorzugte Sprache",
         "language": "Sprache",
         "change-pw": "Passwort ändern",

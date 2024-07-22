@@ -18,6 +18,7 @@ import {useTranslation} from "react-i18next";
 interface IDishProps {
   dishName: string;
   dishAllergens: string[];
+  dislikedIngredients?: string[];
   dishDescription: string;
   options?: string;
   picturesId: number[];
@@ -33,7 +34,7 @@ const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { dishName, dishAllergens, dishDescription, options, price, picturesId, discount, validTill } = props;
+  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId, discount, validTill } = props;
   const priceStr = `${price.toFixed(2)} €`;
   const {t} = useTranslation();
 
@@ -100,10 +101,10 @@ const Dish = (props: IDishProps) => {
           >
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div 
-                className={styles.FavoriteIcon} 
-                tabIndex={0} 
-                onClick={handleFavoriteClick} 
+              <div
+                className={styles.FavoriteIcon}
+                tabIndex={0}
+                onClick={handleFavoriteClick}
                 onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
                 role="button"
                 aria-pressed={isFavorite}
@@ -141,6 +142,14 @@ const Dish = (props: IDishProps) => {
                 </div>
               )}
             </span>
+            <span className={styles.OptionsText}>
+              {dislikedIngredients && dislikedIngredients.length != 0 && (
+                <div className={!extended && styles.OptionsWrap}>
+                  <b>{t('components.Dish.disliked-ingredients')}</b>
+                  {dislikedIngredients.join(', ')}
+                </div>
+              )}
+            </span>
             {discount === -1 || discount == null ? (
               <h3>{priceStr}</h3>
             ) : (
@@ -160,10 +169,10 @@ const Dish = (props: IDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{dishName}</h3>
-              <div 
-                className={styles.FavoriteIcon} 
-                tabIndex={0} 
-                onClick={handleFavoriteClick} 
+              <div
+                className={styles.FavoriteIcon}
+                tabIndex={0}
+                onClick={handleFavoriteClick}
                 onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
                 role="button"
                 aria-pressed={isFavorite}
@@ -191,6 +200,14 @@ const Dish = (props: IDishProps) => {
                 <div className={!extended && styles.OptionsWrap}>
                   <b>{t('components.Dish.options')}</b>
                   {options}
+                </div>
+              )}
+            </span>
+            <span className={styles.OptionsText}>
+              {dislikedIngredients && dislikedIngredients.length !== 0 && (
+                <div className={!extended && styles.OptionsWrap}>
+                  <b>{t('components.Dish.disliked-ingredients')}</b>
+                  {dislikedIngredients.join(', ')}
                 </div>
               )}
             </span>

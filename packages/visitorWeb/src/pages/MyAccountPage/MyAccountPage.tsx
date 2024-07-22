@@ -5,8 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import {Button,Typography} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {Autocomplete, Button, Typography} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import styles from "./MyAccountPage.module.scss";
@@ -21,7 +20,7 @@ import TextField from "@mui/material/TextField";
 import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import Dish from "@src/components/menu/Dish/Dish";
-import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
+import {enable, disable, setFetchMethod} from "darkreader";
 
 import { IimageInterface } from "shared/models/imageInterface";
 import {addProfileImage, deleteProfileImage, getImages} from "@src/services/imageCalls";
@@ -30,6 +29,7 @@ import {convertImageToBase64, displayImageFromBase64}
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
 import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
+import {addIngredient, getAllIngredients} from "@src/services/ingredientsCalls";
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -38,6 +38,8 @@ const MyAccountPage = () => {
   const [picture, setPicture] = useState(null);
   const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedDislikedIngredients, setSelectedDislikedIngredients] = useState([]);
+  const [dbIngredients, setDBIngredients] = useState([]);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate();
   const [preferredLanguage, setPreferredLanguage] = useState('en');
@@ -59,6 +61,9 @@ const MyAccountPage = () => {
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
 
+  const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
+  const [newIngredient, setNewIngredient] = useState('');
+
 
   useEffect(() => {
     fetchProfileData();
@@ -66,15 +71,21 @@ const MyAccountPage = () => {
     fetchFavoriteDishes();
   }, []);
 
-  const fetchProfileData = () => {
+  const fetchProfileData = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
+    const res = await getAllIngredients();
+    if (res) {
+      const tmp = Array.from(new Set(res.map((ingredient: any) => ingredient.name)));
+      setDBIngredients(tmp);
+    }
     getVisitorProfileDetails(userToken)
       .then((res) => {
         setEmail(res.email);
         setName(res.username);
         setCity(res.city);
         setSelectedOptions(res.allergens);
+        setSelectedDislikedIngredients(res.dislikedIngredients);
         setPicture(res.profilePicId);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
@@ -116,6 +127,31 @@ const MyAccountPage = () => {
 
   const handleSelectChange = (event : any) => {
     setSelectedOptions(event.target.value);
+  };
+
+  const handleSelectDislikedIngredientsChange = (event : any, value: any) => {
+    setSelectedDislikedIngredients(value);
+  };
+
+  const handleAddIngredientPopupOpen = () => {
+    setOpenAddIngredientPopup(true);
+  };
+
+  const handleAddIngredientPopupClose = () => {
+    setOpenAddIngredientPopup(false);
+  };
+
+  const handleNewIngredientChange = (event: any) => {
+    setNewIngredient(event.target.value);
+  };
+
+  const handleAddIngredient = async () => {
+    const result = await addIngredient(newIngredient);
+    if (result) {
+      setDBIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+      setNewIngredient('');
+      handleAddIngredientPopupClose();
+    }
   };
 
   const handleLanguageChange = (event : any) => {
@@ -195,6 +231,7 @@ const MyAccountPage = () => {
       email: email,
       city: city,
       allergens: selectedOptions,
+      dislikedIngredients: selectedDislikedIngredients,
       preferredLanguage: preferredLanguage
     });
     i18n.changeLanguage(preferredLanguage);
@@ -426,6 +463,25 @@ const MyAccountPage = () => {
             }
           </Select>
         </FormControl>
+        <Autocomplete
+          multiple
+          id="disliked-ingredients"
+          onChange={handleSelectDislikedIngredientsChange}
+          options={dbIngredients ? dbIngredients : []}
+          value={selectedDislikedIngredients}
+          filterSelectedOptions
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t('pages.MyAccountPage.disliked-ingredients')}
+            />
+          )}
+        />
+        <div style={{  display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-40px' }}>
+          <Button onClick={handleAddIngredientPopupOpen}>
+            {t('pages.MyAccountPage.ingredient-not-found')}
+          </Button>
+        </div>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
           <InputLabel id="langauge-label">{t('pages.MyAccountPage.preferred-language')}</InputLabel>
@@ -447,6 +503,7 @@ const MyAccountPage = () => {
             </MenuItem>
           </Select>
         </FormControl>
+        <div className={styles.customButton}>
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
           <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
             {t('pages.MyAccountPage.change-pw')}
@@ -520,6 +577,7 @@ const MyAccountPage = () => {
         <button className={styles.deleteButton} onClick={handleOpenDeletePopup}>
           {t('pages.MyAccountPage.delete-account')}
         </button>
+        </div>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
@@ -618,6 +676,37 @@ const MyAccountPage = () => {
           </Button>
           <Button onClick={handleDeleteAccount} autoFocus>
             {t('common.delete')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openAddIngredientPopup}
+        onClose={handleAddIngredientPopupClose}
+        aria-labelledby="add-ingredient-dialog-title"
+        aria-describedby="add-ingredient-dialog-description"
+      >
+        <DialogTitle id="add-ingredient-dialog-title">
+          {t('pages.MyAccountPage.add-new-ingredient')}
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="new-ingredient"
+            label={t('pages.MyAccountPage.enter-ingredient')}
+            type="text"
+            fullWidth
+            value={newIngredient}
+            onChange={handleNewIngredientChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAddIngredientPopupClose}>
+            {t('common.cancel')}
+          </Button>
+          <Button onClick={handleAddIngredient}>
+            {t('common.ok')}
           </Button>
         </DialogActions>
       </Dialog>

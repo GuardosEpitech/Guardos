@@ -57,6 +57,7 @@ export interface ISearchCommunication {
   location?: string;
   categories?: string[];
   allergenList?: string[];
+  dislikedIngredients?: string[];
 }
 
 export interface IProfileCommunication {
@@ -64,6 +65,7 @@ export interface IProfileCommunication {
   email: string;
   city: string;
   allergens: string[];
+  dislikedIngredients: string[];
   savedFilter: [ISearchCommunication];
   profilePicId: number;
   preferredLanguage: string;
