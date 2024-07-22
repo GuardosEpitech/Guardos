@@ -4,8 +4,11 @@ describe('request should return coordinates of an address', () => {
 
     it('should return the long and lat of an address', () => {
         cy.request({
-            method: 'GET',
-            url: `${baseURL}?address=${address}`,
+            method: 'POST',
+            url: baseURL,
+            body: {
+              address: address
+            }
           })
           .then((response) => {
             expect(response.status).to.eq(200);
