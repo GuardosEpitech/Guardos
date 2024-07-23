@@ -20,7 +20,8 @@ export async function addUser(username: string,
     email: email,
     password: AES.encrypt(password, 'Guardos')
       .toString(),
-    allergens: []
+    allergens: [],
+    dislikedIngredients: [],
   });
   const existingUsername = await UserSchema.findOne({ username: username })
     .exec();
@@ -113,6 +114,8 @@ export async function getProfileDetails(userId: number) {
       : userData.city as string,
     allergens: userData.allergens === undefined ? []
       : userData.allergens as string[],
+    dislikedIngredients: userData.dislikedIngredients === undefined ? [] :
+      userData.dislikedIngredients as string[],
     savedFilter: userData.savedFilter === undefined ? [{}]
       : userData.savedFilter as [ISearchCommunication],
     profilePicId: userData.profilePicId === undefined ? null
@@ -123,7 +126,7 @@ export async function getProfileDetails(userId: number) {
   return inter;
 }
 
-// update username, email, allergens, preferred language
+// update username, email, allergens, disliked ingredients, preferred language
 export async function updateProfileDetails(userId: number,
   updateFields: Partial<IProfileCommunication>) {
   try {
@@ -134,6 +137,7 @@ export async function updateProfileDetails(userId: number,
         email: updateFields.email,
         city: updateFields.city,
         allergens: updateFields.allergens,
+        dislikedIngredients: updateFields.dislikedIngredients,
         preferredLanguage: updateFields.preferredLanguage,
       }, {new: true});
 
@@ -286,6 +290,22 @@ export async function updateAllergens(email: string, allergens: string) {
   const userData = await UserSchema
     .findOneAndUpdate({email: email}, {
       allergens: JSON.parse(allergens)
+    }, {new: true});
+  return userData;
+}
+
+export async function getDislikedIngredients(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema.findOne({ uid: userID })
+    .exec();
+  return userData?.dislikedIngredients;
+}
+
+export async function updateDislikedIngredients(userID: number, dislikedIngredients: string[]) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const userData = await UserSchema
+    .findOneAndUpdate({uid: userID}, {
+      dislikedIngredients: dislikedIngredients
     }, {new: true});
   return userData;
 }

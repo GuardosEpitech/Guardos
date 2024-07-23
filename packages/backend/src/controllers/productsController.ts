@@ -140,7 +140,7 @@ export async function addProductsToDB(restaurantId: number, product: IProduct) {
 export async function getProductByName(productName: string):Promise<IProductBE> {
   try {
     const Product = mongoose.model('Product', productSchema);
-    return await Product.findOne({name: productName});
+    return await Product.findOne({name: { $regex: productName, $options: 'i'}});
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return null;

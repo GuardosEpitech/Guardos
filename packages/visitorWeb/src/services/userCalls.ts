@@ -114,6 +114,26 @@ export const getUserAllergens = async (token: string) => {
   }
 };
 
+export const getUserDislikedIngredients = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'user/dislikedIngredients/get',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching the User disliked ingredients:", error);
+  }
+};
+
 export const addCustomer = async (token: string) => {
   try {
     const response = await axios({
