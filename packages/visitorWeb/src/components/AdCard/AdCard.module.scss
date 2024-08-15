@@ -1,0 +1,45 @@
+@import "../../general.scss";
+
+.AdCard {
+    margin: 1rem 0;
+    cursor: pointer;
+  }
+  
+  .GridItemImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ImageDimensions {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .GridItem {
+    padding: 1rem;
+  }
+  
+  .AdTitle {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .AdDescription {
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .BtnPage {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .AdBtn {
+    margin-left: 1rem;
+  }
+  
