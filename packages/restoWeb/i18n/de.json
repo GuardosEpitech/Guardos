@@ -40,6 +40,11 @@
       "discount": "Rabatt"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Bis zu 50% Rabatt auf Elektronik, Kleidung und mehr",
+        "link": "Jetzt einkaufen"
+      },
       "MapButton": {
         "enter-map-view": "Zur Kartenansicht wechseln"
       },

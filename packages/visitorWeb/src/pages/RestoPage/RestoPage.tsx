@@ -246,11 +246,8 @@ const RestoPage = () => {
             ) : (
               filteredRestaurants?.map((item, index) => {
                 if ('isAd' in item) {
-                  const adClient = 'pub-2731822970923616';
-                  const adSlot = '5062917810'; 
-                  return <AdCard key={`ad-${index}`} adClient={adClient} adSlot={adSlot} />;
+                  return <AdCard key={`ad-${index}`} />;
                 }
-              
                 const isFavourite = isFavouriteRestos.includes(item.uid);
                 return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
               })
