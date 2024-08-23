@@ -261,8 +261,8 @@
         "enable-dark-mode": "Dunkles Design aktivieren",
         "payBtn": "Zahlungsmethoden verwalten",
         "User-Support": "Benutzerunterstützung",
-        "third-party-activate": "Drittanbieter-Login aktivieren",
-        "third-party-deactivate": "Drittanbieter-Login deaktivieren"
+        "two-factor-activate": "Zweifaktorauthenifizierung aktivieren",
+        "two-factor-deactivate": "Zweifaktorauthenifizierung deaktivieren"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen",

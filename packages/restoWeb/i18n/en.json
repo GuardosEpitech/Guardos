@@ -261,8 +261,8 @@
         "enable-dark-mode": "Enable Dark Mode",
         "payBtn": "Manage payment methods",
         "User-Support": "User Support",
-        "third-party-activate": "Enable third-party login",
-        "third-party-deactivate": "Disable third-party login"
+        "two-factor-activate": "Enable third-party login",
+        "two-factor-deactivate": "Disable third-party login"
       },
       "ProductsPage": {
         "add-product": "Add product",

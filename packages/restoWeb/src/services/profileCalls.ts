@@ -102,7 +102,7 @@ export const getUserRestoPreferences = async (token: string) => {
   }
 };
 
-export const changeThirdParty = async (token: string,
+export const changeTwoFactor = async (token: string,
   thirdParty: string) => {
   try {
     const response = await axios({

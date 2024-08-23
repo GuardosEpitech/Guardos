@@ -14,7 +14,7 @@ import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {FormControlLabel} from "@mui/material";
 import Switch from '@mui/material/Switch';
 import styles from "./MyAccountPage.module.scss";
-import {changePassword, changeThirdParty, editProfileDetails, getProfileDetails}
+import {changePassword, changeTwoFactor, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
 import {deleteRestoAccount} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
@@ -37,7 +37,7 @@ const MyAccountPage = () => {
   const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [menuDesign, setMenuDesign] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('en');
-  const [thirdParty, setThirdParty] = useState(false);
+  const [twoFactor, setTwoFactor] = useState(false);
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -68,7 +68,7 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
-        setThirdParty(res.thirdParty);
+        setTwoFactor(res.thirdParty);
       });
   };
 
@@ -324,13 +324,13 @@ const MyAccountPage = () => {
     }
   }
 
-  function toggleThirdParty() {
-    console.log("Third party login toggled");
-    changeThirdParty(localStorage.getItem('user'), thirdParty
+  function toggleTwoFactor() {
+    console.log("Two Factor login toggled");
+    changeTwoFactor(localStorage.getItem('user'), twoFactor
       ? "false" : "true")
       .then(r => {
         console.log("Third party login toggled", r);
-        setThirdParty(!thirdParty);
+        setTwoFactor(!twoFactor);
       });
   }
 
@@ -413,9 +413,9 @@ const MyAccountPage = () => {
           </Select>
         </FormControl>
         <FormControlLabel
-          control={<Switch checked={thirdParty} onChange={toggleThirdParty} />}
-          label={thirdParty ? t('pages.MyAccountPage.third-party-deactivate')
-            : t('pages.MyAccountPage.third-party-activate')}
+          control={<Switch checked={twoFactor} onChange={toggleTwoFactor} />}
+          label={twoFactor ? t('pages.MyAccountPage.two-factor-deactivate')
+            : t('pages.MyAccountPage.two-factor-activate')}
         />
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
           <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
