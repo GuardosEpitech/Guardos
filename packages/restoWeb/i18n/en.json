@@ -260,7 +260,9 @@
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
         "enable-dark-mode": "Enable Dark Mode",
         "payBtn": "Manage payment methods",
-        "User-Support": "User Support"
+        "User-Support": "User Support",
+        "third-party-activate": "Enable third-party login",
+        "third-party-deactivate": "Disable third-party login"
       },
       "ProductsPage": {
         "add-product": "Add product",

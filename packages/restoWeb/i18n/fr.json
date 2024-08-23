@@ -260,7 +260,9 @@
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
         "enable-dark-mode": "Activer le mode sombre",
         "payBtn": "Gérer les méthodes de paiement",
-        "User-Support": "Aide utilisateurs"
+        "User-Support": "Aide utilisateurs",
+        "third-party-activate": "Activer la connexion tierce",
+        "third-party-deactivate": "Désactiver la connexion tierce"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit",

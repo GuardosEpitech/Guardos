@@ -101,3 +101,21 @@ export const getUserRestoPreferences = async (token: string) => {
     console.error("Error getting Cookie preferences:", error);
   }
 };
+
+export const changeThirdParty = async (token: string,
+  thirdParty: string) => {
+  try {
+    const response = await axios({
+      method: 'PUT',
+      url: baseUrl + 'setThirdPartyLogin',
+      params: {key: token},
+      data: {thirdPartyToken: thirdParty},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error changing third party token:", error);
+  }
+};

@@ -260,7 +260,9 @@
         "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "enable-dark-mode": "Dunkles Design aktivieren",
         "payBtn": "Zahlungsmethoden verwalten",
-        "User-Support": "Benutzerunterstützung"
+        "User-Support": "Benutzerunterstützung",
+        "third-party-activate": "Drittanbieter-Login aktivieren",
+        "third-party-deactivate": "Drittanbieter-Login deaktivieren"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen",

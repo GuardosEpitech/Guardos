@@ -38,16 +38,6 @@ const Login = (props:LoginPageProps) => {
     checkDarkMode();
   }, []);
 
-  const handleFacebookLogin = () => {
-    // Implement Facebook login logic here
-    alert(t('pages.LoginPage.redirect-facebook-login'));
-  };
-
-  const handleGoogleLogin = () => {
-    // Implement Google login logic here
-    alert(t('pages.LoginPage.redirect-google-login'));
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // handle registration logic here

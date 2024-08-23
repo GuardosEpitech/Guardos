@@ -12,9 +12,9 @@ import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {FormControlLabel} from "@mui/material";
-
+import Switch from '@mui/material/Switch';
 import styles from "./MyAccountPage.module.scss";
-import {changePassword, editProfileDetails, getProfileDetails}
+import {changePassword, changeThirdParty, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
 import {deleteRestoAccount} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
@@ -37,6 +37,7 @@ const MyAccountPage = () => {
   const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [menuDesign, setMenuDesign] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('en');
+  const [thirdParty, setThirdParty] = useState(false);
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -53,7 +54,7 @@ const MyAccountPage = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
 
-  useEffect(() => {   
+  useEffect(() => {
     fetchProfileData();
   }, []);
 
@@ -67,6 +68,7 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
+        setThirdParty(res.thirdParty);
       });
   };
 
@@ -203,8 +205,8 @@ const MyAccountPage = () => {
   };
 
   const toggleDarkMode = () => {
-    const darkModeEnabled = localStorage.getItem('darkMode');   
-    setDarkMode(!darkMode); 
+    const darkModeEnabled = localStorage.getItem('darkMode');
+    setDarkMode(!darkMode);
     if (darkModeEnabled == 'false') {
       enableDarkMode();
     } else {
@@ -233,7 +235,7 @@ const MyAccountPage = () => {
     setIsDarkMode(false);
     disable();
   };
-  
+
   useEffect(() => {
     const loadImages = async () => {
       if (picture) {
@@ -322,6 +324,16 @@ const MyAccountPage = () => {
     }
   }
 
+  function toggleThirdParty() {
+    console.log("Third party login toggled");
+    changeThirdParty(localStorage.getItem('user'), thirdParty
+      ? "false" : "true")
+      .then(r => {
+        console.log("Third party login toggled", r);
+        setThirdParty(!thirdParty);
+      });
+  }
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -344,7 +356,8 @@ const MyAccountPage = () => {
           alt={t('pages.MyAccountPage.pic-alt')}
         />
         <div className={styles.imageButtonContainer}>
-          <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput').click(); }}>
+          <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput')
+            .click(); }}>
             {t('pages.MyAccountPage.change-img')}
             <input
               id="fileInput"
@@ -399,6 +412,11 @@ const MyAccountPage = () => {
             <MenuItem value="fr">{t('common.french')}</MenuItem>
           </Select>
         </FormControl>
+        <FormControlLabel
+          control={<Switch checked={thirdParty} onChange={toggleThirdParty} />}
+          label={thirdParty ? t('pages.MyAccountPage.third-party-deactivate')
+            : t('pages.MyAccountPage.third-party-activate')}
+        />
         <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
           <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
             {t('pages.MyAccountPage.change-pw')}
@@ -485,12 +503,12 @@ const MyAccountPage = () => {
           <Button onClick={() => window.location.href = '/support'}>
             {t('pages.MyAccountPage.User-Support')}
           </Button>
-         </div>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-        <FormControlLabel
-          control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
-          label={t('pages.MyAccountPage.enable-dark-mode')}
-        />
+          <FormControlLabel
+            control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
+            label={t('pages.MyAccountPage.enable-dark-mode')}
+          />
         </div>
       </div>
       <Dialog
