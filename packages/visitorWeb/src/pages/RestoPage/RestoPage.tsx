@@ -13,6 +13,7 @@ import {getRestoFavourites} from "@src/services/favourites";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
+import { getCurrentCoords } from '@src/services/mapCalls';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -50,6 +51,8 @@ const Btn = () => {
 
 const RestoPage = () => {
   const [inputFields, setInputFields] = useState(['', '']);
+  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
+  const [address, setAddress] = React.useState('');
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([
     // TODO: apply i18n
@@ -181,6 +184,21 @@ const RestoPage = () => {
     }
   }
 
+  const handleAddressSearch = async () => {
+    try {
+      const coords = await getCurrentCoords(address);
+      if (coords) {
+        const { lat, lng } = coords;
+        setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+      } else {
+        alert(t('pages.RestoPage.noAddress'));
+      }
+    } catch (error) {
+      console.error('Error fetching address data:', error);
+      alert('Error fetching address data');
+    }
+  };
+
   return (
     <>
       <div className={styles.RectOnImg}>
@@ -221,7 +239,26 @@ const RestoPage = () => {
             )}
           </div>
         ) : (
-          <MapView data={filteredRestaurants} />
+          <div className={styles.container}>
+            <div className={styles.addressInputContainer}>
+              <input
+                type="text"
+                className={styles.addressInput}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={t('pages.RestoPage.address')}
+              />
+              <button
+                className={styles.addressButton}
+                onClick={handleAddressSearch}
+              >
+                {t('pages.RestoPage.loc')}
+               </button>
+            </div>
+            <div className={styles.mapContainer}>
+              <MapView data={filteredRestaurants} userPosition={userPosition}/>
+            </div>
+          </div>
         )}
       </div>
     </>

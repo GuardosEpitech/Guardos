@@ -368,7 +368,10 @@
       "RestoPage": {
         "what-you-looking-for": "What are you looking for ?",
         "search-result": "Berlin - +12548 Restauarants",
-        "noresto": "No fitting restaurants found. Please update your filter."
+        "noresto": "No fitting restaurants found. Please update your filter.",
+        "noAddress": "Address not found",
+        "loc": "Show Location",
+        "address": "Enter address"
       },
       "SubscriptionPage": {
         "my-subscription": "My Subscription",
