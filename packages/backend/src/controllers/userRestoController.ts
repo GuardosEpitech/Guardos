@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import { userRestoSchema }
-  from '../models/userRestaurantInterfaces';
-import { AES, enc } from 'crypto-js';
-import { IRestoProfileCommunication } from '../models/communicationInterfaces';
+import {userRestoSchema} from '../models/userRestaurantInterfaces';
+import {AES, enc} from 'crypto-js';
+import {IRestoProfileCommunication} from '../models/communicationInterfaces';
 
 export async function addUserResto(username: string,
   email: string, password: string) {
@@ -58,9 +57,13 @@ export async function loginUserResto(username: string,
           AES.decrypt(elem.password as string, 'GuardosResto')
             .toString(enc.Utf8) === password) {
         const token = elem.username ? elem.username : elem.email;
-
-        return AES.encrypt(token + password, 'GuardosResto')
-          .toString();
+        const thirdPartyToken = elem.thirdPartyToken
+          ? elem.thirdPartyToken : '';
+        return {
+          token: AES.encrypt(token + password, 'GuardosResto')
+            .toString(),
+          thirdPartyToken: thirdPartyToken
+        };
       }
     }
     return false;
@@ -127,7 +130,8 @@ export async function getRestoProfileDetails(userId: number) {
     defaultMenuDesign: userData.defaultMenuDesign ?
       userData.defaultMenuDesign as string : '',
     preferredLanguage: userData.preferredLanguage === undefined ? ''
-      : userData.preferredLanguage as string
+      : userData.preferredLanguage as string,
+    thirdParty: userData.thirdPartyToken !== undefined,
   };
   return inter;
 }

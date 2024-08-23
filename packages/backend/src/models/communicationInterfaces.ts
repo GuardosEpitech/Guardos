@@ -77,4 +77,5 @@ export interface IRestoProfileCommunication {
   profilePicId: number[];
   defaultMenuDesign: string;
   preferredLanguage: string;
+  thirdParty: boolean;
 }

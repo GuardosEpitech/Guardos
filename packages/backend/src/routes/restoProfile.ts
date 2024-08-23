@@ -227,4 +227,26 @@ router.get('/getCookiePref', async (req, res) => {
     .send(response);
 });
 
+router.put('/setThirdPartyLogin', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const data = req.body;
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    console.log('data', data);
+    return res.status(200)
+      .send({ message: 'Success' });
+    
+  } catch (error) {
+    console.error("Error in POST '/api/profile/setThirdPartyLogin' route:",
+      error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
 export default router;

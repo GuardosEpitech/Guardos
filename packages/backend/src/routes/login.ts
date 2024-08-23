@@ -54,12 +54,14 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     const data = req.body;
     const answer = await loginUserResto(data.username, data.password);
 
-    if (answer !== false) {
-      return res.status(200)
-        .send(answer);
-    } else {
+    if (answer === false) {
       return res.send('Invalid Access');
     }
+    if (answer.thirdPartyToken) {
+      console.log('token found');
+    }
+    return res.status(200)
+      .send(answer.token);
   } catch (error) {
     return res.send('An error occurred while processing your request');
   }
