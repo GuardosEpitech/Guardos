@@ -22,5 +22,5 @@ export const userRestoSchema = new mongoose.Schema({
     marketing: Boolean
   },
   customerID: String,
-  thirdPartyToken: String,
+  twoFactor: String,
 });

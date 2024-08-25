@@ -103,13 +103,13 @@ export const getUserRestoPreferences = async (token: string) => {
 };
 
 export const changeTwoFactor = async (token: string,
-  thirdParty: string) => {
+  twoFactor: string) => {
   try {
     const response = await axios({
       method: 'PUT',
-      url: baseUrl + 'setThirdPartyLogin',
+      url: baseUrl + 'setTwoFactorAuth',
       params: {key: token},
-      data: {thirdPartyToken: thirdParty},
+      data: {twoFactor: twoFactor},
       headers: {
         "content-type": "application/json",
       },

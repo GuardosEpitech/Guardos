@@ -57,12 +57,12 @@ export async function loginUserResto(username: string,
           AES.decrypt(elem.password as string, 'GuardosResto')
             .toString(enc.Utf8) === password) {
         const token = elem.username ? elem.username : elem.email;
-        const thirdPartyToken = elem.thirdPartyToken
-          ? elem.thirdPartyToken : '';
+        const twoFactor = elem.twoFactor
+          ? elem.twoFactor : '';
         return {
           token: AES.encrypt(token + password, 'GuardosResto')
             .toString(),
-          thirdPartyToken: thirdPartyToken
+          twoFactor: twoFactor
         };
       }
     }
@@ -131,7 +131,8 @@ export async function getRestoProfileDetails(userId: number) {
       userData.defaultMenuDesign as string : '',
     preferredLanguage: userData.preferredLanguage === undefined ? ''
       : userData.preferredLanguage as string,
-    thirdParty: userData.thirdPartyToken !== undefined,
+    twoFactor: userData.twoFactor as string === undefined ? '' :
+      userData.twoFactor as string,
   };
   return inter;
 }
@@ -358,4 +359,15 @@ export async function getCustomerResto(userID: number) {
     return answer.customerID;
   }
   return false;
+}
+
+export async function addTwoFactorResto(userId: number, twoFactor: string) {
+  const UserRestoSchema
+      = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserRestoSchema.findOneAndUpdate(
+    { uid: userId },
+    { $set: { twoFactor: twoFactor } },
+    { new: true }
+  );
+  return answer.twoFactor as string;
 }

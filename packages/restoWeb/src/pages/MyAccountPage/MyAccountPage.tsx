@@ -68,7 +68,7 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
-        setTwoFactor(res.thirdParty);
+        setTwoFactor(res.twoFactor);
       });
   };
 
