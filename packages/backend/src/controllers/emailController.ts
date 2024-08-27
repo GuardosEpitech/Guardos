@@ -18,7 +18,7 @@ async function sendEmail
     from: process.env.SMTP_USER,
     to: emailAddress,
     subject: subject,
-    text: `Dear: ${name},\n${request}`,
+    text: `Hey: ${name},\n${request}`,
   };
 
   await transporter.sendMail(mailOptions);

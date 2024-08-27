@@ -66,7 +66,10 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
       const userId = await getUserIdResto(answer.token);
       const userInfo = await getRestoProfileDetails(userId as number);
       await generateAndSendCode(
-          userId as number, userInfo.email, userInfo.username);
+          userId as number,
+          userInfo.email,
+          userInfo.username,
+          userInfo.preferredLanguage as 'fr' | 'de' | 'en');
       return res.status(200)
         .send({twoFactor: true, userId: userId});
     }
