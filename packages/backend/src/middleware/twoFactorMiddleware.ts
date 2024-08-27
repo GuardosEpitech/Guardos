@@ -1,4 +1,4 @@
-//import {sendEmail} from '../controllers/emailController';
+import {sendEmail} from '../controllers/emailController';
 import {addTwoFactorResto} from '../controllers/userRestoController';
 
 function generateRandomCode(): string {
@@ -20,7 +20,6 @@ export async function generateAndSendCode
   const code = generateRandomCode();
   const subject = 'Your Verification Code';
   const message = `Your verification code is: ${code}\n\nThank you!`;
-  console.log(subject, name, message, email);
-  //await sendEmail(subject, name, message, email);
+  await sendEmail(subject, name, message, email);
   await addTwoFactorResto(userID, code);
 }
