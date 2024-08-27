@@ -90,11 +90,11 @@ const Login = (props: LoginPageProps) => {
           loginName: user.username
         });
       } else {
-        setVerificationError('The code you entered is incorrect. Please try again.');
+        setVerificationError(t('pages.LoginPage.incorrect-code'));
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      setVerificationError('An error occurred while verifying the code. Please try again.');
+      setVerificationError(t('pages.LoginPage.code-error'));
     }
   };
 

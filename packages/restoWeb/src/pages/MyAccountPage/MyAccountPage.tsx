@@ -68,7 +68,7 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
-        setTwoFactor(res.twoFactor);
+        setTwoFactor(res.twoFactor === "true");
       });
   };
 
@@ -325,11 +325,10 @@ const MyAccountPage = () => {
   }
 
   function toggleTwoFactor() {
-    console.log("Two Factor login toggled");
+    console.log("Toggling two factor");
     changeTwoFactor(localStorage.getItem('user'), twoFactor
       ? "false" : "true")
       .then(r => {
-        console.log("Third party login toggled", r);
         setTwoFactor(!twoFactor);
       });
   }

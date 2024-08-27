@@ -227,7 +227,11 @@
         "here": "here",
         "or": "Or",
         "facebook-img-alt": "Facebook Logo",
-        "google-img-alt": "Google Logo"
+        "google-img-alt": "Google Logo",
+        "enter-code": "Enter 8-digit code",
+        "enter-code-error": "Please enter an 8-digit code",
+        "incorrect-code": "The code you entered is incorrect. Please try again.",
+        "code-error": "An error occurred while verifying the code. Please try again."
       },
       "MyAccountPage": {
         "account-page": "Account page",

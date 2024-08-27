@@ -1,5 +1,6 @@
 import React from 'react';
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 
 interface VerificationCodeInputProps {
   onSubmit: (code: string) => void;
@@ -10,6 +11,7 @@ const VerificationCodeInput: React.FC<VerificationCodeInputProps>
     = ({ onSubmit, errorMessage }) => {
       const [code, setCode] = useState<string>('');
       const [localError, setLocalError] = useState<string | null>(null);
+      const { t } = useTranslation();
 
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -23,7 +25,7 @@ const VerificationCodeInput: React.FC<VerificationCodeInputProps>
         if (code.length === 8) {
           onSubmit(code);
         } else {
-          setLocalError('Please enter an 8-digit code');
+          setLocalError(t('pages.LoginPage.enter-code-error'));
         }
       };
 
@@ -33,13 +35,13 @@ const VerificationCodeInput: React.FC<VerificationCodeInputProps>
             type="text"
             value={code}
             onChange={handleChange}
-            placeholder="Enter 8-digit code"
+            placeholder={t('pages.LoginPage.enter-code')}
           />
           {(localError || errorMessage) && (
             <p style={{ color: 'red' }}>{localError || errorMessage}</p>
           )}
           <button onClick={handleSubmit} disabled={code.length !== 8}>
-          Submit
+            {t('common.submit')}
           </button>
         </div>
       );
