@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import { getUserId, loginUser} from '../controllers/userController';
-import {loginUserResto, getUserIdResto, getRestoProfileDetails}
+import {loginUserResto, getUserIdResto, getRestoProfileDetails, addTwoFactorResto}
   from '../controllers/userRestoController';
 import { authenticateGoogle } from '../middleware/googleAuthenticate';
 import { handleGoogleLogin } from '../controllers/googleLoginController';
@@ -63,7 +63,6 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
         return res.status(200)
           .send(answer.token);
       }
-      console.log('answer', answer);
       const userId = await getUserIdResto(answer.token);
       const userInfo = await getRestoProfileDetails(userId as number);
       await generateAndSendCode(
@@ -92,26 +91,30 @@ router.get('/restoWeb/checkIn', async function (req: Request, res: Response) {
   }
 });
 
-router.get('restoWeb/TwoFactor', async function (req: Request, res: Response) {
-  try {
-    const userId = Number(req.query.id);
-    const userVerificationCode = String(req.query.code);
-    const data = req.body;
-    const answer = await getRestoProfileDetails(userId);
-    if (answer.twoFactor === userVerificationCode) {
-      const token = await loginUserResto(data.username, data.password);
+router.post('/restoWeb/TwoFactor', 
+  async function (req: Request, res: Response) {
+    try {
+      const data = req.body;
+      const userId = data.id;
+      const userVerificationCode = data.code;
+      const answer = await getRestoProfileDetails(userId);
+      if (answer.twoFactor === userVerificationCode) {
+        const token = await loginUserResto(data.username, data.password);
 
-      if (token === false) {
-        return res.send('Invalid Access');
+        if (token === false) {
+          return res.status(400)
+            .send('Invalid Access, user not found');
+        }
+        await addTwoFactorResto(userId, 'true');
+        return res.status(200)
+          .send(token.token);
+      } else {
+        return res.status(400)
+          .send('Invalid Access, code is incorrect');
       }
-      return res.status(200)
-        .send(token.token);
-    } else {
-      return res.sendStatus(400);
+    } catch (error) {
+      return res.status(500)
+        .send('An error occurred while processing your request');
     }
-  } catch (error) {
-    return res.status(500)
-      .send('An error occurred while processing your request');
-  }
-});
+  });
 export default router;
