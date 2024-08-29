@@ -89,12 +89,12 @@ export const restaurantSchema = new mongoose.Schema({
     date: Date,
   }],
   statistics: {
+    restoId: Number,
     totalClicks: Number,
     clicksThisMonth: Number,
     clicksThisWeek: Number,
     updateMonth: String,
     updateWeek: String,
-    clicksToday: Number,
     userAllergens: [{
       allergen: String,
       count: Number,

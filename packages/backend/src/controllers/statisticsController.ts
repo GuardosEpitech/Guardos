@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import {restaurantSchema} from '../models/restaurantInterfaces';
+import {IStatistics} from '../../../shared/models/restaurantInterfaces';
 
 function handleAllergenList(allergenList: string[], restaurant: any) {
   const allergenListUpdate = restaurant.statistics.userAllergens;
@@ -94,4 +95,29 @@ export async function updateRestoUserStatistics(
 
   await restaurant.save();
   return restaurant;
+}
+
+export async function getStatisticsForResto(userId: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const restaurants = await Restaurant.find({ userID: userId });
+  if (!restaurants) {
+    return null;
+  }
+  const statistics = [];
+  for (const restaurant of restaurants) {
+    //@ts-ignore
+    const statistic :IStatistics = {
+      restoId: restaurant._id || 0,
+      //@ts-ignore
+      totalClicks: restaurant.statistics.totalClicks || 0,//@ts-ignore
+      clicksThisMonth: restaurant.statistics.clicksThisMonth || 0,//@ts-ignore
+      clicksThisWeek: restaurant.statistics.clicksThisWeek || 0,//@ts-ignore
+      updateMonth: restaurant.statistics.updateMonth || '', //@ts-ignore
+      updateWeek: restaurant.statistics.updateWeek || '',//@ts-ignore
+      userAllergens: restaurant.statistics.userAllergens || [],//@ts-ignore
+      userDislikedIngredients: restaurant.statistics.userDislikedIngredients || []
+    };
+    statistics.push(statistic);
+  }
+  return statistics;
 }
