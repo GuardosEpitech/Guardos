@@ -1,5 +1,6 @@
 import express from 'express';
 import {getMenuByRestoID} from '../controllers/menuController';
+import {updateRestoUserStatistics} from '../controllers/statisticsController';
 
 const router = express.Router();
 
@@ -7,10 +8,11 @@ router.post('/', async (req, res) => {
   try {
     const restoID = Number(req.body.restoID);
     const allergenList = req.body.allergenList;
-    const dislikedIngredientsList = req.body.dislikedIngredientsList;
+    const dislikedIngrList = req.body.dislikedIngredientsList;
 
-    const menu = await getMenuByRestoID(restoID, allergenList,
-      dislikedIngredientsList);
+    //@ts-ignore
+    const menu = await getMenuByRestoID(restoID, allergenList, dislikedIngrList);
+    await updateRestoUserStatistics(restoID, allergenList, dislikedIngrList);
     return res.status(200)
       .send(menu);
   } catch (error) {
