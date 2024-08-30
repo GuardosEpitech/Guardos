@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PercentIcon from '@mui/icons-material/Percent';
-
-import { deleteDish } from "@src/services/dishCalls";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { deleteDish, getDishesByID } from "@src/services/dishCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/components/menu/Dish/Dish.module.scss";
@@ -20,18 +21,21 @@ interface IEditableDishProps {
   onUpdate?: Function;
   imageSrc?: string;
   editable?: boolean;
+  isTopLevel?: boolean;
 }
 
 const Dish = (props: IEditableDishProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const { onUpdate, dish, editable } = props;
+  const [showCombos, setShowCombos] = useState(false);
+  const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price, discount, validTill } = dish;
+  const { name, description, price, discount, validTill, combo } = dish;
   const priceStr = `${price.toFixed(2)} €`;
   const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const {t} = useTranslation();
+  const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
@@ -94,6 +98,14 @@ const Dish = (props: IEditableDishProps) => {
         }]);
       }
     };
+    const getComboDishes = async () => {
+      const comboDishes = await getDishesByID(dish.resto, {ids: combo});
+      setRecommendedDishes(comboDishes);
+    }
+
+    if (combo) {
+      getComboDishes();
+    }
 
     loadImages();
   }, [dish.picturesId]);
@@ -129,6 +141,11 @@ const Dish = (props: IEditableDishProps) => {
                       actionName: t('common.discount'),
                       actionIcon: PercentIcon,
                       actionRedirect: "/discount",
+                      redirectProps: { dish: dish}
+                    }, {
+                      actionName: t('common.combo'),
+                      actionIcon: AddCircleOutlineIcon,
+                      actionRedirect: "/combo",
                       redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
@@ -197,6 +214,11 @@ const Dish = (props: IEditableDishProps) => {
                       actionIcon: PercentIcon,
                       actionRedirect: "/discount",
                       redirectProps: { dish: dish}
+                    }, {
+                      actionName: t('common.combo'),
+                      actionIcon: AddCircleOutlineIcon,
+                      actionRedirect: "/combo",
+                      redirectProps: { dish: dish}
                     }]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
@@ -248,6 +270,26 @@ const Dish = (props: IEditableDishProps) => {
             />}
           </Grid>
         </Grid>
+        {isTopLevel && combo && combo.length > 0 && (
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h4>{t('components.Dish.recommendedCombos')}</h4>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className={styles.Combos}>
+              {recommendedDishes.map((recommendedDish, index) => (
+                <Dish
+                  key={index}
+                  dish={recommendedDish}
+                  editable={editable}
+                  onUpdate={onUpdate}
+                  isTopLevel={false}
+                />
+              ))}
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      )}
       </div>
     </Paper>
   );

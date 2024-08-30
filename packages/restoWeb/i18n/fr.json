@@ -94,7 +94,8 @@
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ dishName }}?",
         "options": "Options: ",
         "discount": "Prix réduit: ",
-        "valid": "Valable jusqu'au"
+        "valid": "Valable jusqu'au",
+        "recommendedCombos": "Afficher les combinaisons recommandées"
       },
       "ProductCard": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ productName }}?",
@@ -565,6 +566,16 @@
         "errorPercent": "Le pourcentage doit être supérieur à 0 et inférieur à 100",
         "successAdd": "La réduction a été enregistrée avec succès",
         "successDelete": "Remise supprimée avec succès"
+      },
+      "DishComboPage": {
+        "title": "Gérer les combinaisons pour ",
+        "recommendedCombinations": "Combinaisons recommandées :",
+        "DishComboPage": "Supprimer",
+        "selectDish": "Éléments sélectionnés",
+        "save": "Enregistrer",
+        "clearAll": "Tout effacer",
+        "successAdd": "Combinaisons ajoutées avec succès",
+        "successRemove": "Toutes les combinaisons supprimées"
       }
       
     }

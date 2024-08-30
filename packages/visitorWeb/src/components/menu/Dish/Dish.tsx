@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
@@ -14,6 +15,8 @@ import {
   deleteDishFromFavourites,
 } from "@src/services/favourites";
 import {useTranslation} from "react-i18next";
+import { IDishFE } from "shared/models/dishInterfaces";
+import { getDishesByID } from "@src/services/menuCalls";
 
 interface IDishProps {
   dishName: string;
@@ -28,15 +31,18 @@ interface IDishProps {
   isFavourite: boolean;
   discount: number;
   validTill: string;
+  combo: number[];
+  isTopLevel?: boolean;
 }
 
 const Dish = (props: IDishProps) => {
   const [extended, setExtended] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId, discount, validTill } = props;
+  const { dishName, dishAllergens, dislikedIngredients, dishDescription, options, price, picturesId, discount, validTill, combo, isTopLevel } = props;
   const priceStr = `${price.toFixed(2)} €`;
   const {t} = useTranslation();
+  const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
 
   useEffect(() => {
     async function fetchImages() {
@@ -62,7 +68,13 @@ const Dish = (props: IDishProps) => {
         }]);
       }
     }
-
+    const getComboDishes = async () => {
+      const comboDishes = await getDishesByID(props.restoID, {ids: combo});
+      setRecommendedDishes(comboDishes);
+    }
+    if (combo) {
+      getComboDishes();
+    }
     fetchImages();
     setIsFavorite(props.isFavourite);
   }, [props.isFavourite, picturesId]);
@@ -229,6 +241,36 @@ const Dish = (props: IDishProps) => {
             ))}
           </Grid>
         </Grid>
+        {isTopLevel && combo && combo.length > 0 && (
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <h4>{t('components.Dish.recommendedCombos')}</h4>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className={styles.Combos}>
+              {recommendedDishes.map((recommendedDish, index) => (
+                <Dish
+                key={recommendedDish.name + index}
+                dishName={recommendedDish.name}
+                dishAllergens={recommendedDish.allergens}
+                dislikedIngredients={dislikedIngredients}
+                dishDescription={recommendedDish.description}
+                options={recommendedDish.category.extraGroup.join(", ")}
+                price={recommendedDish.price}
+                picturesId={recommendedDish.picturesId}
+                restoID={props.restoID}
+                dishID={recommendedDish.uid}
+                discount={recommendedDish.discount}
+                validTill={recommendedDish.validTill}
+                combo={recommendedDish.combo}
+                isTopLevel={false}
+                isFavourite={false}
+              />
+              ))}
+            </div>
+          </AccordionDetails>
+        </Accordion>
+      )}
       </div>
     </Paper>
   );

@@ -83,7 +83,8 @@
         "options": "Optionen: ",
         "disliked-ingredients": "Versteckt wegen nicht gemochter Zutaten: ",
         "discount": "Heruntergesetzter Preis: ",
-        "valid": "Gültig bis"
+        "valid": "Gültig bis",
+        "recommendedCombos": "Empfohlene Kombinationen anzeigens"
       },
       "RestoCard": {
         "add-review": "Eine Bewertung hinzufügen",
