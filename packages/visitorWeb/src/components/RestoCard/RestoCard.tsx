@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PlaceIcon from "@mui/icons-material/Place";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from "@mui/material/Button";
+import ShareIcon from '@mui/icons-material/Share';
+import IconButton from '@mui/material/IconButton';
 import { Grid, Paper } from "@mui/material";
 import styles from "./RestoCard.module.scss";
-
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
-import { NavigateTo } from "@src/utils/NavigateTo";
-import {defaultRestoImage} from "shared/assets/placeholderImageBase64";
-import {IimageInterface} from "../../../../shared/models/imageInterface";
-import {getImages} from "@src/services/imageCalls";
-import {addRestoAsFavourite, deleteRestoFromFavourites} from "@src/services/favourites";
-import {useTranslation} from "react-i18next";
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
+import { IimageInterface } from "../../../../shared/models/imageInterface";
+import { getImages } from "@src/services/imageCalls";
+import { addRestoAsFavourite, deleteRestoFromFavourites } from "@src/services/favourites";
+import { useTranslation } from "react-i18next";
 
 const PageBtn = () => {
   return createTheme({
@@ -46,10 +46,10 @@ const PageBtn = () => {
 };
 
 interface IRestoCardProps {
-  resto: IRestaurantFrontEnd,
-  isFavourite: boolean,
-  dataIndex: number,
-  key: number,
+  resto: IRestaurantFrontEnd;
+  isFavourite: boolean;
+  dataIndex: number;
+  key: number;
 }
 
 const RestoCard = (props: IRestoCardProps) => {
@@ -64,7 +64,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function fetchImages() {
@@ -88,10 +88,27 @@ const RestoCard = (props: IRestoCardProps) => {
     fetchImages();
   }, [picturesId]);
 
-  const handleFavoriteClick = (event:any) => {
-    event.stopPropagation(); // Prevents the card click event from triggering
+  const handleClickInfo = () => {
+    navigate(`/menu/${props.resto.uid}`, {
+      state: {
+        restoName: name,
+        restoID: props.resto.uid,
+        address: address,
+        menuDesignID: props.resto.menuDesignID
+      }
+    });
+  };
+  
+  const handleShareClick = (event: any) => {
+    event.stopPropagation();
+    const menuUrl = `${window.location.origin}/menu/${props.resto.uid}`;
+    navigator.clipboard.writeText(menuUrl);
+    alert(t('components.RestoCard.linkCopied'));
+  };
 
-    // Toggle the favorite status
+  const handleFavoriteClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
     setIsFavorite((prevIsFavorite) => !prevIsFavorite);
 
     const userToken = localStorage.getItem('user');
@@ -104,13 +121,19 @@ const RestoCard = (props: IRestoCardProps) => {
     }
   };
 
+  const handleFavoriteKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      handleFavoriteClick(event as unknown as React.MouseEvent<HTMLDivElement>);
+    }
+  };
+
   return (
     <Paper id="resto-card" className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={12} sm={3} className={styles.GridItemImage}>
           {pictures.length > 0 &&
               <img
-                  key={pictures[0].id+name}
+                  key={pictures[0].id + name}
                   src={pictures[0].base64}
                   alt={name}
                   className={styles.ImageDimensions}
@@ -125,7 +148,7 @@ const RestoCard = (props: IRestoCardProps) => {
               className={styles.FavoriteIcon} 
               tabIndex={0} 
               onClick={handleFavoriteClick} 
-              onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
+              onKeyDown={handleFavoriteKeyDown}
               role="button"
               aria-pressed={isFavorite}
             >
@@ -164,16 +187,13 @@ const RestoCard = (props: IRestoCardProps) => {
               <Button
                 className={styles.RestoBtn}
                 variant="contained"
-                onClick={() => NavigateTo("/menu", navigate, {
-                  menu: categories,
-                  restoName: name,
-                  restoID: props.resto.uid,
-                  address: address,
-                  menuDesignID: props.resto.menuDesignID
-                })}
+                onClick={handleClickInfo}
               >
                 {t('components.RestoCard.menu')}
               </Button>
+              <IconButton onClick={handleShareClick} aria-label={t('components.RestoCard.share')}>
+                 <ShareIcon color="primary" />
+              </IconButton>
             </ThemeProvider>
           </div>
         </Grid>
