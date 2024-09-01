@@ -128,7 +128,7 @@ const Dish = (props: IEditableDishProps) => {
           >
             <div className={styles.FlexParentMenu}>
               <h3 className={styles.DishTitle}>{name}</h3>
-              {editable && (
+              {editable && isTopLevel && (
                 <>
                   <DishActions
                     actionList={[
@@ -201,7 +201,7 @@ const Dish = (props: IEditableDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{name}</h3>
-              {editable && (
+              {editable  && isTopLevel && (
                 <>
                   <DishActions
                     actionList={[{
