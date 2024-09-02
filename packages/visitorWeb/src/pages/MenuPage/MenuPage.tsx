@@ -175,6 +175,8 @@ const MenuPage = () => {
                         dishID={dish.uid}
                         discount={dish.discount}
                         validTill={dish.validTill}
+                        combo={dish.combo}
+                        isTopLevel={true}
                         isFavourite={isFavouriteDishs.some(
                           (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
                         )}
@@ -197,6 +199,8 @@ const MenuPage = () => {
                             dishID={dish.uid}
                             discount={dish.discount}
                             validTill={dish.validTill}
+                            combo={dish.combo}
+                            isTopLevel={true}
                             isFavourite={isFavouriteDishs.some(
                               (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
                             )}
@@ -267,6 +271,8 @@ const MenuPage = () => {
                             dishID={dish.uid}
                             discount={dish.discount}
                             validTill={dish.validTill}
+                            combo={dish.combo}
+                            isTopLevel={true}
                             isFavourite={isFavouriteDishs.some(
                               (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
                             )}
@@ -289,6 +295,8 @@ const MenuPage = () => {
                                 dishID={dish.uid}
                                 discount={dish.discount}
                                 validTill={dish.validTill}
+                                combo={dish.combo}
+                                isTopLevel={true}
                                 isFavourite={isFavouriteDishs.some(
                                   (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
                                 )}
