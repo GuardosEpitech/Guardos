@@ -92,7 +92,8 @@
         "menu": "Menu",
         "day": "Day",
         "opening": "Opening",
-        "closing": "Closing"
+        "closing": "Closing",
+        "linkCopied": "Link copied to clipboard"
       },
       "Slider": {
         "allergen-friendly": "Allergen friendly",

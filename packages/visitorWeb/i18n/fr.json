@@ -92,7 +92,8 @@
         "menu": "Menu",
         "day": "Jour",
         "opening": "Ouverture",
-        "closing": "Fermeture"
+        "closing": "Fermeture",
+        "linkCopied": "Lien copié"
       },
       "Slider": {
         "allergen-friendly": "Convivial pour les allergènes",
