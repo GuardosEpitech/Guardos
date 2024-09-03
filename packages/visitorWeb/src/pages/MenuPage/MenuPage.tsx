@@ -252,7 +252,7 @@ const MenuPage = () => {
             </div>
             <div className={styles.restoList}>
               {restoMenu.map((category: ICategories, index: number) => {
-                return (
+                return (//@ts-ignore
                   <div key={index} ref={sectionRefs.current[index]}>
                     {index % 3 === 0 ? (
                       <div style={{
@@ -288,14 +288,14 @@ const MenuPage = () => {
                             options={dish.category.extraGroup.join(", ")}
                             price={dish.price}
                             picturesId={dish.picturesId}
-                            restoID={restoID}
+                            restoID={Number(id)}
                             dishID={dish.uid}
                             discount={dish.discount}
                             validTill={dish.validTill}
                             combo={dish.combo}
                             isTopLevel={true}
                             isFavourite={isFavouriteDishs.some(
-                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                              (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
                             )}
                           />
                         ))}
@@ -312,14 +312,14 @@ const MenuPage = () => {
                                 options={dish.category.extraGroup.join(", ")}
                                 price={dish.price}
                                 picturesId={dish.picturesId}
-                                restoID={restoID}
+                                restoID={Number(id)}
                                 dishID={dish.uid}
                                 discount={dish.discount}
                                 validTill={dish.validTill}
                                 combo={dish.combo}
                                 isTopLevel={true}
                                 isFavourite={isFavouriteDishs.some(
-                                  (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                                  (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
                                 )}
                               />
                             ))}
