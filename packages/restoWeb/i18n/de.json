@@ -94,7 +94,8 @@
         "confirm-delete": "Sind Sie sicher, dass Sie {{ dishName }} löschen möchten?",
         "options": "Optionen: ",
         "discount": "Heruntergesetzter Preis: ",
-        "valid": "Gültig bis"
+        "valid": "Gültig bis",
+        "recommendedCombos": "Empfohlene Kombinationen anzeigens"
       },
       "ProductCard": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ productName }} löschen möchten?",
@@ -227,7 +228,11 @@
         "here": "hier",
         "or": "Oder",
         "facebook-img-alt": "Facebook-Logo",
-        "google-img-alt": "Google-Logo"
+        "google-img-alt": "Google-Logo",
+        "enter-code": "Geben Sie den 8-stelligen Code ein",
+        "enter-code-error": "Bitte geben Sie den 8-stelligen Code ein",
+        "incorrect-code": "Der Code, den Sie eingegeben haben, ist falsch. Bitte versuchen Sie es erneut.",
+        "code-error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
       },
       "MyAccountPage": {
         "account-page": "Kontoübersicht",
@@ -260,7 +265,9 @@
         "confirm-delete-account": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         "enable-dark-mode": "Dunkles Design aktivieren",
         "payBtn": "Zahlungsmethoden verwalten",
-        "User-Support": "Benutzerunterstützung"
+        "User-Support": "Benutzerunterstützung",
+        "two-factor-activate": "Zweifaktorauthenifizierung aktivieren",
+        "two-factor-deactivate": "Zweifaktorauthenifizierung deaktivieren"
       },
       "ProductsPage": {
         "add-product": "Produkt hinzufügen",
@@ -565,6 +572,16 @@
         "errorPercent": "Der Prozentsatz muss größer als 0 und kleiner als 100 sein.",
         "successAdd": "Rabatt erfolgreich gespeichert",
         "successDelete": "Rabatt erfolgreich entfernt"
+      },
+      "DishComboPage": {
+        "title": "Kombinationen verwalten für ",
+        "recommendedCombinations": "Empfohlene Kombinationen:",
+        "DishComboPage": "Entfernen",
+        "selectDish": "Ausgewählte Artikel",
+        "save": "Speichern",
+        "clearAll": "Alles löschen",
+        "successAdd": "Kombinationen erfolgreich hinzugefügt",
+        "successRemove": "Alle Kombinationen entfernt"
       }
 
     }

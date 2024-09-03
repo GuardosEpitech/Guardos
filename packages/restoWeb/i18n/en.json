@@ -37,7 +37,8 @@
       "unexpected-error": "An unexpected error occurred",
       "all-fields-mandatory": "All fields are mandatory.",
       "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!",
-      "discount": "Discount"
+      "discount": "Discount",
+      "combo": "Dish combination"
     },
     "components": {
       "MapButton": {
@@ -94,7 +95,8 @@
         "confirm-delete": "Are you sure you want to delete {{ dishName }}?",
         "options": "Options: ",
         "discount": "Discounted price: ",
-        "valid": "Valid until"
+        "valid": "Valid until",
+        "recommendedCombos": "Show recommended Combinations"
       },
       "ProductCard": {
         "confirm-delete": "Are you sure you want to delete {{ productName }}?",
@@ -227,7 +229,11 @@
         "here": "here",
         "or": "Or",
         "facebook-img-alt": "Facebook Logo",
-        "google-img-alt": "Google Logo"
+        "google-img-alt": "Google Logo",
+        "enter-code": "Enter 8-digit code",
+        "enter-code-error": "Please enter an 8-digit code",
+        "incorrect-code": "The code you entered is incorrect. Please try again.",
+        "code-error": "An error occurred while verifying the code. Please try again."
       },
       "MyAccountPage": {
         "account-page": "Account page",
@@ -260,7 +266,9 @@
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
         "enable-dark-mode": "Enable Dark Mode",
         "payBtn": "Manage payment methods",
-        "User-Support": "User Support"
+        "User-Support": "User Support",
+        "two-factor-activate": "Enable two-factor authentication",
+        "two-factor-deactivate": "Disable two-factor authentication"
       },
       "ProductsPage": {
         "add-product": "Add product",
@@ -565,6 +573,16 @@
         "errorPercent": "Percentage must be greater than 0 and less than 100",
         "successAdd": "Discount saved successfully",
         "successDelete": "Discount removed successfully"
+      },
+      "DishComboPage": {
+        "title": "Manage combinations for ",
+        "recommendedCombinations": "Recommended combinations:",
+        "DishComboPage": "Remove",
+        "selectDish": "Selected items",
+        "save": "Save",
+        "clearAll": "Clear all",
+        "successAdd": "Combinations successfully added",
+        "successRemove": "All combinations removed"
       }
     }
   }

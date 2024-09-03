@@ -25,3 +25,20 @@ export const getRestosMenu = async (restoId: number, allergenList: string[], dis
     console.error("Error fetching the Users:", error);
   }
 };
+
+export const getDishesByID = async (restoId: number, body: any) => {
+  try {
+    const response = await axios({
+      url: baseUrl + '/dishes/dishIDsByID',
+      method: "POST",
+      params: {key: restoId},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dishes by id:", error);
+  }
+}

@@ -12,9 +12,9 @@ import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {FormControlLabel} from "@mui/material";
-
+import Switch from '@mui/material/Switch';
 import styles from "./MyAccountPage.module.scss";
-import {changePassword, editProfileDetails, getProfileDetails}
+import {changePassword, changeTwoFactor, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
 import {deleteRestoAccount} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
@@ -37,6 +37,7 @@ const MyAccountPage = () => {
   const [profilePic, setProfilePic] = useState<IimageInterface[]>([]);
   const [menuDesign, setMenuDesign] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('en');
+  const [twoFactor, setTwoFactor] = useState(false);
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -53,7 +54,7 @@ const MyAccountPage = () => {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
 
-  useEffect(() => {   
+  useEffect(() => {
     fetchProfileData();
   }, []);
 
@@ -67,6 +68,7 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId[res.profilePicId.length - 1]);
         setMenuDesign(res.defaultMenuDesign);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
+        setTwoFactor(res.twoFactor === "true");
       });
   };
 
@@ -203,8 +205,8 @@ const MyAccountPage = () => {
   };
 
   const toggleDarkMode = () => {
-    const darkModeEnabled = localStorage.getItem('darkMode');   
-    setDarkMode(!darkMode); 
+    const darkModeEnabled = localStorage.getItem('darkMode');
+    setDarkMode(!darkMode);
     if (darkModeEnabled == 'false') {
       enableDarkMode();
     } else {
@@ -233,7 +235,7 @@ const MyAccountPage = () => {
     setIsDarkMode(false);
     disable();
   };
-  
+
   useEffect(() => {
     const loadImages = async () => {
       if (picture) {
@@ -322,6 +324,15 @@ const MyAccountPage = () => {
     }
   }
 
+  function toggleTwoFactor() {
+    console.log("Toggling two factor");
+    changeTwoFactor(localStorage.getItem('user'), twoFactor
+      ? "false" : "true")
+      .then(r => {
+        setTwoFactor(!twoFactor);
+      });
+  }
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -344,7 +355,10 @@ const MyAccountPage = () => {
           alt={t('pages.MyAccountPage.pic-alt')}
         />
         <div className={styles.imageButtonContainer}>
-          <button className={styles.imageButton} onClick={() => { document.getElementById('fileInput').click(); }}>
+          <button className={styles.imageButton} onClick={() => {
+            document.getElementById('fileInput')
+              .click();
+          }}>
             {t('pages.MyAccountPage.change-img')}
             <input
               id="fileInput"
@@ -377,7 +391,6 @@ const MyAccountPage = () => {
             onChange={handleMenuDesignChange}
             label={t('pages.MyAccountPage.menu-design')}
           >
-            {/*TODO: apply i18n*/}
             <MenuItem value="default">Default</MenuItem>
             <MenuItem value="fast-food">Fast Food</MenuItem>
             <MenuItem value="pizzeria">Pizzeria</MenuItem>
@@ -399,100 +412,110 @@ const MyAccountPage = () => {
             <MenuItem value="fr">{t('common.french')}</MenuItem>
           </Select>
         </FormControl>
-        <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
-          <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
-            {t('pages.MyAccountPage.change-pw')}
-          </button>
-          {passwordChangeOpen && (
-            <div>
-              {passwordChangeStatus && (
-                <div
-                  className={`${styles.passwordChangeStatus} ${
-                    passwordChangeStatus === 'success' ? styles.success : styles.error
-                  }`}
-                >
-                  {passwordChangeStatus === 'success'
-                    ? t('pages.MyAccountPage.change-pw-success')
-                    : t('pages.MyAccountPage.change-pw-failure')}
-                </div>
-              )}
-              <TextField
-                className={styles.fullWidth}
-                label={t('pages.MyAccountPage.old-pw')}
-                name="oldPassword"
-                type="password"
-                value={oldPassword}
-                onChange={handleOldPasswordChange}
-                margin="normal"
-                error={errorForm}
-                helperText={errorForm ? t('pages.MyAccountPage.incorrect-pw') : ''}
-              />
-              <TextField
-                className={styles.fullWidth}
-                label={t('pages.MyAccountPage.new-pw')}
-                name="newPassword"
-                type="password"
-                value={newPassword}
-                onChange={handleNewPasswordChange}
-                margin="normal"
-                error={pwError}
-                helperText={pwError ? t('pages.MyAccountPage.wrong-pw-format') : ''}
-              />
-              <TextField
-                className={styles.fullWidth}
-                label={t('pages.MyAccountPage.confirm-pw')}
-                name="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                margin="normal"
-                error={samePwError}
-                helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
-              />
-              {/* Save Password Button */}
+
+        <div className={styles.buttonContainer}>
+          <FormControlLabel
+            control={<Switch checked={twoFactor} onChange={toggleTwoFactor}/>}
+            label={twoFactor ? t('pages.MyAccountPage.two-factor-deactivate')
+              : t('pages.MyAccountPage.two-factor-activate')}
+          />
+          <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
+            <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
+              {t('pages.MyAccountPage.change-pw')}
+            </button>
+            {passwordChangeOpen && (
               <div>
-                <button className={styles.saveButton} onClick={handleSavePassword}>
-                  {t('pages.MyAccountPage.save-pw')}
-                </button>
+                {passwordChangeStatus && (
+                  <div
+                    className={`${styles.passwordChangeStatus} ${
+                      passwordChangeStatus === 'success' ? styles.success : styles.error
+                    }`}
+                  >
+                    {passwordChangeStatus === 'success'
+                      ? t('pages.MyAccountPage.change-pw-success')
+                      : t('pages.MyAccountPage.change-pw-failure')}
+                  </div>
+                )}
+                <TextField
+                  className={styles.fullWidth}
+                  label={t('pages.MyAccountPage.old-pw')}
+                  name="oldPassword"
+                  type="password"
+                  value={oldPassword}
+                  onChange={handleOldPasswordChange}
+                  margin="normal"
+                  error={errorForm}
+                  helperText={errorForm ? t('pages.MyAccountPage.incorrect-pw') : ''}
+                />
+                <TextField
+                  className={styles.fullWidth}
+                  label={t('pages.MyAccountPage.new-pw')}
+                  name="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={handleNewPasswordChange}
+                  margin="normal"
+                  error={pwError}
+                  helperText={pwError ? t('pages.MyAccountPage.wrong-pw-format') : ''}
+                />
+                <TextField
+                  className={styles.fullWidth}
+                  label={t('pages.MyAccountPage.confirm-pw')}
+                  name="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  margin="normal"
+                  error={samePwError}
+                  helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
+                />
+                <div>
+                  <button className={styles.saveButton} onClick={handleSavePassword}>
+                    {t('pages.MyAccountPage.save-pw')}
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-        <button onClick={() => window.location.href = '/subscriptions'}>
-          {t('pages.MyAccountPage.subscriptions')}
-        </button>
-        <button onClick={() => window.location.href = '/payment'}>
-          {t('pages.MyAccountPage.payBtn')}
-        </button>
-        <div>
-          <button className={styles.saveButton} onClick={handleSave}>
-            {t('pages.MyAccountPage.save-changes')}
+            )}
+          </div>
+          <button onClick={() => window.location.href = '/subscriptions'}>
+            {t('pages.MyAccountPage.subscriptions')}
+          </button>
+          <button onClick={() => window.location.href = '/payment'}>
+            {t('pages.MyAccountPage.payBtn')}
+          </button>
+          <div>
+            <button className={styles.saveButton} onClick={handleSave}>
+              {t('pages.MyAccountPage.save-changes')}
+            </button>
+          </div>
+          <button
+            className={styles.deleteButton}
+            onClick={handleOpenDeletePopup}
+          >
+            {t('pages.MyAccountPage.delete-account')}
           </button>
         </div>
-        <button
-          className={styles.deleteButton}
-          onClick={handleOpenDeletePopup}
-        >
-          {t('pages.MyAccountPage.delete-account')}
-        </button>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'}}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => window.location.href = '/feature-request'}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px' }}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px'}}>
           <Button onClick={() => window.location.href = '/support'}>
             {t('pages.MyAccountPage.User-Support')}
           </Button>
-         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-        <FormControlLabel
-          control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode} inputProps={{ 'aria-label': 'controlled' }} sx={{ m: 1 }}/>}
-          label={t('pages.MyAccountPage.enable-dark-mode')}
-        />
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'}}>
+          <FormControlLabel
+            control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode}
+              inputProps={{'aria-label': 'controlled'}} sx={{m: 1}}/>}
+            label={t('pages.MyAccountPage.enable-dark-mode')}
+          />
         </div>
       </div>
+
       <Dialog
         open={openDeletePopup}
         onClose={handleCloseDeletePopup}

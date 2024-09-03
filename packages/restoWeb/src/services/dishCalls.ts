@@ -103,3 +103,69 @@ export const removeDiscount = async (body: any, token: string) => {
     console.error("Error deleting dish discount:", error);
   }
 };
+
+export const getDishesByResto = async (name: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + name,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dishes by resto:", error);
+  }
+}
+
+export const addCombo = async (token: string, body: any) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'addCombo',
+      method: "POST",
+      params: {key: token},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dishes by resto:", error);
+  }
+}
+
+export const removeCombo = async (token: string, body: any) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'removeCombo',
+      method: "POST",
+      params: {key: token},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dishes by resto:", error);
+  }
+}
+
+export const getDishesByID = async(restoName: string, body: any) => {
+  try {
+    const response = await axios({
+      url: baseUrl + 'dishIDs',
+      method: "POST",
+      params: {key: restoName},
+      data: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching dishes by id:", error);
+  }
+}

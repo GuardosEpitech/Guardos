@@ -198,6 +198,8 @@ const MenuPage = () => {
                         dishID={dish.uid}
                         discount={dish.discount}
                         validTill={dish.validTill}
+                        combo={dish.combo}
+                        isTopLevel={true}
                         isFavourite={isFavouriteDishs.some(
                           (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
                         )}
@@ -220,6 +222,8 @@ const MenuPage = () => {
                             dishID={dish.uid}
                             discount={dish.discount}
                             validTill={dish.validTill}
+                            combo={dish.combo}
+                            isTopLevel={true}
                             isFavourite={isFavouriteDishs.some(
                               (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
                             )}
@@ -247,62 +251,83 @@ const MenuPage = () => {
               </ul>
             </div>
             <div className={styles.restoList}>
-              {restoMenu.map((category: ICategories, index: number) => (
-                <div key={index} ref={el => sectionRefs.current[index] = el}>
-                  {index % 3 === 0 ? (
-                    <div style={{ backgroundImage: `url(${pic1})` }} className={styles.secondLayoutBanner} />
-                  ) : index % 3 === 1 ? (
-                    <div style={{ backgroundImage: `url(${pic2})` }} className={styles.secondLayoutBanner} />
-                  ) : (
-                    <div style={{ backgroundImage: `url(${pic3})` }} className={styles.secondLayoutBanner} />
-                  )}
-                  <Category title={category.name}>
-                    {category.dishes
-                      .filter((dish: IDishFE) => dish.fitsPreference)
-                      .map((dish: IDishFE, dishIndex: number) => (
-                        <Dish
-                          key={dish.name + dishIndex}
-                          dishName={dish.name}
-                          dishAllergens={dish.allergens}
-                          dishDescription={dish.description}
-                          options={dish.category.extraGroup.join(", ")}
-                          price={dish.price}
-                          picturesId={dish.picturesId}
-                          restoID={Number(id)}
-                          dishID={dish.uid}
-                          discount={dish.discount}
-                          validTill={dish.validTill}
-                          isFavourite={isFavouriteDishs.some(
-                            (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
-                          )}
-                        />
-                      ))}
-                      <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
-                        {category.dishes
-                          .filter((dish: IDishFE) => !dish.fitsPreference)
-                          .map((dish: IDishFE, dishIndex: number) => (
-                            <Dish
-                              key={dish.name + dishIndex}
-                              dishName={dish.name}
-                              dishAllergens={dish.allergens}
-                              dislikedIngredients={dislikedIngredients}
-                              dishDescription={dish.description}
-                              options={dish.category.extraGroup.join(", ")}
-                              price={dish.price}
-                              picturesId={dish.picturesId}
-                              restoID={Number(id)}
-                              dishID={dish.uid}
-                              discount={dish.discount}
-                              validTill={dish.validTill}
-                              isFavourite={isFavouriteDishs.some(
-                                (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
-                              )}
-                            />
-                          ))}
-                      </Accordion>
-                  </Category>
-                </div>
-              ))}
+              {restoMenu.map((category: ICategories, index: number) => {
+                return (
+                  <div key={index} ref={sectionRefs.current[index]}>
+                    {index % 3 === 0 ? (
+                      <div style={{
+                        backgroundImage: `url(${pic1})`
+                      }} className={styles.secondLayoutBanner} />
+                    ) : (
+                      <div/>
+                    )}
+                    {index % 3 === 1 ? (
+                      <div style={{
+                        backgroundImage: `url(${pic2})`
+                      }} className={styles.secondLayoutBanner} />
+                    ) : (
+                      <div/>
+                    )}
+                    {index % 3 === 2 ? (
+                      <div style={{
+                        backgroundImage: `url(${pic3})`
+                      }} className={styles.secondLayoutBanner}/>
+                    ) : (
+                      <div/>
+                    )}
+
+                    <Category title={category.name}>
+                      {category.dishes
+                        .filter((dish: IDishFE) => dish.fitsPreference)
+                        .map((dish: IDishFE, dishIndex: number) => (
+                          <Dish
+                            key={dish.name + dishIndex}
+                            dishName={dish.name}
+                            dishAllergens={dish.allergens}
+                            dishDescription={dish.description}
+                            options={dish.category.extraGroup.join(", ")}
+                            price={dish.price}
+                            picturesId={dish.picturesId}
+                            restoID={restoID}
+                            dishID={dish.uid}
+                            discount={dish.discount}
+                            validTill={dish.validTill}
+                            combo={dish.combo}
+                            isTopLevel={true}
+                            isFavourite={isFavouriteDishs.some(
+                              (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                            )}
+                          />
+                        ))}
+                        <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                          {category.dishes
+                            .filter((dish: IDishFE) => !dish.fitsPreference)
+                            .map((dish: IDishFE, dishIndex: number) => (
+                              <Dish
+                                key={dish.name + dishIndex}
+                                dishName={dish.name}
+                                dishAllergens={dish.allergens}
+                                dislikedIngredients={dislikedIngredients}
+                                dishDescription={dish.description}
+                                options={dish.category.extraGroup.join(", ")}
+                                price={dish.price}
+                                picturesId={dish.picturesId}
+                                restoID={restoID}
+                                dishID={dish.uid}
+                                discount={dish.discount}
+                                validTill={dish.validTill}
+                                combo={dish.combo}
+                                isTopLevel={true}
+                                isFavourite={isFavouriteDishs.some(
+                                  (fav) => fav.restoID === restoID && fav.dish.uid === dish.uid
+                                )}
+                              />
+                            ))}
+                        </Accordion>
+                    </Category>
+                  </div>
+                )
+              })}
             </div>
           </div>
         ) : (

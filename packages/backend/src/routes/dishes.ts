@@ -13,7 +13,8 @@ import {
 import {getUserIdResto} from '../controllers/userRestoController';
 import {detectAllergens} from '../controllers/allergenDetectionController';
 import {
-  doesUserOwnRestaurantByName
+  doesUserOwnRestaurantByName,
+  getRestaurantByID
 } from '../controllers/restaurantController';
 
 const router = express.Router();
@@ -53,6 +54,47 @@ router.get('/user/dish', async (req, res) => {
       .send({ error: 'Internal Server Error' });
   }
 });
+
+router.post('/dishIDs', async (req, res) => {
+  try {
+    const restoName = String(req.query.key);
+    if (!await checkIfRestaurantExists(restoName)) {
+      return res.status(404)
+        .send('Coudnt find restaurant named ' + restoName);
+    }
+    const { ids } = req.body;
+    const dishes = await getDishesByRestaurantName(restoName);
+    const dishesArray = dishes[0].dishes;
+    const filteredDishes = dishesArray.filter(dish => ids.includes(dish.uid));
+    return res.status(200)
+      .send(filteredDishes);
+  } catch (error) {
+    console.error("Error in 'dishes/dishIDs' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+})
+
+router.post('/dishIDsByID', async (req, res) => {
+  try {
+    const restoID = Number(req.query.key);
+    if (!await getRestaurantByID(restoID)) {
+      return res.status(404)
+        .send('Coudnt find restaurant with ID  ' + restoID);
+    }
+    const resto = await getRestaurantByID(restoID);
+    const { ids } = req.body;
+    const dishes = await getDishesByRestaurantName(resto.name);
+    const dishesArray = dishes[0].dishes;
+    const filteredDishes = dishesArray.filter(dish => ids.includes(dish.uid));
+    return res.status(200)
+      .send(filteredDishes);
+  } catch (error) {
+    console.error("Error in 'dishes/dishIDs' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+})
 
 router.get('/:name', async (req, res) => {
   try {

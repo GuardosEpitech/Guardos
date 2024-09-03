@@ -83,7 +83,8 @@
         "options": "Options: ",
         "disliked-ingredients": "Hidden due to disliked ingredients: ",
         "discount": "Discounted price: ",
-        "valid": "Valid until:"
+        "valid": "Valid until:",
+        "recommendedCombos": "Show recommended Combinations"
       },
       "RestoCard": {
         "add-review": "Add a review",
