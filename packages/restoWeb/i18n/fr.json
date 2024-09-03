@@ -95,7 +95,8 @@
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ dishName }}?",
         "options": "Options: ",
         "discount": "Prix réduit: ",
-        "valid": "Valable jusqu'au"
+        "valid": "Valable jusqu'au",
+        "recommendedCombos": "Afficher les combinaisons recommandées"
       },
       "ProductCard": {
         "confirm-delete": "Êtes-vous sûr de vouloir supprimer {{ productName }}?",
@@ -228,7 +229,11 @@
         "here": "ici",
         "or": "Ou",
         "facebook-img-alt": "Logo Facebook",
-        "google-img-alt": "Logo Google"
+        "google-img-alt": "Logo Google",
+        "enter-code": "Veuillez entrer le code à 8 chiffres",
+        "enter-code-error": "Veuillez entrer le code à 8 chiffres",
+        "incorrect-code": "Le code que vous avez saisi est incorrect. Veuillez réessayer.",
+        "code-error": "Une erreur s'est produite. Veuillez réessayer."
       },
       "MyAccountPage": {
         "account-page": "Page du compte",
@@ -261,7 +266,9 @@
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte? Cette action est irréversible.",
         "enable-dark-mode": "Activer le mode sombre",
         "payBtn": "Gérer les méthodes de paiement",
-        "User-Support": "Aide utilisateurs"
+        "User-Support": "Aide utilisateurs",
+        "two-factor-activate": "Activer l'authentification à deux facteurs",
+        "two-factor-deactivate": "Désactiver l'authentification à deux facteurs"
       },
       "ProductsPage": {
         "add-product": "Ajouter un produit",
@@ -566,6 +573,16 @@
         "errorPercent": "Le pourcentage doit être supérieur à 0 et inférieur à 100",
         "successAdd": "La réduction a été enregistrée avec succès",
         "successDelete": "Remise supprimée avec succès"
+      },
+      "DishComboPage": {
+        "title": "Gérer les combinaisons pour ",
+        "recommendedCombinations": "Combinaisons recommandées :",
+        "DishComboPage": "Supprimer",
+        "selectDish": "Éléments sélectionnés",
+        "save": "Enregistrer",
+        "clearAll": "Tout effacer",
+        "successAdd": "Combinaisons ajoutées avec succès",
+        "successRemove": "Toutes les combinaisons supprimées"
       },
       "userInsights": {
         "select-restaurant": "Sélectionnez un restaurant",
