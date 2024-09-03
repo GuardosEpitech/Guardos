@@ -92,7 +92,7 @@ const MVPRouter = () => {
             <Route path="/intropage" element={<IntroPage/>}/>
             <Route path="/login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>}/>
             <Route path="/register" element={<RegistrationPage/>}/>
-            <Route path="/menu" element={<MenuPage/>}/>
+            <Route path="/menu/:id" element={<MenuPage />} />
             <Route path="/addreview" element={<RatingPage/>}/>
             <Route path="/map" element={<MapPage/>}/>
             <Route path="/" element={<RestoPage/>}/>
