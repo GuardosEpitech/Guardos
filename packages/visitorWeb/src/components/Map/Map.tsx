@@ -79,7 +79,24 @@ const MapView = (props: MapProps) => {
   const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
   const { t } = useTranslation();
 
-  // Create vectors only when props change
+  const createFeatures = (data: IRestaurantFrontEnd[]) => {
+    return data
+      .filter(elem => elem.location && elem.location.longitude && elem.location.latitude)
+      .map(elem => {
+        const [lon, lat] = [parseFloat(elem.location.longitude), parseFloat(elem.location.latitude)];
+        return new Feature({
+          type: 'icon',
+          geometry: new Point(fromLonLat([lon, lat])),
+          description: elem.name,
+          telephone: elem.phoneNumber,
+          address: `${elem.location.streetName} ${elem.location.streetNumber}, ${elem.location.postalCode} ${elem.location.city}`,
+          index: elem.uid,
+          objectR: elem,
+          name: 'Marker',
+        });
+      });
+  };
+
   const locationMarkerL = useMemo(() => {
     if (!props.userPosition) return [];
     const [lon, lat] = [props.userPosition.lng, props.userPosition.lat];
@@ -90,39 +107,10 @@ const MapView = (props: MapProps) => {
     return [locationMarker];
   }, [props.userPosition]);
 
-  const testMarkerL = useMemo(() => {
-    return props.data.map(elem => {
-      const [lon, lat] = [parseFloat(elem.location.longitude), parseFloat(elem.location.latitude)];
-      return new Feature({
-        type: 'icon',
-        geometry: new Point(fromLonLat([lon, lat])),
-        description: elem.name,
-        telephone: elem.phoneNumber,
-        address: `${elem.location.streetName} ${elem.location.streetNumber}, ${elem.location.postalCode} ${elem.location.city}`,
-        index: elem.uid,
-        objectR: elem,
-        name: 'Marker',
-      });
-    });
-  }, [props.data]);
+  const testMarkerL = useMemo(() => createFeatures(props.data), [props.data]);
 
-  const vectorLayerLoc = useMemo(() => {
-    return new VL({
-      source: new VectorSource({
-        features: locationMarkerL,
-      }),
-      style: stylesMarker['location'],
-    });
-  }, [locationMarkerL]);
-
-  const vectorLayer = useMemo(() => {
-    return new VL({
-      source: new VectorSource({
-        features: testMarkerL,
-      }),
-      style: stylesMarker['icon'],
-    });
-  }, [testMarkerL]);
+  const [vectorLayerLoc, setVectorLayerLoc] = useState<VL<VectorSource> | null>(null);
+  const [vectorLayer, setVectorLayer] = useState<VL<VectorSource> | null>(null);
 
   useEffect(() => {
     if (mapElement.current && !map) {
@@ -143,31 +131,49 @@ const MapView = (props: MapProps) => {
 
   useEffect(() => {
     if (map) {
-      // Remove old layers
       map.getLayers().forEach((layer: any) => {
-        if (layer && layer.get('name') === 'markerLayer') {
+        if (layer instanceof VL) {
           map.removeLayer(layer);
         }
       });
-      map.addLayer(vectorLayer);
-    }
-  }, [vectorLayer, map]);
 
-  useEffect(() => {
-    if (map) {
-      map.getLayers().forEach((layer: any) => {
-        if (layer && layer.get('name') === 'locationLayer') {
-          map.removeLayer(layer);
-        }
-      });
-      if (vectorLayerLoc) {
-        map.addLayer(vectorLayerLoc);
-        if (props.userPosition) {
-          map.getView().setCenter(fromLonLat([props.userPosition.lng, props.userPosition.lat]));
-        }
+      if (locationMarkerL.length > 0) {
+        const sourceLoc = new VectorSource({
+          features: locationMarkerL,
+        });
+
+        const newVectorLayerLoc = new VL({
+          source: sourceLoc,
+          style: stylesMarker['location'],
+        });
+
+        setVectorLayerLoc(newVectorLayerLoc);
+        map.addLayer(newVectorLayerLoc);
+      }
+
+      if (testMarkerL.length > 0) {
+        const sourceMarkers = new VectorSource({
+          features: testMarkerL,
+        });
+
+        const newVectorLayer = new VL({
+          source: sourceMarkers,
+          style: stylesMarker['icon'],
+        });
+
+        setVectorLayer(newVectorLayer);
+        map.addLayer(newVectorLayer);
       }
     }
-  }, [vectorLayerLoc, map, props.userPosition]);
+  }, [map, locationMarkerL, testMarkerL]);
+
+  useEffect(() => {
+    if (map && props.userPosition) {
+      map.updateSize();
+      map.getView().setCenter(fromLonLat([props.userPosition.lng, props.userPosition.lat]));
+      map.getView().setZoom(15);
+    }
+  }, [map, props.userPosition, testMarkerL]);
 
   const popup = useMemo(() => new Overlay({
     element: element.current!,
@@ -236,10 +242,11 @@ const MapView = (props: MapProps) => {
         }
       };
 
-      const handlePointerMove = (e: any) => {
-        const pixel = map.getEventPixel(e.originalEvent);
+      const handlePointerMove = (evt: any) => {
+        if (evt.dragging) return;
+        const pixel = map.getEventPixel(evt.originalEvent);
         const hit = map.hasFeatureAtPixel(pixel);
-        const targetElement = map.getTarget() as HTMLElement; // Type assertion
+        const targetElement = map.getTarget() as HTMLElement;
         if (targetElement) {
           targetElement.style.cursor = hit ? 'pointer' : '';
         }
