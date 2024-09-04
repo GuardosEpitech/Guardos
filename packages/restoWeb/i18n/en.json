@@ -42,6 +42,11 @@
       "combo": "Dish combination"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Get up to 50% off on electronics, fashion, and more!",
+        "link": "Shop Now"
+      },
       "MapButton": {
         "enter-map-view": "Go to Map View"
       },

@@ -1,44 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import FixedBtn
-  from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
-import {getAllRestaurantsByUserAndFilter} from "@src/services/restoCalls";
+import FixedBtn from "@src/components/dumpComponents/buttons/FixedBtn/FixedBtn";
+import { getAllRestaurantsByUserAndFilter } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
-import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
+import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import Layout from 'shared/components/Layout/Layout';
 import RestoCard from "@src/components/RestoCard/RestoCard";
+import AdCard from "@src/components/AdCard/AdCard";
 import styles from "./HomePage.module.scss";
-import SuccessAlert
-  from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
-import { enable, disable, setFetchMethod} from "darkreader";
-import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import SuccessAlert from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { checkDarkMode } from "../../utils/DarkMode";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>(false);
+  const [adIndex, setAdIndex] = useState<number | null>(null);  // State to store the random index
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [searchFilter, setSearchFilter] = useState<string>('');
-
 
   useEffect(() => {
     updateRestoData("");
     checkDarkMode();
   }, []);
-  document.addEventListener('loggedOut', function( ) {
+
+  document.addEventListener('loggedOut', function() {
     setRestoData([]);
     setIsUserTokenSet(false);
   });
 
-
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilter = event.target.value;
-    setSearchFilter(newFilter);  
+    setSearchFilter(newFilter);
     updateRestoData(newFilter);
   };
-  
+
   const updateRestoData = (filter: string) => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
@@ -52,6 +50,7 @@ const HomePage = () => {
     getAllRestaurantsByUserAndFilter(userToken, filter)
       .then((res) => {
         setRestoData(res);
+        setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
       });
   };
 
@@ -77,9 +76,7 @@ const HomePage = () => {
         <div className={styles.DivContent}>
           <div>
             {isUserTokenSet && restoData.length === 0 && (
-              <p>
-                {t('pages.HomePage.no-restos-yet')}
-              </p>
+              <p>{t('pages.HomePage.no-restos-yet')}</p>
             )}
             {!isUserTokenSet && (
               <p>
@@ -90,23 +87,24 @@ const HomePage = () => {
                 {t('pages.HomePage.to-see-your-restos')}
               </p>
             )}
-            {restoData.map((restaurant, index) => {
-              return (
+            {restoData.map((restaurant, index) => (
+              <React.Fragment key={restaurant.name + index}>
+                {index === adIndex && <AdCard />}
                 <RestoCard
-                  key={restaurant.name + index}
                   resto={restaurant as IRestaurantFrontEnd}
                   onUpdate={updateRestoData}
                   editable
                 />
-              );
-            })}
+              </React.Fragment>
+            ))}
+            {restoData.length === adIndex && <AdCard />}
           </div>
         </div>
       </Layout>
       {isUserTokenSet && (
-        <FixedBtn title={t('pages.HomePage.add-resto')} redirect="/addResto"/>
+        <FixedBtn title={t('pages.HomePage.add-resto')} redirect="/addResto" />
       )}
-      <SuccessAlert/>
+      <SuccessAlert />
     </div>
   );
 };
