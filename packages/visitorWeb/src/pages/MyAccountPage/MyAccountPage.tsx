@@ -32,6 +32,8 @@ import {useTranslation} from "react-i18next";
 import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 import {addIngredient, getAllIngredients} from "@src/services/ingredientsCalls";
 import { deleteRatingDataUser, getRatingDataUser } from "@src/services/ratingCalls";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -64,6 +66,7 @@ const MyAccountPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+  const [loading, setLoading] = useState(true);
 
   const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
@@ -97,12 +100,14 @@ const MyAccountPage = () => {
   };
 
   const fetchFavoriteRestaurants = async () => {
+    setLoading(true);
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
       return;
     }
     const favorites = await getRestoFavourites(userToken);
     setFavoriteRestaurants(favorites);
+    setLoading(false);
   };
 
   const fetchFavoriteDishes = async () => {
@@ -667,14 +672,23 @@ const MyAccountPage = () => {
           {activeTab === "restaurants" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-restos')}</h2>
-              {favoriteRestaurants.map((restaurant) => (
-                <RestoCard
+              {loading ? (
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+
+                favoriteRestaurants.map((restaurant) => (
+                  <RestoCard
                   key={restaurant.id}
                   resto={restaurant}
                   isFavourite={true}
                   dataIndex={0}
-                />
-              ))}
+                  />
+                ))
+              )}
             </div>
           )}
           {activeTab === "reviews" && (

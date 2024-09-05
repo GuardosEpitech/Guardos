@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 import Dish from "@src/components/menu/Dish/Dish";
@@ -27,6 +27,8 @@ import Accordion from "@src/components/Accordion/Accordion";
 import {useTranslation} from "react-i18next";
 import {getUserAllergens, getUserDislikedIngredients} from "@src/services/userCalls";
 import {checkDarkMode} from "../../utils/DarkMode";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme({
   palette: {
@@ -51,6 +53,7 @@ const MenuPage = () => {
   const [restoMenu, setRestoMenu] = React.useState(menu);
   const [dislikedIngredients, setDislikedIngredients] = React.useState([]);
   const {t} = useTranslation();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchMenu();
@@ -60,6 +63,7 @@ const MenuPage = () => {
   }, [])
 
   const fetchMenu = async () => {
+    setLoading(true);
     // const filter = JSON.parse(localStorage.getItem('filter') || '{}');
     // const allergenList = filter.allergenList;
     const userToken = localStorage.getItem('user');
@@ -71,12 +75,12 @@ const MenuPage = () => {
     const ingredients = await getUserDislikedIngredients(userToken);
     setDislikedIngredients(ingredients);
     setRestoMenu(await getRestosMenu(restoID, userAllergens, ingredients));
+    setLoading(false);
   }
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
-
     try {
       const favouriteDishIds = await getDishFavourites(userToken);
       setIsFavouriteDishs(favouriteDishIds);
@@ -155,6 +159,22 @@ const MenuPage = () => {
         </List>
       </div>
       <Layout>
+        {loading ?
+        ( 
+        <Stack spacing={1}>
+        <Skeleton variant="rounded" width={300} height={60} />
+        <Skeleton variant="rounded" width={1000} height={130} />
+        <Skeleton variant="rounded" width={300} height={60} />
+        <Skeleton variant="rounded" width={1000} height={130} />
+        <Skeleton variant="rounded" width={300} height={60} />
+        <Skeleton variant="rounded" width={1000} height={130} />
+        <Skeleton variant="rounded" width={300} height={60} />
+        <Skeleton variant="rounded" width={1000} height={130} />
+        <Skeleton variant="rounded" width={300} height={60} />
+        <Skeleton variant="rounded" width={1000} height={130} />
+      </Stack>
+      ) : (
+      <>
         {menuDesignID === 0 ? (
           <div>
             {restoMenu.map((category: ICategories, index: number) => (
@@ -305,6 +325,8 @@ const MenuPage = () => {
           <div>
 
           </div>
+        )}
+        </>
         )}
       </Layout>
     </>

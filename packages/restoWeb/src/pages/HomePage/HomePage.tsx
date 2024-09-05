@@ -14,6 +14,8 @@ import SuccessAlert
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -21,7 +23,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const {t} = useTranslation();
   const [searchFilter, setSearchFilter] = useState<string>('');
-
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     updateRestoData("");
@@ -40,6 +42,7 @@ const HomePage = () => {
   };
   
   const updateRestoData = (filter: string) => {
+    setLoading(true);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setIsUserTokenSet(false);
@@ -53,6 +56,7 @@ const HomePage = () => {
       .then((res) => {
         setRestoData(res);
       });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -90,16 +94,24 @@ const HomePage = () => {
                 {t('pages.HomePage.to-see-your-restos')}
               </p>
             )}
-            {restoData.map((restaurant, index) => {
-              return (
-                <RestoCard
-                  key={restaurant.name + index}
-                  resto={restaurant as IRestaurantFrontEnd}
-                  onUpdate={updateRestoData}
-                  editable
-                />
-              );
-            })}
+            {loading ? (
+              <Stack spacing={1}>
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+              </Stack>
+            ) : (
+              restoData.map((restaurant, index) => {
+                return (
+                  <RestoCard
+                    key={restaurant.name + index}
+                    resto={restaurant as IRestaurantFrontEnd}
+                    onUpdate={updateRestoData}
+                    editable
+                  />
+                );
+              })
+            )}
           </div>
         </div>
       </Layout>
