@@ -27,6 +27,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import AddIcon from '@mui/icons-material/Add';
+import {getUserAllergens} from "@src/services/userCalls";
 
 const GlobalStyle = () => {
   return createTheme({
@@ -123,6 +124,23 @@ const Filter = (props: FilterProps) => {
   const userProfileName = t('common.me');
 
   useEffect(() => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+    getUserAllergens(userToken).then((userAllergens) => {
+      const profileCopy = groupProfiles[0] ?? { name: userProfileName, allergens: allergens };
+      for (let i = 0; i < userAllergens.length; i++) {
+        profileCopy.allergens.map((state, index) => {
+          if (userAllergens[i] === state.name) {
+            profileCopy.allergens[index].value = true;
+            profileCopy.allergens[index].colorButton = "secondary";
+          }
+        });
+      }
+      setGroupProfiles([profileCopy]);
+    });
+
     fetchSavedFilters();
     loadCurFilter();
   }, []);
