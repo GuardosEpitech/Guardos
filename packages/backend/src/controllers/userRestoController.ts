@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
-import {userRestoSchema} from '../models/userRestaurantInterfaces';
-import {AES, enc} from 'crypto-js';
-import {IRestoProfileCommunication} from '../models/communicationInterfaces';
+import { userRestoSchema }
+  from '../models/userRestaurantInterfaces';
+import { AES, enc } from 'crypto-js';
+import { IRestoProfileCommunication } from '../models/communicationInterfaces';
+import { deleteRestoChainFromRestaurant } from './restaurantController';
 
 export async function addUserResto(username: string,
   email: string, password: string) {
@@ -22,6 +24,7 @@ export async function addUserResto(username: string,
       .toString(),
     isActive: false,
     restaurantIDs: [],
+    restaurantChains: [],
     profilePicId: [],
     defaultMenuDesign: 'default',
     preferredLanguage: '',
@@ -127,6 +130,8 @@ export async function getRestoProfileDetails(userId: number) {
       : userData.email as string,
     profilePicId: userData.profilePicId === undefined ? []
       : userData.profilePicId as number[],
+    restaurantChains: userData.restaurantChains === undefined ? []
+      : userData.restaurantChains as { uid: number, name: string}[],
     defaultMenuDesign: userData.defaultMenuDesign ?
       userData.defaultMenuDesign as string : '',
     preferredLanguage: userData.preferredLanguage === undefined ? ''
@@ -213,6 +218,61 @@ export async function updateRecoveryPasswordResto(userId: number,
     // Update the password
     userData.password = AES.encrypt(newPassword, 'GuardosResto')
       .toString();
+    await userData.save();
+
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function addRestoChain(userId: number, name: string) {
+  try {
+    const UserRestoSchema =
+      mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.findOne({ uid: userId });
+
+    if (!userData) {
+      // User not found
+      return false;
+    }
+
+    for (const elem of userData.restaurantChains) {
+      if (elem.name === name) {
+        return false;
+      }
+    }
+
+    userData.restaurantChains.push({uid: userData.restaurantChains.length, name: name});
+    await userData.save();
+
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteRestoChain(userId: number, restoChainName: string) {
+  try {
+    const UserRestoSchema =
+      mongoose.model('UserResto', userRestoSchema, 'UserResto');
+    const userData = await UserRestoSchema.findOne({ uid: userId });
+
+    if (!userData || !restoChainName) {
+      // User not found
+      return false;
+    }
+
+    const index = userData.restaurantChains.findIndex(item => item.name === restoChainName);
+
+    for (const elem of userData.restaurantChains) {
+      if (elem.name === restoChainName) {
+        await deleteRestoChainFromRestaurant(userId, elem.uid as number)
+      }
+    }
+    if (index !== -1) {
+      userData.restaurantChains = [...userData.restaurantChains.slice(0, index), ...userData.restaurantChains.slice(index + 1)];
+    }
     await userData.save();
 
     return true;
@@ -359,6 +419,69 @@ export async function getCustomerResto(userID: number) {
     return answer.customerID;
   }
   return false;
+}
+
+export async function getSubscribeTimeUserResto(userID: number) {
+  const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const answer = await UserSchema.findOne({uid: userID});
+
+  if (answer.subscribeTime) {
+    return answer.subscribeTime;
+  }
+  return false;
+}
+
+export async function addSubscribeTimeResto(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    let currentTime = new Date();
+    currentTime.setHours(currentTime.getHours() + 2);
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { subscribeTime: currentTime } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function addSubscribtionIDResto(userID: number,subscriptionID: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { subscriptionID: subscriptionID } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function getSubscribtionIDResto(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    return existingUser.subscriptionID;
+  }
+  return false;
+}
+
+export async function deleteSubscribtionIDResto(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+
+  const result = await UserRestoSchema.updateOne(
+    { uid: userID }, 
+    { $unset: { subscriptionID: 1 } }
+  );
+
+  return result;
 }
 
 export async function addTwoFactorResto(userId: number, twoFactor: string) {

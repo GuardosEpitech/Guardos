@@ -28,6 +28,8 @@
       "restos": "Restaurants",
       "my-restos": "My Restaurants",
       "my-category": "My Categories",
+      "my-restochain": "My Restaurant Chain",
+      "resto-overview": "Restaurant Corner",
 
       "add-picture": "Tap to Add Picture",
 
@@ -74,6 +76,7 @@
         "food-category": "Food Category",
         "select-min-one-category": "Please select at least one category",
         "resto": "Restaurant",
+        "restoChain": "Restaurant Chain",
         "select-min-one-resto": "Please select at least one restaurant"
       },
       "ProductForm": {
@@ -96,7 +99,8 @@
         "opening": "Opening",
         "closing": "Closing",
         "website": "Website",
-        "menu-design": "Menu Design"
+        "menu-design": "Menu Design",
+        "restoChain": "Restaurant Chain"
       },
       "Dish": {
         "confirm-delete": "Are you sure you want to delete {{ dishName }}?",
@@ -503,6 +507,10 @@
         "noresto2": "Add your first restaurant by clicking ",
         "noresto2-2": "here",
         "noresto2-3": "."
+      },
+      "AddRestoChain": {
+        "name": "Name:",
+        "add": "New"
       },
       "CookieStatement": {
         "title": "Cookie Statement",

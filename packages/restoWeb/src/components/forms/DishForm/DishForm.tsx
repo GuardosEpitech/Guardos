@@ -18,7 +18,7 @@ import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
 import { ICategories } from "shared/models/categoryInterfaces";
-import {getAllRestaurantsByUser} from "@src/services/restoCalls";
+import {getAllRestaurantsByUser, getAllRestaurantChainsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
 import {addImageDish, deleteImageDish, getImages}
@@ -82,6 +82,10 @@ const DishForm = (props: IDishFormProps) => {
   const [dishCategory, setDishCategory] =
       useState<string[]>(props.selectCategory || []);
   const [dishResto, setDishResto] = useState<string[]>(props.restoName || []);
+  const [restoChains, setRestoChains] = useState<{uid: number, name: string}[]>([]);
+  const [selectedRestoChainId, setSelectedRestoChainId] = useState(0);
+  const [valueRestoChain, setValueRestoChain] = useState(null);
+  const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
   const [invalidPrice, setInvalidPrice] = useState<boolean>(false);
   const [invalidResto, setInvalidResto] = useState<boolean>(false);
@@ -127,6 +131,10 @@ const DishForm = (props: IDishFormProps) => {
           categories: restaurant.categories.map((cat: ICategories) => cat.name)
         }));
         setCategories(mappedCategories);
+      });
+    getAllRestaurantChainsByUser(userToken)
+      .then((res) => {
+        setRestoChains(res);
       });
   }, []);
 
@@ -196,6 +204,7 @@ const DishForm = (props: IDishFormProps) => {
         const data: IAddDish = {
           resto: dishList[i].resto,
           dish: dishList[i],
+          restoChainID: selectedRestoChainId
         };
         await addNewDish(data, userToken);
       }
@@ -466,7 +475,37 @@ const DishForm = (props: IDishFormProps) => {
                 )}
               />
             </Grid>
-            <Grid item xs={4} sm={8} md={12}>
+            <Grid item xs={2} sm={4} md={6}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  id="tags-outlined"
+                  options={restoChains}
+                  value={valueRestoChain}
+                  getOptionLabel={(option) =>
+                    (option ? (option as {uid:number, name:string}).name : "")}
+                  onChange={(e, value, reason) => {
+                    if (reason !== 'clear') {
+                      setValueRestoChain(value);
+                      setSelectedRestoChainId(value.uid);
+                    } else {
+                      setValueRestoChain(null);
+                      setSelectedRestoChainId(0);
+                    }
+                  }}
+                  inputValue={inputValueRestoChain}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValueRestoChain(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={t('components.RestaurantForm.restoChain')}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={2} sm={4} md={6}>
               <Autocomplete
                 multiple
                 id="tags-outlined"

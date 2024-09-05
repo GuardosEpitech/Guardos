@@ -37,6 +37,7 @@ export const addNewResto = async (body: any) => {
 
 export const editResto = async (restoName: string, body: any, token: string) => {
   try {
+    console.log(body);
     const response = await axios({
       url: baseUrl + restoName,
       method: "PUT",
@@ -78,6 +79,22 @@ export const getAllRestaurantsByUser = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
+  }
+};
+
+export const getAllRestaurantChainsByUser = async (token:string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'user/resto/chain',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all restaurant chains:", error);
   }
 };
 

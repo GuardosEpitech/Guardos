@@ -6,7 +6,8 @@ import {
   getRestoProfileDetails,
   getUserIdResto, getUserRestoCookiePreferences,
   updateRestoPassword, setUserRestoCookiePreferences,
-  updateRestoProfileDetails, updateRecoveryPasswordResto, addTwoFactorResto
+  updateRestoProfileDetails, updateRecoveryPasswordResto,
+  addRestoChain, deleteRestoChain, addTwoFactorResto
 } from '../controllers/userRestoController';
 
 const router = express.Router();
@@ -131,6 +132,56 @@ router.post('/image', async (req, res) => {
   } catch (error) {
     // Log the error for debugging purposes
     console.error("Error in POST '/api/profile/image' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.post('/restoChain', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const name = req.body.restoChainName;
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    await addRestoChain(userID as number, name as string);
+    return res.status(200)
+      .send(true);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in POST '/api/profile/image' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.delete('/restoChain', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const restoChainName = req.body.restoChainName;
+
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    await deleteRestoChain(userID as number, restoChainName);
+    return res.status(200)
+      .send(true);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in DELETE '/api/profile/image' route:", error);
 
     // Return a 500 Internal Server Error for other types of errors
     return res.status(500)

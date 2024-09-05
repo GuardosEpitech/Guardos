@@ -174,6 +174,7 @@ const RestoCard = (props: IRestoCardProps) => {
                         description: resto.description,
                         picturesId: resto.picturesId,
                         menuDesignID: resto.menuDesignID,
+                        restoChainID: resto.restoChainID,
                         website: resto.website,
                         openingHours: openingHours
                       }

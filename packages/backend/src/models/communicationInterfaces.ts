@@ -45,6 +45,7 @@ export interface IRestaurantCommunication {
   products?: IProduct[];
   userToken: string;
   menuDesignID: number;
+  restoChainID: number;
 }
 
 //Communication object for BE and FE
@@ -75,6 +76,10 @@ export interface IRestoProfileCommunication {
   username: string;
   email: string;
   profilePicId: number[];
+  restaurantChains: {
+    uid: number,
+    name: string
+  }[],
   defaultMenuDesign: string;
   preferredLanguage: string;
   twoFactor: string;

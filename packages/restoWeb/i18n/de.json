@@ -28,6 +28,8 @@
       "restos": "Restaurants",
       "my-restos": "Meine Restaurants",
       "my-category": "Meine Kategorien",
+      "my-restochain": "Meine Restaurantketten",
+      "resto-overview": "Restaurant Ecke",
 
       "add-picture": "Tippen, um ein Bild hinzuzufügen",
 
@@ -73,6 +75,7 @@
         "food-category": "Essenskategorie",
         "select-min-one-category": "Bitte wählen Sie mindestens eine Kategorie aus",
         "resto": "Restaurant",
+        "restoChain": "Restaurant Kette",
         "select-min-one-resto": "Bitte wählen Sie mindestens ein Restaurant aus"
       },
       "ProductForm": {
@@ -95,7 +98,8 @@
         "opening": "Öffnungszeit",
         "closing": "Schließzeit",
         "website": "Webseite",
-        "menu-design": "Menüdesign"
+        "menu-design": "Menüdesign",
+        "restoChain": "Restaurant-Kette"
       },
       "Dish": {
         "confirm-delete": "Sind Sie sicher, dass Sie {{ dishName }} löschen möchten?",
@@ -502,6 +506,10 @@
         "noresto2": "Fügen Sie Ihr erstes Restaurant hinzu, indem Sie ",
         "noresto2-2": "hier",
         "noresto2-3": " klicken."
+      },
+      "AddRestoChain": {
+        "name": "Name:",
+        "add": "Neu"
       },
       "CookieStatement": {
         "title": "Cookie-Erklärung",

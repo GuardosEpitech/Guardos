@@ -5,13 +5,21 @@ import {
   getUserId, 
   addCustomer, 
   getCustomer,
-  getProfileDetails 
+  getProfileDetails,
+  getSubscribeTime,
+  addSubscribeTime,
+  addSubscribtionID,
+  deleteSubscribtionID
 } from '../controllers/userController';
 import { 
   getUserIdResto, 
   addCustomerResto, 
   getCustomerResto, 
-  getRestoProfileDetails 
+  getRestoProfileDetails,
+  getSubscribeTimeUserResto,
+  addSubscribeTimeResto,
+  addSubscribtionIDResto,
+  deleteSubscribtionIDResto
 } from '../controllers/userRestoController';
 
 const router = express.Router();
@@ -365,6 +373,306 @@ router.post('/payment-sheet-setup-intent-resto', async (req, res) => {
     ephemeralKey: ephemeralKey.secret,
     customer: customerID,
   });
+});
+
+router.get('/subscribedTime-resto', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserIdResto(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomerResto(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    let time = await getSubscribeTimeUserResto(userID as number);
+
+    res.status(200).send(time);
+  } catch (error) {
+    console.error('Error while fetching a payment methods:'
+        , error);
+      res.status(500)
+        .send({ error: error.message });
+  }
+});
+
+router.post('/subscribedTime-resto', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserIdResto(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomerResto(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    let time = await addSubscribeTimeResto(userID as number);
+
+    res.status(200).send(time);
+  } catch (error) {
+    console.error('Error while fetching a payment methods:'
+        , error);
+      res.status(500)
+        .send({ error: error.message });
+  }
+});
+
+router.get('/subscribedTime-visitor', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserId(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomer(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    let time = await getSubscribeTime(userID as number);
+
+    res.status(200).send(time);
+  } catch (error) {
+    console.error('Error while fetching a payment methods:'
+        , error);
+      res.status(500)
+        .send({ error: error.message });
+  }
+});
+
+router.post('/subscribedTime-visitor', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserId(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomer(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    let time = await addSubscribeTime(userID as number);
+
+    res.status(200).send(time);
+  } catch (error) {
+    console.error('Error while fetching a payment methods:'
+        , error);
+      res.status(500)
+        .send({ error: error.message });
+  }
+});
+
+// Create a route to handle subscription creation
+router.post("/create-subscription-resto", async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const priceId = req.body.priceId;
+
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserIdResto(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomerResto(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+  
+    const paymentMethods = await stripe.customers.listPaymentMethods(
+      customerID
+    );
+    // Create a subscription for the customer
+    const subscription = await stripe.subscriptions.create({
+      customer: customerID,
+      items: [{ price: priceId }], // priceId should be the ID of the price for the plan
+      expand: ["latest_invoice.payment_intent"],
+      default_payment_method: paymentMethods.data[0].id
+    });
+
+    let returnValue = await addSubscribtionIDResto(userID, subscription.id);
+
+    // Respond with the subscription details
+    res.status(200).send(returnValue);
+  } catch (error) {
+    console.error("Error creating subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
+});
+
+// Route to get subscription details
+router.get("/get-subscription-resto", async (req, res) => {
+  try {
+    const subscriptionId = req.body.subscriptionId;
+    const userToken = String(req.query.key);
+
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserIdResto(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomerResto(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    // Retrieve the subscription details from Stripe
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+    // Respond with the subscription details
+    res.status(200).json(subscription);
+  } catch (error) {
+    console.error("Error retrieving subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
+});
+
+// Route to cancel a subscription
+router.delete("/delete-subscription-resto", async (req, res) => {
+  try {
+    const subscriptionId = req.body.subscriptionId;
+    const userToken = String(req.query.key);
+    
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserIdResto(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomerResto(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+    // Cancel the subscription in Stripe
+    const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
+
+    await deleteSubscribtionIDResto(userID);
+
+    // Respond with the result of the cancellation
+    res.status(200).json(deletedSubscription);
+  } catch (error) {
+    console.error("Error deleting subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
+});
+
+// Create a route to handle subscription creation
+router.post("/create-subscription-visitor", async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const priceId = req.body.priceId;
+
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserId(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomer(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+  
+    const paymentMethods = await stripe.customers.listPaymentMethods(
+      customerID
+    );
+    // Create a subscription for the customer
+    const subscription = await stripe.subscriptions.create({
+      customer: customerID,
+      items: [{ price: priceId }], // priceId should be the ID of the price for the plan
+      expand: ["latest_invoice.payment_intent"],
+      default_payment_method: paymentMethods.data[0].id
+    });
+
+    let returnValue = await addSubscribtionID(userID, subscription.id);
+
+    // Respond with the subscription details
+    res.status(200).send(returnValue);
+  } catch (error) {
+    console.error("Error creating subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
+});
+
+// Route to get subscription details
+router.get("/get-subscription-visitor", async (req, res) => {
+  try {
+    const subscriptionId = req.body.subscriptionId;
+    const userToken = String(req.query.key);
+
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserId(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomer(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+
+    // Retrieve the subscription details from Stripe
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+    // Respond with the subscription details
+    res.status(200).json(subscription);
+  } catch (error) {
+    console.error("Error retrieving subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
+});
+
+// Route to cancel a subscription
+router.delete("/delete-subscription-visitor", async (req, res) => {
+  try {
+    const subscriptionId = req.body.subscriptionId;
+    const userToken = String(req.query.key);
+    
+    if (!userToken) {
+      return res.status(404).send({ error: 'No User Token' });
+    }
+    const userID = await getUserId(userToken);
+    if (typeof userID !== 'number') {
+      return res.status(404).send({ error: 'No UserID' });
+    }
+    const customerID = await getCustomer(userID);
+    if (typeof customerID !== 'string') {
+      return res.status(404).send({ error: 'No CustomerID' });
+    }
+    // Cancel the subscription in Stripe
+    const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
+
+    await deleteSubscribtionID(userID);
+
+    // Respond with the result of the cancellation
+    res.status(200).json(deletedSubscription);
+  } catch (error) {
+    console.error("Error deleting subscription:", error.message);
+    res.status(400).json({ error: { message: error.message } });
+  }
 });
 
 export default router;

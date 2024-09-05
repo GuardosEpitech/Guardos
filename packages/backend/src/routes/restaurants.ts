@@ -3,7 +3,8 @@ import * as express from 'express';
 import {
   changeRestaurant, createNewRestaurant, deleteRestaurantByName,
   getAllRestaurants, getRestaurantByName, getAllUserRestaurants,
-  addCategory, doesUserOwnRestaurantByName
+  addCategory, doesUserOwnRestaurantByName, getAllUserRestaurantChains,
+  getAllRestosFromRestoChain
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -93,6 +94,65 @@ router.get('/user/resto', async (req, res) => {
   }
 });
 
+router.get('/user/resto/chain', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    
+    const restaurantChains = await getAllUserRestaurantChains(userID as number);
+    
+    // Return 200 OK with the restaurant data
+    return res.status(200)
+      .send(restaurantChains);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in 'restaurants/user/resto/chain' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/user/resto/chain/resto', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const restoChainID = Number(req.query.restoChainID);
+    const userID = await getUserIdResto(userToken);
+    
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+
+    if (restoChainID === undefined || restoChainID === null) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send({ error: 'Restaurant Chain ID not given' });
+    }
+    
+    const restaurants = await getAllRestosFromRestoChain(userID as number, restoChainID as number);
+    
+    // Return 200 OK with the restaurant data
+    return res.status(200)
+      .send(restaurants);
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error("Error in 'restaurants/user/resto/chain' route:", error);
+
+    // Return a 500 Internal Server Error for other types of errors
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
 router.delete('/:name', async (req, res) => {
   try {
     const userToken = String(req.query.key);
@@ -137,7 +197,6 @@ router.put('/:name', async (req, res) => {
         .send('Coudnt find restaurant named '
           + req.params.name + ' for this user');
     }
-
     const answer = await changeRestaurant(req.body, req.params.name);
     await addProductsFromRestaurantToOwnDB(answer.uid);
     return res.status(200)
