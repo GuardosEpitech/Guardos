@@ -4,28 +4,13 @@ import InputSearch from "@src/components/InputSearch/InputSearch";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import MapButton from "@src/components/MapButton/MapButton";
 import Filter from "@src/components/Filter/Filter";
-import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
+import { IRestaurantFrontEnd, Allergen, color } from "shared/models/restaurantInterfaces";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { getFilteredRestos } from "@src/services/filterCalls";
 import {getRestoFavourites} from "@src/services/favourites";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
-
-type color =
-  | "primary"
-  | "secondary"
-  | "default"
-  | "error"
-  | "info"
-  | "success"
-  | "warning";
-
-interface allergen {
-  name: string;
-  value: boolean;
-  colorButton: color;
-}
 
 const HomePage = () => {
   const [inputFields, setInputFields] = React.useState(["", ""]);
@@ -41,7 +26,7 @@ const HomePage = () => {
   const [filteredRestaurants, setFilteredRestaurants] = React.useState<
     Array<IRestaurantFrontEnd>
   >([]);
-  const [allergens, setAllergens] = React.useState<allergen[]>([]);
+  const [allergens, setAllergens] = React.useState<Allergen[]>([]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<
     Array<number>
   >([]);
