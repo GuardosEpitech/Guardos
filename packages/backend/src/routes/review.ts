@@ -10,10 +10,10 @@ import {getUserId} from '../controllers/userController';
 const router: Router = express.Router();
 
 // Route to get all reviews for a restaurant
-router.get('/restaurants/:restoName', async (req, res) => {
+router.get('/restaurants/:restoId', async (req, res) => {
   try {
-    const { restoName } = req.params;
-    const reviews = await getAllRestoReviews(restoName);
+    const { restoId } = req.params;
+    const reviews = await getAllRestoReviews(Number(restoId));
     if (reviews.length === 0) {
       return res.status(404)
         .json({ message: 'Reviews not found' });
@@ -28,7 +28,7 @@ router.get('/restaurants/:restoName', async (req, res) => {
 });
 
 // Route to add a review to a restaurant
-router.post('/restaurants/:restoName', async (req, res) => {
+router.post('/restaurants/:restoId', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserId(userToken);
@@ -38,9 +38,9 @@ router.post('/restaurants/:restoName', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    const { restoName } = req.params;
+    const { restoId } = req.params;
     const review = req.body;
-    const newReview = await addRestoReview(review, restoName);
+    const newReview = await addRestoReview(review, Number(restoId));
     return res.status(200)
       .send(newReview);
   } catch (error) {

@@ -33,21 +33,6 @@ export async function getAllIngredients() {
   return IngredientSchema.find();
 }
 
-export async function getIngredientByName(name: string) {
-  const IngredientSchema = mongoose.model('IngredientsMVP',
-    ingredientsSchemaMVP);
-  return IngredientSchema.find({name: name});
-
-}
-
-export async function deleteIngredient(name: string, id: number) {
-  const IngredientSchema = mongoose.model('IngredientsMVP',
-    ingredientsSchemaMVP);
-  await IngredientSchema.deleteOne({_id: id});
-  console.log('Ingredient ' + name + ' deleted ' + ' with id ' + id);
-
-}
-
 export async function findMaxIndexIngredients() {
   const IngredientSchema = mongoose.model('IngredientsMVP',
     ingredientsSchemaMVP);

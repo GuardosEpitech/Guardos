@@ -31,7 +31,7 @@ const DiscountDishPage = () => {
   const { dish } = useLocation().state as IDiscountDishPageProps;
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const { name, uid, products, description, price, allergens, resto,
+  const { name, uid, products, description, price, allergens, restoId,
     category, picturesId, discount, validTill }
     = dish;
 
@@ -130,7 +130,7 @@ const DiscountDishPage = () => {
 
     const userToken = localStorage.getItem('user');
     try {
-      await addDiscount({ restoName: resto, dish }, userToken);
+      await addDiscount({ restoId: restoId, dish }, userToken);
       setSuccessMessage(t('pages.DiscountDishPage.successAdd'));
       setTimeout(() => {
         navigate('/dishes'); 
@@ -148,7 +148,7 @@ const DiscountDishPage = () => {
     dish.discount = -1;
     dish.validTill = "";
     try {
-      await removeDiscount({ restoName: resto, dish }, userToken);
+      await removeDiscount({ restoId: restoId, dish }, userToken);
       setSuccessMessage(t('pages.DiscountDishPage.successDelete'));
       setTimeout(() => {
         navigate('/dishes'); 

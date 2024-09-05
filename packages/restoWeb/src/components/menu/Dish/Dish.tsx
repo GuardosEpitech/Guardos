@@ -51,7 +51,7 @@ const Dish = (props: IEditableDishProps) => {
     if (userToken === null) {
       return;
     }
-    await deleteDish(dish.resto, name, userToken);
+    await deleteDish(dish.restoId, dish.uid, userToken);
     if (onUpdate) {
       await onUpdate();
       setShowPopup(false);

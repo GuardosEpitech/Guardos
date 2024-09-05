@@ -19,6 +19,18 @@ export const getAllResto = async () => {
   }
 };
 
+export const getRestoById = async (id: number) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + id,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all restaurants:", error);
+  }
+};
+
 export const addNewResto = async (body: any) => {
   try {
     const response = await axios({
@@ -35,10 +47,10 @@ export const addNewResto = async (body: any) => {
   }
 };
 
-export const editResto = async (restoName: string, body: any, token: string) => {
+export const editResto = async (restoId: number, body: any, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify(body),
@@ -52,10 +64,10 @@ export const editResto = async (restoName: string, body: any, token: string) => 
   }
 };
 
-export const deleteResto = async (restoName: string, token: string) => {
+export const deleteResto = async (restoId: number, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "DELETE",
       params: {key: token},
     });

@@ -65,12 +65,18 @@ interface IDishFormProps {
   add?: boolean;
   selectCategory?: string[];
   selectAllergene?: string[];
+  restoId?: number[];
   restoName?: string[];
   picturesId?: number[];
   discount?: number;
   validTill?: string;
   combo?: number[];
-}
+};
+
+interface IRestoSelect {
+  name: string;
+  id: number;
+};
 
 // TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
@@ -81,7 +87,7 @@ const DishForm = (props: IDishFormProps) => {
   const [dishProd, setDishProd] = useState<string[]>(props.dishProducts || []);
   const [dishCategory, setDishCategory] =
       useState<string[]>(props.selectCategory || []);
-  const [dishResto, setDishResto] = useState<string[]>(props.restoName || []);
+  const [dishResto, setDishResto] = useState<IRestoSelect[]>([]);
   const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
   const [invalidPrice, setInvalidPrice] = useState<boolean>(false);
   const [invalidResto, setInvalidResto] = useState<boolean>(false);
@@ -92,7 +98,7 @@ const DishForm = (props: IDishFormProps) => {
   const [selectAllergene, setSelectAllergene] =
       useState<string[]>(props.selectAllergene || []);
   const [productListTest, setProductListTest] = useState<Array<string>>([]);
-  const [restoList, setRestoList] = useState<Array<string>>([]);
+  const [restoList, setRestoList] = useState<Array<IRestoSelect>>([]);
   let allRestoNames: string[] = [];
   let allDishProd: string[] = [];
   // TODO: apply i18n
@@ -114,6 +120,13 @@ const DishForm = (props: IDishFormProps) => {
         allDishProd = res.map((item: IProduct) => item.name);
         setProductListTest(allDishProd);
       });
+
+    if (props.restoName && props.restoName.length > 0 && props.restoId && props.restoId.length > 0) {
+      setDishResto([{
+        name: props.restoName[0],
+        id: props.restoId[0]
+      }]);
+    }
   }, []);
 
   useEffect(() => {
@@ -121,7 +134,12 @@ const DishForm = (props: IDishFormProps) => {
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         allRestoNames = res.map((item: IRestaurantFrontEnd) => item.name);
-        setRestoList(allRestoNames);
+        setRestoList(res.map((item: IRestaurantFrontEnd) => {
+          return {
+            name: item.name,
+            id: item.uid
+          };
+        }));
         const mappedCategories = res.map((restaurant: IRestaurantFrontEnd) => ({
           name: restaurant.name,
           categories: restaurant.categories.map((cat: ICategories) => cat.name)
@@ -184,7 +202,7 @@ const DishForm = (props: IDishFormProps) => {
           extraGroup: [],
           menuGroup: dishCategory[0]
         },
-        resto: dishResto[i],
+        restoId: dishResto[i].id,
         discount: props.discount ? props.discount : -1,
         validTill: props.validTill ? props.validTill : "",
         combo: props.combo ? props.combo : []
@@ -194,14 +212,14 @@ const DishForm = (props: IDishFormProps) => {
     if (props.add) {
       for (let i = 0; i < dishList.length; i++) {
         const data: IAddDish = {
-          resto: dishList[i].resto,
+          restoId: dishList[i].restoId,
           dish: dishList[i],
         };
         await addNewDish(data, userToken);
       }
     } else {
       for (let i = 0; i < dishList.length; i++) {
-        await editDish(dishList[i].resto, dishList[i], userToken);
+        await editDish(dishList[i].restoId, dishList[i], userToken);
       }
     }
     return NavigateTo("/dishes", navigate, {successfulForm: true});
@@ -253,20 +271,18 @@ const DishForm = (props: IDishFormProps) => {
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
         for (let i = 0; i < dishResto.length; i++) {
-          if (dishResto[i].length !== 0) {
-            addImageDish(dishResto[i], dish, file.name,
-              file.type, file.size, result)
-              .then(r => {
-                setPictures([{ base64: result, contentType: file.type,
-                  filename: file.name, size: file.size,
-                  uploadDate: "0", id: r }]);
-                if (picturesId.length > 0) {
-                  deleteImageDish(picturesId[0], dishResto[i], dish);
-                  picturesId.shift();
-                }
-                picturesId.push(r);
-              });
-          }
+          addImageDish(dishResto[i].id, props.dishUID, file.name,
+            file.type, file.size, result)
+            .then(r => {
+              setPictures([{ base64: result, contentType: file.type,
+                filename: file.name, size: file.size,
+                uploadDate: "0", id: r }]);
+              if (picturesId.length > 0) {
+                deleteImageDish(picturesId[0], dishResto[i].id, props.dishUID);
+                picturesId.shift();
+              }
+              picturesId.push(r);
+            });
         }
       });
     }
@@ -274,7 +290,7 @@ const DishForm = (props: IDishFormProps) => {
 
   function handeFileDelete() {
     if (picturesId.length > 0) {
-      deleteImageDish(picturesId[0], dishResto[0], dish);
+      deleteImageDish(picturesId[0], dishResto[0].id, props.dishUID);
       displayImageFromBase64(defaultDishImage, "DishImg");
       setPictures([{
         base64: defaultDishImage,
@@ -290,10 +306,11 @@ const DishForm = (props: IDishFormProps) => {
     }
   }
 
-  const handleRestoChange = (event: React.ChangeEvent<{}>, value: string[]) => {
+  const handleRestoChange = (event: React.ChangeEvent<{}>, value: IRestoSelect[]) => {
     setDishResto(value);
+
     const selectedCategories = categories
-      .filter(resto => value.includes(resto.name))
+      .filter(resto => value.map((val) => val.name).includes(resto.name))
       .flatMap(resto => resto.categories);
     const filteredCategories = selectedCategories.filter((item, index, self) =>
       index === self.findIndex((t) => t.toLowerCase() === item.toLowerCase()));
@@ -450,7 +467,7 @@ const DishForm = (props: IDishFormProps) => {
                 multiple
                 id="tags-outlined"
                 options={restoList}
-                getOptionLabel={(option) => (option ? (option as string) : "")}
+                getOptionLabel={(option) => (option ? (option.name) : "")}
                 defaultValue={dishResto}
                 filterSelectedOptions
                 onChange={handleRestoChange}

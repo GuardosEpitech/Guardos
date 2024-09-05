@@ -4,6 +4,7 @@ import { ILocation } from './locationInterfaces';
 import { IMealType } from './mealTypeInterfaces';
 
 export interface IProduct {
+  _id?: number;
   name: string;
   allergens: string[];
   ingredients: string[];

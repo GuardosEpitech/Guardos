@@ -11,10 +11,10 @@ export function checkIfNameExists(req: IDishesCommunication) {
 }
 
 export async function checkIfDishExists(
-  restaurantName: string, dishName: string) {
+  restaurantId: number, dishName: string) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({name: restaurantName});
+    const restaurant = await Restaurant.findOne({_id: restaurantId});
     if (!restaurant) {
       console.log('Restaurant not found');
       return false;
@@ -45,10 +45,10 @@ export async function checkIfDishExistsByID(
 }
 
 export async function checkIfExtraExists(
-  restaurantName: string, extraName: string) {
+  restaurantId: number, extraName: string) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({ name: restaurantName });
+    const restaurant = await Restaurant.findOne({ _id: restaurantId });
     if (!restaurant) {
       console.log('Restaurant not found');
       return false;

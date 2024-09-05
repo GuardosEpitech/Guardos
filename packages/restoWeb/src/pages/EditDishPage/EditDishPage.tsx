@@ -8,6 +8,7 @@ import styles from "@src/pages/EditDishPage/EditDishPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
+import {getRestoById} from "@src/services/restoCalls";
 
 interface IEditDishPageProps {
   dish: IDishFE;
@@ -15,10 +16,10 @@ interface IEditDishPageProps {
 
 const EditDishPage = () => {
   const { dish } = useLocation().state as IEditDishPageProps;
-  const { name, uid, products, description, price, allergens, resto,
+  const { name, uid, products, description, price, allergens, restoId,
     category, picturesId, discount, validTill, combo }
     = dish;
-  const selectResto: string[] = [resto];
+  const [selectResto, setSelectResto] = useState<string[]>([]);
   const selectAllergens: string[] = allergens.toString()
     .split(",");
   const selectCategories: string[] = [category.menuGroup];
@@ -26,6 +27,11 @@ const EditDishPage = () => {
 
   useEffect(() => {
     checkDarkMode();
+    getRestoById(restoId)
+      .then((res) => {
+        setSelectResto([res.name]);
+      }
+    );
   }, []);
 
   return (
@@ -43,6 +49,7 @@ const EditDishPage = () => {
           dishDescription={description}
           price={price}
           selectAllergene={selectAllergens}
+          restoId={[restoId]}
           restoName={selectResto}
           selectCategory={selectCategories}
           picturesId={picturesId}

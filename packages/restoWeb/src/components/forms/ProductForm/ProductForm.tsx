@@ -49,6 +49,7 @@ const PageBtn = () => {
 
 interface IDishFormProps {
   productName?: string;
+  productId?: number;
   productIngredients?: string[];
   productAllergens?: string[];
   productRestaurant?: IRestaurantFrontEnd[];
@@ -58,7 +59,7 @@ interface IDishFormProps {
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  const { productName: initialProductName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
+  const { productName: initialProductName, productId, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
   const [ingredientFeedback, setIngredientFeedback] = useState<string>("");
@@ -66,6 +67,7 @@ const ProductForm = (props: IDishFormProps) => {
   const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
   const [productName, setProductName] = useState<string>(initialProductName || "");
   let selectedResto: string[] = [];
+  let selectedRestoId: number[] = [];
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -166,6 +168,7 @@ const ProductForm = (props: IDishFormProps) => {
       return;
     }
     const product: IProduct = {
+      _id: productId,
       name: productName,
       ingredients: productIngredients,
       allergens: []
@@ -180,10 +183,10 @@ const ProductForm = (props: IDishFormProps) => {
         restaurantId: productRestaurantIds || [],
         id: 0
       };
-      await editProduct(product, initialProductName, userToken);
+      await editProduct(product, product.id, userToken);
     } else {
       for (let i = 0; i < selectedResto.length; i++) {
-        await addNewProduct(product, selectedResto[i], userToken);
+        await addNewProduct(product, selectedRestoId[i], userToken);
         // insert to new product here
       }
     }
@@ -270,6 +273,8 @@ const ProductForm = (props: IDishFormProps) => {
               onChange={(e, value) => {
                 selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
                   restoNameVar.name);
+                selectedRestoId = value.map((restoNameVar: IRestaurantFrontEnd) =>
+                  restoNameVar.uid);
               }}
               renderInput={(params) => (
                 <TextField

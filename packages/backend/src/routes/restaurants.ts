@@ -1,9 +1,9 @@
 import * as express from 'express';
 
 import {
-  changeRestaurant, createNewRestaurant, deleteRestaurantByName,
-  getAllRestaurants, getRestaurantByName, getAllUserRestaurants,
-  addCategory, doesUserOwnRestaurantByName
+  changeRestaurant, createNewRestaurant, deleteRestaurantById,
+  getAllRestaurants, getAllUserRestaurants,
+  addCategory, doesUserOwnRestaurantById, getRestaurantByID
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -26,12 +26,12 @@ router.get('/', async (_req, res) => {
   }
 });
 
-router.get('/:name', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const restaurant = await getRestaurantByName(req.params.name);
+    const restaurant = await getRestaurantByID(Number(req.params.id));
     if (!restaurant)
       return res.status(404)
-        .send('Coudnt find restaurant/:name named ' + req.params.name);
+        .send('Coudnt find restaurant/:id named ' + req.params.id);
     return res.status(200)
       .send(restaurant);
   } catch (error) {
@@ -93,24 +93,25 @@ router.get('/user/resto', async (req, res) => {
   }
 });
 
-router.delete('/:name', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
+    const restoId = req.params.id as unknown as number;
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    if (!(await doesUserOwnRestaurantByName(req.params.name,
+    if (!(await doesUserOwnRestaurantById(restoId,
       userID as number))) {
       return res.status(404)
         .send('Coudnt find restaurant named '
-          + req.params.name + ' for this user');
+          + req.params.id + ' for this user');
     }
 
-    const answerRestaurant = deleteRestaurantByName(req.params.name);
+    const answerRestaurant = deleteRestaurantById(restoId);
     return res.status(200)
       .send(answerRestaurant);
   } catch (error) {
@@ -121,24 +122,25 @@ router.delete('/:name', async (req, res) => {
 
 });
 
-router.put('/:name', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
+    const restoId = req.params.id as unknown as number;
 
     if (userID === false) {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    if (!(await doesUserOwnRestaurantByName(req.params.name,
+    if (!(await doesUserOwnRestaurantById(restoId,
       userID as number))) {
       return res.status(404)
         .send('Coudnt find restaurant named '
-          + req.params.name + ' for this user');
+          + req.params.id + ' for this user');
     }
 
-    const answer = await changeRestaurant(req.body, req.params.name);
+    const answer = await changeRestaurant(req.body, restoId);
     await addProductsFromRestaurantToOwnDB(answer.uid);
     return res.status(200)
       .send(answer);

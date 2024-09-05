@@ -120,10 +120,6 @@ export default class Filter {
     return restaurantBE;
   }
 
-  getRestaurants() {
-    return this.restaurants;
-  }
-
   // Create RestaurantObj for Frontend
   createRestaurantObjFe(restaurant: IRestaurantBackEnd, hitRate: number) {
     if (isNaN(hitRate)) hitRate = 0;
@@ -180,7 +176,7 @@ export default class Filter {
               extraGroup: dish.category.extraGroup,
               menuGroup: dish.category.menuGroup
             },
-            resto: restaurant.name,
+            restoId: restaurant.uid,
             products: dish.products,
             discount: dish.discount,
             validTill: dish.validTill,

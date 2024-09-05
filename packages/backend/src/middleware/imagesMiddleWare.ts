@@ -1,4 +1,4 @@
-import {checkIfRestaurantExists} from './restaurantMiddleWare';
+import {checkIfRestaurantExistsWithId} from './restaurantMiddleWare';
 import {Request} from 'express';
 import {checkIfDishExists, checkIfExtraExists} from './dishesMiddelWare';
 import {getImageById} from '../controllers/imageController';
@@ -22,20 +22,20 @@ export function errorHandlingImage(_req: Request) {
 }
 
 export async function errorHandlingRestoDishImage(_req: Request) {
-  const restaurantName: string = _req.body.restaurant;
+  const restaurantId: number = _req.body.restaurant;
 
-  if (await checkIfRestaurantExists(restaurantName) === false) {
+  if (await checkIfRestaurantExistsWithId(restaurantId) === false) {
     return 'Post Images failed: Restaurant does not exist';
   }
   const dishName: string = _req.body.dish;
   const extraName: string = _req.body.extra;
 
   if (dishName) {
-    if (await checkIfDishExists(restaurantName, dishName) === false)
+    if (await checkIfDishExists(restaurantId, dishName) === false)
       return 'Post Images failed: Dish does not exist';
   }
   if (extraName) {
-    if (await checkIfExtraExists(restaurantName, extraName) === false)
+    if (await checkIfExtraExists(restaurantId, extraName) === false)
       return 'Post Images failed: Extra does not exist';
   }
 
@@ -57,23 +57,23 @@ export async function errorHandlingImageDelete(_req: Request) {
 }
 
 export async function errorHandlingRestoDishImageDelete(_req: Request) {
-  const restaurantName: string = _req.body.restaurant;
+  const restaurantId: number = _req.body.restaurant;
   const dishName: string = _req.body.dish;
   const extraName: string = _req.body.extra;
 
-  if (!restaurantName)
-    return 'Delete Image failed: restaurantName is missing';
+  if (!restaurantId)
+    return 'Delete Image failed: restaurantId is missing';
 
-  if (await checkIfRestaurantExists(restaurantName) === false) {
+  if (await checkIfRestaurantExistsWithId(restaurantId) === false) {
     return 'Delete Images failed: Restaurant does not exist';
   }
 
   if (dishName) {
-    if (await checkIfDishExists(restaurantName, dishName) === false)
+    if (await checkIfDishExists(restaurantId, dishName) === false)
       return 'Delete Images failed: Dish does not exist';
   }
   if (extraName) {
-    if (await checkIfExtraExists(restaurantName, extraName) === false)
+    if (await checkIfExtraExists(restaurantId, extraName) === false)
       return 'Delete Images failed: Extra does not exist';
   }
 

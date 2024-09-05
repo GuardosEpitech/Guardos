@@ -285,15 +285,6 @@ export async function getAllergens(userID: number) {
   return userData?.allergens;
 }
 
-export async function updateAllergens(email: string, allergens: string) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema
-    .findOneAndUpdate({email: email}, {
-      allergens: JSON.parse(allergens)
-    }, {new: true});
-  return userData;
-}
-
 export async function getDislikedIngredients(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.findOne({ uid: userID })

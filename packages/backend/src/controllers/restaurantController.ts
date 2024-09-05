@@ -144,7 +144,7 @@ function createRestaurantObjFe(
             extraGroup: dish.category.extraGroup,
             menuGroup: dish.category.menuGroup
           },
-          resto: restaurant.name,
+          restoId: restaurant.uid,
           products: dish.products,
           discount: dish.discount,
           validTill: dish.validTill,
@@ -160,6 +160,7 @@ function createRestaurantObjFe(
   return obj;
 }
 
+// only to check if that already exists
 export async function getRestaurantByName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({name: restaurantName});
@@ -358,27 +359,27 @@ export async function createNewRestaurant(
   return upload;
 }
 
-export async function deleteRestaurantByName(restaurantName: string) {
+export async function deleteRestaurantById(restaurantId: number) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
-  await Restaurant.deleteOne({name: restaurantName});
-  return 'deleted ' + restaurantName;
+  await Restaurant.deleteOne({_id: restaurantId});
+  return 'deleted ' + restaurantId;
 }
 
-async function updateRestaurantByName(
-  restaurant: IRestaurantBackEnd, restaurantName: string) {
+async function updateRestaurantById(
+  restaurant: IRestaurantBackEnd, restaurantId: number) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    {name: restaurantName},
+    {_id: restaurantId},
     restaurant,
     {new: true}
   );
 }
 
 export async function changeRestaurant(
-  restaurant: IRestaurantCommunication, restaurantName: string) {
+  restaurant: IRestaurantCommunication, restaurantId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const oldRest = await Restaurant
-    .findOne({name: restaurantName}) as IRestaurantBackEnd;
+    .findOne({_id: restaurantId}) as IRestaurantBackEnd;
   const newRest: IRestaurantBackEnd = {
     description: restaurant.description ?
       restaurant.description : oldRest.description,
@@ -403,78 +404,71 @@ export async function changeRestaurant(
     name: restaurant.name ? restaurant.name : oldRest.name,
     menuDesignID: restaurant.menuDesignID !== undefined ? restaurant.menuDesignID : oldRest.menuDesignID,
   };
-  await updateRestaurantByName(newRest, restaurantName);
+  await updateRestaurantById(newRest, restaurantId);
   return newRest;
 }
 
-export async function addRestoProduct(product: IProduct, restoName: string) {
+export async function addRestoProduct(product: IProduct, restoId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    {name: restoName},
+    {uid: restoId},
     {$push: {products: product}},
     {new: true}
   );
 }
 
-export async function getAllRestoProducts(restoName: string) {
+export async function getAllRestoReviews(restoId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({name: restoName});
-  if (!rest) return null;
-  return rest.products;
-}
-
-export async function getAllRestoReviews(restoName: string) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({name: restoName});
+  const rest = await Restaurant.findOne({_id: restoId});
   if (!rest) return null;
   return rest.reviews;
 }
 
-export async function addRestoReview(review: IReview, restoName: string) {
+export async function addRestoReview(review: IReview, restoId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   review.date = new Date();
   review._id = uuidv4();
   return Restaurant.findOneAndUpdate(
-    {name: restoName},
+    {_id: restoId},
     {$push: {reviews: review}},
     {new: true}
   );
 }
 
-export async function deleteRestoReview(reviewId: string, restoName: string) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  return Restaurant.findOneAndUpdate(
-    { name: restoName },
-    { $pull: { reviews: { _id: reviewId } } },
-    { new: true }
-  );
-}
-
-export async function modifyRestoReview(
-  reviewId: string, modifiedFields: any, restoName: string
-) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
-  // Check if modifiedFields is empty or undefined
-  if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
-    // If modifiedFields is not provided, return the original review
-    return Restaurant.findOne({ name: restoName });
-  }
-
-  // Construct the update query to update only provided fields
-  const updateQuery: any = {};
-  for (const key in modifiedFields) {
-    // Use type assertion here
-    updateQuery[`reviews.$.${key}` as keyof IReview] = modifiedFields[key];
-  }
-
-  // Execute the update operation
-  return Restaurant.findOneAndUpdate(
-    { name: restoName, 'reviews._id': reviewId },
-    { $set: updateQuery },
-    { new: true }
-  );
-}
+// export async function deleteRestoReview(reviewId: number, restoId: number) {
+//   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+//   return Restaurant.findOneAndUpdate(
+//     { _id: restoId },
+//     { $pull: { reviews: { _id: reviewId } } },
+//     { new: true }
+//   );
+// }
+//
+// export async function modifyRestoReview(
+//   reviewId: number, modifiedFields: any, restoId: number
+// ) {
+//   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+//
+//   // Check if modifiedFields is empty or undefined
+//   if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
+//     // If modifiedFields is not provided, return the original review
+//     return Restaurant.findOne({ _id: restoId });
+//   }
+//
+//   // Construct the update query to update only provided fields
+//   const updateQuery: any = {};
+//   for (const key in modifiedFields) {
+//     // Use type assertion here
+//     updateQuery[`reviews.$.${key}` as keyof IReview] = modifiedFields[key];
+//   }
+//
+//   // Execute the update operation
+//   return Restaurant.findOneAndUpdate(
+//     { _id: restoId, 'reviews._id': reviewId },
+//     { $set: updateQuery },
+//     { new: true }
+//   );
+// }
 
 export async function addCategory(
   uid: number, newCategories: [{ name: string; hitRate: number }]) {
@@ -495,7 +489,7 @@ export async function addCategory(
         }
       } else {
         const newCategory = {
-          _id: rest.mealType.length,
+          _id: rest.mealType.length, // TODO: need different logic to find id - a category could be deleted and then we could have id twice
           name: category.name,
           sortId: category.hitRate
         };
@@ -532,10 +526,10 @@ export async function addCategory(
   }
 }
 
-export async function doesUserOwnRestaurantByName(restoName: string,
+export async function doesUserOwnRestaurantById(restoId: number,
   userID: number) {
   try {
-    const restaurant = await getRestaurantByName(restoName);
+    const restaurant = await getRestaurantByID(restoId);
     if (!restaurant || restaurant.userID !== userID) {
       return null;
     }

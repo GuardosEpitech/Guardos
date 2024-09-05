@@ -100,47 +100,21 @@ export async function addProductsFromRestaurantToOwnDB(restaurantId: number) {
   }
 }
 
-export async function addProductsToDB(restaurantId: number, product: IProduct) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const Product = mongoose.model('Product', productSchema);
-  try {
-
-    const restaurant = await Restaurant.findById(restaurantId);
-    if (!restaurant) {
-      console.log(`Restaurant with ID: ${restaurantId} not found`);
-      return;
-    }
-
-    const existingProduct = await Product.findOne({ name: product.name });
-    if (!existingProduct) {
-      const maxProductId = await getMaxProductId();
-      if (!maxProductId) {
-        console.log('Error while getting max product id');
-        return;
-      }
-      const newProduct = new Product({
-        _id: maxProductId,
-        userID: restaurant.userID,
-        name: product.name,
-        allergens: product.allergens,
-        ingredients: product.ingredients,
-        restaurantId: [restaurantId]
-      });
-      await newProduct.save();
-    } else if (!existingProduct.restaurantId.includes(restaurantId)) {
-      existingProduct.restaurantId.push(restaurantId);
-      await existingProduct.save();
-    }
-  } catch (error) {
-    console.error(`Error while adding product from Restaurant with
-     ID: ${restaurantId} to Product collection: `, error);
-  }
-}
-
+// only to check if product exists
 export async function getProductByName(productName: string):Promise<IProductBE> {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.findOne({name: { $regex: productName, $options: 'i'}});
+  } catch (error) {
+    console.error('Error while fetching all products: ', error);
+    return null;
+  }
+}
+
+export async function getProductById(id: number):Promise<IProductBE> {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    return await Product.findOne({_id: id});
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return null;
@@ -157,25 +131,15 @@ export async function getProductsByUser(loggedInUserId: number) {
   }
 }
 
-export async function getAllProducts() {
+export async function deleteProductById(productId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    return await Product.find({});
-  } catch (error) {
-    console.error('Error while fetching all products: ', error);
-    return [];
-  }
-}
-
-export async function deleteProductByName(productName: string) {
-  try {
-    const Product = mongoose.model('Product', productSchema);
-    const existingProduct = await Product.findOne({ name: productName });
+    const existingProduct = await Product.findOne({ _id: productId });
     if (!existingProduct) {
       console.log('Product not found');
       return false;
     }
-    await Product.deleteOne({ name: productName });
+    await Product.deleteOne({ _id: productId });
     console.log('Product deleted successfully');
     return true;
   } catch (error) {
@@ -184,17 +148,17 @@ export async function deleteProductByName(productName: string) {
   }
 }
 
-export async function updateProduct(product: IProductBE, oldName: string) {
+export async function updateProduct(product: IProductBE, id: number) {
   const Product = mongoose.model('Product', productSchema);
   return Product.findOneAndUpdate(
-    { name: oldName },
+    { _id: id },
     product,
     { new: true }
   );
 }
 
-export async function changeProductByName(product: IProductBE, oldProductsName:string) {
-  const oldProduct = await getProductByName(oldProductsName);
+export async function changeProductById(product: IProductBE, id: number) {
+  const oldProduct = await getProductById(id);
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
     userID: oldProduct.userID,
@@ -205,6 +169,6 @@ export async function changeProductByName(product: IProductBE, oldProductsName:s
     restaurantId: product.restaurantId ? product.restaurantId :
       oldProduct.restaurantId,
   };
-  await updateProduct(product, oldProduct.name);
+  await updateProduct(product, oldProduct.id);
   return newProduct;
 }

@@ -26,7 +26,7 @@ export interface IDishesCommunication {
   },
   userID: number;
   discount: number;
-  validTill: String;
+  validTill: string;
 }
 
 export interface IRestaurantCommunication {

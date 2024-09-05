@@ -1,12 +1,12 @@
 import * as express from 'express';
 
 import { addRestoProduct } from '../controllers/restaurantController';
-import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
+import { checkIfNameAndIdExistsIngredients }
   from '../middleware/ingredientsMiddleWare';
 import {
   getAllIngredients,
-  deleteIngredient, createNewIngredient,
-  findMaxIndexIngredients, getIngredientByName
+  createNewIngredient,
+  findMaxIndexIngredients
 } from '../controllers/ingredientsControllerMVP';
 import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
@@ -71,26 +71,26 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/', async (req, res) => {
-  try {
-    const id = req.body.id ? req.body.id
-      : (await getIngredientByName(req.body.name));
-
-    if (await checkIfIdExists(id)) {
-      await deleteIngredient(req.body.name, id);
-      res.status(200)
-        .send('Ingredient '
-          + req.body.name + ' deleted ' + ' with id ' + id);
-    } else {
-      res.status(400)
-        .send('Ingredient not found');
-    }
-  } catch (error) {
-    console.error("Error in 'ingredients' route:", error);
-    return res.status(500)
-      .send({ error: 'Internal Server Error' });
-  }
-});
+// router.delete('/', async (req, res) => {
+//   try {
+//     const id = req.body.id ? req.body.id
+//       : (await getIngredientByName(req.body.name));
+//
+//     if (await checkIfIdExists(id)) {
+//       await deleteIngredient(req.body.name, id);
+//       res.status(200)
+//         .send('Ingredient '
+//           + req.body.name + ' deleted ' + ' with id ' + id);
+//     } else {
+//       res.status(400)
+//         .send('Ingredient not found');
+//     }
+//   } catch (error) {
+//     console.error("Error in 'ingredients' route:", error);
+//     return res.status(500)
+//       .send({ error: 'Internal Server Error' });
+//   }
+// });
 
 // router.post('/', async (req, res) => {
 //   try {

@@ -2,15 +2,6 @@ import Image, {IImage} from '../models/imageInterfaces';
 import mongoose from 'mongoose';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 
-export function convertToBase64(file: Blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
-}
-
 export async function saveImageToDB(
   filename: string, contentType: string, size: number, base64: string) {
   try {
@@ -87,10 +78,10 @@ export async function changeImageById(id: number, imageNew: IImage) {
 }
 
 export async function linkImageToRestaurant(
-  restaurantName: string, imageId: number) {
+  restaurantId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const rest = await Restaurant.findOne({name: restaurantName});
+    const rest = await Restaurant.findOne({_id: restaurantId});
     if (!rest) {
       return null;
     }
@@ -103,10 +94,10 @@ export async function linkImageToRestaurant(
 }
 
 export async function unlinkImageFromRestaurant(
-  restaurantName: string, imageId: number) {
+  restaurantId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({name: restaurantName});
+    const restaurant = await Restaurant.findOne({_id: restaurantId});
     if (!restaurant) {
       return null;
     }
@@ -122,14 +113,14 @@ export async function unlinkImageFromRestaurant(
 }
 
 export async function linkImageToRestaurantDish(
-  restaurantName: string, dishName: string, imageId: number) {
+  restaurantId: number, dishId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const rest = await Restaurant.findOne({name: restaurantName});
+    const rest = await Restaurant.findOne({_id: restaurantId});
     if (!rest) {
       return null;
     }
-    const dish = rest.dishes.find((d) => d.name === dishName);
+    const dish = rest.dishes.find((d) => d.uid === dishId);
     if (!dish) {
       return null;
     }
@@ -142,16 +133,16 @@ export async function linkImageToRestaurantDish(
 }
 
 export async function unlinkImageFromRestaurantDish(
-  restaurantName: string, dishName: string, imageId: number) {
+  restaurantId: number, dishId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({name: restaurantName});
+    const restaurant = await Restaurant.findOne({_id: restaurantId});
     if (!restaurant) {
       console.error('Restaurant not found');
       return null;
     }
     
-    const dish = restaurant.dishes.find(d => d.name === dishName);
+    const dish = restaurant.dishes.find(d => d.uid === dishId);
     if (!dish) {
       console.error('Dish not found');
       return null;
@@ -169,16 +160,16 @@ export async function unlinkImageFromRestaurantDish(
 }
 
 export async function linkImageToRestaurantExtra(
-  restaurantName: string, extraName: string, imageId: number) {
+  restaurantId: number, extraId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({name: restaurantName});
+    const restaurant = await Restaurant.findOne({_id: restaurantId});
     if (!restaurant) {
       console.error('Restaurant not found');
       return null;
     }
 
-    const extra = restaurant.extras.find(e => e.name === extraName);
+    const extra = restaurant.extras.find(e => e._id === extraId);
     if (!extra) {
       console.error('Extra not found');
       return null;
@@ -196,16 +187,16 @@ export async function linkImageToRestaurantExtra(
 }
 
 export async function unlinkImageFromRestaurantExtra(
-  restaurantName: string, extraName: string, imageId: number) {
+  restaurantId: number, extraId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const restaurant = await Restaurant.findOne({name: restaurantName});
+    const restaurant = await Restaurant.findOne({_id: restaurantId});
     if (!restaurant) {
       console.error('Restaurant not found');
       return null;
     }
 
-    const extra = restaurant.extras.find(e => e.name === extraName);
+    const extra = restaurant.extras.find(e => e._id === extraId);
     if (!extra) {
       console.error('Extra not found');
       return null;

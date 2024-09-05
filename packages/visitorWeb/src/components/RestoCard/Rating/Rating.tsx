@@ -10,10 +10,11 @@ import {useTranslation} from "react-i18next";
 interface IRatingProps {
   restoRating: number,
   restoRatingsCount: number,
-  restoName: string
+  restoName: string,
+  restoId: number
 }
 
-const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
+const RatingDisplay = ({ restoRating, restoRatingsCount, restoName, restoId }: IRatingProps) => {
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
@@ -35,7 +36,7 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
   };
 
   useState(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
+    getRatingData(restoId).then(res => setRatingData(res));
   })
 
   return (
@@ -46,7 +47,8 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
         className={styles.AddReview}
         variant="contained"
         onClick={() => NavigateTo("/addreview", navigate, {
-          restoName: restoName,
+          restoId: restoId,
+          restoName: restoName
         })}
         >
         {t('components.RestoCard.add-review')}

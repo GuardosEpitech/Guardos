@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import {userSchema} from '../models/userInterface';
 import {getRestaurantByID} from './restaurantController';
-import {getDishByID} from './dishesController';
-
+import {getDishById} from './dishesController';
 
 export async function getRestoFavourites(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
@@ -38,7 +37,7 @@ export async function getDishFavourites(userID: number) {
     const dishIDs = userData.favouriteLists.dishIDs;
     return await Promise.all(dishIDs.map(async (item) => {
       const {restoID, dishID} = item;
-      const dish = await getDishByID(restoID, dishID);
+      const dish = await getDishById(restoID, dishID);
       return {dish, restoID};
     }));
   } catch (error) {

@@ -30,11 +30,11 @@ export const getImages = async (imageIds: number[]) => {
   }
 };
 
-export const addImageResto = async (restaurantName: string,
+export const addImageResto = async (restaurantId: number,
   imageName: string, contentType: string, size: number, base64: string) => {
   try {
     const body = {
-      restaurant: restaurantName,
+      restaurant: restaurantId,
       image: {
         filename: imageName,
         contentType: contentType,
@@ -57,10 +57,10 @@ export const addImageResto = async (restaurantName: string,
 };
 
 export const deleteImageRestaurant = 
-    async (imageId: number, restaurantName: string) => {
+    async (imageId: number, restaurantId: number) => {
       try {
         const body = {
-          restaurant: restaurantName,
+          restaurant: restaurantId,
           imageId: imageId
         };
         const response = await axios({
@@ -74,12 +74,14 @@ export const deleteImageRestaurant =
       }
     };
 
-export const addImageDish = async (restaurantName: string, dishName: string,
+export const addImageDish = async (restaurantId: number, dishId: number,
   imageName: string, contentType: string, size: number, base64: string) => {
   try {
     const body = {
-      restaurant: restaurantName,
-      dish: dishName,
+      restaurant: restaurantId,
+      dish: {
+        dishId: dishId
+      },
       image: {
         filename: imageName,
         contentType: contentType,
@@ -102,12 +104,14 @@ export const addImageDish = async (restaurantName: string, dishName: string,
   }
 };
 
-export const deleteImageDish = async (imageId: number, restaurantName: string,
-  dishName: string) => {
+export const deleteImageDish = async (imageId: number, restaurantId: number,
+  dishId: number) => {
   try {
     const body = {
-      restaurant: restaurantName,
-      dish: dishName,
+      restaurant: restaurantId,
+      dish: {
+        dishId: dishId
+      },
       imageId: imageId
     };
     const response = await axios({

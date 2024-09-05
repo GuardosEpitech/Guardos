@@ -22,7 +22,7 @@ export const getDishesByUser = async (body: any) => {
 export const addNewDish = async (body: IAddDish, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + body.resto,
+      url: baseUrl + body.restoId,
       method: "POST",
       params: {key: token},
       data: JSON.stringify(body),
@@ -36,10 +36,10 @@ export const addNewDish = async (body: IAddDish, token: string) => {
   }
 };
 
-export const editDish = async (restoName: string, dish: IDishFE, token: string) => {
+export const editDish = async (restoId: number, dish: IDishFE, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify(dish),
@@ -53,16 +53,16 @@ export const editDish = async (restoName: string, dish: IDishFE, token: string) 
   }
 };
 
-export const deleteDish = async (restoName: string, dishName: string, token: string) => {
+export const deleteDish = async (restoId: number, dishId: number, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       params: {key: token},
-      data: JSON.stringify({ name: dishName }),
+      data: JSON.stringify({ id: dishId }),
     });
     return response.data;
   } catch (error) {

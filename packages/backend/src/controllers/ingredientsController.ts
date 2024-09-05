@@ -59,18 +59,10 @@ export async function getAllIngredients() {
   return IngredientSchema.find();
 }
 
+// we usually search by user query (types in ingredient name to find it)
 export async function getIngredientByName(name: string) {
   name = name.toLowerCase();
   return IngredientSchema.find({ name });
-}
-
-export async function getIngredientById(id: string) {
-  return IngredientSchema.find({ foodID: id });
-}
-
-export async function deleteIngredient(name: string, id: string) {
-  await IngredientSchema.deleteOne({ _id: id });
-  console.log('Ingredient ' + name + ' deleted with id ' + id);
 }
 
 export async function findMaxIndexIngredients() {

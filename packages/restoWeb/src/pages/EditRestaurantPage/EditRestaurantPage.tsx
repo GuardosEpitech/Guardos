@@ -18,6 +18,7 @@ interface IOpeningHours {
 
 interface IEditRestaurantPageProps {
   restoName: string;
+  restoId: number;
   phone: string;
   street: string;
   streetNumber: number;
@@ -34,6 +35,7 @@ interface IEditRestaurantPageProps {
 const EditRestaurantPage = () => {
   const {
     restoName,
+    restoId,
     phone,
     street,
     streetNumber,
@@ -62,6 +64,7 @@ const EditRestaurantPage = () => {
       <Layout>
         <RestaurantForm
           restaurantName={restoName}
+          restoId={restoId}
           phone={phone}
           street={street}
           streetNumber={streetNumber}

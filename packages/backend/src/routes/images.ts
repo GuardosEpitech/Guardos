@@ -79,15 +79,15 @@ router.get('/', async (_req, res) => {
 
 router.post('/', async (_req, res) => {
   try {
-    const dishName: string = _req.body.dish;
-    const extraName: string = _req.body.extra;
+    const dish = _req.body.dish;
+    const extra = _req.body.extra;
     const error: string = await errorHandlingRestoDishImage(_req);
     if (error) {
       return res.status(404)
         .send(error);
     }
 
-    if (dishName) {
+    if (dish) {
       await saveImageToDB(
         _req.body.image.filename,
         _req.body.image.contentType,
@@ -95,12 +95,12 @@ router.post('/', async (_req, res) => {
         _req.body.image.base64);
 
       const id: number = await getLatestID();
-      await linkImageToRestaurantDish(_req.body.restaurant, dishName, id);
+      await linkImageToRestaurantDish(_req.body.restaurant, dish.dishId, id);
       return res.status(200)
         .send('Post Image for dish successfully');
     }
 
-    if (extraName) {
+    if (extra) {
       await saveImageToDB(
         _req.body.image.filename,
         _req.body.image.contentType,
@@ -108,7 +108,7 @@ router.post('/', async (_req, res) => {
         _req.body.image.base64);
 
       const id: number = await getLatestID();
-      await linkImageToRestaurantExtra(_req.body.restaurant, extraName, id);
+      await linkImageToRestaurantExtra(_req.body.restaurant, extra.extraId, id);
       return res.status(200)
         .send('Post Images for extra successfully');
     }
@@ -198,7 +198,7 @@ router.post('/restoProfile', async (req, res) => {
 
 router.delete('/', async (_req, res) => {
   try {
-    const dishName: string = _req.body.dish;
+    const dish: string = _req.body.dish;
     const extraName: string = _req.body.extra;
     const error: string = await errorHandlingRestoDishImageDelete(_req);
     if (error) {
@@ -206,9 +206,9 @@ router.delete('/', async (_req, res) => {
       return res.status(404)
         .send(error);
     }
-    if (dishName) {
+    if (dish) {
       await unlinkImageFromRestaurantDish(
-        _req.body.restaurant, _req.body.dish, _req.body.imageId);
+        _req.body.restaurant, _req.body.dish.dishId, _req.body.imageId);
       await deleteImageFromDB(_req.body.imageId);
       return res.status(200)
         .send('Delete Image for dish successfully');

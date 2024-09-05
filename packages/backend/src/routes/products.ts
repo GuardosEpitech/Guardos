@@ -1,11 +1,11 @@
 import * as express from 'express';
 
 import {
-  addRestoProduct, doesUserOwnRestaurantByName,
+  addRestoProduct, doesUserOwnRestaurantById,
   // getAllRestoProducts, getRestaurantByName
 } from '../controllers/restaurantController';
 import {
-  changeProductByName, createOrUpdateProduct, deleteProductByName,
+  changeProductById, createOrUpdateProduct, deleteProductById,
   // getAllProducts,
   getProductByName, getProductsByUser
 } from '../controllers/productsController';
@@ -66,7 +66,7 @@ router.get('/user/product', async (req, res) => {
 //   }
 // });
 
-router.post('/:name', async (req, res) => {
+router.post('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
@@ -76,16 +76,16 @@ router.post('/:name', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    const restaurant : IRestaurantFrontEnd = await doesUserOwnRestaurantByName(
-      req.params.name, userID as number);
+    const restaurant : IRestaurantFrontEnd = await doesUserOwnRestaurantById(
+      req.params.id as unknown as number, userID as number);
     if (!restaurant) {
       return res.status(404)
         .send('Coudnt find restaurant named '
-          + req.params.name + ' for this user');
+          + req.params.id + ' for this user');
     }
 
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
-    await addRestoProduct(req.body, restaurant.name);
+    await addRestoProduct(req.body, restaurant.uid);
     return res.status(200)
       .send(product);
   } catch (error) {
@@ -95,7 +95,7 @@ router.post('/:name', async (req, res) => {
   }
 });
 
-router.delete('/:name', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
@@ -106,20 +106,20 @@ router.delete('/:name', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const productName = req.params.name;
-    if (await deleteProductByName(productName) === true)
+    const productId = Number(req.params.id);
+    if (await deleteProductById(productId) === true)
       return res.status(200)
         .send('Product deleted successfully');
     return res.status(404)
       .send('Product not found');
   } catch (error) {
-    console.error("Error in 'products/:name' route:", error);
+    console.error("Error in 'products/:id' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
 });
 
-router.put('/:name', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
@@ -130,11 +130,11 @@ router.put('/:name', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    if (!await getProductByName(req.params.name)) {
+    if (!await getProductByName(req.params.id)) {
       return res.status(404)
-        .send('Coundt find product named ' + req.params.name);
+        .send('Coundt find product named ' + req.params.id);
     }
-    const product = await changeProductByName(req.body, req.params.name);
+    const product = await changeProductById(req.body, Number(req.params.id));
     return res.status(200)
       .send(product);
   } catch (error) {

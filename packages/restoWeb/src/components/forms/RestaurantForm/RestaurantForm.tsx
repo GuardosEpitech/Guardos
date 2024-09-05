@@ -65,6 +65,7 @@ interface IOpeningHours {
 
 interface IRestaurantFormProps {
   restaurantName?: string;
+  restoId?: number;
   street?: string;
   streetNumber?: number;
   postalCode?: string;
@@ -100,6 +101,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
   const {
     restaurantName,
+    restoId,
     street,
     streetNumber,
     postalCode,
@@ -240,6 +242,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       return;
     }
 
+    // TODO: do I need to add id?
     const resto: IAddResto = {
       name: selectedRestaurantName,
       phoneNumber: selectedPhone,
@@ -264,7 +267,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     if (props.add) {
       await addNewResto(data);
     } else {
-      await editResto(origRestoName, resto, userToken);
+      await editResto(restoId, resto, userToken);
     }
     return NavigateTo("/", navigate, { successfulForm: true });
   }
@@ -274,12 +277,12 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const file = event.target.files[0];
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
-        addImageResto(restaurantName, file.name, file.type, file.size, result)
+        addImageResto(restoId, file.name, file.type, file.size, result)
           .then(r => {
             setPictures([{ base64: result, contentType: file.type,
               filename: file.name, size: file.size, uploadDate: "0", id: r }]);
             if (picturesId.length > 0) {
-              deleteImageRestaurant(picturesId[0], restaurantName);
+              deleteImageRestaurant(picturesId[0], restoId);
               picturesId.shift();
             }
             picturesId.push(r);
@@ -290,7 +293,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
 
   function handeFileDelete() {
     if (picturesId.length > 0) {
-      deleteImageRestaurant(picturesId[0], restaurantName);
+      deleteImageRestaurant(picturesId[0], restoId);
       displayImageFromBase64(defaultRestoImage, "restoImg");
       setPictures([{
         base64: defaultRestoImage,

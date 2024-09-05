@@ -25,7 +25,7 @@ export interface IDishFE {
   pictures?: string[];
   picturesId?: number[];
   category: ICategoryFE;
-  resto: string;
+  restoId: number;
   products: string[];
   discount: number;
   validTill: string;
@@ -33,6 +33,6 @@ export interface IDishFE {
 }
 
 export interface IAddDish {
-  resto: string;
+  restoId: number;
   dish: IDishFE;
 }

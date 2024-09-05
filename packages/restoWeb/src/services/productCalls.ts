@@ -44,21 +44,21 @@ export const getProductsByUser = async (userToken: string) => {
   }
 };
 
-export const addNewProduct = async (product: IProduct, restoName: string, token: string) => {
+export const addNewProduct = async (product: IProduct, restoId: number, token: string) => {
   try {
     if (!product.name) {
       console.error("Error adding new product:");
       return;
     }
     const response = await axios({
-      url: baseUrl + "api/products/" + restoName,
+      url: baseUrl + "api/products/" + restoId,
       method: "POST",
       params: {key: token},
       data: JSON.stringify({
         name: product.name,
         ingredients: product.ingredients,
         allergens: product.allergens,
-        resto: restoName,
+        resto: restoId,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const addNewProduct = async (product: IProduct, restoName: string, token:
 export const deleteProduct = async (product: any, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + "api/products/" + product.name,
+      url: baseUrl + "api/products/" + product._id,
       method: "DELETE",
       params: {key: token},
       headers: {
@@ -87,10 +87,10 @@ export const deleteProduct = async (product: any, token: string) => {
   }
 };
 
-export const editProduct = async (product: IProductFE, originalProductName: string, token: string) => {
+export const editProduct = async (product: IProductFE, productId: number, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + "api/products/" + originalProductName,
+      url: baseUrl + "api/products/" + productId,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify({

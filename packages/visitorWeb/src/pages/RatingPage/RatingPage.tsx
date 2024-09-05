@@ -13,7 +13,7 @@ import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
 
 const RatingPage = () => {
-  const { restoName } = useLocation().state;
+  const { restoId, restoName } = useLocation().state;
   const [note, setNote] = React.useState<number | null>(2);
   let comment: string = null;
   const ref = useRef(null);
@@ -49,7 +49,7 @@ const RatingPage = () => {
     try {
       const userToken = localStorage.getItem('user');
       if (userToken === null) { return; }
-      postRatingData(restoName, comment, note, userToken);
+      postRatingData(restoId, comment, note, userToken);
       setOpen(true);
     }
     catch (err) {
@@ -57,11 +57,11 @@ const RatingPage = () => {
     }
     setNote(2);
     comment = null;
-    getRatingData(restoName).then(res => setRatingData(res));
+    getRatingData(restoId).then(res => setRatingData(res));
   };
 
   useState(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
+    getRatingData(restoId).then(res => setRatingData(res));
   })
 
   const blue = {

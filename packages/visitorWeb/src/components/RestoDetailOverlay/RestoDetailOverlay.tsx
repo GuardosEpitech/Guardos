@@ -107,7 +107,12 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             </Typography>
           </div>
           <div className={styles.FlexParent}>
-            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
+            <RatingDisplay
+              restoRating={rating}
+              restoRatingsCount={ratingCount}
+              restoName={name}
+              restoId={props.restaurant.uid}
+            />
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon/>
