@@ -486,7 +486,10 @@
         "description-high-level-1": "Les demandes de fonctionnalités sont prioritaires",
         "description-high-level-2": "Faire des réservations",
         "save-filter": "Enregistrer un filtre",
-        "save-filters": "Enregistrer jusqu'à {{filterNumber}} filtres"
+        "save-filters": "Enregistrer jusqu'à {{filterNumber}} filtres",
+        "no-subscription": "Pas d'abonnement défini.",
+        "subscription-time": "Abonnement Time:",
+        "subscription-active": "Statut de l'abonnement:"
       },
 
       "Privacy": {

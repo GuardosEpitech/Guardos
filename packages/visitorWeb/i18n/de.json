@@ -487,7 +487,10 @@
         "description-high-level-1": "Feature-Anfragen werden priorisiert",
         "description-high-level-2": "Reservierungen vornehmen",
         "save-filter": "Einen Filter speichern",
-        "save-filters": "Bis zu {{filterNumber}} Filter speichern"
+        "save-filters": "Bis zu {{filterNumber}} Filter speichern",
+        "no-subscription": "Kein Abonnement gesetzt.",
+        "subscription-time": "Abonnement Zeit:",
+        "subscription-active": "Abonnement Status:"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",

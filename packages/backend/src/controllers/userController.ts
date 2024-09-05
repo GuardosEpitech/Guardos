@@ -462,6 +462,42 @@ export async function getSubscribtionID(userID: number) {
   return false;
 }
 
+export async function deleteActiveSubscriptionVisitor(userID: number) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+
+  const result = await UserRestoSchema.updateOne(
+    { uid: userID }, 
+    { $unset: { activeSubscriptionIdentifier: 1 } }
+  );
+
+  return result;
+}
+
+export async function addActiveSubscriptionVisitor(userID: number, activeSubscriptionIdentifier: string) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function getActiveSubscriptionVisitor(userID: number) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser.activeSubscriptionIdentifier) {
+    return existingUser.activeSubscriptionIdentifier
+  }
+  return 'default';
+}
+
 export async function deleteSubscribtionID(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
 

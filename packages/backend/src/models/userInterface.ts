@@ -42,4 +42,5 @@ export const userSchema = new mongoose.Schema({
   },
   customerID: String,
   subscriptionID: String,
+  activeSubscriptionIdentifier: String,
 });
