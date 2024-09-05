@@ -108,3 +108,23 @@ export interface IAddRestoRequest {
   userToken: string;
   resto: IAddResto;
 }
+
+export type color =
+  | "primary"
+  | "secondary"
+  | "default"
+  | "error"
+  | "info"
+  | "success"
+  | "warning";
+
+export interface Allergen {
+  name: string;
+  value: boolean;
+  colorButton: color;
+}
+
+export interface AllergenProfile {
+  name: string;
+  allergens: Allergen[];
+}
