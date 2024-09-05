@@ -22,6 +22,7 @@ function handleDislikedIngredientsList(
   dislikedIngredientsList: string[],
   restaurant: any
 ) {
+  if (!dislikedIngredientsList) return [];
   const dislikedIngredientsListUpdate =
       restaurant.statistics.userDislikedIngredients;
   dislikedIngredientsList.forEach((ingredient) => {
