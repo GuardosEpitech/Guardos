@@ -13,7 +13,8 @@
       "delete": "Delete",
       "yes": "Yes",
       "no": "No",
-
+      "insights": "Insights",
+      "my-analytics": "My Analytics",
       "english": "English",
       "german": "German",
       "french": "French",
@@ -39,9 +40,15 @@
       "unexpected-error": "An unexpected error occurred",
       "all-fields-mandatory": "All fields are mandatory.",
       "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!",
-      "discount": "Discount"
+      "discount": "Discount",
+      "combo": "Dish combination"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Get up to 50% off on electronics, fashion, and more!",
+        "link": "Shop Now"
+      },
       "MapButton": {
         "enter-map-view": "Go to Map View"
       },
@@ -98,7 +105,8 @@
         "confirm-delete": "Are you sure you want to delete {{ dishName }}?",
         "options": "Options: ",
         "discount": "Discounted price: ",
-        "valid": "Valid until"
+        "valid": "Valid until",
+        "recommendedCombos": "Show recommended Combinations"
       },
       "ProductCard": {
         "confirm-delete": "Are you sure you want to delete {{ productName }}?",
@@ -231,7 +239,11 @@
         "here": "here",
         "or": "Or",
         "facebook-img-alt": "Facebook Logo",
-        "google-img-alt": "Google Logo"
+        "google-img-alt": "Google Logo",
+        "enter-code": "Enter 8-digit code",
+        "enter-code-error": "Please enter an 8-digit code",
+        "incorrect-code": "The code you entered is incorrect. Please try again.",
+        "code-error": "An error occurred while verifying the code. Please try again."
       },
       "MyAccountPage": {
         "account-page": "Account page",
@@ -264,7 +276,9 @@
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
         "enable-dark-mode": "Enable Dark Mode",
         "payBtn": "Manage payment methods",
-        "User-Support": "User Support"
+        "User-Support": "User Support",
+        "two-factor-activate": "Enable two-factor authentication",
+        "two-factor-deactivate": "Disable two-factor authentication"
       },
       "ProductsPage": {
         "add-product": "Add product",
@@ -573,6 +587,26 @@
         "errorPercent": "Percentage must be greater than 0 and less than 100",
         "successAdd": "Discount saved successfully",
         "successDelete": "Discount removed successfully"
+      },
+      "DishComboPage": {
+        "title": "Manage combinations for ",
+        "recommendedCombinations": "Recommended combinations:",
+        "DishComboPage": "Remove",
+        "selectDish": "Selected items",
+        "save": "Save",
+        "clearAll": "Clear all",
+        "successAdd": "Combinations successfully added",
+        "successRemove": "All combinations removed"
+      },
+      "userInsights": {
+        "select-restaurant": "Select a restaurant",
+        "total-clicks": "Total clicks on this restaurant",
+        "clicks-this-month": "Clicks this month",
+        "clicks-this-week": "Clicks this week",
+        "update-month": "Data refers to the following month",
+        "update-week": "Data refers to the following week",
+        "user-allergens": "Users with these allergenic preferences visited this restaurant",
+        "user-disliked-ingredients": "Users who dislike these ingredients visited this restaurant"
       }
     }
   }

@@ -59,6 +59,17 @@ export interface IRestaurantFrontEnd {
   products: IProduct[];
   dishes: IDishFE[];
   menuDesignID: number;
+  statistics?: IStatistics;
+}
+
+export interface IStatistics {
+    totalClicks: number;
+    clicksThisMonth: number;
+    clicksThisWeek: number;
+    updateMonth: string;
+    updateWeek: string;
+    userDislikedIngredients: [{name: string, count: number}];
+    userAllergens: [{name: string, count: number}];
 }
 
 export interface IRestaurantBackEnd {

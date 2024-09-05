@@ -37,6 +37,11 @@
       "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Get up to 50% off on electronics, fashion, and more!",
+        "link": "Shop Now"
+      },
       "Filter": {
         "save-filter-failure": "Failed to save filter",
         "save-filter-success": "Successfully saved filter",
@@ -83,7 +88,8 @@
         "options": "Options: ",
         "disliked-ingredients": "Hidden due to disliked ingredients: ",
         "discount": "Discounted price: ",
-        "valid": "Valid until:"
+        "valid": "Valid until:",
+        "recommendedCombos": "Show recommended Combinations"
       },
       "RestoCard": {
         "add-review": "Add a review",
@@ -91,7 +97,8 @@
         "menu": "Menu",
         "day": "Day",
         "opening": "Opening",
-        "closing": "Closing"
+        "closing": "Closing",
+        "linkCopied": "Link copied to clipboard"
       },
       "Slider": {
         "allergen-friendly": "Allergen friendly",

@@ -37,6 +37,11 @@
       "need-cam-permissions": "Désolé, nous avons besoin des autorisations de la galerie photos pour que cela fonctionne !"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Profitez de réductions allant jusqu'à 50% sur une sélection de produits Amazon.",
+        "link": "Voir les offres"
+      },
       "Filter": {
         "save-filter-failure": "Échec de l'enregistrement du filtre",
         "save-filter-success": "Filtre enregistré avec succès",
@@ -83,7 +88,8 @@
         "options": "Options : ",
         "disliked-ingredients": "Caché en raison des ingrédients indésirables: ",
         "discount": "Prix réduit: ",
-        "valid": "Valable jusqu'au"
+        "valid": "Valable jusqu'au",
+        "recommendedCombos": "Afficher les combinaisons recommandées"
       },
       "RestoCard": {
         "add-review": "Ajouter un avis",
@@ -91,7 +97,8 @@
         "menu": "Menu",
         "day": "Jour",
         "opening": "Ouverture",
-        "closing": "Fermeture"
+        "closing": "Fermeture",
+        "linkCopied": "Lien copié"
       },
       "Slider": {
         "allergen-friendly": "Convivial pour les allergènes",

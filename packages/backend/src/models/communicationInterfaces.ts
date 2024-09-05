@@ -82,4 +82,5 @@ export interface IRestoProfileCommunication {
   }[],
   defaultMenuDesign: string;
   preferredLanguage: string;
+  twoFactor: string;
 }

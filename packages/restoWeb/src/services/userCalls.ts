@@ -52,7 +52,7 @@ export const sendRecoveryLinkForRestoUser = async (body: any) => {
   } catch (error) {
     console.error("Error while checking visitor user:", error);
   }
-}
+};
 
 export const updateRestoPassword = async (token: string, 
   newPassword: string) => {
@@ -72,7 +72,7 @@ export const updateRestoPassword = async (token: string,
   } catch (error) {
     console.error("Error while checking visitor user:", error);
   }
-}
+};
 
 export const addRestoChain = async (token: string, 
   restoChainName: string) => {
@@ -218,3 +218,25 @@ export const deletePaymentMethod = async (paymentID: string) => {
     console.error("Error deleting payment method:", error);
   }
 };
+
+export const verfyTwoFactorAndLogin =
+    async (userId: number, code: string, user: any) => {
+      try {
+        return await axios({
+          method: 'POST',
+          url: baseUrl + 'login/restoWeb/TwoFactor',
+          data: JSON.stringify({
+            id: userId,
+            code: code,
+            username: user.username,
+            password: user.password
+          }),
+          headers: {
+            "content-type": "application/json",
+          },
+        });
+      } catch (error) {
+        console.error("Error verifying two factor code:", error);
+        return error;
+      }
+    };

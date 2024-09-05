@@ -7,7 +7,7 @@ import {
   getUserIdResto, getUserRestoCookiePreferences,
   updateRestoPassword, setUserRestoCookiePreferences,
   updateRestoProfileDetails, updateRecoveryPasswordResto,
-  addRestoChain, deleteRestoChain
+  addRestoChain, deleteRestoChain, addTwoFactorResto
 } from '../controllers/userRestoController';
 
 const router = express.Router();
@@ -276,6 +276,31 @@ router.get('/getCookiePref', async (req, res) => {
   const response = await getUserRestoCookiePreferences(<number>userID);
   return res.status(200)
     .send(response);
+});
+
+router.put('/setTwoFactorAuth', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserIdResto(userToken);
+    const data = req.body;
+    if (userID === false) {
+      return res.status(404)
+        .send({ error: 'User not found' });
+    }
+    if (data.twoFactor === undefined) {
+      return res.status(400)
+        .send({ error: 'Missing twoFactor field' });
+    }
+    const response = await addTwoFactorResto(<number>userID, data.twoFactor);
+    return res.status(200)
+      .send({ message: 'Set two factor authentication to: ' + response });
+    
+  } catch (error) {
+    console.error("Error in POST '/api/profile/setTwoFactorAuth' route:",
+      error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
 });
 
 export default router;
