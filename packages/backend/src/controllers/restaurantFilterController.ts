@@ -22,6 +22,7 @@ export default class Filter {
         uid: elem._id as number,
         name: elem.name,
         userID: elem.userID,
+        restoChainID: elem.restoChainID,
         description: elem.description,
         rating: elem.rating,
         ratingCount: elem.ratingCount,
@@ -52,6 +53,7 @@ export default class Filter {
     const restaurantBE: IRestaurantBackEnd = {
       name: restaurant.name,
       userID: restaurant.userID,
+      restoChainID: restaurant.restoChainID,
       description: restaurant.description,
       uid: restaurant.uid,
       website: restaurant.website,
@@ -132,6 +134,7 @@ export default class Filter {
       uid: restaurant.uid,
       website: restaurant.website,
       userID: restaurant.userID,
+      restoChainID: restaurant.restoChainID,
       description: restaurant.description,
       rating: restaurant.rating,
       ratingCount: restaurant.ratingCount,

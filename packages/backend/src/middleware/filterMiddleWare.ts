@@ -110,6 +110,7 @@ export const getSelectedFilterReq =
       const obj: IRestaurantBackEnd = {
         uid: elem.uid,
         userID: elem.userID,
+        restoChainID: elem.restoChainID,
         name: elem.name,
         description: elem.description,
         rating: elem.rating,

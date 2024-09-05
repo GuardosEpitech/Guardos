@@ -7,6 +7,7 @@ export const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   permissions: [String],
+  subscribeTime: Date,
   city: String,
   allergens: [String],
   dislikedIngredients: [String],
@@ -40,4 +41,5 @@ export const userSchema = new mongoose.Schema({
     marketing: Boolean
   },
   customerID: String,
+  subscriptionID: String,
 });

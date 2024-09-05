@@ -74,6 +74,46 @@ export const updateRestoPassword = async (token: string,
   }
 }
 
+export const addRestoChain = async (token: string, 
+  restoChainName: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'profile/resto/restoChain',
+      params: {key: token},
+      data: {
+        restoChainName: restoChainName
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+  }
+}
+
+export const deleteRestoChain = async (token: string, 
+  restoChainName: string) => {
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: baseUrl + 'profile/resto/restoChain',
+      params: {key: token},
+      data: {
+        restoChainName: restoChainName
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error while checking visitor user:", error);
+  }
+}
+
 export const deleteRestoAccount = async (token: string) => {
   try {
     const response = await axios({

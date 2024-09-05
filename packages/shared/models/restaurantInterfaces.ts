@@ -43,6 +43,7 @@ export interface IRestaurantFrontEnd {
   name: string;
   uid: number;
   userID: number;
+  restoChainID: number,
   phoneNumber: string;
   website: string;
   description: string;
@@ -63,6 +64,7 @@ export interface IRestaurantFrontEnd {
 export interface IRestaurantBackEnd {
   uid: number;
   userID: number;
+  restoChainID: number,
   name: string;
   phoneNumber: string;
   website: string;
@@ -88,6 +90,7 @@ export interface IAddResto {
   openingHours: IOpeningHours[];
   location: ILocation;
   menuDesignID: number;
+  restoChainID: number;
 };
 
 export interface IAddRestoRequest {

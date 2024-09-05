@@ -3,7 +3,8 @@ import * as express from 'express';
 import {
   changeDishByName, createNewDish, deleteDishByName,
   getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName,
-  addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo
+  addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
+  createNewForEveryRestoChainDish
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -250,7 +251,7 @@ router.post('/removeCombo', async (req, res) => {
 
 router.post('/:name', async (req, res) => {
   try {
-    const { resto, dish } = req.body;
+    const { resto, dish, restoChainID } = req.body;
     const userToken = String(req.query.key);
     if (!await checkIfRestaurantExists(req.params.name)) {
       return res.status(404)
@@ -278,6 +279,9 @@ router.post('/:name', async (req, res) => {
     const allergens: [string] = allergensDB.data[0].allergens;
     dish.allergens.push(...allergens);
     const newDish = await createNewDish(resto, dish, userID as number);
+    if (restoChainID) {
+      await createNewForEveryRestoChainDish(dish, userID as number, restoChainID, resto);
+    }
     return res.status(200)
       .send(newDish);
   } catch (error) {
