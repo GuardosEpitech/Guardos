@@ -27,5 +27,6 @@ export const userRestoSchema = new mongoose.Schema({
   },
   customerID: String,
   subscriptionID: String,
+  activeSubscriptionIdentifier: String,
   twoFactor: String,
 });

@@ -415,7 +415,10 @@
         "description-low-level-2": "Menu personnalisé",
         "premium": "Abonnement Premium",
         "description-high-level-1": "Prioriser les demandes de fonctionnalités",
-        "description-high-level-2": "Informations détaillées"
+        "description-high-level-2": "Informations détaillées",
+        "no-subscription": "Pas d'abonnement défini.",
+        "subscription-time": "Abonnement Time:",
+        "subscription-active": "Statut de l'abonnement:"
       },
       "Privacy": {
         "title": "Déclaration de Confidentialité",

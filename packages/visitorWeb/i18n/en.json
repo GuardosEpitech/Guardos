@@ -486,7 +486,10 @@
         "description-high-level-1": "Feature requests are prioritized",
         "description-high-level-2": "Make reservations",
         "save-filter": "Save one filter",
-        "save-filters": "Save up to {{filterNumber}} filters"
+        "save-filters": "Save up to {{filterNumber}} filters",
+        "no-subscription": "No Abonnement set.",
+        "subscription-time": "Abonnement Time:",
+        "subscription-active": "Abonnement Status:"
       },
       "Privacy": {
         "title": "Privacy Statement",

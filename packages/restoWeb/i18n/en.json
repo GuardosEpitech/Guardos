@@ -416,7 +416,10 @@
         "description-low-level-2": "personalized menu",
         "premium": "Premium Subscription",
         "description-high-level-1": "prioritize feature requests",
-        "description-high-level-2": "detailed insights"
+        "description-high-level-2": "detailed insights",
+        "no-subscription": "No Abonnement set.",
+        "subscription-time": "Abonnement Time:",
+        "subscription-active": "Abonnement Status:"
       },
       "Privacy": {
         "title": "Privacy Statement",

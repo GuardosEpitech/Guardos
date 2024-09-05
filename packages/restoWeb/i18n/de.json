@@ -415,7 +415,10 @@
         "description-low-level-2": "Personalisiertes Menü",
         "premium": "Premium-Abonnement",
         "description-high-level-1": "Feature-Anfragen werden priorisiert",
-        "description-high-level-2": "Detaillierte Analyse-Einblicke"
+        "description-high-level-2": "Detaillierte Analyse-Einblicke",
+        "no-subscription": "Kein Abonnement gesetzt.",
+        "subscription-time": "Abonnement Zeit:",
+        "subscription-active": "Abonnement Status:"
       },
       "Privacy": {
         "title": "Datenschutzerklärung",

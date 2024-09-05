@@ -484,6 +484,42 @@ export async function deleteSubscribtionIDResto(userID: number) {
   return result;
 }
 
+export async function deleteActiveSubscription(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+
+  const result = await UserRestoSchema.updateOne(
+    { uid: userID }, 
+    { $unset: { activeSubscriptionIdentifier: 1 } }
+  );
+
+  return result;
+}
+
+export async function addActiveSubscription(userID: number, activeSubscriptionIdentifier: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function getActiveSubscription(userID: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser.activeSubscriptionIdentifier) {
+    return existingUser.activeSubscriptionIdentifier
+  }
+  return 'default';
+}
+
 export async function addTwoFactorResto(userId: number, twoFactor: string) {
   const UserRestoSchema
       = mongoose.model('UserResto', userRestoSchema, 'UserResto');

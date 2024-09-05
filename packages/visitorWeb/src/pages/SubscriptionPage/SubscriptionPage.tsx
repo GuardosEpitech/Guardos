@@ -5,12 +5,24 @@ import {
   getVisitorUserPermission,
   removeVisitorUserPermissions
 } from "@src/services/permissionsCalls";
+import {
+  getSubscriptionTime,
+  createSubscription,
+  getSubscriptionID,
+  deleteSubscription,
+  deleteSubscriptionTime,
+  addActiveSubscription,
+  getActiveSubscription,
+  addSubscriptionTime
+} from "@src/services/userCalls";
 import SubscriptionBox from "@src/components/SubscriptionBox/SubscriptionBox";
 import {useTranslation} from "react-i18next";
 import Layout from 'shared/components/Layout/Layout';
 
 const SubscriptionPage: React.FC = () => {
   const [userPermissions, setUserPermissions] = useState<string[]>([]);
+  const [userSubscriptionTime, setUserSubscriptionTime] = useState<Date>(null);
+  const [activeSubscriptionName, setActiveSubscriptionName] = useState<string>('default');
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -22,7 +34,31 @@ const SubscriptionPage: React.FC = () => {
         }
 
         const permissions = await getVisitorUserPermission(userToken);
+        const userSubscribeTime = await getSubscriptionTime(userToken);
         setUserPermissions(permissions || []);
+
+        setUserSubscriptionTime(userSubscribeTime ? new Date(userSubscribeTime) : null);
+        console.log(userSubscribeTime);
+
+        if (userSubscribeTime) {
+          const subscriptionDate = new Date(userSubscribeTime);
+          const currentDate = new Date();
+          const oneMonthAgo = new Date(currentDate);
+          oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+
+          const activeSubscriptionName = await getActiveSubscription(userToken);
+          setActiveSubscriptionName(activeSubscriptionName);
+
+          if (subscriptionDate <= oneMonthAgo) {
+            await deleteSubscriptionTime(userToken);
+            setUserSubscriptionTime(null);
+            await addActiveSubscription(userToken, permissions[0]);
+          } else {
+            setUserSubscriptionTime(subscriptionDate);
+          }
+        } else {
+          setUserSubscriptionTime(null);
+        }
       } catch (error) {
         console.error("Error fetching user permissions:", error);
       }
@@ -38,6 +74,32 @@ const SubscriptionPage: React.FC = () => {
       }
 
       await addVisitorUserPermissions(userToken, permission);
+
+      let subscriptionID = await getSubscriptionID(userToken);
+
+      if (subscriptionID && permission[0] !== 'default') {
+        await deleteSubscription(userToken, subscriptionID);
+      }
+      
+      if (permission[0] === 'basicSubscription') {
+        await createSubscription(userToken, 'price_1PvaFWP2Z8f8T9hwM0fnZkdT');
+        await addActiveSubscription(userToken, permission[0]);
+        if (!userSubscriptionTime) {
+          await addSubscriptionTime(userToken);
+          const userSubscribeTime = await getSubscriptionTime(userToken);
+          setUserSubscriptionTime(new Date(userSubscribeTime))
+        }
+        setActiveSubscriptionName(permission[0]);
+      } else if (permission[0] === 'premiumUser') {
+        await createSubscription(userToken, 'price_1PvaG4P2Z8f8T9hwoor77WPU');
+        await addActiveSubscription(userToken, permission[0]); 
+        if (!userSubscriptionTime) {
+          await addSubscriptionTime(userToken);
+          const userSubscribeTime = await getSubscriptionTime(userToken);
+          setUserSubscriptionTime(new Date(userSubscribeTime))
+        }
+        setActiveSubscriptionName(permission[0]);         
+      }
       const permissions = await getVisitorUserPermission(userToken);
       setUserPermissions(permissions || []);
     } catch (error) {
@@ -65,6 +127,11 @@ const SubscriptionPage: React.FC = () => {
     await handleAddPermission(permission);
     setUserPermissions(permission);
   };
+
+  // Format date to German time format (DD.MM.YYYY)
+  const formattedSubscriptionTime = userSubscriptionTime
+    ? new Intl.DateTimeFormat('de-DE').format(userSubscriptionTime)
+    : t('pages.SubscriptionPage.no-subscription');
 
   return (
     <Layout>
@@ -111,6 +178,32 @@ const SubscriptionPage: React.FC = () => {
             isActive={userPermissions.includes("premiumUser")}
             permission={"premiumUser"}
             onDelete={handleRemovePermission}
+          />
+        </div>
+        {/* Add the subscription time textbox */}
+        <div className={styles.subscriptionTimeContainer}>
+          <label htmlFor="subscriptionTime" className={styles.subscriptionTimeLabel}>
+            {t('pages.SubscriptionPage.subscription-time')}
+          </label>
+          <input
+            type="text"
+            id="subscriptionTime"
+            value={formattedSubscriptionTime}
+            readOnly
+            className={styles.subscriptionTimeInput}
+          />
+        </div>
+        {/* Add the subscription time textbox */}
+        <div className={styles.subscriptionTimeContainer}>
+          <label htmlFor="subscriptionActive" className={styles.subscriptionActiveLabel}>
+            {t('pages.SubscriptionPage.subscription-active')}
+          </label>
+          <input
+            type="text"
+            id="subscriptionActive"
+            value={activeSubscriptionName}
+            readOnly
+            className={styles.subscriptionActiveInput}
           />
         </div>
       </div>
