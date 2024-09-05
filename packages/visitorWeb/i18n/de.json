@@ -38,6 +38,11 @@
       "need-cam-permissions": "Entschuldigung, wir benötigen Berechtigungen für die Kamera, um dies zu ermöglichen!"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Bis zu 50% Rabatt auf Elektronik, Kleidung und mehr",
+        "link": "Jetzt einkaufen"
+      },
       "Filter": {
         "save-filter-failure": "Filter speichern fehlgeschlagen",
         "save-filter-success": "Filter erfolgreich gespeichert",

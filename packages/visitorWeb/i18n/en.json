@@ -38,6 +38,11 @@
       "need-cam-permissions": "Sorry, we need camera roll permissions to make this work!"
     },
     "components": {
+      "AdCard": {
+        "title": "Amazon Summer Sale",
+        "description": "Get up to 50% off on electronics, fashion, and more!",
+        "link": "Shop Now"
+      },
       "Filter": {
         "save-filter-failure": "Failed to save filter",
         "save-filter-success": "Successfully saved filter",
