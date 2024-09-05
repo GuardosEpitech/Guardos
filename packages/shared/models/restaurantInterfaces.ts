@@ -43,6 +43,7 @@ export interface IRestaurantFrontEnd {
   name: string;
   uid: number;
   userID: number;
+  restoChainID: number,
   phoneNumber: string;
   website: string;
   description: string;
@@ -58,11 +59,23 @@ export interface IRestaurantFrontEnd {
   products: IProduct[];
   dishes: IDishFE[];
   menuDesignID: number;
+  statistics?: IStatistics;
+}
+
+export interface IStatistics {
+    totalClicks: number;
+    clicksThisMonth: number;
+    clicksThisWeek: number;
+    updateMonth: string;
+    updateWeek: string;
+    userDislikedIngredients: [{name: string, count: number}];
+    userAllergens: [{name: string, count: number}];
 }
 
 export interface IRestaurantBackEnd {
   uid: number;
   userID: number;
+  restoChainID: number,
   name: string;
   phoneNumber: string;
   website: string;
@@ -88,9 +101,30 @@ export interface IAddResto {
   openingHours: IOpeningHours[];
   location: ILocation;
   menuDesignID: number;
+  restoChainID: number;
 };
 
 export interface IAddRestoRequest {
   userToken: string;
   resto: IAddResto;
+}
+
+export type color =
+  | "primary"
+  | "secondary"
+  | "default"
+  | "error"
+  | "info"
+  | "success"
+  | "warning";
+
+export interface Allergen {
+  name: string;
+  value: boolean;
+  colorButton: color;
+}
+
+export interface AllergenProfile {
+  name: string;
+  allergens: Allergen[];
 }

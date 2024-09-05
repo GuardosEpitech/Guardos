@@ -33,6 +33,7 @@ import userSupport from './routes/userSupport';
 import review from './routes/review';
 import menu from './routes/menu';
 import map from './routes/map';
+import statistics from './routes/statistics';
 
 function constructAllowedOrigins(): string[] {
   const domains: { [key: string]: string | undefined } = {
@@ -110,6 +111,7 @@ async function main() {
     app.use('/api/favourites', asyncHandler(favourites));
     app.use('/api/menuDesigns', asyncHandler(menuDesigns));
     app.use('/api/map', asyncHandler(map));
+    app.use('/api/statistics', asyncHandler(statistics));
   }
 
   // Catch 404 and forward to error handler

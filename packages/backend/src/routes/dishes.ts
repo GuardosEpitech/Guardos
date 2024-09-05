@@ -3,7 +3,8 @@ import * as express from 'express';
 import {
   changeDishByName, createNewDish, deleteDishByName,
   getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName,
-  addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo
+  addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
+  createNewForEveryRestoChainDish
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -13,7 +14,8 @@ import {
 import {getUserIdResto} from '../controllers/userRestoController';
 import {detectAllergens} from '../controllers/allergenDetectionController';
 import {
-  doesUserOwnRestaurantByName
+  doesUserOwnRestaurantByName,
+  getRestaurantByID
 } from '../controllers/restaurantController';
 
 const router = express.Router();
@@ -53,6 +55,47 @@ router.get('/user/dish', async (req, res) => {
       .send({ error: 'Internal Server Error' });
   }
 });
+
+router.post('/dishIDs', async (req, res) => {
+  try {
+    const restoName = String(req.query.key);
+    if (!await checkIfRestaurantExists(restoName)) {
+      return res.status(404)
+        .send('Coudnt find restaurant named ' + restoName);
+    }
+    const { ids } = req.body;
+    const dishes = await getDishesByRestaurantName(restoName);
+    const dishesArray = dishes[0].dishes;
+    const filteredDishes = dishesArray.filter(dish => ids.includes(dish.uid));
+    return res.status(200)
+      .send(filteredDishes);
+  } catch (error) {
+    console.error("Error in 'dishes/dishIDs' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+})
+
+router.post('/dishIDsByID', async (req, res) => {
+  try {
+    const restoID = Number(req.query.key);
+    if (!await getRestaurantByID(restoID)) {
+      return res.status(404)
+        .send('Coudnt find restaurant with ID  ' + restoID);
+    }
+    const resto = await getRestaurantByID(restoID);
+    const { ids } = req.body;
+    const dishes = await getDishesByRestaurantName(resto.name);
+    const dishesArray = dishes[0].dishes;
+    const filteredDishes = dishesArray.filter(dish => ids.includes(dish.uid));
+    return res.status(200)
+      .send(filteredDishes);
+  } catch (error) {
+    console.error("Error in 'dishes/dishIDs' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+})
 
 router.get('/:name', async (req, res) => {
   try {
@@ -250,7 +293,7 @@ router.post('/removeCombo', async (req, res) => {
 
 router.post('/:name', async (req, res) => {
   try {
-    const { resto, dish } = req.body;
+    const { resto, dish, restoChainID } = req.body;
     const userToken = String(req.query.key);
     if (!await checkIfRestaurantExists(req.params.name)) {
       return res.status(404)
@@ -278,6 +321,9 @@ router.post('/:name', async (req, res) => {
     const allergens: [string] = allergensDB.data[0].allergens;
     dish.allergens.push(...allergens);
     const newDish = await createNewDish(resto, dish, userID as number);
+    if (restoChainID) {
+      await createNewForEveryRestoChainDish(dish, userID as number, restoChainID, resto);
+    }
     return res.status(200)
       .send(newDish);
   } catch (error) {

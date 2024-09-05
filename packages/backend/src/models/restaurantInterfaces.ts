@@ -23,6 +23,7 @@ export const restaurantSchema = new mongoose.Schema({
   },
   description: String,
   menuDesign: String,
+  restoChainID: Number,
   dishes: [
     {
       _id: Number,
@@ -101,4 +102,24 @@ export const restaurantSchema = new mongoose.Schema({
       date: Date,
     },
   ],
+  statistics: {
+    restoId: Number,
+    totalClicks: Number,
+    clicksThisMonth: Number,
+    clicksThisWeek: Number,
+    updateMonth: String,
+    updateWeek: String,
+    userAllergens: [
+      {
+        allergen: String,
+        count: Number,
+      },
+    ],
+    userDislikedIngredients: [
+      {
+        ingredient: String,
+        count: Number,
+      },
+    ],
+  },
 });

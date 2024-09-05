@@ -18,7 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { addNewResto, editResto, getAllMenuDesigns } from "@src/services/restoCalls";
+import { addNewResto, editResto, getAllMenuDesigns, getAllRestaurantChainsByUser } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
 import { IAddRestoRequest, IAddResto }
@@ -78,6 +78,7 @@ interface IRestaurantFormProps {
   website?: string;
   picturesId?: number[];
   menuDesignID?: number;
+  restoChainID?: number;
 }
 
 interface IDay {
@@ -110,11 +111,14 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     website,
     picturesId,
     menuDesignID,
-    openingHours
+    openingHours,
+    restoChainID
   } = props;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [menuDesigns, setMenuDesigns] = useState<IMenuDesigns[]>([]);
+  const [restoChains, setRestoChains] = useState<{uid: number, name: string}[]>([]);
   const [selectedMenuDesignId, setSelectedMenuDesignId] = useState(0);
+  const [selectedRestoChainId, setSelectedRestoChainId] = useState(0);
   const [selectedRestaurantName, setSelectedRestaurantName] = useState('');
   const [selectedStreet, setSelectedStreet] = useState('');
   const [selectedStreetNumber, setSelectedStreetNumber] = useState(0);
@@ -126,7 +130,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [selectedWebsite, setSelectedWebsite] = useState('');
   const [selectedOpeningHours, setSelectedOpeningHours] = useState<IOpeningHours[]>([]);
   const [value, setValue] = useState(null);
+  const [valueRestoChain, setValueRestoChain] = useState(null);
   const [inputValue, setInputValue] = React.useState("");
+  const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const origRestoName = restaurantName;
   const {t} = useTranslation();
 
@@ -193,6 +199,14 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
         }
       });
+    getAllRestaurantChainsByUser(userToken)
+      .then((res) => {
+        setRestoChains(res);
+
+        if (restoChainID !== undefined) {
+          setValueRestoChain(res.find((restoChain:{uid:number, name:string}) => restoChain.uid === restoChainID));
+        }
+      });
   }, [props.picturesId]);
 
   function addTimeOpen(data: IOpeningHours) {
@@ -255,7 +269,8 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         latitude: "0",
         longitude: "0",
       },
-      menuDesignID: selectedMenuDesignId
+      menuDesignID: selectedMenuDesignId,
+      restoChainID: selectedRestoChainId
     };
     const data: IAddRestoRequest  = {
       userToken: userToken,
@@ -507,9 +522,14 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   value={value}
                   getOptionLabel={(option) =>
                     (option ? (option as IMenuDesigns).name : "")}
-                  onChange={(e, value) => {
-                    setValue(value);
-                    setSelectedMenuDesignId(value._id);
+                  onChange={(e, value, reason) => {
+                    if (reason !== 'clear') {
+                      setValue(value);
+                      setSelectedMenuDesignId(value._id);
+                    } else {
+                      setValue(null);
+                      setSelectedMenuDesignId(0);
+                    }
                   }}
                   inputValue={inputValue}
                   onInputChange={(event, newInputValue) => {
@@ -519,6 +539,36 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                     <TextField
                       {...params}
                       label={t('components.RestaurantForm.menu-design')}
+                    />
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={2} sm={4} md={6}>
+              <FormControl fullWidth>
+                <Autocomplete
+                  id="tags-outlined"
+                  options={restoChains}
+                  value={valueRestoChain}
+                  getOptionLabel={(option) =>
+                    (option ? (option as {uid:number, name:string}).name : "")}
+                  onChange={(e, value, reason) => {
+                    if (reason !== 'clear') {
+                      setValueRestoChain(value);
+                      setSelectedRestoChainId(value.uid);
+                    } else {
+                      setValueRestoChain(null);
+                      setSelectedRestoChainId(0);
+                    }
+                  }}
+                  inputValue={inputValueRestoChain}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValueRestoChain(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={t('components.RestaurantForm.restoChain')}
                     />
                   )}
                 />

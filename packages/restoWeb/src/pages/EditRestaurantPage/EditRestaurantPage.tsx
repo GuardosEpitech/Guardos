@@ -27,6 +27,7 @@ interface IEditRestaurantPageProps {
   description: string;
   picturesId: number[];
   menuDesignID: number;
+  restoChainID: number;
   website: string;
   openingHours: IOpeningHours[];
 }
@@ -43,6 +44,7 @@ const EditRestaurantPage = () => {
     description,
     picturesId,
     menuDesignID,
+    restoChainID,
     website,
     openingHours
   } = useLocation().state as IEditRestaurantPageProps;
@@ -71,6 +73,7 @@ const EditRestaurantPage = () => {
           description={description}
           picturesId={picturesId}
           menuDesignID={menuDesignID}
+          restoChainID={restoChainID}
           website={website}
           openingHours={openingHours}
         />

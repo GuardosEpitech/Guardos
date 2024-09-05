@@ -409,3 +409,102 @@ export async function getCustomer(userID: number) {
   }
   return false;
 }
+
+export async function getSubscribeTime(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const answer = await UserSchema.findOne({uid: userID});
+
+  if (answer.subscribeTime) {
+    return answer.subscribeTime;
+  }
+  return false;
+}
+
+export async function addSubscribeTime(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    let currentTime = new Date();
+    currentTime.setHours(currentTime.getHours() + 2);
+    const answer = await UserSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { subscribeTime: currentTime } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function addSubscribtionID(userID: number,subscriptionID: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    const answer = await UserSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { subscriptionID: subscriptionID } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function getSubscribtionID(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    return existingUser.subscriptionID;
+  }
+  return false;
+}
+
+export async function deleteActiveSubscriptionVisitor(userID: number) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+
+  const result = await UserRestoSchema.updateOne(
+    { uid: userID }, 
+    { $unset: { activeSubscriptionIdentifier: 1 } }
+  );
+
+  return result;
+}
+
+export async function addActiveSubscriptionVisitor(userID: number, activeSubscriptionIdentifier: string) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser) {
+    const answer = await UserRestoSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
+      { new: true }
+    );
+    return answer
+  }
+  return false;
+}
+
+export async function getActiveSubscriptionVisitor(userID: number) {
+  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+  const existingUser = await UserRestoSchema.findOne({ uid: userID });
+
+  if (existingUser.activeSubscriptionIdentifier) {
+    return existingUser.activeSubscriptionIdentifier
+  }
+  return 'default';
+}
+
+export async function deleteSubscribtionID(userID: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+
+  const result = await UserSchema.updateOne(
+    { uid: userID }, 
+    { $unset: { subscriptionID: 1 } }
+  );
+
+  return result;
+}

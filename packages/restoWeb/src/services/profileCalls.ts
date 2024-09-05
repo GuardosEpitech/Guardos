@@ -101,3 +101,21 @@ export const getUserRestoPreferences = async (token: string) => {
     console.error("Error getting Cookie preferences:", error);
   }
 };
+
+export const changeTwoFactor = async (token: string,
+  twoFactor: string) => {
+  try {
+    const response = await axios({
+      method: 'PUT',
+      url: baseUrl + 'setTwoFactorAuth',
+      params: {key: token},
+      data: {twoFactor: twoFactor},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error changing third party token:", error);
+  }
+};

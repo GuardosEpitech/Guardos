@@ -3,6 +3,7 @@ import styles from "@src/pages/RestoPage/RestoPage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import Filter from "@src/components/Filter/Filter";
 import MapView from '@src/components/Map/Map';
+import AdCard from "@src/components/AdCard/AdCard";
 import { getNewFilteredRestos } from "@src/services/filterCalls";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
@@ -118,6 +119,16 @@ const RestoPage = () => {
     }
   };
 
+  const insertAdCard = (restaurants: Array<IRestaurantFrontEnd>) => {
+    const totalCards = restaurants.length;
+    if (totalCards === 0) return restaurants; 
+    const randomIndex = Math.floor(Math.random() * (totalCards + 1));
+    const combinedCards = [...restaurants];
+    combinedCards.splice(randomIndex, 0, { isAd: true } as unknown as IRestaurantFrontEnd);
+
+    return combinedCards;
+  };
+
   const updateRestoData = () => {
     const inter: ISearchCommunication = { name: "" }
     setLoading(true);
@@ -169,7 +180,8 @@ const RestoPage = () => {
     };
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
-    setFilteredRestaurants(await getNewFilteredRestos(newFilter));
+    const restos = await getNewFilteredRestos(newFilter);
+    setFilteredRestaurants(insertAdCard(restos));
     setLoading(false); 
   };
 
@@ -237,23 +249,25 @@ const RestoPage = () => {
             <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
-            ) : ( loading ? 
-                (    <Stack spacing={1}>
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                  <Skeleton variant="rounded" width={1000} height={130} />
-                </Stack>) 
-              :
-                (
-                 filteredRestaurants?.map((item, index) => {
-                  const isFavourite = isFavouriteRestos.includes(item.uid);
-                  return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />
-                }))
-              
+            ) : (loading ? 
+              (    <Stack spacing={1}>
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+              </Stack>) 
+            :
+              (
+              filteredRestaurants?.map((item, index) => {
+                if ('isAd' in item) {
+                  return <AdCard key={`ad-${index}`} />;
+                }
+                const isFavourite = isFavouriteRestos.includes(item.uid);
+                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
+              }))
             )}
           </div>
         ) : (
@@ -271,10 +285,10 @@ const RestoPage = () => {
                 onClick={handleAddressSearch}
               >
                 {t('pages.RestoPage.loc')}
-               </button>
+              </button>
             </div>
             <div className={styles.mapContainer}>
-              <MapView data={filteredRestaurants} userPosition={userPosition}/>
+              <MapView data={filteredRestaurants} userPosition={userPosition} />
             </div>
           </div>
         )}
@@ -282,5 +296,6 @@ const RestoPage = () => {
     </>
   );
 };
+
 
 export default RestoPage;
