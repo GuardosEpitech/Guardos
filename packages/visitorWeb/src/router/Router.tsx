@@ -29,6 +29,7 @@ import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAd
 import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
 import UserSupportPage from "@src/pages/UserSupport/UserSupportPage";
 import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
+import GuidesPage from "@src/pages/GuidesPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -112,6 +113,7 @@ const MVPRouter = () => {
             <Route path="/technologies" element={<TechnologyList/>}></Route>
             <Route path="/subscriptions" element={<SubscriptionPage/>}></Route>
             <Route path="/payment" element={<PaymentPage />}></Route>
+            <Route path="/guides" element={<GuidesPage/>}></Route>
           <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
           <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
           <Route path="/terms" element={<TermsPage />}></Route>

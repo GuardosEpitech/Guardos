@@ -36,6 +36,7 @@ import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 import DiscountDishPage from "@src/pages/DiscountDishPage";
 import UserInsights from "@src/pages/UserInsights";
 import DishComboPage from "@src/pages/DishComboPage";
+import GuidesPage from "@src/pages/GuidesPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -126,6 +127,7 @@ const MVPRouter = () => {
           <Route path="/discount" element={<DiscountDishPage />}></Route>
           <Route path="/combo" element={<DishComboPage />}></Route>
           <Route path="/insights" element={<UserInsights />}></Route>
+          <Route path="/guides" element={<GuidesPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

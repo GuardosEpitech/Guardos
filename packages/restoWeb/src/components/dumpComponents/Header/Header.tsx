@@ -98,6 +98,7 @@ const Header = () => {
               <a className={styles.NavTitle} href="/dishes" onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
               <a className={styles.NavTitle} href="/products" onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
               <a className={styles.NavTitle} href="/insights" onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
+              <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
             </>
           )}
           <a
@@ -138,6 +139,7 @@ const Header = () => {
                 <a className={styles.NavTitle} href="/addCategory" onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
                 <a className={styles.NavTitle} href="/dishes" onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
                 <a className={styles.NavTitle} href="/products" onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
+                <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('common.Header.guides')}</a>
               </>
             )}
         </div>

@@ -1,0 +1,51 @@
+@import "../../general.scss";
+
+.accordion {
+  border-radius: 8px;
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.nonActive {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.titleText {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.dropdownIcon {
+  width: 24px;
+  height: 24px;
+  fill: #333;
+  transition: transform 0.3s ease;
+}
+
+.active .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  padding: 8px 16px;
+  border-width: 0 4px 4px;
+  border-style: none solid solid;
+  border-color: transparent #f0f0f0 #f0f0f0;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+
+.active .accordionContent {
+  display: block;
+}
