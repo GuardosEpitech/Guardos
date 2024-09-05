@@ -12,6 +12,17 @@
   border-radius: 0.625rem;
 }
 
+.ButtonFilterSaver {
+  button {
+    background-color: $burgundy !important;
+    text-transform: none;
+  }
+  button:first-child {
+    color: $burgundy !important;
+    background-color: #ffffff !important;
+  }
+}
+
 .TitleFilter {
   font-family: "Calibri", sans-serif;
   font-size: 1.5rem;

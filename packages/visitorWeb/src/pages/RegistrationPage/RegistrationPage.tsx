@@ -118,7 +118,7 @@ const Register = () => {
   
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <div className={styles.registerForm}>
           <h2>{t('pages.RegistrationPage.register')}</h2>
           <form onSubmit={handleSubmit}>
@@ -156,7 +156,7 @@ const Register = () => {
             </Button>
           </form>
         </div>
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

@@ -6,7 +6,9 @@
   right: 0;
   margin-bottom: 2rem;
   margin-right: 2rem;
-  border: $white solid 1px;
-  border-radius: 0.36rem;
+  border-radius: 10px;
   z-index: 100;
+  button {
+    font-family: $montserrat;
+  }
 }

@@ -81,6 +81,7 @@ const Login = (props:LoginPageProps) => {
         localStorage.removeItem('user');
       } else {
         localStorage.setItem('user', response.data);
+        localStorage.setItem('userName',  user.username);
         setErrorForm(false);
         props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
@@ -116,7 +117,7 @@ const Login = (props:LoginPageProps) => {
 
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <div className={styles.loginForm}>
           <h2>{t('pages.LoginPage.login')}</h2>
           <form onSubmit={handleSubmit}>
@@ -192,7 +193,7 @@ const Login = (props:LoginPageProps) => {
             </Container>
           </form>
         </div>
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

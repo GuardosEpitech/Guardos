@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f8f8f8;
@@ -16,6 +16,9 @@ body {
 
 .MyAccountPage div {
   margin-bottom: 15px;
+  button {
+    cursor: pointer;
+  }
 }
 
 .MyAccountPage label {
@@ -26,25 +29,19 @@ body {
 
 .InputField,
 .MyAccountPage select,
-.MyAccountPage button
-{
+.MyAccountPage button {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
+  margin: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
   margin-bottom: 15px;
   box-sizing: border-box;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 16px;
-}
-
-.deleteButton {
-  background-color: $burgundy !important;
-  color: #fff !important;
-}
-
-.deleteButton:hover {
-  background-color: brown !important;
 }
 
 .MyAccountPage ul {
@@ -70,7 +67,7 @@ body {
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -83,10 +80,11 @@ body {
 
 .ImageDimensions {
   width: 100%;
-  height: auto;
-  max-height: 25rem;
-  max-width: 15rem;
-  object-fit: cover;
+  height: 100%;
+  max-height: 10rem;
+  max-width: 10rem;
+  border-radius: 100px;
+  object-fit: containe;
   margin: auto;
   display: flex;
 }
@@ -98,12 +96,12 @@ body {
 }
 
 .imageButton {
-  background-color: #3498db;
+  background-color: $burgundy;
   color: #fff;
   cursor: pointer;
   padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 16px;
   display: inline-block;
   text-align: center;
@@ -112,37 +110,25 @@ body {
 }
 
 .imageButton:hover {
-  background-color: #2980b9;
+  opacity: 90%;
 }
 
 .deleteButton {
-  background-color: $burgundy;
-  color: #fff;
+  background-color: white !important;
+  color: $burgundy !important;
+  border: 1px solid $burgundy !important;
 }
 
 .deleteButton:hover {
-  background-color: brown;
+  background-color: $burgundy !important;
+  color: white !important;
+  border: 1px solid white !important;
 }
 
 .selectInput {
   div {
     margin-bottom: 0;
   }
-}
-
-.dropdownToggle {
-  background-color: #3498db;
-  color: #fff;
-  cursor: pointer;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.dropdownToggle:hover {
-  background-color: #2980b9;
 }
 
 .dropdownBgColorExtended {
@@ -158,7 +144,7 @@ body {
   background-color: #f0f0f0;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-top: 10px;
 }
 
@@ -175,7 +161,7 @@ body {
   margin-bottom: 15px;
   box-sizing: border-box;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 16px;
 }
 
@@ -184,7 +170,7 @@ body {
   text-align: center;
   font-weight: bold;
   padding: 5px;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .success {
@@ -198,17 +184,17 @@ body {
 }
 
 .saveButton {
-  background-color: #4caf50;
+  background-color: $burgundy;
   color: #fff;
   cursor: pointer;
   padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 16px;
 }
 
 .saveButton:hover {
-  background-color: #45a049;
+  opacity: 90%;
 }
 
 @media (min-width: 768px) {

@@ -12,14 +12,14 @@
 
 .GridItemImage {
   padding: 1rem 0 1rem 1rem;
+  width: 100%;
 }
 
 .ImageDimensions {
-  width: 100%;
-  height: auto;
-  max-height: 11rem;
+  width: 100px;
+  border-radius: 100px !important;
+  height: 100px;
   object-fit: cover;
-  border-radius: 0.625rem;
 }
 
 .DishTitle {
@@ -53,6 +53,7 @@
   margin-left: auto !important;
   padding: 0.2rem 0.8rem !important;
   font-size: 16px !important;
+  font-family: $montserrat !important;
 }
 
 .OpeningHours {
@@ -81,7 +82,7 @@
   .OpeningHours {
     overflow-x: auto;
   }
-  
+
   .GridContainer {
     flex-direction: column !important;
   }

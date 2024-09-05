@@ -133,7 +133,7 @@
         "decline": "REFUSER TOUT",
         "and": " et ",
         "strictly": "Strictement nécessaire"
-        },
+      },
       "CreditCard": {
         "expire": "Expire le : ",
         "msg": "Êtes-vous sûr de vouloir supprimer cette méthode ?"
@@ -303,6 +303,9 @@
         "subscriptions": "Gérer l'abonnement",
         "fav-restos": "Restaurants favoris",
         "fav-dishes": "Plats favoris",
+        "fav-reviews": "Mes commentaires",
+        "title-reviews": "Commentaire",
+        "review-delete-success": "Commentaire supprimée !",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
         "enable-dark-mode": "Activer le mode sombre",
         "payBtn": "Gérer les méthodes de paiement",
@@ -466,7 +469,7 @@
         "introLegal": "Les marques et logos représentés sont des marques déposées de Guardos.",
         "txtlegal1": "Informations aux consommateurs conformément au règlement (UE) n° 524/2013 : ",
         "txtlegal2": "Dans le cadre du règlement sur la résolution des litiges en ligne en matière de consommation, ",
-        "txtlegal3": "une plateforme de résolution des litiges en ligne de la Commission européenne est disponible à l'adresse." 
+        "txtlegal3": "une plateforme de résolution des litiges en ligne de la Commission européenne est disponible à l'adresse."
       },
       "CookieStatement": {
         "title": "Déclaration relative aux cookies",
@@ -539,7 +542,7 @@
         "introAnalytical": "Nous analysons vos interactions sur le site Web à l'aide de cookies et de trackers pour améliorer et adapter notre site Web à vos préférences. Grâce à cette analyse, nous nous efforçons de rendre notre site Web aussi convivial que possible. Les technologies suivantes sont utilisées à des fins analytiques :",
         "marketing": "Technologies marketing",
         "introMarketing": "Naturellement, nous visons une utilisation fréquente de notre site Web et utilisons donc des cookies et des trackers pour le promouvoir auprès de vous. Les technologies suivantes sont utilisées à des fins marketing :"
-        },
+      },
       "Payment": {
         "title": "Méthodes de paiement",
         "nopay": "Aucune méthode de paiement ajoutée.",
@@ -550,8 +553,8 @@
         "back": "Aller à la page de paiement"
       },
       "PaymentCancel": {
-          "title": "Méthode de paiement non ajoutée",
-          "back": "Aller à la page de paiement"
+        "title": "Méthode de paiement non ajoutée",
+        "back": "Aller à la page de paiement"
       },
       "T&C": {
         "title": "Conditions Générales d'Utilisation de Guardos",

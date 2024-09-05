@@ -88,7 +88,7 @@ const Login = (props:LoginPageProps) => {
 
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <div className={styles.loginForm}>
           <h2>{t('pages.LoginPage.login')}</h2>
           <form onSubmit={handleSubmit}>
@@ -127,7 +127,7 @@ const Login = (props:LoginPageProps) => {
             </p>
           </form>
         </div>
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

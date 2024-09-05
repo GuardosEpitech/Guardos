@@ -2,71 +2,76 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Orbitron&display=swap");
 
 .RectOnImg {
-    width: 100%;
-    height: 12.125rem;
-    background-image: url("@src/assets/foodbg.png");
-    box-shadow: inset 0 0 0 62.5rem rgba(64, 63, 76, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
+  width: 100%;
+  height: 12.125rem;
+  background-image: url("@src/assets/foodbg.png");
+  box-shadow: inset 0 0 0 62.5rem rgba(64, 63, 76, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
 }
 
 .TitleSearch {
-    font-family: "Calibri", sans-serif;
-    font-size: 2.188rem;
-    color: #ffffff;
+  font-family: "Calibri", sans-serif;
+  font-size: 2.188rem;
+  color: #ffffff;
 }
 
 .TitleCard {
-    font-family: "Calibri", sans-serif;
-    font-size: 2.19rem;
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 3rem;
+  font-family: "Calibri", sans-serif;
+  font-size: 2.19rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 3rem;
 }
 
 .MapTitle {
-    font-family: "Calibri", sans-serif;
-    font-size: 2.188rem;
-    color: #ffffff;
-    margin: 0;
+  font-family: "Calibri", sans-serif;
+  font-size: 2.188rem;
+  color: #ffffff;
+  margin: 0;
 }
 
 .RestaurantAddress {
-    font-family: "Calibri", sans-serif;
-    font-size: 1.8rem;
-    color: #ffffff;
-    margin-left: 1rem;
+  font-family: "Calibri", sans-serif;
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-left: 1rem;
 }
 
 .DivAddress {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .DivContent {
   display: flex;
-  align-items: flex-start; 
+  align-items: flex-start;
   justify-content: space-between;
   margin-top: 3rem;
 }
 
 .DivMapBtn {
-    margin-right: 1rem;
-    flex-shrink: 0;
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .DivRect {
-    width: 24.13rem;
-    height: 15.88rem;
-    background-image: url("@src/assets/mapimg.png");
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0.625rem;
-    flex-shrink: 0;
-    margin-left: 20px;
+  width: 24.13rem;
+  height: 15.88rem;
+  background-image: url("@src/assets/mapimg.png");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.625rem;
+  flex-shrink: 0;
+  margin-left: 20px;
+  button {
+    width: 75%;
+    border-radius: 10px;
+    font-family: $montserrat;
+  }
 }
 
 @media (max-width: 768px) {
@@ -76,46 +81,46 @@
 }
 
 @media (max-width: 1200px) {
-    .RectOnImg {
-      gap: 1rem;
-      flex-direction: column;
-    }
+  .RectOnImg {
+    gap: 1rem;
+    flex-direction: column;
+  }
 
-    .TitleSearch {
-      font-size: 1.5rem;
-    }
+  .TitleSearch {
+    font-size: 1.5rem;
+  }
 
-    .TitleCard {
-      font-size: 1.5rem;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+  .TitleCard {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
 
-    .DivContent {
-      flex-direction: column;
-      align-items: center;
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
-    }
+  .DivContent {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
 
-    .DivContentRestoSection {
-      flex-direction: column;
-      align-items: center;
-      margin-left: 1.5rem;
-      margin-right: 1.5rem;
-    }
+  .DivContentRestoSection {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
 
-    .DivMapBtn {
-        margin-right: 0;
-        margin-bottom: 3rem;
-        display: flex;
-        flex-direction: row;
-        gap: 20px;
-    }
+  .DivMapBtn {
+    margin-right: 0;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
 
-    .DivRect {
-      margin-left: 0;
-    }
+  .DivRect {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 820px) {
@@ -126,42 +131,49 @@
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    margin-right: 25px; 
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-right: 25px;
+  box-sizing: border-box;
 }
 
 .addressInputContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  align-items: center;
 }
 
-.addressInput, .addressButton {
-    height: 2.5rem; 
-    padding: 0.5rem;
-    box-sizing: border-box;
-    font-size: 1rem; 
+.addressInput,
+.addressButton {
+  height: 2.5rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: none;
+  font-size: 1rem;
+  border-radius: 10px;
 }
 
 .addressInput {
-    flex-grow: 1;
-    margin-right: 10px;
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .addressButton {
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap; 
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $burgundy;
+  color: white;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .mapContainer {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
