@@ -6,11 +6,14 @@ import {
   IReview
 } from '../../../shared/models/restaurantInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
+import { userRestoSchema }
+  from '../models/userRestaurantInterfaces';
 import {ICategories} from '../../../shared/models/categoryInterfaces';
 import {IDishBE, IDishFE} from '../../../shared/models/dishInterfaces';
 import {IMealType} from '../../../shared/models/mealTypeInterfaces';
 import {ILocation} from '../../../shared/models/locationInterfaces';
 import {IRestaurantCommunication} from '../models/communicationInterfaces';
+//import { IRestoProfileCommunication } from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { geocodeAddress } from './mapController';
 
@@ -20,6 +23,7 @@ export function createBackEndObj(restaurant: IRestaurantBackEnd) {
     description: restaurant.description,
     uid: restaurant.uid,
     userID: restaurant.userID,
+    restoChainID: restaurant.restoChainID,
     website: restaurant.website,
     rating: restaurant.rating,
     ratingCount: restaurant.ratingCount,
@@ -94,6 +98,7 @@ function createRestaurantObjFe(
     uid: restaurant.uid,
     userID: restaurant.userID,
     website: restaurant.website,
+    restoChainID: restaurant.restoChainID,
     description: restaurant.description,
     rating: restaurant.rating,
     ratingCount: restaurant.ratingCount,
@@ -171,6 +176,7 @@ export async function getRestaurantByName(restaurantName: string) {
     extras: rest.extras as unknown as [IDishBE],
     uid: rest._id as number,
     userID: rest.userID as number,
+    restoChainID: rest.restoChainID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
     name: rest.name as string,
@@ -198,6 +204,7 @@ export async function getRestaurantByID(restaurantID: number) {
     extras: rest.extras as unknown as [IDishBE],
     uid: rest._id as number,
     userID: rest.userID as number,
+    restoChainID: rest.restoChainID as number,
     location: rest.location as ILocation,
     mealType: rest.mealType as [IMealType],
     name: rest.name as string,
@@ -226,6 +233,7 @@ export async function getAllRestaurants() {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
+      restoChainID: restaurant.restoChainID as number,
       uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
@@ -257,6 +265,7 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
+      restoChainID: restaurant.restoChainID as number,
       uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
@@ -274,6 +283,66 @@ export async function getAllUserRestaurants(loggedInUserId : number) {
     answer.push(createRestaurantObjFe(restaurantBE));
   }
   return answer;
+}
+
+export async function getAllUserRestaurantChains(loggedInUserId : number) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserRestoSchema.findOne({uid: loggedInUserId});
+  
+  return userData.restaurantChains;
+}
+
+export async function getAllRestosFromRestoChain(loggedInUserId : number, restaurantChainID : number) {
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
+  const query: any = { userID: loggedInUserId, restoChainID: restaurantChainID};
+  
+
+  const restaurants = await RestaurantModel.find(query);
+  const answer: IRestaurantFrontEnd[] = [];
+
+  for (const restaurant of restaurants) {
+    const restaurantBE = createBackEndObj({
+      description: restaurant.description as string,
+      dishes: restaurant.dishes as [IDishBE],
+      extras: restaurant.extras as unknown as [IDishBE],
+      userID: restaurant.userID as number,
+      restoChainID: restaurant.restoChainID as number,
+      uid: restaurant._id as number,
+      location: restaurant.location as ILocation,
+      mealType: restaurant.mealType as [IMealType],
+      name: restaurant.name as string,
+      openingHours: restaurant.openingHours as [IOpeningHours],
+      phoneNumber: restaurant.phoneNumber as string,
+      pictures: restaurant.pictures as [string],
+      picturesId: restaurant.picturesId as [number],
+      products: restaurant.products as [IProduct],
+      rating: restaurant.rating as number,
+      ratingCount: restaurant.ratingCount as number,
+      website: restaurant.website as string,
+      menuDesignID: restaurant.menuDesignID as number,
+    });
+    answer.push(createRestaurantObjFe(restaurantBE));
+  }
+
+  return answer;
+}
+
+export async function deleteRestoChainFromRestaurant(loggedInUserId : number, restoChainID: number) {
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
+  
+  // Use await to handle the asynchronous operation
+  try {
+    const result = await RestaurantModel.updateMany(
+      { userID: loggedInUserId, restoChainID: restoChainID }, 
+      { $unset: { restoChainID: 1 } }
+    );
+    return result;
+  } catch (error) {
+    console.error('Error updating records:', error);
+    return false;
+  }
+
 }
 
 export async function getAllUserRestaurantsFiltered(loggedInUserId: number,
@@ -299,6 +368,7 @@ export async function getAllUserRestaurantsFiltered(loggedInUserId: number,
       dishes: restaurant.dishes as [IDishBE],
       extras: restaurant.extras as unknown as [IDishBE],
       userID: restaurant.userID as number,
+      restoChainID: restaurant.restoChainID as number,
       uid: restaurant._id as number,
       location: restaurant.location as ILocation,
       mealType: restaurant.mealType as [IMealType],
@@ -387,6 +457,7 @@ export async function changeRestaurant(
     extras: restaurant.extras ? restaurant.extras : oldRest.extras,
     uid: oldRest.uid,
     userID: oldRest.userID,
+    restoChainID: restaurant.restoChainID !== undefined ? restaurant.restoChainID : oldRest.restoChainID,
     location: restaurant.location ? restaurant.location : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
     openingHours: restaurant.openingHours
@@ -511,6 +582,7 @@ export async function addCategory(
       extras: rest.extras as unknown as [IDishBE],
       uid: rest._id as number,
       userID: rest.userID as number,
+      restoChainID: rest.restoChainID as number,
       location: rest.location as ILocation,
       mealType: rest.mealType as [IMealType],
       name: rest.name as string,

@@ -43,6 +43,7 @@ export interface IRestaurantFrontEnd {
   name: string;
   uid: number;
   userID: number;
+  restoChainID: number,
   phoneNumber: string;
   website: string;
   description: string;
@@ -74,6 +75,7 @@ export interface IStatistics {
 export interface IRestaurantBackEnd {
   uid: number;
   userID: number;
+  restoChainID: number,
   name: string;
   phoneNumber: string;
   website: string;
@@ -99,9 +101,30 @@ export interface IAddResto {
   openingHours: IOpeningHours[];
   location: ILocation;
   menuDesignID: number;
+  restoChainID: number;
 };
 
 export interface IAddRestoRequest {
   userToken: string;
   resto: IAddResto;
+}
+
+export type color =
+  | "primary"
+  | "secondary"
+  | "default"
+  | "error"
+  | "info"
+  | "success"
+  | "warning";
+
+export interface Allergen {
+  name: string;
+  value: boolean;
+  colorButton: color;
+}
+
+export interface AllergenProfile {
+  name: string;
+  allergens: Allergen[];
 }

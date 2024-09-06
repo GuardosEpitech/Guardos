@@ -7,7 +7,7 @@ import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { IRestaurantBackEnd, IRestaurantFrontEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
-import {getAllUserRestaurants, getRestaurantByID} from './restaurantController';
+import {getAllUserRestaurants, getRestaurantByID, getAllRestosFromRestoChain} from './restaurantController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -199,6 +199,36 @@ export async function createNewDish(
     validTill: ''
   };
   await createDish(restaurantName, dish);
+  return dish;
+}
+
+export async function createNewForEveryRestoChainDish(
+  dishCom: IDishesCommunication, userID: number, 
+  restoChainID: number, restaurantName: string) {
+  const dish: IDishesCommunication = {
+    name: dishCom.name,
+    uid: -1, // actual id will be retrieved in createDish method
+    description: dishCom.description ? dishCom.description : '',
+    price: dishCom.price ? dishCom.price : -1,
+    products: dishCom.products ? dishCom.products : [''],
+    pictures: dishCom.pictures ? dishCom.pictures : [''],
+    allergens: dishCom.allergens ? dishCom.allergens : [''],
+    category: dishCom.category ? dishCom.category : {
+      menuGroup: '',
+      foodGroup: '',
+      extraGroup: [''],
+    },
+    userID: userID,
+    discount: -1,
+    validTill: ''
+  };
+  const restaurants = await getAllRestosFromRestoChain(userID, restoChainID);
+
+  for (const elem of restaurants) {
+    if (elem.name !== restaurantName) {
+      await createDish(elem.name, dish);
+    }
+  }
   return dish;
 }
 

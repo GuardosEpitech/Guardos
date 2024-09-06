@@ -218,3 +218,192 @@ export const deletePaymentMethod = async (paymentID: string) => {
     console.error("Error deleting payment method:", error);
   }
 };
+
+export const createSubscription = async (token: string, priceId: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'payments/create-subscription-visitor',
+      data: JSON.stringify({
+        priceId: priceId,
+      }),
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const getSubscriptionTime = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'payments/subscribedTime-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const addSubscriptionTime = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'payments/subscribedTime-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const getSubscriptionID = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'payments/get-subscription-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const deleteSubscription = async (token: string, subscriptionId: string) => {
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: baseUrl + 'payments/delete-subscription-visitor',
+      params: {key: token},
+      data: JSON.stringify({
+        subscriptionId: subscriptionId,
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const deleteSubscriptionTime = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: baseUrl + 'payments/subscribedTime-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const deleteActiveSubscription = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "DELETE",
+      url: baseUrl + 'payments/activeSubscription-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const addActiveSubscription = async (token: string, activeSubscriptionIdentifier: string) => {
+  try {
+    const response = await axios({
+      method: "POST",
+      url: baseUrl + 'payments/activeSubscription-visitor',
+      data: JSON.stringify({
+        activeSubscriptionIdentifier: activeSubscriptionIdentifier,
+      }),
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};
+
+export const getActiveSubscription = async (token: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + 'payments/activeSubscription-visitor',
+      params: {key: token},
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching payment methods:", error);
+  }
+};

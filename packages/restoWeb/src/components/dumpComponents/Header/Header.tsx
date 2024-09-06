@@ -93,11 +93,9 @@ const Header = () => {
             <>
               <a className={styles.NavTitle} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
               <a className={styles.NavTitle} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-              <a className={styles.NavTitle} href="/" onClick={() => { handleOptionClick(); navigate('/'); }}>{t('common.my-restos')}</a>
-              <a className={styles.NavTitle} href="/addCategory" onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
-              <a className={styles.NavTitle} href="/dishes" onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
-              <a className={styles.NavTitle} href="/products" onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
+              <a className={styles.NavTitle} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
               <a className={styles.NavTitle} href="/insights" onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
+              <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
             </>
           )}
           <a
@@ -134,10 +132,8 @@ const Header = () => {
               <>
                 <a className={styles.NavTitle} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
                 <a className={styles.NavTitle} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-                <a className={styles.NavTitle} href="/" onClick={() => { handleOptionClick(); navigate('/'); }}>{t('common.my-restos')}</a>
-                <a className={styles.NavTitle} href="/addCategory" onClick={() => { handleOptionClick(); navigate('/addCategory'); }}>{t('common.my-category')}</a>
-                <a className={styles.NavTitle} href="/dishes" onClick={() => { handleOptionClick(); navigate('/dishes'); }}>{t('common.my-dishes')}</a>
-                <a className={styles.NavTitle} href="/products" onClick={() => { handleOptionClick(); navigate('/products'); }}>{t('common.my-products')}</a>
+                <a className={styles.NavTitle} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
+                <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('common.Header.guides')}</a>
               </>
             )}
         </div>

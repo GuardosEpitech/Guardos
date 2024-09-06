@@ -27,6 +27,8 @@ import TechnologyList from "@src/pages/TechnologyPage/TechnologyPage";
 import CookieBanner from "@src/components/CookieBanner/CookieBanner";
 import { getUserRestoPreferences } from "@src/services/profileCalls";
 import AddCategoryPage from "@src/pages/AddCategoryPage";
+import AddRestoChainPage from "@src/pages/AddRestoChainPage";
+import RestoOverViewPage from "@src/pages/RestoOverViewPage";
 import SubscriptionPage from "@src/pages/SubscriptionPage/SubscriptionPage";
 import PaymentAddCancelPage from "@src/pages/Payments/PaymentAddCancel/PaymentAddCancel";
 import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/PaymentAddSuccess";
@@ -36,6 +38,7 @@ import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 import DiscountDishPage from "@src/pages/DiscountDishPage";
 import UserInsights from "@src/pages/UserInsights";
 import DishComboPage from "@src/pages/DishComboPage";
+import GuidesPage from "@src/pages/GuidesPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -116,6 +119,8 @@ const MVPRouter = () => {
           <Route path="/privacy" element={<PrivacyPage />}></Route>
           <Route path="/imprint" element={<ImprintPage />}></Route>
           <Route path="addCategory" element={<AddCategoryPage />}></Route>
+          <Route path="addRestoChain" element={<AddRestoChainPage />}></Route>
+          <Route path="restoOverview" element={<RestoOverViewPage />}></Route>
           <Route path="/cookiestatement" element={<CookieStatement />}></Route>
           <Route path="/technologies" element={<TechnologyList />}></Route>
           <Route path="/subscriptions" element={<SubscriptionPage />}></Route>
@@ -126,6 +131,7 @@ const MVPRouter = () => {
           <Route path="/discount" element={<DiscountDishPage />}></Route>
           <Route path="/combo" element={<DishComboPage />}></Route>
           <Route path="/insights" element={<UserInsights />}></Route>
+          <Route path="/guides" element={<GuidesPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

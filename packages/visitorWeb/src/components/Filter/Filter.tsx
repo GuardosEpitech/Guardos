@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { IFilterObject } from "shared/models/filterInterfaces";
+import { AllergenProfile, color, Allergen } from "shared/models/restaurantInterfaces";
 import axios from 'axios';
 import styles from "./Filter.module.scss";
 import {Button, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Menu, Rating} from "@mui/material";
@@ -21,6 +22,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import {addSavedFilter, deleteSavedFilter, getSavedFilters, getSavedFilterLimit} from "@src/services/profileCalls";
 import {useTranslation} from "react-i18next";
+import Tab from '@mui/material/Tab';
+import TabPanel from '@mui/lab/TabPanel';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import AddIcon from '@mui/icons-material/Add';
+import {getUserAllergens} from "@src/services/userCalls";
 
 const GlobalStyle = () => {
   return createTheme({
@@ -31,6 +38,15 @@ const GlobalStyle = () => {
       },
     },
     components: {
+      MuiTab: {
+        styleOverrides: {
+          root: {
+            '&.Mui-selected': {
+              color: '#AC2A37'
+            }
+          }
+        }
+      },
       MuiChip: {
         styleOverrides: {
           colorPrimary: {
@@ -69,17 +85,9 @@ const marks = [
   },
 ];
 
-type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
-
 interface category {
   name: string;
   value: boolean;
-}
-
-interface allergen {
-  name: string;
-  value: boolean;
-  colorButton: color;
 }
 
 interface FilterProps {
@@ -90,7 +98,7 @@ interface FilterProps {
   fetchFilter: () => ISearchCommunication,
   filter: ISearchCommunication,
   categories: category[],
-  allergens: allergen[]
+  allergens: Allergen[],
 }
 
 const Filter = (props: FilterProps) => {
@@ -104,12 +112,35 @@ const Filter = (props: FilterProps) => {
   const [range, setRange] = React.useState(props.filter.range ? props.filter.range : 0);
   const [rating, setRating] = React.useState(props.filter.rating ? props.filter.rating[0] : 0);
   const [categories, setCategories] = useState(props.categories);
-  const [allergens, setAllergens] = useState<allergen[]>(props.allergens);
+  const [allergens, setAllergens] = useState<Allergen[]>(props.allergens);
   const [changeStatus, setChangeStatus] = useState(null);
   const [changeStatusMsg, setChangeStatusMsg] = useState('');
+  const [groupProfiles, setGroupProfiles] = useState<AllergenProfile[]>([{ name: "Me", allergens: allergens }]);
+  const [selectedProfileIndex, setSelectedProfileIndex] = useState("0");
+  const [defaultAllergens, setDefaultAllergens] = useState([]);
+  const [openProfileDialog, setOpenProfileDialog] = useState(false);
+  const [newProfileName, setNewProfileName] = useState('');
   const {t} = useTranslation();
+  const userProfileName = t('common.me');
 
   useEffect(() => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+    getUserAllergens(userToken).then((userAllergens) => {
+      const profileCopy = groupProfiles[0] ?? { name: userProfileName, allergens: allergens };
+      for (let i = 0; i < userAllergens.length; i++) {
+        profileCopy.allergens.map((state, index) => {
+          if (userAllergens[i] === state.name) {
+            profileCopy.allergens[index].value = true;
+            profileCopy.allergens[index].colorButton = "secondary";
+          }
+        });
+      }
+      setGroupProfiles([profileCopy]);
+    });
+
     fetchSavedFilters();
     loadCurFilter();
   }, []);
@@ -161,16 +192,23 @@ const Filter = (props: FilterProps) => {
         }
       }
     }
+    setDefaultAllergens(updatedAllergens);
     setAllergens(updatedAllergens);
+    setGroupProfiles([{
+      name: userProfileName,
+      allergens: updatedAllergens
+    }])
     props.onChange(filter, updatedCategories, updatedAllergens);
+    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: updatedAllergens }]));
   }
 
   const handleClick = async (name: string) => {
-    const allergensCopy = [...allergens];
-    const allergenListChanged = [];
+    const curAllergens = [...groupProfiles[Number(selectedProfileIndex)].allergens];
+    const allergensCopy = [...groupProfiles[Number(selectedProfileIndex)].allergens];
+    const allergenListChanged: string[] = [];
     // const user = localStorage.getItem('user');
 
-    allergens.map((state, index) => {
+    curAllergens.map((state, index) => {
       if (name === state.name) {
         allergensCopy[index].value = !allergensCopy[index].value;
         if (allergensCopy[index].colorButton == "primary") {
@@ -180,11 +218,17 @@ const Filter = (props: FilterProps) => {
         }
       }
     });
+    const newGroupProfiles = [...groupProfiles];
+    newGroupProfiles[Number(selectedProfileIndex)].allergens = allergensCopy;
+    setGroupProfiles(newGroupProfiles);
     setAllergens(allergensCopy);
 
-    for (let i = 0; i < allergensCopy.length; i++) {
-      if (allergensCopy[i].value) {
-        allergenListChanged.push(allergensCopy[i].name);
+    for (let i = 0; i < groupProfiles.length; i++) {
+      const allergens = (i === Number(selectedProfileIndex)) ? allergensCopy : groupProfiles[i].allergens;
+      for (let j = 0; j < allergens.length; j++) {
+        if (allergens[j].value && !allergenListChanged.includes(allergens[j].name)) {
+          allergenListChanged.push(allergens[j].name);
+        }
       }
     }
     const inter: IFilterObject = {
@@ -210,6 +254,7 @@ const Filter = (props: FilterProps) => {
     // }
 
     props.onChange(inter, allergensCopy);
+    localStorage.setItem('groupProfiles', JSON.stringify(newGroupProfiles));
   };
 
   const handleMenuClick = (event: any) => {
@@ -295,6 +340,10 @@ const Filter = (props: FilterProps) => {
       }
     }
     setAllergens(updatedAllergens);
+    setGroupProfiles([{
+      name: userProfileName,
+      allergens: updatedAllergens
+    }])
 
     setRating(newFilter.rating[0]);
     setRange(newFilter.range);
@@ -303,6 +352,7 @@ const Filter = (props: FilterProps) => {
 
     // Notify parent component
     props.onChange(newFilter, updatedCategories, updatedAllergens);
+    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: updatedAllergens }]));
     handleMenuClose();
   }
 
@@ -398,6 +448,9 @@ const Filter = (props: FilterProps) => {
           })
         });
         setAllergens(allergensCopy);
+        const groupFilterCopy = groupProfiles;
+        groupFilterCopy[0].allergens = allergensCopy;
+        setGroupProfiles(groupFilterCopy);
       }
       setIsLoaded(true);
     }
@@ -424,6 +477,10 @@ const Filter = (props: FilterProps) => {
     setAllergens((prevAllergens) =>
       prevAllergens.map((allergen) => ({ ...allergen, colorButton: "primary", value: false }))
     );
+    setGroupProfiles([{
+      name: userProfileName,
+      allergens: defaultAllergens
+    }])
     setRating(0);
     setRange(0);
 
@@ -431,6 +488,55 @@ const Filter = (props: FilterProps) => {
 
     // Notify parent component
     props.onChange(clearedFilter, []);
+    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: defaultAllergens }]));
+  };
+
+  const handleRemoveProfile = (index: number) => {
+    const remainingProfiles = groupProfiles.filter((_, i) => i !== index);
+    const allergenListChanged: string[] = [];
+    setGroupProfiles(remainingProfiles);
+    if (Number(selectedProfileIndex) === index && groupProfiles.length > 1) {
+      setSelectedProfileIndex(index === 0 ? String(0) : String(index - 1));
+    }
+
+    for (let i = 0; i < remainingProfiles.length; i++) {
+      const allergens = remainingProfiles[i].allergens;
+      for (let j = 0; j < allergens.length; j++) {
+        if (allergens[j].value && !allergenListChanged.includes(allergens[j].name)) {
+          allergenListChanged.push(allergens[j].name);
+        }
+      }
+    }
+    const inter: IFilterObject = {
+      allergenList: allergenListChanged
+    }
+    props.onChange(inter, remainingProfiles[0].allergens);
+    localStorage.setItem('groupProfiles', JSON.stringify(remainingProfiles));
+  };
+
+  const handleProfileChange = (event: React.SyntheticEvent, newValue: number) => {
+    setSelectedProfileIndex(String(newValue));
+  };
+
+  const handleAddProfile = () => {
+    setOpenProfileDialog(true);
+  };
+
+  const handleProfileSave = () => {
+    if (newProfileName && !groupProfiles.some(profile => profile.name === newProfileName)) {
+      setGroupProfiles([
+        ...groupProfiles,
+        { name: newProfileName, allergens: allergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })) }
+      ]);
+      setSelectedProfileIndex(String(groupProfiles.length));
+    }
+    setNewProfileName('');
+    setOpenProfileDialog(false);
+  };
+
+  const handleProfileCancel = () => {
+    setNewProfileName('');
+    setOpenProfileDialog(false);
   };
 
   return (
@@ -577,20 +683,67 @@ const Filter = (props: FilterProps) => {
             <span className={styles.TitleSubFilter}>{t('components.Filter.allergens')}</span>
           </div>
           <div>
-            <Stack className={styles.allergenChips} direction="row" spacing={1}>
-              {allergens.map((allergen) => (
-                  <ThemeProvider theme={GlobalStyle()} key={allergen.name}>
-                    <Chip
-                      className={styles.chip}
-                      label={allergen.name}
-                      color={allergen.colorButton}
-                      variant="outlined"
-                      onClick={() => handleClick(allergen.name)}
-                    />
-                  </ThemeProvider>
-                )
-              )}
-            </Stack>
+            <ThemeProvider theme={GlobalStyle()}>
+              <TabContext value={selectedProfileIndex}>
+                <TabList onChange={handleProfileChange} variant={"scrollable"} aria-label="Allergen profiles">
+                  {groupProfiles.map((profile, index) => (
+                    <Tab key={index} label={profile.name} value={String(index)} />
+                  ))}
+                  <IconButton onClick={handleAddProfile}>
+                    <AddIcon/>
+                  </IconButton>
+                </TabList>
+                {groupProfiles.map((profile, index) => (
+                  <TabPanel style={{padding: 0, paddingTop: 24}} key={index} value={String(index)}>
+                    <Stack className={styles.allergenChips} direction="row" spacing={1}>
+                      {profile.allergens.map((allergen, allergenIndex) => (
+                        <ThemeProvider theme={GlobalStyle()} key={allergen.name}>
+                          <Chip
+                          className={styles.chip}
+                          label={allergen.name}
+                          color={allergen.colorButton}
+                          variant="outlined"
+                          onClick={() => handleClick(allergen.name)}
+                          />
+                        </ThemeProvider>
+                      ))}
+                    </Stack>
+                    {selectedProfileIndex !== "0" && (
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => handleRemoveProfile(index)}
+                        startIcon={<Delete />}
+                      >
+                        Remove Profile
+                      </Button>
+                    )}
+                  </TabPanel>
+                ))}
+              </TabContext>
+              <Dialog open={openProfileDialog} onClose={handleProfileCancel}>
+                <DialogTitle>Add New Profile</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Profile Name"
+                    fullWidth
+                    variant="outlined"
+                    value={newProfileName}
+                    onChange={(e) => setNewProfileName(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleProfileCancel} color="primary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleProfileSave} color="primary">
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </ThemeProvider>
           </div>
         </div>
       </div>

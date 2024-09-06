@@ -35,4 +35,5 @@ export interface IDishFE {
 export interface IAddDish {
   resto: string;
   dish: IDishFE;
+  restoChainID: number;
 }
