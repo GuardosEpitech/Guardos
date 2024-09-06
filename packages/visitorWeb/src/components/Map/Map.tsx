@@ -20,7 +20,7 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { useTranslation } from "react-i18next";
 
-const Epitech = [13.328820, 52.508540]; // long,lat
+const Epitech = [13.328820, 52.508540]; // long, lat
 
 const stylesMarker = {
   'icon': new Style({
@@ -73,13 +73,30 @@ interface MapProps {
 const MapView = (props: MapProps) => {
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<Map | null>(null);
   const element = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<Map | null>(null);
   const [clickedFeature, setClickedFeature] = useState<IRestaurantFrontEnd | null>(null);
   const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
   const { t } = useTranslation();
 
-  // Create vectors only when props change
+  const createFeatures = (data: IRestaurantFrontEnd[]) => {
+    return data
+      .filter(elem => elem.location && elem.location.longitude && elem.location.latitude)
+      .map(elem => {
+        const [lon, lat] = [parseFloat(elem.location.longitude), parseFloat(elem.location.latitude)];
+        return new Feature({
+          type: 'icon',
+          geometry: new Point(fromLonLat([lon, lat])),
+          description: elem.name,
+          telephone: elem.phoneNumber,
+          address: `${elem.location.streetName} ${elem.location.streetNumber}, ${elem.location.postalCode} ${elem.location.city}`,
+          index: elem.uid,
+          objectR: elem,
+          name: 'Marker',
+        });
+      });
+  };
+
   const locationMarkerL = useMemo(() => {
     if (!props.userPosition) return [];
     const [lon, lat] = [props.userPosition.lng, props.userPosition.lat];
@@ -90,39 +107,10 @@ const MapView = (props: MapProps) => {
     return [locationMarker];
   }, [props.userPosition]);
 
-  const testMarkerL = useMemo(() => {
-    return props.data.map(elem => {
-      const [lon, lat] = [parseFloat(elem.location.longitude), parseFloat(elem.location.latitude)];
-      return new Feature({
-        type: 'icon',
-        geometry: new Point(fromLonLat([lon, lat])),
-        description: elem.name,
-        telephone: elem.phoneNumber,
-        address: `${elem.location.streetName} ${elem.location.streetNumber}, ${elem.location.postalCode} ${elem.location.city}`,
-        index: elem.uid,
-        objectR: elem,
-        name: 'Marker',
-      });
-    });
-  }, [props.data]);
+  const testMarkerL = useMemo(() => createFeatures(props.data), [props.data]);
 
-  const vectorLayerLoc = useMemo(() => {
-    return new VL({
-      source: new VectorSource({
-        features: locationMarkerL,
-      }),
-      style: stylesMarker['location'],
-    });
-  }, [locationMarkerL]);
-
-  const vectorLayer = useMemo(() => {
-    return new VL({
-      source: new VectorSource({
-        features: testMarkerL,
-      }),
-      style: stylesMarker['icon'],
-    });
-  }, [testMarkerL]);
+  const [vectorLayerLoc, setVectorLayerLoc] = useState<VL<VectorSource> | null>(null);
+  const [vectorLayer, setVectorLayer] = useState<VL<VectorSource> | null>(null);
 
   useEffect(() => {
     if (mapElement.current && !map) {
@@ -143,54 +131,63 @@ const MapView = (props: MapProps) => {
 
   useEffect(() => {
     if (map) {
-      // Remove old layers
       map.getLayers().forEach((layer: any) => {
-        if (layer && layer.get('name') === 'markerLayer') {
+        if (layer instanceof VL) {
           map.removeLayer(layer);
         }
       });
-      map.addLayer(vectorLayer);
-    }
-  }, [vectorLayer, map]);
 
-  useEffect(() => {
-    if (map) {
-      map.getLayers().forEach((layer: any) => {
-        if (layer && layer.get('name') === 'locationLayer') {
-          map.removeLayer(layer);
-        }
-      });
-      if (vectorLayerLoc) {
-        map.addLayer(vectorLayerLoc);
-        if (props.userPosition) {
-          map.getView().setCenter(fromLonLat([props.userPosition.lng, props.userPosition.lat]));
-        }
+      if (locationMarkerL.length > 0) {
+        const sourceLoc = new VectorSource({
+          features: locationMarkerL,
+        });
+
+        const newVectorLayerLoc = new VL({
+          source: sourceLoc,
+          style: stylesMarker['location'],
+        });
+
+        setVectorLayerLoc(newVectorLayerLoc);
+        map.addLayer(newVectorLayerLoc);
+      }
+
+      if (testMarkerL.length > 0) {
+        const sourceMarkers = new VectorSource({
+          features: testMarkerL,
+        });
+
+        const newVectorLayer = new VL({
+          source: sourceMarkers,
+          style: stylesMarker['icon'],
+        });
+
+        setVectorLayer(newVectorLayer);
+        map.addLayer(newVectorLayer);
       }
     }
-  }, [vectorLayerLoc, map, props.userPosition]);
-
-  const popup = useMemo(() => new Overlay({
-    element: element.current!,
-    stopEvent: false,
-    autoPan: true,
-    autoPanAnimation: {
-      duration: 250
-    }
-  }), [element]);
+  }, [map, locationMarkerL, testMarkerL]);
 
   useEffect(() => {
-    if (map) {
+    if (map && props.userPosition) {
+      map.updateSize();
+      map.getView().setCenter(fromLonLat([props.userPosition.lng, props.userPosition.lat]));
+      map.getView().setZoom(15);
+    }
+  }, [map, props.userPosition, testMarkerL]);
+
+  useEffect(() => {
+    if (element.current && map) {
+      const popup = new Overlay({
+        element: element.current,
+        stopEvent: false,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        }
+      });
+
       map.addOverlay(popup);
-    }
-    return () => {
-      if (map) {
-        map.removeOverlay(popup);
-      }
-    };
-  }, [map, popup]);
 
-  useEffect(() => {
-    if (map) {
       const handleMapClick = (evt: any) => {
         if (!popup) return;
 
@@ -219,11 +216,12 @@ const MapView = (props: MapProps) => {
                   <Button
                     variant="contained"
                     sx={{ width: "12.13rem" }}
-                    onClick={() => NavigateTo("/menu", navigate, {
+                    onClick={() => NavigateTo(`/menu/${restaurant.uid}`, navigate, {
                       menu: restaurant.categories,
                       restoName: restaurant.name,
                       restoID: restaurant.uid,
                       address: `${restaurant.location.streetName} ${restaurant.location.streetNumber}, ${restaurant.location.postalCode} ${restaurant.location.city}, ${restaurant.location.country}`,
+                      menuDesignID: restaurant.menuDesignID
                     })}
                   >
                     {t('components.Map.resto-page')}
@@ -236,10 +234,11 @@ const MapView = (props: MapProps) => {
         }
       };
 
-      const handlePointerMove = (e: any) => {
-        const pixel = map.getEventPixel(e.originalEvent);
+      const handlePointerMove = (evt: any) => {
+        if (evt.dragging) return;
+        const pixel = map.getEventPixel(evt.originalEvent);
         const hit = map.hasFeatureAtPixel(pixel);
-        const targetElement = map.getTarget() as HTMLElement; // Type assertion
+        const targetElement = map.getTarget() as HTMLElement;
         if (targetElement) {
           targetElement.style.cursor = hit ? 'pointer' : '';
         }
@@ -251,21 +250,22 @@ const MapView = (props: MapProps) => {
       return () => {
         map.un('click', handleMapClick);
         map.un('pointermove', handlePointerMove);
+        if (map) {
+          map.removeOverlay(popup);
+        }
       };
     }
-  }, [map, popup, navigate, t]);
+  }, [map, element, navigate, t]);
 
   return (
     <>
       <div ref={mapElement} className={styles.map} id="map" />
-      {clickedFeature && (
-        <div id="popup" className={styles.popup}>
-          <a href="#" id="popup-closer" className="ol-popup-closer"></a>
-          <div className={styles.popoverContent} id="popup-content">
-            {popupContent}
-          </div>
+      <div ref={element} id="popup" className={styles.popup}>
+        <a href="#" id="popup-closer" className="ol-popup-closer"></a>
+        <div className={styles.popoverContent} id="popup-content">
+          {popupContent}
         </div>
-      )}
+      </div>
     </>
   );
 };
