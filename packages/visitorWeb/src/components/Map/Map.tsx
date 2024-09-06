@@ -20,7 +20,7 @@ import { NavigateTo } from "@src/utils/NavigateTo";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { useTranslation } from "react-i18next";
 
-const Epitech = [13.328820, 52.508540]; // long,lat
+const Epitech = [13.328820, 52.508540]; // long, lat
 
 const stylesMarker = {
   'icon': new Style({
@@ -73,8 +73,8 @@ interface MapProps {
 const MapView = (props: MapProps) => {
   const navigate = useNavigate();
   const mapElement = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<Map | null>(null);
   const element = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<Map | null>(null);
   const [clickedFeature, setClickedFeature] = useState<IRestaurantFrontEnd | null>(null);
   const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
   const { t } = useTranslation();
@@ -175,28 +175,19 @@ const MapView = (props: MapProps) => {
     }
   }, [map, props.userPosition, testMarkerL]);
 
-  const popup = useMemo(() => new Overlay({
-    element: element.current!,
-    stopEvent: false,
-    autoPan: true,
-    autoPanAnimation: {
-      duration: 250
-    }
-  }), [element]);
-
   useEffect(() => {
-    if (map) {
+    if (element.current && map) {
+      const popup = new Overlay({
+        element: element.current,
+        stopEvent: false,
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        }
+      });
+
       map.addOverlay(popup);
-    }
-    return () => {
-      if (map) {
-        map.removeOverlay(popup);
-      }
-    };
-  }, [map, popup]);
 
-  useEffect(() => {
-    if (map) {
       const handleMapClick = (evt: any) => {
         if (!popup) return;
 
@@ -225,11 +216,12 @@ const MapView = (props: MapProps) => {
                   <Button
                     variant="contained"
                     sx={{ width: "12.13rem" }}
-                    onClick={() => NavigateTo("/menu", navigate, {
+                    onClick={() => NavigateTo(`/menu/${restaurant.uid}`, navigate, {
                       menu: restaurant.categories,
                       restoName: restaurant.name,
                       restoID: restaurant.uid,
                       address: `${restaurant.location.streetName} ${restaurant.location.streetNumber}, ${restaurant.location.postalCode} ${restaurant.location.city}, ${restaurant.location.country}`,
+                      menuDesignID: restaurant.menuDesignID
                     })}
                   >
                     {t('components.Map.resto-page')}
@@ -258,21 +250,22 @@ const MapView = (props: MapProps) => {
       return () => {
         map.un('click', handleMapClick);
         map.un('pointermove', handlePointerMove);
+        if (map) {
+          map.removeOverlay(popup);
+        }
       };
     }
-  }, [map, popup, navigate, t]);
+  }, [map, element, navigate, t]);
 
   return (
     <>
       <div ref={mapElement} className={styles.map} id="map" />
-      {clickedFeature && (
-        <div id="popup" className={styles.popup}>
-          <a href="#" id="popup-closer" className="ol-popup-closer"></a>
-          <div className={styles.popoverContent} id="popup-content">
-            {popupContent}
-          </div>
+      <div ref={element} id="popup" className={styles.popup}>
+        <a href="#" id="popup-closer" className="ol-popup-closer"></a>
+        <div className={styles.popoverContent} id="popup-content">
+          {popupContent}
         </div>
-      )}
+      </div>
     </>
   );
 };
