@@ -81,7 +81,7 @@ const Header = () => {
             setShowDrawer(!showDrawer);
           }}
         >
-          <MenuIcon fontSize="large" style={{ color: 'white' }} />
+          <MenuIcon fontSize="large" style={{ color: '#6d071a' }} />
         </a>
         <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null} onKeyDown={handleKeyDown} aria-label='guardos logo' title='guardos logo' tabIndex={0}>
           <div className={styles.logo} role="img"></div>

@@ -5,9 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import {Autocomplete, Button, Typography} from '@mui/material';
+import {Autocomplete, Button, Typography, Snackbar, Alert} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
+import Rating from '@mui/material/Rating';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styles from "./MyAccountPage.module.scss";
 import {deleteAccount} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
@@ -30,6 +31,9 @@ import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
 import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 import {addIngredient, getAllIngredients} from "@src/services/ingredientsCalls";
+import { deleteRatingDataUser, getRatingDataUser } from "@src/services/ratingCalls";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -55,11 +59,14 @@ const MyAccountPage = () => {
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
 
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
+  const [userReview, setUserReview] = useState([]);
   const [favoriteDishes, setFavoriteDishes] = useState([]);
   const [activeTab, setActiveTab] = useState("restaurants");
+  const [openReviewPopUp, setopenReviewPopUp] = React.useState(false);
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const {t, i18n} = useTranslation();
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
+  const [loading, setLoading] = useState(true);
 
   const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
@@ -68,6 +75,7 @@ const MyAccountPage = () => {
   useEffect(() => {
     fetchProfileData();
     fetchFavoriteRestaurants();
+    fetchUserReview();
     fetchFavoriteDishes();
   }, []);
 
@@ -92,12 +100,14 @@ const MyAccountPage = () => {
   };
 
   const fetchFavoriteRestaurants = async () => {
+    setLoading(true);
     const userToken = localStorage.getItem("user");
     if (userToken === null) {
       return;
     }
     const favorites = await getRestoFavourites(userToken);
     setFavoriteRestaurants(favorites);
+    setLoading(false);
   };
 
   const fetchFavoriteDishes = async () => {
@@ -108,6 +118,17 @@ const MyAccountPage = () => {
     const favorites = await getDishFavourites(userToken);
     setFavoriteDishes(favorites);
   };
+  const fetchUserReview = async () => {
+    const userToken = localStorage.getItem("user");
+    const userName = localStorage.getItem("userName");
+    if (userToken === null) {
+      return;
+    }
+    const review = await getRatingDataUser(userName);
+    setUserReview(review);
+  };
+
+
 
   const handleTabChange = (tab: any) => {
     setActiveTab(tab);
@@ -395,8 +416,35 @@ const MyAccountPage = () => {
     }
   }
 
+  const handleDeleteReview = (userId: string, restoName: string) => {
+    deleteRatingDataUser(userId, restoName);
+    setopenReviewPopUp(true);
+  }
+  useEffect(() => {
+    fetchUserReview();
+  }, [userReview]);
+
+  const handleClosePopUp = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setopenReviewPopUp(false);
+  };
+
+
   return (
     <div className={styles.MyAccountPage}>
+      <Snackbar open={openReviewPopUp} autoHideDuration={5000} onClose={handleClosePopUp}>
+        <Alert
+          onClose={handleClosePopUp}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {t('pages.MyAccountPage.review-delete-success')}
+        </Alert>
+      </Snackbar>
       <div className={styles.profileSection}>
         <h1>{t('pages.MyAccountPage.account-page')}</h1>
         {dataChangeStatus !== null && (
@@ -611,6 +659,12 @@ const MyAccountPage = () => {
           >
             {t('pages.MyAccountPage.fav-dishes')}
           </button>
+          <button
+            className={activeTab === "reviews" ? styles.activeTab : "none"}
+            onClick={() => handleTabChange("reviews")}
+          >
+            {t('pages.MyAccountPage.fav-reviews')}
+          </button>
         </div>
 
         {/* Display Favorite Restaurants or Dishes based on the active tab */}
@@ -618,13 +672,42 @@ const MyAccountPage = () => {
           {activeTab === "restaurants" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-restos')}</h2>
-              {favoriteRestaurants.map((restaurant) => (
-                <RestoCard
+              {loading ? (
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+
+                favoriteRestaurants.map((restaurant) => (
+                  <RestoCard
                   key={restaurant.id}
                   resto={restaurant}
                   isFavourite={true}
                   dataIndex={0}
-                />
+                  />
+                ))
+              )}
+            </div>
+          )}
+          {activeTab === "reviews" && (
+            <div className={styles.favoriteList}>
+              <h2>{t('pages.MyAccountPage.fav-reviews')}</h2>
+              {userReview?.map((data, key) => (
+                <div key={key} className={styles.CardReview}>
+                  <h3>{data.restoName}</h3>
+                  <span>{new Date(data.date).toLocaleDateString('en-GB')}</span>
+                  <div className={styles.NoteContainer}>
+                    <span>{data.note}</span>
+                    <Rating name="read-only" value={data.note} readOnly />
+                  </div>
+                  <h3>{t('pages.MyAccountPage.title-reviews')} :</h3>
+                  <span>{data.comment}</span>
+                    <Button onClick={() => handleDeleteReview(data._id, data.restoName)} sx={{color: "#6d071a"}} variant="outlined" size="small" >
+                      <DeleteIcon />
+                    </Button>
+                </div>
               ))}
             </div>
           )}

@@ -72,6 +72,7 @@ const MenuPage = () => {
   const [selectedProfileIndex, setSelectedProfileIndex] = useState(0);
   const { t } = useTranslation();
   const userProfileName = t('common.me');
+  const [loading, setLoading] = useState(true);
 
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
@@ -133,6 +134,7 @@ const MenuPage = () => {
 
   const fetchMenu = async (profiles: AllergenProfile[]) => {
     const userToken = localStorage.getItem('user');
+    setLoading(true)
     if (userToken === null) {
       return;
     }
@@ -152,6 +154,7 @@ const MenuPage = () => {
     } catch (error) {
       console.error("Error fetching menu data:", error);
       setRestoMenu([]);
+      setLoading(false);
       return menuData;
     }
   };
@@ -159,7 +162,6 @@ const MenuPage = () => {
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
-
     try {
       const favouriteDishIds = await getDishFavourites(userToken);
       setIsFavouriteDishs(favouriteDishIds);

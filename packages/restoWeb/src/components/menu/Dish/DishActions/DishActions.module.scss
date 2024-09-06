@@ -3,4 +3,12 @@
 .ButtonSize {
   padding-top: 0.2rem !important;
   transform: scale(1.4);
+  width: auto;
+  transition: transform 0.2s ease-in-out !important;
+}
+
+.ButtonSize:hover {
+  padding-top: 0.2rem !important;
+  background-color: transparent !important;
+  transform: scale(1.6);
 }

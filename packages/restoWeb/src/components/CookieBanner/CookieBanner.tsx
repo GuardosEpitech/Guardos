@@ -225,6 +225,16 @@ const CookieBanner: React.FC = () => {
               {t('components.CookieBanner.and')}
               <a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
             </p>
+            <div className={styles.sliderContainer}>
+              {sliderButtons.map((button, index) => (
+                <SliderButton
+                key={button.name}
+                name={button.name}
+                isActive={button.isActive}
+                onClick={() => handleSliderButtonClick(index)}
+                />
+            ))}
+            </div>
             <div className={styles.buttonContainer}>
                 <ThemeProvider theme={DeclineBtn()}>
                 <Button
@@ -253,16 +263,6 @@ const CookieBanner: React.FC = () => {
                     {t('components.CookieBanner.acceptAllOptions')}
                 </Button>
               </ThemeProvider>
-            </div>
-            <div className={styles.sliderContainer}>
-              {sliderButtons.map((button, index) => (
-                <SliderButton
-                key={button.name}
-                name={button.name}
-                isActive={button.isActive}
-                onClick={() => handleSliderButtonClick(index)}
-                />
-            ))}
             </div>
           </div>
           </div>

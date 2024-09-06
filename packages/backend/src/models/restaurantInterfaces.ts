@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 //Database structure for restaurants
 export const restaurantSchema = new mongoose.Schema({
@@ -9,42 +9,46 @@ export const restaurantSchema = new mongoose.Schema({
   rating: Number,
   ratingCount: Number,
   website: String,
-  openingHours: [{
-    open: String,
-    close: String,
-    day: Number,
-  }],
+  openingHours: [
+    {
+      open: String,
+      close: String,
+      day: Number,
+    },
+  ],
   pictures: [String],
   picturesId: {
     type: [Number],
-    required: false
+    required: false,
   },
   description: String,
   menuDesign: String,
   restoChainID: Number,
-  dishes: [{
-    _id: Number,
-    uid: Number,
-    name: String,
-    description: String,
-    products: [String],
-    pictures: [String],
-    picturesId: {
-      type: [Number],
-      required: false
+  dishes: [
+    {
+      _id: Number,
+      uid: Number,
+      name: String,
+      description: String,
+      products: [String],
+      pictures: [String],
+      picturesId: {
+        type: [Number],
+        required: false,
+      },
+      price: Number,
+      allergens: [String],
+      category: {
+        menuGroup: String,
+        foodGroup: String,
+        extraGroup: [String],
+      },
+      userID: Number,
+      discount: Number,
+      validTill: String,
+      combo: [Number],
     },
-    price: Number,
-    allergens: [String],
-    category: {
-      menuGroup: String,
-      foodGroup: String,
-      extraGroup: [String],
-    },
-    userID: Number,
-    discount: Number,
-    validTill: String,
-    combo: [Number]
-  }],
+  ],
   location: {
     streetName: String,
     streetNumber: String,
@@ -54,41 +58,50 @@ export const restaurantSchema = new mongoose.Schema({
     latitude: String,
     longitude: String,
   },
-  mealType: [{
-    _id: Number,
-    name: String,
-    sortId: Number,
-  }],
-  extras: [{
-    _id: Number,
-    name: String,
-    description: String,
-    price: Number,
-    pictures: [String],
-    picturesId: {
-      type: [Number],
-      required: false
+  mealType: [
+    {
+      _id: Number,
+      name: String,
+      sortId: Number,
     },
-    allergens: [String],
-    products: [String],
-    category: {
-      menuGroup: String,
-      foodGroup: String,
-      extraGroup: String,
+  ],
+  extras: [
+    {
+      _id: Number,
+      name: String,
+      description: String,
+      price: Number,
+      pictures: [String],
+      picturesId: {
+        type: [Number],
+        required: false,
+      },
+      allergens: [String],
+      products: [String],
+      category: {
+        menuGroup: String,
+        foodGroup: String,
+        extraGroup: String,
+      },
     },
-  }],
-  products: [{
-    name: String,
-    allergens: [String],
-    ingredients: [String],
-  }],
+  ],
+  products: [
+    {
+      name: String,
+      allergens: [String],
+      ingredients: [String],
+    },
+  ],
   menuDesignID: Number,
-  reviews: [{
-    _id: String,
-    note: Number,
-    comment: String,
-    date: Date,
-  }],
+  reviews: [
+    {
+      _id: String,
+      note: Number,
+      comment: String,
+      userName: String,
+      date: Date,
+    },
+  ],
   statistics: {
     restoId: Number,
     totalClicks: Number,
@@ -96,13 +109,17 @@ export const restaurantSchema = new mongoose.Schema({
     clicksThisWeek: Number,
     updateMonth: String,
     updateWeek: String,
-    userAllergens: [{
-      allergen: String,
-      count: Number,
-    }],
-    userDislikedIngredients: [{
-      ingredient: String,
-      count: Number,
-    }],
-  }
+    userAllergens: [
+      {
+        allergen: String,
+        count: Number,
+      },
+    ],
+    userDislikedIngredients: [
+      {
+        ingredient: String,
+        count: Number,
+      },
+    ],
+  },
 });

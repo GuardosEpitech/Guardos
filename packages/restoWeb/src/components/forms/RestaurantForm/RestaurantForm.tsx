@@ -582,6 +582,8 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           className={styles.SaveBtn}
           variant="contained"
           sx={{ width: "12.13rem" }}
+          color="primary"
+          size='large'
           onClick={sendRequestAndGoBack}
         >
           {t('common.save')}

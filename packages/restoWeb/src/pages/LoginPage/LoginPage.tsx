@@ -105,7 +105,7 @@ const Login = (props: LoginPageProps) => {
 
   return (
     <>
-      <Layout>
+      {/* <Layout> */}
         <div className={styles.loginForm}>
           <h2>{t('pages.LoginPage.login')}</h2>
           {!showTwoFactor ? (
@@ -149,7 +149,7 @@ const Login = (props: LoginPageProps) => {
             />
           )}
         </div>
-      </Layout>
+      {/* </Layout> */}
     </>
   );
 };

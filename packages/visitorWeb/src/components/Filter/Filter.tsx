@@ -560,6 +560,7 @@ const Filter = (props: FilterProps) => {
             keepMounted
             open={Boolean(menuAnchorEl)}
             onClose={handleMenuClose}
+            className={styles.ButtonFilterSaver}
           >
             <MenuItem>
               <TextField

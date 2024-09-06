@@ -189,8 +189,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
             disabled={step === 1 ?
               !isValidEmail(email) : username.trim() === ''}
             className={step === 1 ? isValidEmail(email) ?
-              styles.buttonEnabled : '' : username.trim() !== '' ?
-              styles.buttonEnabled : ''}
+              styles.buttonEnabled : styles.disableButton :
+              username.trim() !== '' ?
+                styles.buttonEnabled : styles.disableButton}
           >
             {step === 1 ? t('pages.ResetPassword.continue') :
               t('pages.ResetPassword.send-recovery-link')}

@@ -80,7 +80,7 @@ const Header = () => {
             setShowNavigationDrawer(!showNavigationDrawer);
           }}
         >
-          <MenuIcon fontSize="large" style={{ color: 'white' }} />
+          <MenuIcon fontSize="large" style={{ color: '#6D071A' }} />
         </a>
         <div className={styles.logoContainer} onClick={() => loggedIn ? navigate('/') : null} onKeyDown={handleKeyDown} aria-label='guardos logo' title='guardos logo' tabIndex={0}>
           <div className={styles.logo} role="img"></div>

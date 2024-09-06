@@ -118,53 +118,51 @@ const Register = () => {
   
   return (
     <>
-      <Layout>
-        <div className={styles.registerForm}>
-          <h2>{t('pages.RegistrationPage.register')}</h2>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              label={t('pages.RegistrationPage.username')}
-              name="username"
-              value={user.username}
-              onChange={handleChange}
-              margin="normal"
-              error={errorUsername}
-              helperText={errorUsername ?
-                t('pages.RegistrationPage.username-exists-or-invalid') : ''}
-            />
-            <TextField
-              label={t('pages.RegistrationPage.email')}
-              name="email"
-              type="email"
-              value={user.email}
-              onChange={handleChange}
-              margin="normal"
-              error={errorEmail}
-              helperText={errorEmail ?
-                t('pages.RegistrationPage.email-taken-or-invalid') : ''}
-            />
-            <TextField
-              label={t('pages.RegistrationPage.password')}
-              name="password"
-              type="password"
-              value={user.password}
-              onChange={handleChange}
-              margin="normal"
-              error={errorPassword}
-              helperText={errorPassword ?
-                t('pages.RegistrationPage.wrong-pw-format') : ''}
-            />
-            <Button
-              size='large'
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              {t('pages.RegistrationPage.register')}
-            </Button>
-          </form>
-        </div>
-      </Layout>
+      <div className={styles.registerForm}>
+        <h2>{t('pages.RegistrationPage.register')}</h2>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label={t('pages.RegistrationPage.username')}
+            name="username"
+            value={user.username}
+            onChange={handleChange}
+            margin="normal"
+            error={errorUsername}
+            helperText={errorUsername ?
+              t('pages.RegistrationPage.username-exists-or-invalid') : ''}
+          />
+          <TextField
+            label={t('pages.RegistrationPage.email')}
+            name="email"
+            type="email"
+            value={user.email}
+            onChange={handleChange}
+            margin="normal"
+            error={errorEmail}
+            helperText={errorEmail ?
+              t('pages.RegistrationPage.email-taken-or-invalid') : ''}
+          />
+          <TextField
+            label={t('pages.RegistrationPage.password')}
+            name="password"
+            type="password"
+            value={user.password}
+            onChange={handleChange}
+            margin="normal"
+            error={errorPassword}
+            helperText={errorPassword ?
+              t('pages.RegistrationPage.wrong-pw-format') : ''}
+          />
+          <Button
+            size='large'
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            {t('pages.RegistrationPage.register')}
+          </Button>
+        </form>
+      </div>
     </>
   );
 };

@@ -15,6 +15,8 @@ import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
 import { getCurrentCoords } from '@src/services/mapCalls';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -86,6 +88,7 @@ const RestoPage = () => {
   ]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
+  const [loading, setLoading] = useState(true);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -128,8 +131,10 @@ const RestoPage = () => {
 
   const updateRestoData = () => {
     const inter: ISearchCommunication = { name: "" }
+    setLoading(true);
     getNewFilteredRestos(inter).then((res) => {
       setFilteredRestaurants(res);
+      setLoading(false);
     });
   }
 
@@ -145,7 +150,7 @@ const RestoPage = () => {
   const handleFilterChange = async (filter: ISearchCommunication) => {
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
-
+    setLoading(true);
     const updatedCategories = categories.map(category => ({
       ...category,
       value: filter.categories ? filter.categories
@@ -177,6 +182,7 @@ const RestoPage = () => {
     localStorage.setItem('filter', JSON.stringify(newFilter));
     const restos = await getNewFilteredRestos(newFilter);
     setFilteredRestaurants(insertAdCard(restos));
+    setLoading(false); 
   };
 
   const handleButtonClick = () => {
@@ -243,14 +249,25 @@ const RestoPage = () => {
             <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
-            ) : (
+            ) : (loading ? 
+              (    <Stack spacing={1}>
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+              </Stack>) 
+            :
+              (
               filteredRestaurants?.map((item, index) => {
                 if ('isAd' in item) {
                   return <AdCard key={`ad-${index}`} />;
                 }
                 const isFavourite = isFavouriteRestos.includes(item.uid);
                 return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
-              })
+              }))
             )}
           </div>
         ) : (

@@ -21,7 +21,7 @@
 .containerHeader {
   height: 5rem;
   width: 100%;
-  background-color: $burgundy;
+  background-color: white;
   position: fixed;
   top: 0;
   z-index: 1000;
@@ -30,7 +30,7 @@
 .NavTitle {
   position: relative;
   text-decoration: none;
-  color: #ffffff;
+  color: $burgundy;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
 }
@@ -38,7 +38,7 @@
 .NavTitleLanguage {
   position: relative;
   text-decoration: none;
-  color: #ffffff;
+  color: $burgundy;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
 }
@@ -51,7 +51,7 @@
   height: 0.125rem;
   bottom: 0;
   left: 0;
-  background-color: #fff;
+  background-color: $burgundy;
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -62,13 +62,13 @@
 
 .NavTitleLanguage:hover {
   cursor: pointer;
-  color: #ffffff;
+  color: $burgundy;
 }
 
 .NavTitleDropDown {
   position: relative;
   text-decoration: none;
-  color: #ffffff;
+  color: $burgundy;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
   margin-bottom: 10px;
@@ -82,7 +82,7 @@
   height: 0.125rem;
   bottom: 0;
   left: 0;
-  background-color: #fff;
+  background-color: $burgundy;
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -94,7 +94,7 @@
 .NavTitleHamburger {
   position: relative;
   text-decoration: none;
-  color: #ffffff;
+  color: $burgundy;
   font-family: "Calibri", sans-serif;
   font-weight: 500;
   display: none;
@@ -102,17 +102,17 @@
 
 .NavTitleHamburger:hover {
   cursor: pointer;
-  color: #ffffff;
+  color: $burgundy;
 }
 
 .NavTitleDropDown:hover {
   cursor: pointer;
-  color: #ffffff;
+  color: $burgundy;
 }
 
 .NavTitle:hover {
   cursor: pointer;
-  color: #ffffff;
+  color: $burgundy;
 }
 
 .NavTitle::before {
@@ -123,7 +123,7 @@
   height: 0.125rem;
   bottom: 0;
   left: 0;
-  background-color: #fff;
+  background-color: $burgundy;
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -148,14 +148,14 @@
   .logo {
     width: 100%;
     height: 100%;
-    background: url(../../assets/logo_processed.png) center/cover no-repeat;  
+    background: url(../../assets/logo.png) center/cover no-repeat;
   }
 }
 
 .languageDropdown {
   position: absolute;
   right: 0;
-  background-color: #fff;
+  background-color: $burgundy;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -185,7 +185,6 @@
   background-color: transparent;
   display: none;
 }
-
 
 .drawerContent {
   background-color: $burgundy;

@@ -1,71 +1,70 @@
 @import "../../general.scss";
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    margin: 0 auto;
-  }
-  
-  .content {
-    width: 100%;
-  }
-  
-  .title {
-    margin: 20px 0;
-    font-weight: bold;
-    text-align: left;
-  }
-  
-  .line {
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-  }
-  
-  .text {
-    margin-top: 20px;
-    text-align: justify;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
+}
 
-  .italic {
-    font-style: italic;
-  }
-  
-  .indentedList {
-    padding-left: 20px;
-  }
+.content {
+  width: 100%;
+}
 
-  .sliderContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .sliderButton {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 20px; 
-  }
-  
-  .switch {
-    margin-top: 10px;
-  }
-  
-  
-  .sliderButton:not(:first-child) {
-    position: relative;
-  }
-  
-  .sliderButton:not(:first-child)::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -10px; 
-    width: 1px; 
-    height: 80%; 
-    background-color: #ccc; 
-    transform: translateY(-50%);
-  }
+.title {
+  margin: 20px 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.text {
+  margin-top: 20px;
+  text-align: justify;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.indentedList {
+  padding-left: 20px;
+}
+
+.sliderContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.sliderButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.switch {
+  margin-top: 10px;
+}
+
+.sliderButton:not(:first-child) {
+  position: relative;
+}
+
+.sliderButton:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 1px;
+  height: 80%;
+  background-color: #ccc;
+  transform: translateY(-50%);
+}

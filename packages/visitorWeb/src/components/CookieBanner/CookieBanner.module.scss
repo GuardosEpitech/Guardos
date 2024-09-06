@@ -8,6 +8,7 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9998;
+  font-family: "Calibri", sans-serif;
 }
 
 .cookieBannerOverlay {
@@ -21,7 +22,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -34,22 +34,23 @@
   max-height: 90vh; /* Allow banner to take up most of the viewport height */
   overflow-y: auto; /* Enable vertical scrolling */
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .cookieBanner h2 {
   font-weight: bold;
-  margin-bottom: 20px;
   font-size: 34px;
 }
 
 .cookieBanner p {
-  margin-bottom: 15px;
 }
 
 .cookieBanner ul {
   list-style: none;
   padding: 0;
-  margin-bottom: 20px;
 }
 
 .cookieBanner ul li {
@@ -59,10 +60,21 @@
 .cookieBanner .buttonContainer {
   display: flex;
   justify-content: center;
-  flex-direction: column;
   margin-top: 20px;
-  margin-bottom: 20px;
   gap: 20px;
+  button:first-child {
+    background-color: #6d071a;
+    color: white;
+  }
+  button {
+    background-color: white;
+    color: #6d071a;
+    font-weight: 600;
+    font-family: "Calibri", sans-serif;
+    font-size: small;
+    text-transform: uppercase;
+    width: 200px !important;
+  }
 }
 
 .cookieBanner .declineButton {
@@ -91,7 +103,6 @@
 }
 
 .RestoBtn {
-  
 }
 
 .sliderContainer {
@@ -116,7 +127,7 @@
 }
 
 .sliderButton:not(:first-child)::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: -10px;

@@ -4,9 +4,12 @@
 .DishBox {
   background: $white;
   margin-bottom: 1.5rem;
-  border-radius: 1.2rem !important;
+  border-radius: 0 !important;
   margin-left: auto;
   margin-right: auto;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgb(208, 208, 208) !important;
 }
 
 .DishBox:hover {
@@ -106,42 +109,42 @@
 
 @media (max-width: 768px) {
   .DishBox {
-      margin: 0 auto 1.5rem;
-      padding: 1rem;
-      border-radius: 1.2rem !important;
-      background: $white;
-      overflow-x: hidden;
+    margin: 0 auto 1.5rem;
+    padding: 1rem;
+    border-radius: 1.2rem !important;
+    background: $white;
+    overflow-x: hidden;
   }
 
   .GridItem {
-      padding: 1rem;
+    padding: 1rem;
   }
 
   .ImageDimensions {
-      width: 100%;
-      height: auto;
-      max-height: 9rem;
-      object-fit: cover;
-      border-radius: 0.625rem;
+    width: 100%;
+    height: auto;
+    max-height: 9rem;
+    object-fit: cover;
+    border-radius: 0.625rem;
   }
 
   .DishTitle {
-      font-size: 1.3rem;
-      margin: 0.5rem 0;
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
   }
 
   .JustificationPrint,
   .JustificationPrintExtended {
-      font-size: 1rem; 
+    font-size: 1rem;
   }
 
   .AddressText {
-      font-size: 0.85rem;
-      margin: 0.1rem 0;
+    font-size: 0.85rem;
+    margin: 0.1rem 0;
   }
 
   .RestoBtn {
-      padding: 0.2rem 0.6rem !important;
-      font-size: 0.9rem !important;
+    padding: 0.2rem 0.6rem !important;
+    font-size: 0.9rem !important;
   }
 }

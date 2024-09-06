@@ -42,6 +42,20 @@
   margin-left: auto !important;
   margin-right: 0 !important;
   margin-top: 1rem !important;
+  font-weight: 600 !important;
+  margin-top: 20px !important;
+  border-radius: 10px !important;
+  color: $burgundy !important;
+  background-color: white !important;
+  font-family: "Calibri", sans-serif !important;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset !important;
+}
+
+.SaveBtn:hover {
+  background-color: $burgundy !important;
+  color: white !important;
 }
 
 .DayDisplay {

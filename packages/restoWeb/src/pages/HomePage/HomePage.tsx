@@ -9,9 +9,13 @@ import Layout from 'shared/components/Layout/Layout';
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import AdCard from "@src/components/AdCard/AdCard";
 import styles from "./HomePage.module.scss";
-import SuccessAlert from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
-import { checkDarkMode } from "../../utils/DarkMode";
-import { useTranslation } from "react-i18next";
+import SuccessAlert
+  from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
+import { enable, disable, setFetchMethod} from "darkreader";
+import {useTranslation} from "react-i18next";
+import {checkDarkMode} from "../../utils/DarkMode";
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -20,6 +24,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [searchFilter, setSearchFilter] = useState<string>('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     updateRestoData("");
@@ -38,6 +43,7 @@ const HomePage = () => {
   };
 
   const updateRestoData = (filter: string) => {
+    setLoading(true);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setIsUserTokenSet(false);
@@ -52,6 +58,7 @@ const HomePage = () => {
         setRestoData(res);
         setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
       });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -87,16 +94,24 @@ const HomePage = () => {
                 {t('pages.HomePage.to-see-your-restos')}
               </p>
             )}
-            {restoData.map((restaurant, index) => (
-              <React.Fragment key={restaurant.name + index}>
-                {index === adIndex && <AdCard />}
-                <RestoCard
-                  resto={restaurant as IRestaurantFrontEnd}
-                  onUpdate={updateRestoData}
-                  editable
-                />
-              </React.Fragment>
-            ))}
+            {loading ? (
+              <Stack spacing={1}>
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+                <Skeleton variant="rounded" width={1000} height={130} />
+              </Stack>
+            ) : (
+              restoData.map((restaurant, index) => (
+                <React.Fragment key={restaurant.name + index}>
+                  {index === adIndex && <AdCard />}
+                  <RestoCard
+                    resto={restaurant as IRestaurantFrontEnd}
+                    onUpdate={updateRestoData}
+                    editable
+                  />
+                </React.Fragment>
+              ))
+            )}
             {restoData.length === adIndex && <AdCard />}
           </div>
         </div>

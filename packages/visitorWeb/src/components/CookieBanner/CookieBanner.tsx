@@ -7,58 +7,58 @@ import {useTranslation} from "react-i18next";
 import { setUserPreferences } from "../../services/profileCalls";
 
 const OkBtn = () => {
-    return createTheme({
-      typography: {
-        button: {
-          fontFamily: "Calibri",
-          textTransform: "none",
-          fontSize: "1.13rem",
-          fontWeight: "500",
-          padding: "0"
-        },
+  return createTheme({
+    typography: {
+      button: {
+        fontFamily: "Calibri",
+        textTransform: "none",
+        fontSize: "1.13rem",
+        fontWeight: "500",
+        padding: "0"
       },
-      palette: {
-        primary: {
-          main: "#6d071a",
-          contrastText: "#ffffff",
-        },
-        secondary: {
-          main: "#094067",
-          contrastText: "#ffffff",
-        },
+    },
+    palette: {
+      primary: {
+        main: "#6d071a",
+        contrastText: "#ffffff",
       },
-      shape: {
-        borderRadius: 5,
+      secondary: {
+        main: "#094067",
+        contrastText: "#ffffff",
       },
-    });
-  };
+    },
+    shape: {
+      borderRadius: 5,
+    },
+  });
+};
 
-  const DeclineBtn = () => {
-    return createTheme({
-      typography: {
-        button: {
-          fontFamily: "Calibri",
-          textTransform: "none",
-          fontSize: "1.13rem",
-          fontWeight: "500",
-          padding: "0"
-        },
+const DeclineBtn = () => {
+  return createTheme({
+    typography: {
+      button: {
+        fontFamily: "Calibri",
+        textTransform: "none",
+        fontSize: "1.13rem",
+        fontWeight: "500",
+        padding: "0"
       },
-      palette: {
-        primary: {
-          main: "#ffffff",
-          contrastText: "#000000",
-        },
-        secondary: {
-          main: "#999999",
-          contrastText: "#ffffff",
-        },
+    },
+    palette: {
+      primary: {
+        main: "#ffffff",
+        contrastText: "#000000",
       },
-      shape: {
-        borderRadius: 5,
+      secondary: {
+        main: "#999999",
+        contrastText: "#ffffff",
       },
-    });
-  };
+    },
+    shape: {
+      borderRadius: 5,
+    },
+  });
+};
 
   type SliderButtonProps = {
     name: string;
@@ -105,7 +105,7 @@ const CookieBanner: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const hasVisitedBefore = localStorage.getItem('visitedBefore');
+    const hasVisitedBefore = localStorage.getItem('visitedRestoBefore');
     
     if (hasVisitedBefore) {
       setIsOpen(false);
@@ -140,7 +140,7 @@ const CookieBanner: React.FC = () => {
     }
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedBefore', 'true');
+      localStorage.setItem('visitedRestoBefore', 'true');
       handleClose();
     }
   };
@@ -162,7 +162,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedBefore', 'true');
+      localStorage.setItem('visitedRestoBefore', 'true');
       handleClose();
     }
   };
@@ -184,7 +184,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedBefore', 'true');
+      localStorage.setItem('visitedRestoBefore', 'true');
       handleClose();
     }
   };
@@ -225,6 +225,16 @@ const CookieBanner: React.FC = () => {
               {t('components.CookieBanner.and')}
               <a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
             </p>
+            <div className={styles.sliderContainer}>
+              {sliderButtons.map((button, index) => (
+                <SliderButton
+                key={button.name}
+                name={button.name}
+                isActive={button.isActive}
+                onClick={() => handleSliderButtonClick(index)}
+                />
+            ))}
+            </div>
             <div className={styles.buttonContainer}>
                 <ThemeProvider theme={DeclineBtn()}>
                 <Button
@@ -253,16 +263,6 @@ const CookieBanner: React.FC = () => {
                     {t('components.CookieBanner.acceptAllOptions')}
                 </Button>
               </ThemeProvider>
-            </div>
-            <div className={styles.sliderContainer}>
-              {sliderButtons.map((button, index) => (
-                <SliderButton
-                key={button.name}
-                name={button.name}
-                isActive={button.isActive}
-                onClick={() => handleSliderButtonClick(index)}
-                />
-            ))}
             </div>
           </div>
           </div>
