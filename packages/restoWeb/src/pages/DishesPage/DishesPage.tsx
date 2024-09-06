@@ -79,6 +79,7 @@ const DishesPage = () => {
                     dish={dish}
                     onUpdate={updateDishData}
                     editable
+                    isTopLevel={true}
                   />
                 );
               })
