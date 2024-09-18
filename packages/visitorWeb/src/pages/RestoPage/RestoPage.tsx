@@ -53,7 +53,6 @@ const Btn = () => {
 };
 
 const RestoPage = () => {
-  const [inputFields, setInputFields] = useState(['', '']);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
   const [address, setAddress] = React.useState('');
   const [step, setStep] = useState(1);
@@ -89,9 +88,12 @@ const RestoPage = () => {
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState(''); 
+  const [location, setLocation] = useState(''); 
 
   const clearFilter = () => {
-    setInputFields(['', '']);
+    setName('');
+    setLocation('');
     setCategories(categories.map(category => ({ ...category, value: false })));
     setRating(0);
     setRangeValue(0);
@@ -144,7 +146,8 @@ const RestoPage = () => {
   };
 
   const updateNameLocation = (name: string, location: string) => {
-    setInputFields([name, location]);
+    setName(name);
+    setLocation(location);
   }
 
   const handleFilterChange = async (filter: ISearchCommunication) => {
@@ -171,8 +174,8 @@ const RestoPage = () => {
     const newFilter = {
       range: rangeValue,
       rating: [rating, 5],
-      name: inputFields[0],
-      location: inputFields[1],
+      name: name,
+      location: location,
       categories: updatedCategories.filter(category => 
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
@@ -193,8 +196,8 @@ const RestoPage = () => {
     return {
       range: rangeValue,
       rating: [rating, 5],
-      name: inputFields[0],
-      location: inputFields[1],
+      name: name,
+      location: location,
       categories: categories.filter(category => 
         category.value).map(category => category.name),
       allergenList: allergens.filter(allergen => 
@@ -221,7 +224,12 @@ const RestoPage = () => {
     <>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>{t('pages.RestoPage.what-you-looking-for')}</span>
-        <InputSearch onChange={updateNameLocation} onClick={handleFilterChange} />
+        <InputSearch 
+          name={name}
+          location={location}
+          onChange={updateNameLocation} 
+          onClick={handleFilterChange} 
+        />
       </div>
       <div className={styles.DivContent}>
         <div className={styles.DivMapBtn}>

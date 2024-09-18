@@ -2,11 +2,8 @@ import React from "react";
 import styles from "@src/components/InputSearch/InputSearch.module.scss";
 import TextField from "@mui/material/TextField";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import FormControl from '@mui/material/FormControl';
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
-import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
-import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { useTranslation } from "react-i18next";
 
@@ -19,18 +16,15 @@ const theme = createTheme({
 });
 
 const InputSearch = (props: any) => {
-  const [name, setName] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const { name, location, onChange } = props;
   const { t } = useTranslation();
 
   function onChangeName(event: any) {
-    setName(event.target.value);
-    props.onChange(event.target.value, location);
+    onChange(event.target.value, location);
   }
 
   function onChangeLocation(event: any) {
-    setLocation(event);
-    props.onChange(name, event);
+    onChange(name, event.target.value);
   }
 
   function sendButtonData(name: string, location: string) {
@@ -47,12 +41,21 @@ const InputSearch = (props: any) => {
         <ThemeProvider theme={theme}>
           <TextField
             label={t("components.InputSearch.name")}
+            value={name}
             className={styles.InputSearch}
             onChange={onChangeName}
             focused
           />
         </ThemeProvider>
-        <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
+        <ThemeProvider theme={theme}>
+          <TextField
+            label={t("components.InputSearch.location")}
+            value={location}
+            className={styles.InputSearch}
+            onChange={onChangeLocation}
+            focused
+          />
+        </ThemeProvider>
       </div>
       <ThemeProvider theme={theme}>
         <Button
