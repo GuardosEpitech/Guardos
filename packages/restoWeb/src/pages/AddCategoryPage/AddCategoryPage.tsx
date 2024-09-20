@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ICategories } from '../../../../shared/models/categoryInterfaces';
+import { ICategories, ICategory } from '../../../../shared/models/categoryInterfaces';
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
 import { getAllRestaurantsByUser, updateRestoCategories } from '@src/services/restoCalls';
 import styles from './AddCategoriyPage.module.scss';
 import {useTranslation} from "react-i18next";
+import { Popup } from '@src/components/dumpComponents/popup/Popup';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AddCategoryPage = () => {
     const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -14,6 +17,9 @@ const AddCategoryPage = () => {
     const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
     const [newCategoryNameError, setNewCategoryNameError] = useState(false);
     const [newCategoryHitRateError, setNewCategoryHitRateError] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [categoryToDelete, setCategoryToDelete] = useState<ICategory | undefined>(undefined);
+    const [categoryToEdit, setCategoryToEdit] = useState<ICategory | undefined>(undefined);
     const {t} = useTranslation();
   
     useEffect(() => {
@@ -76,14 +82,18 @@ const AddCategoryPage = () => {
         }
       
         const existingCategory = newCategories.find(category => category.name.toLowerCase() === newCategoryName.toLowerCase());
-        if (existingCategory) {
+        if (existingCategory && !categoryToEdit) {
           return;
         }
       
         let updatedCategories = [...newCategories];
-      
+        if (categoryToEdit) {
+          updatedCategories = updatedCategories.filter(
+              category => !(category.name === categoryToEdit.name && category.hitRate === categoryToEdit.hitRate)
+          );
+        }
         const existingSortIdIndex = updatedCategories.findIndex(category => category.hitRate === Number(newCategoryHitRate));
-        if (existingSortIdIndex !== -1) {
+        if (existingSortIdIndex !== -1 && !categoryToEdit) {
           updatedCategories = updatedCategories.map(category => {
             if (category.hitRate >= Number(newCategoryHitRate)) {
               return { ...category, hitRate: category.hitRate + 1 };
@@ -91,17 +101,84 @@ const AddCategoryPage = () => {
             return category;
           });
         }
-      
+
+        const newHitRate = Number(newCategoryHitRate);
+
+        if (categoryToEdit) {
+          updatedCategories = updatedCategories.map(category => {
+              if (category.hitRate > categoryToEdit.hitRate && category.hitRate <= newHitRate) {
+                  return { ...category, hitRate: category.hitRate - 1 };
+              } else if (category.hitRate < categoryToEdit.hitRate && category.hitRate >= newHitRate) {
+                  return { ...category, hitRate: category.hitRate + 1 };
+              }
+              return category;
+          });
+        }
+  
         const newCategory = { name: newCategoryName, hitRate: Number(newCategoryHitRate) };
         updatedCategories.push(newCategory);
       
         updatedCategories.sort((a, b) => a.hitRate - b.hitRate);
+        console.log('sorted updatedCategories: ', updatedCategories);
         const updatedResto = await updateRestoCategories(userToken, activeRestaurant, updatedCategories);
         setNewCategories(updatedCategories);
         setNewCategoryName('');
         setNewCategoryHitRate('');
+        setCategoryToEdit(undefined);
         setShowNewCategoryInput(false);
       };
+
+      const handleDeleteConfirmation = (category: ICategory) => {
+        setCategoryToDelete(category);
+        setShowDeleteConfirmation(true);
+      };
+    
+      const handleDeleteCancel = () => {
+        setCategoryToDelete(undefined);
+        setShowDeleteConfirmation(false);
+      };
+    
+      const handleConfirmDelete = async () => {
+        const userToken = localStorage.getItem('user');
+        if (userToken === null) {
+            console.log("Error getting user ID");
+            return;
+        }
+    
+        let updatedCategories = [...newCategories];
+        if (categoryToDelete) {
+            console.log('category to delete = ', categoryToDelete);
+            updatedCategories = updatedCategories.filter(
+                category => !(category.name === categoryToDelete.name && category.hitRate === categoryToDelete.hitRate)
+            );
+        }
+        updatedCategories = updatedCategories.map(category => {
+            if (category.hitRate > categoryToDelete?.hitRate) {
+                return { ...category, hitRate: category.hitRate - 1 };
+            }
+            return category;
+        });
+    
+        updatedCategories.sort((a, b) => a.hitRate - b.hitRate);
+    
+        const updatedResto = await updateRestoCategories(userToken, activeRestaurant, updatedCategories);
+        setNewCategories(updatedCategories);
+        setCategoryToDelete(undefined);
+        setShowDeleteConfirmation(false);
+    };
+
+      const handleEditCategory = (category: ICategory) => {
+        setCategoryToEdit(category);
+        setNewCategoryName(category.name);
+        setNewCategoryHitRate(category.hitRate);
+        setShowNewCategoryInput(true);
+      };
+
+      const handleSaveCategoryCancel = () => {
+        setNewCategoryName('');
+        setNewCategoryHitRate('');
+        setShowNewCategoryInput(false);
+      }
   
     return (
       <div className={styles.categoriesContainer}>
@@ -135,6 +212,8 @@ const AddCategoryPage = () => {
               <div key={index} className={styles.categoryContainer}>
                 <div>{t('pages.AddCategory.name')} {category.name}</div>
                 <div>{t('pages.AddCategory.id')} {category.hitRate}</div>
+                <EditIcon onClick={() => handleEditCategory(category)} />
+                <DeleteIcon onClick={() => handleDeleteConfirmation(category)} />
               </div>
             ))}
             {showNewCategoryInput && (
@@ -161,6 +240,7 @@ const AddCategoryPage = () => {
                     style={{ borderColor: newCategoryHitRateError ? 'red' : '' }} 
                     />
                 <button onClick={handleSaveCategory}>{t('common.save')}</button>
+                <button onClick={handleSaveCategoryCancel}>{t('common.cancel')}</button>
               </div>
             )}
             {!showNewCategoryInput && (
@@ -168,6 +248,13 @@ const AddCategoryPage = () => {
                 <button onClick={handleAddNewCategory}>{t('pages.AddCategory.add')}</button>
               </div>
             )}
+            {showDeleteConfirmation && (
+            <Popup
+              message={t('pages.AddCategory.delete')}
+              onConfirm={handleConfirmDelete}
+              onCancel={handleDeleteCancel}
+            />
+          )}
           </div>
         )}
       </div>
