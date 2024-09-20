@@ -509,7 +509,8 @@
         "noresto": "Oops, looks like you dont have any restaurants yet!",
         "noresto2": "Add your first restaurant by clicking ",
         "noresto2-2": "here",
-        "noresto2-3": "."
+        "noresto2-3": ".",
+        "delete": "Are you sure you want to delete this category?"
       },
       "AddRestoChain": {
         "name": "Name:",

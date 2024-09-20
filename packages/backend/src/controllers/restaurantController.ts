@@ -612,24 +612,22 @@ export async function addCategory(
     if (!rest) {
       throw new Error("Restaurant not found");
     }
-
-    newCategories.forEach((category) => {
-      const existingCategoryIndex = rest.mealType.findIndex(
-        (item) => item.name === category.name
-      );
-      if (existingCategoryIndex !== -1) {
-        if (rest.mealType[existingCategoryIndex].sortId !== category.hitRate) {
-          rest.mealType[existingCategoryIndex].sortId = category.hitRate;
-        }
-      } else {
-        const newCategory = {
-          _id: rest.mealType.length,
-          name: category.name,
-          sortId: category.hitRate,
-        };
-        rest.mealType.push(newCategory);
-      }
-    });
+    console.log(newCategories);
+    const transformedArray= newCategories.map((category, index) => ({
+      _id: index + 1,
+      name: category.name,
+      sortId: category.hitRate
+  }));
+    // newCategories.forEach((category) => {
+    //     const newCategory = {
+    //       _id: rest.mealType.length,
+    //       name: category.name,
+    //       sortId: category.hitRate,
+    //     };
+    //     rest.mealType.push(newCategory);
+    // });
+    console.log('transformed array ', transformedArray)
+    rest.mealType = transformedArray;
 
     await rest.save();
 
