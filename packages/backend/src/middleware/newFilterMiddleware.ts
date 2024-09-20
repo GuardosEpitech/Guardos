@@ -12,6 +12,7 @@ import { IMealType } from "../../../shared/models/mealTypeInterfaces";
 import { IOpeningHours } from "../../../shared/models/restaurantInterfaces";
 import { IProduct } from "../../../shared/models/restaurantInterfaces";
 import { createBackEndObj } from "../controllers/restaurantController";
+// import { geocodeAddress } from "../controllers/mapController";
 
 async function retrieveAllRestaurantsAsBE() {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -45,6 +46,29 @@ async function retrieveAllRestaurantsAsBE() {
       return answer;
 }
 
+export const haversineDistance = (
+    userCoords: { lat: number; lng: number },
+    objectCoords: { lat: number; lng: number }
+  ): number => {
+    const toRad = (x: number) => (x * Math.PI) / 180;
+  
+    const R = 6371;
+  
+    const dLat = toRad(objectCoords.lat - userCoords.lat);
+    const dLng = toRad(objectCoords.lng - userCoords.lng);
+  
+    const lat1 = toRad(userCoords.lat);
+    const lat2 = toRad(objectCoords.lat);
+  
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+  
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    return R * c;
+  };
+
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
@@ -59,8 +83,24 @@ export async function newfilterRestaurants
         });
     }
 
+    if (searchParams.range && searchParams.userLoc && searchParams.range > 0) {
+        console.log("userPosition: ", searchParams.userLoc);
+        // const geocode = await geocodeAddress(searchParams.userLoc);
+        const userCoords = {
+            lat: searchParams.userLoc.lat,
+            lng: searchParams.userLoc.lng,
+        };
 
-    // do range here
+        filteredRestaurants = filteredRestaurants.filter(restaurant => {
+            const restaurantCoords = {
+                lat: parseFloat(restaurant.location.latitude),
+                lng: parseFloat(restaurant.location.longitude),
+            };
+
+            const distance = haversineDistance(userCoords, restaurantCoords);
+            return distance <= searchParams.range;
+        });
+    }
 
     if (searchParams.rating && searchParams.rating.length === 2)
         filteredRestaurants = filteredRestaurants.filter(restaurant => {

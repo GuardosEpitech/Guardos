@@ -17,6 +17,7 @@ import {checkDarkMode} from "../../utils/DarkMode";
 import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import { add } from 'cypress/types/lodash';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -179,7 +180,8 @@ const RestoPage = () => {
       categories: updatedCategories.filter(category => 
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
-        allergen.value).map(allergen => allergen.name)
+        allergen.value).map(allergen => allergen.name),
+      userLoc: userPosition
     };
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
@@ -201,7 +203,8 @@ const RestoPage = () => {
       categories: categories.filter(category => 
         category.value).map(category => category.name),
       allergenList: allergens.filter(allergen => 
-        allergen.value).map(allergen => allergen.name)
+        allergen.value).map(allergen => allergen.name),
+      userLoc: userPosition
     }
   }
 
@@ -255,6 +258,21 @@ const RestoPage = () => {
         {step === 1 ? (
           <div className={styles.DivContentRestoSection}>
             <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            <div className={styles.addressInputContainer}>
+              <input
+                type="text"
+                className={styles.addressInput}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={t('pages.RestoPage.address')}
+              />
+              <button
+                className={styles.addressButton}
+                onClick={handleAddressSearch}
+              >
+                {t('pages.RestoPage.loc')}
+              </button>
+            </div>
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
