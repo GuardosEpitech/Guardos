@@ -61,11 +61,11 @@ const Login = (props: LoginPageProps) => {
         setErrorForm(true);
         localStorage.removeItem('user');
       } else {
-        if (response.data.twoFactor !== undefined) {
+        if (response.data.twoFactor === true) {
           setShowTwoFactor(true);
           setUser((prevState) => ({ ...prevState, id: response.data.userId }));
         } else {
-          localStorage.setItem('user', response.data);
+          localStorage.setItem('user', response.data.token);
           setErrorForm(false);
           props.toggleCookieBanner(false);
           NavigateTo("/", navigate, {

@@ -71,7 +71,6 @@ const AddCategoryPage = () => {
           }
           return;
         }
-      
         setNewCategoryNameError(false);
         setNewCategoryHitRateError(false);
 
