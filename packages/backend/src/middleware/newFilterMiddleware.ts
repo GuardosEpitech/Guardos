@@ -12,7 +12,6 @@ import { IMealType } from "../../../shared/models/mealTypeInterfaces";
 import { IOpeningHours } from "../../../shared/models/restaurantInterfaces";
 import { IProduct } from "../../../shared/models/restaurantInterfaces";
 import { createBackEndObj } from "../controllers/restaurantController";
-// import { geocodeAddress } from "../controllers/mapController";
 
 async function retrieveAllRestaurantsAsBE() {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -84,8 +83,6 @@ export async function newfilterRestaurants
     }
 
     if (searchParams.range && searchParams.userLoc && searchParams.range > 0) {
-        console.log("userPosition: ", searchParams.userLoc);
-        // const geocode = await geocodeAddress(searchParams.userLoc);
         const userCoords = {
             lat: searchParams.userLoc.lat,
             lng: searchParams.userLoc.lng,
