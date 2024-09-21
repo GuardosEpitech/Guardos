@@ -16,7 +16,7 @@ import Switch from '@mui/material/Switch';
 import styles from "./MyAccountPage.module.scss";
 import {changePassword, changeTwoFactor, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
-import {deleteRestoAccount} from "@src/services/userCalls";
+import {deleteRestoAccount, getPaymentMethods} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -48,6 +48,7 @@ const MyAccountPage = () => {
   const [pwError, setPwError] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
+  const [paymentIsSet, setPaymentIsSet] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate(); useState<boolean>(isEnabled());
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
@@ -58,7 +59,7 @@ const MyAccountPage = () => {
     fetchProfileData();
   }, []);
 
-  const fetchProfileData = () => {
+  const fetchProfileData = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
     getProfileDetails(userToken)
@@ -70,6 +71,10 @@ const MyAccountPage = () => {
         setPreferredLanguage(res.preferredLanguage || i18n.language);
         setTwoFactor(res.twoFactor === "true");
       });
+    let paymentMehtods = await getPaymentMethods(userToken);
+    if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
+      setPaymentIsSet(true);
+    }
   };
 
   const handleEmailChange = (e : any) => {
@@ -477,9 +482,13 @@ const MyAccountPage = () => {
               </div>
             )}
           </div>
-          <button onClick={() => window.location.href = '/subscriptions'}>
-            {t('pages.MyAccountPage.subscriptions')}
-          </button>
+          {paymentIsSet ? (
+            <button onClick={() => window.location.href = '/subscriptions'}>
+              {t('pages.MyAccountPage.subscriptions')}
+            </button>
+          ) : (
+            <div></div>
+          )}
           <button onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>

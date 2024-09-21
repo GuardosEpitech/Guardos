@@ -472,7 +472,8 @@
       },
       "RestoPage": {
         "what-you-looking-for": "Que recherchez-vous ?",
-        "search-result": "Berlin - +12548 Restaurants",
+        "search-result": "Aucun filtre local n'a été défini.",
+        "search-query-text": "Filtre défini: ",
         "noresto": "Aucun restaurant adapté n'a été trouvé. Veuillez mettre à jour votre filtre.",
         "noAddress": "Adresse non trouvée",
         "loc": "Lieu de l'exposition",

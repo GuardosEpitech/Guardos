@@ -215,4 +215,12 @@
   .headerLinks {
     margin-left: 0;
   }
+
+  .NavTitleDropDown {
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
 }

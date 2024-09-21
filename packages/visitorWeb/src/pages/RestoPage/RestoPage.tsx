@@ -53,6 +53,7 @@ const Btn = () => {
 };
 
 const RestoPage = () => {
+  const [inputFieldsOutput, setInputFieldsOutput] = useState('');
   const [inputFields, setInputFields] = useState(['', '']);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
   const [address, setAddress] = React.useState('');
@@ -148,6 +149,8 @@ const RestoPage = () => {
   }
 
   const handleFilterChange = async (filter: ISearchCommunication) => {
+    let inputFieldOutput = '';
+
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
@@ -167,6 +170,23 @@ const RestoPage = () => {
 
     setCategories(updatedCategories);
     setAllergens(updatedAllergens);
+    setInputFieldsOutput('');
+
+    if (inputFields[0] !== '' || inputFields[1] !== '') {
+      inputFieldOutput += t('pages.RestoPage.search-query-text');
+    }
+
+    if (inputFields[0] !== '') {
+      inputFieldOutput += inputFields[0];
+      if (inputFields[1] !== '') {
+        inputFieldOutput += '; ';
+      }
+    }
+
+    if (inputFields[1] !== '') {
+      inputFieldOutput += inputFields[1];
+    }
+    setInputFieldsOutput(inputFieldOutput);
 
     const newFilter = {
       range: rangeValue,
@@ -246,7 +266,12 @@ const RestoPage = () => {
         </div>
         {step === 1 ? (
           <div className={styles.DivContentRestoSection}>
-            <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            {inputFields[0] === '' && inputFields[1] === '' ? (
+              <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            ) : (
+              <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
+            )}
+
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
