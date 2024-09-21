@@ -130,10 +130,10 @@ const Header = () => {
             <a className={styles.NavTitleDropDown} href="login">{t('components.Header.login')}</a>
           ) : (
               <>
-                <a className={styles.NavTitle} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
-                <a className={styles.NavTitle} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-                <a className={styles.NavTitle} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
-                <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('common.Header.guides')}</a>
+                <a className={styles.NavTitleDropDown} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
+                <a className={styles.NavTitleDropDown} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
+                <a className={styles.NavTitleDropDown} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
+                <a className={styles.NavTitleDropDown} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
               </>
             )}
         </div>

@@ -6,6 +6,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { useTranslation } from "react-i18next";
+import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
+import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 
 const theme = createTheme({
   palette: {
@@ -16,15 +18,18 @@ const theme = createTheme({
 });
 
 const InputSearch = (props: any) => {
-  const { name, location, onChange } = props;
+  const [name, setName] = React.useState("");
+  const [location, setLocation] = React.useState("");
   const { t } = useTranslation();
 
   function onChangeName(event: any) {
-    onChange(event.target.value, location);
+    setName(event.target.value);
+    props.onChange(event.target.value, location);
   }
 
   function onChangeLocation(event: any) {
-    onChange(name, event.target.value);
+    setLocation(event);
+    props.onChange(name, event);
   }
 
   function sendButtonData(name: string, location: string) {
@@ -47,7 +52,8 @@ const InputSearch = (props: any) => {
             focused
           />
         </ThemeProvider>
-        <ThemeProvider theme={theme}>
+        <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
+        {/* <ThemeProvider theme={theme}>
           <TextField
             label={t("components.InputSearch.location")}
             value={location}
@@ -55,7 +61,7 @@ const InputSearch = (props: any) => {
             onChange={onChangeLocation}
             focused
           />
-        </ThemeProvider>
+        </ThemeProvider> */}
       </div>
       <ThemeProvider theme={theme}>
         <Button

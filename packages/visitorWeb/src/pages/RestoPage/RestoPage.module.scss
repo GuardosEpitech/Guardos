@@ -74,6 +74,10 @@
   }
 }
 
+.DivContentRestoSection {
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .DivRect {
     width: 100%;
@@ -127,6 +131,12 @@
   .DivMapBtn {
     flex-direction: column;
     align-items: center;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .RectOnImg {
+    height: 17rem;
   }
 }
 

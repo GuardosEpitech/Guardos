@@ -54,6 +54,8 @@ const Btn = () => {
 };
 
 const RestoPage = () => {
+  const [inputFieldsOutput, setInputFieldsOutput] = useState('');
+  const [inputFields, setInputFields] = useState(['', '']);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
   const [address, setAddress] = React.useState('');
   const [isAddress, setIsAddress] = React.useState<boolean>(false);
@@ -90,12 +92,9 @@ const RestoPage = () => {
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState(''); 
-  const [location, setLocation] = useState(''); 
 
   const clearFilter = () => {
-    setName('');
-    setLocation('');
+    setInputFields(['', '']);
     setCategories(categories.map(category => ({ ...category, value: false })));
     setRating(0);
     setRangeValue(0);
@@ -148,11 +147,12 @@ const RestoPage = () => {
   };
 
   const updateNameLocation = (name: string, location: string) => {
-    setName(name);
-    setLocation(location);
+    setInputFields([name, location]);
   }
 
   const handleFilterChange = async (filter: ISearchCommunication) => {
+    let inputFieldOutput = '';
+
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
@@ -172,12 +172,27 @@ const RestoPage = () => {
 
     setCategories(updatedCategories);
     setAllergens(updatedAllergens);
+    setInputFieldsOutput('');
+
+    if (inputFields[0] !== '' || inputFields[1] !== '') {
+      inputFieldOutput += t('pages.RestoPage.search-query-text');
+    }
+    if (inputFields[0] !== '') {
+      inputFieldOutput += inputFields[0];
+      if (inputFields[1] !== '') {
+        inputFieldOutput += '; ';
+      }
+    }
+    if (inputFields[1] !== '') {
+      inputFieldOutput += inputFields[1];
+    }
+    setInputFieldsOutput(inputFieldOutput);
 
     const newFilter = {
       range: filter.range,
       rating: [rating, 5],
-      name: name,
-      location: location,
+      name: inputFields[0],
+      location: inputFields[1],
       categories: updatedCategories.filter(category => 
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
@@ -199,8 +214,8 @@ const RestoPage = () => {
     return {
       range: rangeValue,
       rating: [rating, 5],
-      name: name,
-      location: location,
+      name: inputFields[0],
+      location: inputFields[1],
       categories: categories.filter(category => 
         category.value).map(category => category.name),
       allergenList: allergens.filter(allergen => 
@@ -234,9 +249,7 @@ const RestoPage = () => {
     <>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>{t('pages.RestoPage.what-you-looking-for')}</span>
-        <InputSearch 
-          name={name}
-          location={location}
+        <InputSearch
           onChange={updateNameLocation} 
           onClick={handleFilterChange} 
         />
@@ -264,7 +277,12 @@ const RestoPage = () => {
         </div>
         {step === 1 ? (
           <div className={styles.DivContentRestoSection}>
-            <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            {inputFields[0] === '' && inputFields[1] === '' ? (
+              <h1 className={styles.TitleCard}>{t('pages.RestoPage.search-result')}</h1>
+            ) : (
+              <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
+            )}
+
             <div className={styles.addressInputContainer}>
               <input
                 type="text"

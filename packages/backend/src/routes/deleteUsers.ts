@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import {deleteUser, getUserId} from '../controllers/userController';
+import {getAllUserRestaurants, deleteRestaurantByName} from '../controllers/restaurantController';
 import {deleteUserResto, getUserIdResto}
   from '../controllers/userRestoController';
 
@@ -40,7 +41,14 @@ router.delete('/resto', async function (req: Request, res: Response) {
         .send({ error: 'Invalid Access' });
     }
 
+    const restos = await getAllUserRestaurants(userID as number);
+
+    for (const resto of await restos) {
+      await deleteRestaurantByName(resto.name);
+    }
+
     const answer = await deleteUserResto(userID as number);
+
     if (answer) {
       return res.status(200)
         .send(answer);
