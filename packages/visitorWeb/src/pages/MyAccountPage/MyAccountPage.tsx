@@ -679,22 +679,33 @@ const MyAccountPage = () => {
                   <Skeleton variant="rounded" width={1000} height={130} />
                 </Stack>
               ) : (
-
-                favoriteRestaurants.map((restaurant) => (
-                  <RestoCard
-                  key={restaurant.id}
-                  resto={restaurant}
-                  isFavourite={true}
-                  dataIndex={0}
-                  />
-                ))
+                <>
+                  {favoriteRestaurants.length === 0 ? (
+                    <div>
+                      <span>{t('pages.MyAccountPage.no-fav-restos')}</span>
+                    </div>
+                  ) : (
+                    favoriteRestaurants.map((restaurant) => (
+                    <RestoCard
+                    key={restaurant.id}
+                    resto={restaurant}
+                    isFavourite={true}
+                    dataIndex={0}
+                    />
+                    ))
+                  )}
+                </>
               )}
             </div>
           )}
           {activeTab === "reviews" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-reviews')}</h2>
-              {userReview?.map((data, key) => (
+              {userReview && userReview.length === 0 ? (
+                <div>
+                  <span>{t('pages.MyAccountPage.no-fav-reviews')}</span>
+                </div>
+              ) : userReview?.map((data, key) => (
                 <div key={key} className={styles.CardReview}>
                   <h3>{data.restoName}</h3>
                   <span>{new Date(data.date).toLocaleDateString('en-GB')}</span>
@@ -715,7 +726,11 @@ const MyAccountPage = () => {
           {activeTab === "dishes" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-dishes')}</h2>
-              {favoriteDishes.map((dish) => {
+              {favoriteDishes.length === 0 ? (
+                <div>
+                  <span>{t('pages.MyAccountPage.no-fav-dishes')}</span>
+                </div>
+              ) : favoriteDishes.map((dish) => {
                 return (
                   <Dish
                     key={dish.dish.uid}

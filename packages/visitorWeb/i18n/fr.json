@@ -368,7 +368,8 @@
         "what-you-looking-for": "Que recherchez-vous ?"
       },
       "MenuPage": {
-        "show-non-compatible-dishes": "Afficher les plats incompatibles"
+        "show-non-compatible-dishes": "Afficher les plats incompatibles",
+        "no-menu": "Aucun menu disponible"
       },
       "MyAccountPage": {
         "account-page": "Page de compte",
@@ -404,8 +405,11 @@
         "just-ask": "Demandez simplement !",
         "subscriptions": "Gérer l'abonnement",
         "fav-restos": "Restaurants favoris",
+        "no-fav-restos": "Pas encore de restaurants favoris",
         "fav-dishes": "Plats favoris",
+        "no-fav-dishes": "Pas encore de plats favoris",
         "fav-reviews": "Mes commentaires",
+        "no-fav-reviews": "Pas encore de commentaires",
         "title-reviews": "Commentaire",
         "review-delete-success": "Commentaire supprimée !",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
