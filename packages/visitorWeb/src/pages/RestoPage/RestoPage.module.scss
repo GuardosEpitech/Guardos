@@ -146,7 +146,8 @@
 }
 
 .addressInput,
-.addressButton {
+.addressButton,
+.addressButtonTrue {
   height: 2.5rem;
   padding: 0.5rem;
   box-sizing: border-box;
@@ -166,6 +167,17 @@
   align-items: center;
   justify-content: center;
   background-color: $burgundy;
+  color: white;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.addressButtonTrue {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $orange;
   color: white;
   white-space: nowrap;
   cursor: pointer;

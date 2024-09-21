@@ -56,6 +56,7 @@ const Btn = () => {
 const RestoPage = () => {
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
   const [address, setAddress] = React.useState('');
+  const [isAddress, setIsAddress] = React.useState<boolean>(false);
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([
     // TODO: apply i18n
@@ -173,7 +174,7 @@ const RestoPage = () => {
     setAllergens(updatedAllergens);
 
     const newFilter = {
-      range: rangeValue,
+      range: filter.range,
       rating: [rating, 5],
       name: name,
       location: location,
@@ -210,12 +211,18 @@ const RestoPage = () => {
 
   const handleAddressSearch = async () => {
     try {
-      const coords = await getCurrentCoords(address);
-      if (coords) {
-        const { lat, lng } = coords;
-        setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+      if (address) {
+        const coords = await getCurrentCoords(address);
+        if (coords) {
+          setIsAddress(true);
+          const { lat, lng } = coords;
+          setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+        } else {
+          alert(t('pages.RestoPage.noAddress'));
+        }
       } else {
-        alert(t('pages.RestoPage.noAddress'));
+        setIsAddress(false);
+        setUserPosition(null);
       }
     } catch (error) {
       console.error('Error fetching address data:', error);
@@ -267,7 +274,7 @@ const RestoPage = () => {
                 placeholder={t('pages.RestoPage.address')}
               />
               <button
-                className={styles.addressButton}
+                className={isAddress ? styles.addressButtonTrue : styles.addressButton}
                 onClick={handleAddressSearch}
               >
                 {t('pages.RestoPage.loc')}
@@ -307,7 +314,7 @@ const RestoPage = () => {
                 placeholder={t('pages.RestoPage.address')}
               />
               <button
-                className={styles.addressButton}
+                className={isAddress ? styles.addressButtonTrue : styles.addressButton}
                 onClick={handleAddressSearch}
               >
                 {t('pages.RestoPage.loc')}
