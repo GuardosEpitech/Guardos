@@ -55,17 +55,7 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [stylesHandler, "css-loader", "postcss-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              sassOptions: {
-                quietDeps: true,  // Unterdrückt Deprecation-Warnungen von Abhängigkeiten
-              },
-            },
-          },
-        ],
-
+        use: [stylesHandler, "css-loader", "postcss-loader", "sass-loader"],
       },
       {
         test: /\.css$/i,
