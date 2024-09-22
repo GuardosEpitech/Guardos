@@ -146,8 +146,9 @@ const MenuPage = () => {
         const profileAllergens = profiles[i].allergens.map((allergen) => {
           if (allergen.value) return allergen.name;
         }).filter((allergen) => allergen !== undefined);
-        menuData.push(await getRestosMenu(Number(id), profileAllergens, ingredients));
-        menuData.filter((category) => category.dishes.length > 0);
+        const profileMenu = await getRestosMenu(Number(id), profileAllergens, i == 0 ? ingredients : []);
+        const filteredProfileMenu = profileMenu.filter((category: ICategories) => category.dishes.length > 0);
+        menuData.push(filteredProfileMenu);
       }
       setDislikedIngredients(ingredients);
       setRestoMenu(menuData);
