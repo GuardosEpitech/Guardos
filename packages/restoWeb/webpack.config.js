@@ -76,12 +76,14 @@ const config = {
       "@src": path.resolve(__dirname, "src/"),
     },
   },
+  stats: {
+    warningsFilter: (warning) => /deprecation/.test(warning), // please check
+  },
 };
 
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
     config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = "development";
