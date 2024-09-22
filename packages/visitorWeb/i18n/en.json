@@ -78,7 +78,7 @@
         "search": "Search"
       },
       "Map": {
-        "ima-alt": "Logo",
+        "alt-img": "Logo",
         "rating": "Rating: {{ rating }}",
         "telephone": "Tel.: {{ phone }}",
         "address": "Address: {{ address }}",

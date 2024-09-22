@@ -210,7 +210,7 @@ const MapView = (props: MapProps) => {
                 <img src={picture} alt={t('components.Map.alt-img')} className={styles.popupImg} />
                 <h2>{description}</h2>
                 <p>{t('components.Map.rating', { rating })}</p>
-                <p>{t('components.Map.logout', { phone: telephone })}</p>
+                <p>{t('components.Map.telephone', { phone: telephone })}</p>
                 <p>{t('components.Map.address', { address })}</p>
                 <ThemeProvider theme={PageBtn()}>
                   <Button
