@@ -468,6 +468,11 @@ export async function changeRestaurant(
   const oldRest = (await Restaurant.findOne({
     name: restaurantName,
   })) as IRestaurantBackEnd;
+  let loc = restaurant.location;
+  const address = formatLocation(restaurant.location);
+  const coordinates = await geocodeAddress(address);
+  loc.latitude = coordinates.lat;
+  loc.longitude = coordinates.lng;
   const newRest: IRestaurantBackEnd = {
     description: restaurant.description
       ? restaurant.description
@@ -480,7 +485,7 @@ export async function changeRestaurant(
       restaurant.restoChainID !== undefined
         ? restaurant.restoChainID
         : oldRest.restoChainID,
-    location: restaurant.location ? restaurant.location : oldRest.location,
+    location: restaurant.location ? loc : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
     openingHours: restaurant.openingHours
       ? restaurant.openingHours
