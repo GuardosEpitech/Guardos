@@ -55,7 +55,17 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [stylesHandler, "css-loader", "postcss-loader", "sass-loader"],
+        use: [stylesHandler, "css-loader", "postcss-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                quietDeps: true,  // Unterdrückt Deprecation-Warnungen von Abhängigkeiten
+              },
+            },
+          },
+        ],
+
       },
       {
         test: /\.css$/i,
@@ -75,9 +85,6 @@ const config = {
     alias: {
       "@src": path.resolve(__dirname, "src/"),
     },
-  },
-  stats: {
-    warningsFilter: (warning) => /deprecation/.test(warning), // please check
   },
 };
 
