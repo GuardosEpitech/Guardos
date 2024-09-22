@@ -60,11 +60,12 @@ const config = {
           "css-loader",
           "postcss-loader",
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {
               implementation: require('sass'),
               sassOptions: {
-                quietDeps: true,  // Unterdrückt die Deprecation-Warnungen
+                api: 'modern',
+                silenceDeprecations: ['legacy-js-api'],
               },
             },
           },
