@@ -197,7 +197,7 @@ const RestoPage = () => {
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
         allergen.value).map(allergen => allergen.name),
-      userLoc: userPosition
+      userLoc: userPosition ? userPosition : filter.userLoc
     };
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
@@ -232,6 +232,18 @@ const RestoPage = () => {
           setIsAddress(true);
           const { lat, lng } = coords;
           setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+          const inter = {
+            range: rangeValue,
+            rating: [rating, 5],
+            name: inputFields[0],
+            location: inputFields[1],
+            categories: categories.filter(category => 
+              category.value).map(category => category.name),
+            allergenList: allergens.filter(allergen => 
+              allergen.value).map(allergen => allergen.name),
+            userLoc: {lat: parseFloat(lat), lng: parseFloat(lng)}
+          }
+          await handleFilterChange(inter);
         } else {
           alert(t('pages.RestoPage.noAddress'));
         }
