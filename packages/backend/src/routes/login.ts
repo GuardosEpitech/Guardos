@@ -61,7 +61,7 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     if (answer.twoFactor !== '') {
       if (answer.twoFactor === 'false') {
         return res.status(200)
-          .send(answer.token);
+          .send({token: answer.token});
       }
       const userId = await getUserIdResto(answer.token);
       const userInfo = await getRestoProfileDetails(userId as number);
