@@ -17,7 +17,7 @@ import {checkDarkMode} from "../../utils/DarkMode";
 import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import { add } from 'cypress/types/lodash';
+import AddressInput from '@src/components/AddressInput/AddressInput';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -282,22 +282,12 @@ const RestoPage = () => {
             ) : (
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
-
-            <div className={styles.addressInputContainer}>
-              <input
-                type="text"
-                className={styles.addressInput}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder={t('pages.RestoPage.address')}
-              />
-              <button
-                className={isAddress ? styles.addressButtonTrue : styles.addressButton}
-                onClick={handleAddressSearch}
-              >
-                {t('pages.RestoPage.loc')}
-              </button>
-            </div>
+            <AddressInput
+              address={address}
+              setAddress={setAddress}
+              handleAddressSearch={handleAddressSearch}
+              isAddress={isAddress}
+            />
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
@@ -323,21 +313,12 @@ const RestoPage = () => {
           </div>
         ) : (
           <div className={styles.container}>
-            <div className={styles.addressInputContainer}>
-              <input
-                type="text"
-                className={styles.addressInput}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder={t('pages.RestoPage.address')}
-              />
-              <button
-                className={isAddress ? styles.addressButtonTrue : styles.addressButton}
-                onClick={handleAddressSearch}
-              >
-                {t('pages.RestoPage.loc')}
-              </button>
-            </div>
+            <AddressInput
+              address={address}
+              setAddress={setAddress}
+              handleAddressSearch={handleAddressSearch}
+              isAddress={isAddress}
+            />
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} />
             </div>
