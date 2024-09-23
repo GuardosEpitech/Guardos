@@ -45,6 +45,29 @@ async function retrieveAllRestaurantsAsBE() {
       return answer;
 }
 
+export const haversineDistance = (
+    userCoords: { lat: number; lng: number },
+    objectCoords: { lat: number; lng: number }
+  ): number => {
+    const toRad = (x: number) => (x * Math.PI) / 180;
+  
+    const R = 6371;
+  
+    const dLat = toRad(objectCoords.lat - userCoords.lat);
+    const dLng = toRad(objectCoords.lng - userCoords.lng);
+  
+    const lat1 = toRad(userCoords.lat);
+    const lat2 = toRad(objectCoords.lat);
+  
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+  
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+    return R * c;
+  };
+
 export async function newfilterRestaurants
 (searchParams: ISearchCommunication): Promise<IRestaurantFrontEnd[]> {
     const restoData: IRestaurantBackEnd[] = await retrieveAllRestaurantsAsBE();
@@ -59,8 +82,24 @@ export async function newfilterRestaurants
         });
     }
 
-
-    // do range here
+    if (searchParams.range !== undefined && searchParams.userLoc) {
+        const userCoords = {
+            lat: searchParams.userLoc.lat,
+            lng: searchParams.userLoc.lng,
+        };
+    
+        const range = searchParams.range === 0 ? 1 : searchParams.range;
+    
+        filteredRestaurants = filteredRestaurants.filter(restaurant => {
+            const restaurantCoords = {
+                lat: parseFloat(restaurant.location.latitude),
+                lng: parseFloat(restaurant.location.longitude),
+            };
+    
+            const distance = haversineDistance(userCoords, restaurantCoords);
+            return distance <= range;
+        });
+    }
 
     if (searchParams.rating && searchParams.rating.length === 2)
         filteredRestaurants = filteredRestaurants.filter(restaurant => {
@@ -68,10 +107,19 @@ export async function newfilterRestaurants
             return restaurant.rating >= minRating && restaurant.rating <= maxRating;
         });
 
-    if (searchParams.location)
-        filteredRestaurants = filteredRestaurants
-            .filter(restaurant => restaurant.location?.city?.toLowerCase() 
-            === searchParams.location?.toLowerCase());
+    if (searchParams.location) {
+        const searchLocation = searchParams.location.toLowerCase();
+    
+        filteredRestaurants = filteredRestaurants.filter(restaurant => {
+            const restaurantCity = restaurant.location?.city?.toLowerCase() || '';
+            const restaurantStreet = restaurant.location?.streetName?.toLowerCase() || '';
+    
+            const isCityMatch = restaurantCity === searchLocation;
+            const isStreetMatch = restaurantStreet.includes(searchLocation);
+    
+            return isCityMatch || isStreetMatch;
+        });
+    }
 
     if (searchParams.categories && searchParams.categories.length > 0) {
         const categoriesLowerCase = searchParams.categories.map(category => category.toLowerCase());

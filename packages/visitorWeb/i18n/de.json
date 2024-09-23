@@ -78,7 +78,7 @@
         "search": "Suchen"
       },
       "Map": {
-        "ima-alt": "Logo",
+        "alt-img": "Logo",
         "rating": "Bewertung: {{ rating }}",
         "telephone": "Tel.: {{ phone }}",
         "address": "Adresse: {{ address }}",
@@ -369,7 +369,8 @@
         "what-you-looking-for": "Was suchen Sie?"
       },
       "MenuPage": {
-        "show-non-compatible-dishes": "Zeige inkompatible Gerichte"
+        "show-non-compatible-dishes": "Zeige inkompatible Gerichte",
+        "no-menu": "Kein Menü verfügbar"
       },
       "MyAccountPage": {
         "account-page": "Kontoseite",
@@ -405,8 +406,11 @@
         "just-ask": "Fragen Sie einfach danach!",
         "subscriptions": "Abonnement verwalten",
         "fav-restos": "Lieblingsrestaurants",
+        "no-fav-restos": "Noch keine Lieblingsrestaurants",
         "fav-dishes": "Lieblingsgerichte",
+        "no-fav-dishes": "Noch keine Lieblingsgerichte",
         "fav-reviews": "Meine Bewertungen",
+        "no-fav-reviews": "Noch keine Bewertungen",
         "title-reviews": "Bewertungen",
         "review-delete-success": "Überprüfung erfolgreich gelöscht",
         "confirm-delete-account": "Möchten Sie Ihr Konto wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",

@@ -1,5 +1,5 @@
 import { IDishBE } from '../../../shared/models/dishInterfaces';
-import { ILocation } from '../../../shared/models/locationInterfaces';
+import { ILocation, ICoordinates } from '../../../shared/models/locationInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { IOpeningHours, IProduct }
   from '../../../shared/models/restaurantInterfaces';
@@ -59,6 +59,7 @@ export interface ISearchCommunication {
   categories?: string[];
   allergenList?: string[];
   dislikedIngredients?: string[];
+  userLoc?: ICoordinates;
 }
 
 export interface IProfileCommunication {

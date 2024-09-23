@@ -17,6 +17,7 @@ import {checkDarkMode} from "../../utils/DarkMode";
 import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import AddressInput from '@src/components/AddressInput/AddressInput';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -57,6 +58,7 @@ const RestoPage = () => {
   const [inputFields, setInputFields] = useState(['', '']);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
   const [address, setAddress] = React.useState('');
+  const [isAddress, setIsAddress] = React.useState<boolean>(false);
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([
     // TODO: apply i18n
@@ -175,28 +177,27 @@ const RestoPage = () => {
     if (inputFields[0] !== '' || inputFields[1] !== '') {
       inputFieldOutput += t('pages.RestoPage.search-query-text');
     }
-
     if (inputFields[0] !== '') {
       inputFieldOutput += inputFields[0];
       if (inputFields[1] !== '') {
         inputFieldOutput += '; ';
       }
     }
-
     if (inputFields[1] !== '') {
       inputFieldOutput += inputFields[1];
     }
     setInputFieldsOutput(inputFieldOutput);
 
     const newFilter = {
-      range: rangeValue,
+      range: filter.range,
       rating: [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
       categories: updatedCategories.filter(category => 
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen => 
-        allergen.value).map(allergen => allergen.name)
+        allergen.value).map(allergen => allergen.name),
+      userLoc: userPosition ? userPosition : filter.userLoc
     };
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
@@ -218,18 +219,37 @@ const RestoPage = () => {
       categories: categories.filter(category => 
         category.value).map(category => category.name),
       allergenList: allergens.filter(allergen => 
-        allergen.value).map(allergen => allergen.name)
+        allergen.value).map(allergen => allergen.name),
+      userLoc: userPosition
     }
   }
 
   const handleAddressSearch = async () => {
     try {
-      const coords = await getCurrentCoords(address);
-      if (coords) {
-        const { lat, lng } = coords;
-        setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+      if (address) {
+        const coords = await getCurrentCoords(address);
+        if (coords) {
+          setIsAddress(true);
+          const { lat, lng } = coords;
+          setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+          const inter = {
+            range: rangeValue,
+            rating: [rating, 5],
+            name: inputFields[0],
+            location: inputFields[1],
+            categories: categories.filter(category => 
+              category.value).map(category => category.name),
+            allergenList: allergens.filter(allergen => 
+              allergen.value).map(allergen => allergen.name),
+            userLoc: {lat: parseFloat(lat), lng: parseFloat(lng)}
+          }
+          await handleFilterChange(inter);
+        } else {
+          alert(t('pages.RestoPage.noAddress'));
+        }
       } else {
-        alert(t('pages.RestoPage.noAddress'));
+        setIsAddress(false);
+        setUserPosition(null);
       }
     } catch (error) {
       console.error('Error fetching address data:', error);
@@ -241,7 +261,10 @@ const RestoPage = () => {
     <>
       <div className={styles.RectOnImg}>
         <span className={styles.TitleSearch}>{t('pages.RestoPage.what-you-looking-for')}</span>
-        <InputSearch onChange={updateNameLocation} onClick={handleFilterChange} />
+        <InputSearch
+          onChange={updateNameLocation} 
+          onClick={handleFilterChange} 
+        />
       </div>
       <div className={styles.DivContent}>
         <div className={styles.DivMapBtn}>
@@ -271,7 +294,12 @@ const RestoPage = () => {
             ) : (
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
-
+            <AddressInput
+              address={address}
+              setAddress={setAddress}
+              handleAddressSearch={handleAddressSearch}
+              isAddress={isAddress}
+            />
             {filteredRestaurants?.length === 0 ? (
               <h2>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
@@ -297,21 +325,12 @@ const RestoPage = () => {
           </div>
         ) : (
           <div className={styles.container}>
-            <div className={styles.addressInputContainer}>
-              <input
-                type="text"
-                className={styles.addressInput}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder={t('pages.RestoPage.address')}
-              />
-              <button
-                className={styles.addressButton}
-                onClick={handleAddressSearch}
-              >
-                {t('pages.RestoPage.loc')}
-              </button>
-            </div>
+            <AddressInput
+              address={address}
+              setAddress={setAddress}
+              handleAddressSearch={handleAddressSearch}
+              isAddress={isAddress}
+            />
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} />
             </div>
