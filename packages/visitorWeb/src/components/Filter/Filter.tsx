@@ -402,10 +402,16 @@ const Filter = (props: FilterProps) => {
 
   function onChangeRating(event: any) {
     const inter: IFilterObject = {
-      rating: [event.target.value, 5]
+      rating: [Number(event.target.value), 5]
     }
-    setRating(event.target.value);
+    const currentFilter = JSON.parse(localStorage.getItem('filter')) || {};
+    if (rating != 1) {
+      setRating(event.target.value);
+    } else {
+      setRating(0);
+    }
     props.onChange(inter);
+    localStorage.setItem('filter', JSON.stringify({ ...currentFilter, rating: [Number(event.target.value), 5] }));
   }
 
   function onChangeRange(event: any) {
@@ -638,10 +644,10 @@ const Filter = (props: FilterProps) => {
           <div className={styles.DivRating}>
             <Box component="fieldset" borderColor="transparent">
               <Rating
-                name="dynamic-rating"
-                value={rating}
-                precision={1}
-                onChange={onChangeRating}
+                  size="large"
+                  name="dynamic-rating"
+                  value={rating}
+                  onChange={onChangeRating}
               />
             </Box>
           </div>

@@ -416,13 +416,11 @@ const MyAccountPage = () => {
     }
   }
 
-  const handleDeleteReview = (userId: string, restoName: string) => {
-    deleteRatingDataUser(userId, restoName);
+  const handleDeleteReview = async (userId: string, restoName: string) => {
+    await deleteRatingDataUser(userId, restoName);
     setopenReviewPopUp(true);
+    await fetchUserReview();
   }
-  useEffect(() => {
-    fetchUserReview();
-  }, [userReview]);
 
   const handleClosePopUp = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
