@@ -404,7 +404,11 @@ const Filter = (props: FilterProps) => {
     const inter: IFilterObject = {
       rating: [event.target.value, 5]
     }
-    setRating(event.target.value);
+    if (rating != 1) {
+      setRating(event.target.value);
+    } else {
+      setRating(0);
+    }
     props.onChange(inter);
   }
 
@@ -638,10 +642,10 @@ const Filter = (props: FilterProps) => {
           <div className={styles.DivRating}>
             <Box component="fieldset" borderColor="transparent">
               <Rating
-                name="dynamic-rating"
-                value={rating}
-                precision={1}
-                onChange={onChangeRating}
+                  size="large"
+                  name="dynamic-rating"
+                  value={rating}
+                  onChange={onChangeRating}
               />
             </Box>
           </div>

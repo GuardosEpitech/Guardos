@@ -301,7 +301,7 @@ const RestoPage = () => {
               isAddress={isAddress}
             />
             {filteredRestaurants?.length === 0 ? (
-              <h2>{t('pages.RestoPage.noresto')}</h2>
+              <h2 style={{textAlign: "center"}}>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
               (    <Stack spacing={1}>
                 <Skeleton variant="rounded" width={1000} height={130} />
