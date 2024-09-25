@@ -402,14 +402,16 @@ const Filter = (props: FilterProps) => {
 
   function onChangeRating(event: any) {
     const inter: IFilterObject = {
-      rating: [event.target.value, 5]
+      rating: [Number(event.target.value), 5]
     }
+    const currentFilter = JSON.parse(localStorage.getItem('filter')) || {};
     if (rating != 1) {
       setRating(event.target.value);
     } else {
       setRating(0);
     }
     props.onChange(inter);
+    localStorage.setItem('filter', JSON.stringify({ ...currentFilter, rating: [Number(event.target.value), 5] }));
   }
 
   function onChangeRange(event: any) {
