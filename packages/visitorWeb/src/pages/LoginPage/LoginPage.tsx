@@ -61,36 +61,44 @@ const Login = (props:LoginPageProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handle registration logic here
+  
     try {
-      console.log(process.env.GOOGLE_CLIENT_ID);
       const dataStorage = JSON.stringify({
         username: user.username,
-        password: user.password
+        password: user.password,
       });
+  
       const response = await axios({
-          method: 'POST',
-          url: baseUrl,
-          data: dataStorage,
-          headers: {
-              'Content-Type': 'application/json',
-          },
+        method: 'POST',
+        url: baseUrl,
+        data: dataStorage,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-      if (response.data === 'Invalid Access') {
-        setErrorForm(true);
-        localStorage.removeItem('user');
-      } else {
+  
+      if (response.status === 200) {
         localStorage.setItem('user', response.data);
-        localStorage.setItem('userName',  user.username);
+        localStorage.setItem('userName', user.username);
         setErrorForm(false);
         props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
-          loginName: user.username
-        })
+          loginName: user.username,
+        });
       }
     } catch (error) {
-        console.error(`Error in Post Route: ${error}`);
-        throw error;
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          if (error.response.status === 403) {
+            setErrorForm(true);
+            localStorage.removeItem('user');
+          }
+        } else {
+          console.error(`Error with request: ${error.message}`);
+        }
+      } else {
+        console.error(`Unexpected error: ${error}`);
+      }
     }
   };
 
