@@ -31,7 +31,7 @@ const AppOutlet = () => {
             <h2 className={styles.ContactTitle}>{t('pages.AppOutlet.contact')}</h2>
             <ul className={styles.ListContact}>
               <li>{t('pages.AppOutlet.email')}</li>
-              <li>{t('pages.AppOutlet.phone')}</li>
+              {/* <li>{t('pages.AppOutlet.phone')}</li> */}
               <li>{t('pages.AppOutlet.location')}</li>
             </ul>
           </div>
