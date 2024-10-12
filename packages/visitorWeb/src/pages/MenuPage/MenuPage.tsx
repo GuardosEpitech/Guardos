@@ -21,7 +21,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
-import { getRestosMenu } from "@src/services/menuCalls";
+import { getRestosMenu, getRestaurantDetails } from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import { useTranslation } from "react-i18next";
 import { getUserAllergens, getUserDislikedIngredients } from "@src/services/userCalls";
@@ -30,6 +30,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
+import { log } from "console";
 
 const theme = createTheme({
   palette: {
@@ -109,6 +110,29 @@ const MenuPage = () => {
           profiles = [{name: userProfileName, allergens: userAllergens}];
         });
       }
+    } else {
+      const restaurantDetails = getRestaurantDetails(Number(id));
+      restaurantDetails.then(([name, location]) => {
+      const formattedLocation = formatLocation(location);
+      setRestoName(name);
+      setAddress(formattedLocation);
+      }).catch((error) => {
+        console.error("Error fetching restaurant details:", error);
+      });
+      profiles = JSON.parse(localStorage.getItem('groupProfiles') || '[]');
+
+      if (profiles.length > 0) {
+        setGroupProfiles(profiles);
+      } else {
+        const userToken = localStorage.getItem('user');
+        if (userToken === null) {
+          return;
+        }
+        getUserAllergens(userToken).then((userAllergens) => {
+          setGroupProfiles([{name: userProfileName, allergens: userAllergens}]);
+          profiles = [{name: userProfileName, allergens: userAllergens}];
+        });
+      }
     }
 
     if (id) {
@@ -118,6 +142,11 @@ const MenuPage = () => {
     }
     checkDarkMode();
   }, [id, location.state]);
+
+  const formatLocation = (location: any) => {
+    const { streetName, streetNumber, postalCode, city, country } = location;
+    return `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
+  };
 
   const getCurrentMenu = () => {
     if (!restoMenu || restoMenu?.length <= selectedProfileIndex) {
@@ -145,7 +174,7 @@ const MenuPage = () => {
       for (let i = 0; i < profiles.length; i++) {
         const profileAllergens = profiles[i].allergens.map((allergen) => {
           if (allergen.value) return allergen.name;
-        }).filter((allergen) => allergen !== undefined);
+        }).filter((allergen) => allergen !== undefined);        
         menuData.push(await getRestosMenu(Number(id), profileAllergens, ingredients));
       }
       setDislikedIngredients(ingredients);
