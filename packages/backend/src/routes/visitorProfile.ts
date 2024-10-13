@@ -8,7 +8,7 @@ import {
   getProfileDetails, getSavedFilter, getSavedFilters,
   getUserId, getUserCookiePreferences,
   updatePassword, setUserCookiePreferences,
-  updateProfileDetails, updateRecoveryPassword
+  updateProfileDetails, updateRecoveryPassword, isNameOrEmailTaken
 } from '../controllers/userController';
 import {
   getVisitorPermissions
@@ -54,6 +54,14 @@ router.put('/', async (req, res) => {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
+    }
+
+    const errorArray = await isNameOrEmailTaken(userID,
+      updateFields.username, updateFields.email);
+
+    if (errorArray.includes(true)) {
+      return res.status(207)
+        .send(errorArray);
     }
 
     const profileDetails = await updateProfileDetails(userID, updateFields);
