@@ -35,7 +35,8 @@
     "ci:test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/nodemon/bin/nodemon.js",
     "test": "npx cypress run",
-    "test:coverage": "nyc --reporter=html --reporter=text cypress run"
+    "test:coverage": "nyc --reporter=html --reporter=text cypress run",
+    "generatePostman": "ts-node src/generatePostmanCollection.ts"
   },
   "keywords": [],
   "author": "",
