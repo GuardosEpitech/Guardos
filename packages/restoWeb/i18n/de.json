@@ -334,6 +334,9 @@
         "incorrect-code": "Der Code, den Sie eingegeben haben, ist falsch. Bitte versuchen Sie es erneut.",
         "code-error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
       },
+      "MenuPage": {
+        "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu."
+      },
       "MyAccountPage": {
         "account-page": "Kontoübersicht",
         "data-changed-success": "Profilangaben erfolgreich geändert!",

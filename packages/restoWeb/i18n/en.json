@@ -335,6 +335,9 @@
         "incorrect-code": "The code you entered is incorrect. Please try again.",
         "code-error": "An error occurred while verifying the code. Please try again."
       },
+      "MenuPage": {
+        "no-menu": "No menu available yet. Please add a dish to a category."
+      },
       "MyAccountPage": {
         "account-page": "Account page",
         "data-changed-success": "Profile details changed successfully!",

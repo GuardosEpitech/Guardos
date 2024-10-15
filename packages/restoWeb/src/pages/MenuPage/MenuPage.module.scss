@@ -71,6 +71,13 @@
   }
 }
 
+.NoMenu {
+  font-family: "Calibri", sans-serif;
+  font-size: 1.5rem;
+  color: black;
+  margin: 0;
+}
+
 @media (max-width: 750px) {
   .secondLayout {
     flex-direction: column;
