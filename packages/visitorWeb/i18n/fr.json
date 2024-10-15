@@ -375,6 +375,8 @@
         "account-page": "Page de compte",
         "data-changed-success": "Détails du profil modifiés avec succès !",
         "data-changed-failure": "Échec de la modification des détails du profil.",
+        "email-taken": " L'email est déjà utilisé par un autre utilisateur.",
+        "username-taken": " Le nom d'utilisateur est déjà utilisé par un autre utilisateur.",
         "profile-pic": "Photo de profil :",
         "pic-alt": "Profil",
         "change-img": "Changer l'image",

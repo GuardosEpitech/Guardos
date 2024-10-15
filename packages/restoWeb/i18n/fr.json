@@ -338,6 +338,8 @@
         "account-page": "Page du compte",
         "data-changed-success": "Détails du profil modifiés avec succès!",
         "data-changed-failure": "Impossible de modifier les détails du profil.",
+        "email-taken": " L'email est déjà utilisé par un autre utilisateur.",
+        "username-taken": " Le nom d'utilisateur est déjà utilisé par un autre utilisateur.",
         "profile-pic": "Image de profil :",
         "pic-alt": "Profil",
         "change-img": "Changer l'image",

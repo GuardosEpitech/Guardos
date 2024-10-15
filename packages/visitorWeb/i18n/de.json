@@ -376,6 +376,8 @@
         "account-page": "Kontoseite",
         "data-changed-success": "Profilinformationen erfolgreich geändert!",
         "data-changed-failure": "Fehler beim Ändern der Profildetails.",
+        "email-taken": " E-Mail wird bereits von einem anderen Benutzer verwendet.",
+        "username-taken": " Benutzername wird bereits von einem anderen Benutzer verwendet.",
         "profile-pic": "Profilbild:",
         "pic-alt": "Profil",
         "change-img": "Bild ändern",

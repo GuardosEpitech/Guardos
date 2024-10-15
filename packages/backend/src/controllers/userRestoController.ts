@@ -142,6 +142,34 @@ export async function getRestoProfileDetails(userId: number) {
   return inter;
 }
 
+export async function isRestoNameOrEmailTaken(userId: number, username: string,
+  email: string) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const errorArray = [false, false];
+  const existingEmail = await UserRestoSchema.findOne({
+    $or: [
+      { email: email }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+  const existingName = await UserRestoSchema.findOne({
+    $or: [
+      { username: username }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+
+  if (existingEmail) {
+    errorArray[0] = true;
+  }
+  if (existingName) {
+    errorArray[1] = true;
+  }
+
+  return errorArray;
+}
+
 // update username, email, preferred language
 export async function updateRestoProfileDetails(userId: number,
   updateFields: Partial<IRestoProfileCommunication>) {

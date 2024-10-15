@@ -339,6 +339,8 @@
         "account-page": "Account page",
         "data-changed-success": "Profile details changed successfully!",
         "data-changed-failure": "Failed to change profile details.",
+        "email-taken": " Email is already used by another user.",
+        "username-taken": " Username is already used by another user.",
         "profile-pic": "Profile Picture:",
         "pic-alt": "Profile",
         "change-img": "Change Image",
