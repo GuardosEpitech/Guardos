@@ -79,6 +79,7 @@ const MyAccountPage = () => {
     fetchFavoriteDishes();
   }, []);
 
+
   const fetchProfileData = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
@@ -416,13 +417,15 @@ const MyAccountPage = () => {
     }
   }
 
-  const handleDeleteReview = (userId: string, restoName: string) => {
-    deleteRatingDataUser(userId, restoName);
+  const handleDeleteReview = async (userId: string, restoName: string) => {
+    await deleteRatingDataUser(userId, restoName);
     setopenReviewPopUp(true);
-  }
+    
+    fetchUserReview(); 
+  };
   useEffect(() => {
     fetchUserReview();
-  }, [userReview]);
+  }, []);
 
   const handleClosePopUp = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
