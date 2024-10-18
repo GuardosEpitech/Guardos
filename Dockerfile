@@ -1,5 +1,5 @@
 # Use a base image with Node.js pre-installed
-FROM node:latest
+FROM node:18.20.3
 
 # Set the working directory to /app
 WORKDIR /app
