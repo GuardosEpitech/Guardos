@@ -208,6 +208,12 @@ router.post('/filter', async (req, res) => {
         .send('Reached the maximum amount of saved filters.');
     }
 
+    if (savedFilters.some((savedFilter) =>
+      savedFilter.filterName === filterName)) {
+      return res.status(203)
+        .send('Filter with that name already exists.');
+    }
+
     const profileDetails = await addSavedFilter(userID, filter);
     return res.status(200)
       .send(profileDetails.savedFilter);
