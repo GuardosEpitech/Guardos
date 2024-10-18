@@ -139,6 +139,7 @@ const Filter = (props: FilterProps) => {
         });
       }
       setGroupProfiles([profileCopy]);
+      localStorage.setItem('groupProfiles', JSON.stringify([profileCopy]));
     });
 
     fetchSavedFilters();
