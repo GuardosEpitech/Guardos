@@ -21,11 +21,8 @@ const config = {
     open: true,
     host: "0.0.0.0",
     allowedHosts: ["all"], // HUGE SECURITY RISK --> WE HAVE TO CHANGE THIS SOMEHOW
-    port: 8080,
+    port: 8081,
     historyApiFallback: true,
-    client: {
-      webSocketURL: 'wss://restaurant.guardos.eu/ws',
-    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -55,7 +52,19 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [stylesHandler, "css-loader", "postcss-loader", "sass-loader"],
+        use: [
+          stylesHandler,
+          "css-loader",
+          "postcss-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                quietDeps: true,
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.css$/i,
