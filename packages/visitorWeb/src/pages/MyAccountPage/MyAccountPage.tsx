@@ -70,6 +70,23 @@ const MyAccountPage = () => {
 
   const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
+  // TODO: apply i18n
+  const allAllergens = [
+    'celery',
+    'gluten',
+    'crustaceans',
+    'eggs',
+    'fish',
+    'lupin',
+    'milk',
+    'molluscs',
+    'mustard',
+    'peanuts',
+    'sesame',
+    'soybeans',
+    'sulphides',
+    'tree nuts',
+  ];
 
 
   useEffect(() => {
@@ -500,8 +517,7 @@ const MyAccountPage = () => {
             label={t('pages.MyAccountPage.allergens')}
           >
             {
-              // TODO: apply i18n
-              ['peanut', 'gluten', 'dairy'].map((allergen) => (
+              allAllergens.map((allergen) => (
               <MenuItem key={allergen} value={allergen} selected={selectedOptions.includes(allergen)}>
                 {allergen}
               </MenuItem>
