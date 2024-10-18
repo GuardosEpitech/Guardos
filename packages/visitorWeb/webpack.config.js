@@ -18,7 +18,6 @@ const config = {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
   },
-  stats: 'none',
   devServer: {
     open: true,
     host: "0.0.0.0",
@@ -27,13 +26,17 @@ const config = {
     historyApiFallback: true,
     client: {
       webSocketURL: 'wss://guardos.eu/ws',
+      overlay: {
+        errors: false, // suppress errors
+        warnings: false, // suppress warnings
+      },
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       favicon: "./public/favicon.ico",
-      
+
     }),
     new MiniCssExtractPlugin(),
     new Dotenv(),
