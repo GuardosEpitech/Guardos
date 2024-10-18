@@ -17,16 +17,6 @@ const config = {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
   },
-  ignoreWarnings: [
-    (warning) => {
-      // Unterdrücken Sie alle Warnungen, die "Deprecation Warning" und "Sass @import" enthalten
-      return (
-          warning.message &&
-          warning.message.includes('Deprecation Warning') &&
-          warning.message.includes('Sass @import')
-      );
-    },
-  ],
   devServer: {
     open: true,
     host: "0.0.0.0",

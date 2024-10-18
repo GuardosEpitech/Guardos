@@ -1,5 +1,4 @@
 #!/bin/bash
-export SASS_QUIET=true
 
 # Start backend
 cd /app/packages/backend
