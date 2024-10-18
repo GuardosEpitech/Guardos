@@ -18,6 +18,7 @@ const config = {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
   },
+  stats: 'none',
   devServer: {
     open: true,
     host: "0.0.0.0",
@@ -82,7 +83,6 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
     config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = "development";
