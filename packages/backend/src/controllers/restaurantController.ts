@@ -440,7 +440,6 @@ export async function createNewRestaurant(
     menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
   });
   await upload.save();
-  console.log("Restaurant " + obj.name + " saved " + " with id " + id);
   return upload;
 }
 
