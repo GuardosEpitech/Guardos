@@ -17,7 +17,6 @@ const ImprintPage: React.FC = () => {
             <p>{t('pages.Imprint.address1')}</p>
             <p>{t('pages.Imprint.address2')}</p>
             <br />
-            <p>{t('pages.Imprint.telephone')}</p>
             <p>{t('pages.Imprint.email')}</p>
             <br />
             <p>{t('pages.Imprint.register')}</p>

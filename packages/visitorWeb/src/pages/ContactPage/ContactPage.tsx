@@ -87,15 +87,6 @@ const ContactPage = () => {
                         </div>
                         <div className={styles.box}>
                             <div className={styles.icon}>
-                                <PhoneIcon />
-                            </div>
-                            <div className={styles.text}>
-                                <h3>{t('pages.ContactPage.phone')}</h3>
-                                <p>030 1234567</p>
-                            </div>
-                        </div>
-                        <div className={styles.box}>
-                            <div className={styles.icon}>
                                 <EmailIcon />
                             </div>
                             <div className={styles.text}>

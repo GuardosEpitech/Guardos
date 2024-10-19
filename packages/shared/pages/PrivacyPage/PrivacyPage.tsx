@@ -75,7 +75,6 @@ const PrivacyPage: React.FC = () => {
           <br />
           <p>{t('pages.Privacy.address')}</p>
           <p>{t('pages.Privacy.email')}</p>
-          <p>{t('pages.Privacy.phone')}</p>
           <br />
           <p>{t('pages.Privacy.end')}</p>
           <br />
