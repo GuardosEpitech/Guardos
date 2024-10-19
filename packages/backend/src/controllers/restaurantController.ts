@@ -440,7 +440,6 @@ export async function createNewRestaurant(
     menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
   });
   await upload.save();
-  console.log("Restaurant " + obj.name + " saved " + " with id " + id);
   return upload;
 }
 
@@ -612,7 +611,6 @@ export async function addCategory(
     if (!rest) {
       throw new Error("Restaurant not found");
     }
-    console.log(newCategories);
     const transformedArray= newCategories.map((category, index) => ({
       _id: index + 1,
       name: category.name,
@@ -626,7 +624,6 @@ export async function addCategory(
     //     };
     //     rest.mealType.push(newCategory);
     // });
-    console.log('transformed array ', transformedArray)
     rest.mealType = transformedArray;
 
     await rest.save();
