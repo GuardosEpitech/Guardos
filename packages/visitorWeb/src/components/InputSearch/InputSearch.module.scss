@@ -21,17 +21,21 @@
 }
 
 @media only screen and (max-width: 1200px) {
-  .InputSearch {
-    width: 100%;
-  }
-
   .searchInput {
     flex-direction: row;
     gap: 1rem;
   }
+
+  .searchContainer {
+    flex-direction: column;
+    max-width: 100%;
+  }
 }
 
 @media only screen and (max-width: 600px) {
+  .searchInput {
+    flex-direction: column;
+  }
   .searchContainer {
     flex-direction: column;
   }

@@ -58,10 +58,10 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     if (answer === false) {
       return res.send('Invalid Access');
     }
-    if (answer.twoFactor) {
+    if (answer.twoFactor !== '') {
       if (answer.twoFactor === 'false') {
         return res.status(200)
-          .send(answer.token);
+          .send({token: answer.token});
       }
       const userId = await getUserIdResto(answer.token);
       const userInfo = await getRestoProfileDetails(userId as number);
@@ -72,6 +72,8 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
           userInfo.preferredLanguage as 'fr' | 'de' | 'en');
       return res.status(200)
         .send({twoFactor: true, userId: userId});
+    } else {
+      return res.status(200).send({twoFactor: false, token: answer.token});
     }
   } catch (error) {
     return res.send('An error occurred while processing your request');

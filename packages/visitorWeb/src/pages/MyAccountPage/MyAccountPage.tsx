@@ -57,6 +57,7 @@ const MyAccountPage = () => {
   const [pwError, setPwError] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
+  const [saveFailureType, setSaveFailureType] = useState(null);
 
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [userReview, setUserReview] = useState([]);
@@ -242,6 +243,7 @@ const MyAccountPage = () => {
 
   const handleSave = async () => {
     setDataChangeStatus(null);
+    setSaveFailureType(null);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setDataChangeStatus("failed");
@@ -258,10 +260,22 @@ const MyAccountPage = () => {
     i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
-    if (!res) {
+
+    if (typeof res === "string") {
+      if (!res) {
+        isError = true;
+      } else {
+        localStorage.setItem('user', res);
+      }
+    } else if (Array.isArray(res) && res.length === 2) {
       isError = true;
+      if (res[0] === true) {
+        setSaveFailureType("email");
+      } else {
+        setSaveFailureType("username");
+      }
     } else {
-      localStorage.setItem('user', res);
+      isError = true;
     }
 
     // TODO: add image mngt
@@ -416,13 +430,11 @@ const MyAccountPage = () => {
     }
   }
 
-  const handleDeleteReview = (userId: string, restoName: string) => {
-    deleteRatingDataUser(userId, restoName);
+  const handleDeleteReview = async (userId: string, restoName: string) => {
+    await deleteRatingDataUser(userId, restoName);
     setopenReviewPopUp(true);
+    await fetchUserReview();
   }
-  useEffect(() => {
-    fetchUserReview();
-  }, [userReview]);
 
   const handleClosePopUp = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -430,6 +442,17 @@ const MyAccountPage = () => {
     }
 
     setopenReviewPopUp(false);
+  };
+
+  const errorExplanation = () => {
+    switch (saveFailureType) {
+      case 'email':
+        return t('pages.MyAccountPage.email-taken');
+      case 'username':
+        return t('pages.MyAccountPage.username-taken');
+      default:
+        return '';
+    }
   };
 
 
@@ -455,7 +478,7 @@ const MyAccountPage = () => {
           >
             {dataChangeStatus === 'success'
               ? t('pages.MyAccountPage.data-changed-success')
-              : t('pages.MyAccountPage.data-changed-failure')}
+              : (t('pages.MyAccountPage.data-changed-failure') + errorExplanation())}
           </div>
         )}
         <img
@@ -679,22 +702,33 @@ const MyAccountPage = () => {
                   <Skeleton variant="rounded" width={1000} height={130} />
                 </Stack>
               ) : (
-
-                favoriteRestaurants.map((restaurant) => (
-                  <RestoCard
-                  key={restaurant.id}
-                  resto={restaurant}
-                  isFavourite={true}
-                  dataIndex={0}
-                  />
-                ))
+                <>
+                  {favoriteRestaurants.length === 0 ? (
+                    <div>
+                      <span>{t('pages.MyAccountPage.no-fav-restos')}</span>
+                    </div>
+                  ) : (
+                    favoriteRestaurants.map((restaurant) => (
+                    <RestoCard
+                    key={restaurant.id}
+                    resto={restaurant}
+                    isFavourite={true}
+                    dataIndex={0}
+                    />
+                    ))
+                  )}
+                </>
               )}
             </div>
           )}
           {activeTab === "reviews" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-reviews')}</h2>
-              {userReview?.map((data, key) => (
+              {userReview && userReview.length === 0 ? (
+                <div>
+                  <span>{t('pages.MyAccountPage.no-fav-reviews')}</span>
+                </div>
+              ) : userReview?.map((data, key) => (
                 <div key={key} className={styles.CardReview}>
                   <h3>{data.restoName}</h3>
                   <span>{new Date(data.date).toLocaleDateString('en-GB')}</span>
@@ -715,7 +749,11 @@ const MyAccountPage = () => {
           {activeTab === "dishes" && (
             <div className={styles.favoriteList}>
               <h2>{t('pages.MyAccountPage.fav-dishes')}</h2>
-              {favoriteDishes.map((dish) => {
+              {favoriteDishes.length === 0 ? (
+                <div>
+                  <span>{t('pages.MyAccountPage.no-fav-dishes')}</span>
+                </div>
+              ) : favoriteDishes.map((dish) => {
                 return (
                   <Dish
                     key={dish.dish.uid}

@@ -468,6 +468,11 @@ export async function changeRestaurant(
   const oldRest = (await Restaurant.findOne({
     name: restaurantName,
   })) as IRestaurantBackEnd;
+  let loc = restaurant.location;
+  const address = formatLocation(restaurant.location);
+  const coordinates = await geocodeAddress(address);
+  loc.latitude = coordinates.lat;
+  loc.longitude = coordinates.lng;
   const newRest: IRestaurantBackEnd = {
     description: restaurant.description
       ? restaurant.description
@@ -480,7 +485,7 @@ export async function changeRestaurant(
       restaurant.restoChainID !== undefined
         ? restaurant.restoChainID
         : oldRest.restoChainID,
-    location: restaurant.location ? restaurant.location : oldRest.location,
+    location: restaurant.location ? loc : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
     openingHours: restaurant.openingHours
       ? restaurant.openingHours
@@ -612,21 +617,11 @@ export async function addCategory(
     if (!rest) {
       throw new Error("Restaurant not found");
     }
-    console.log(newCategories);
     const transformedArray= newCategories.map((category, index) => ({
       _id: index + 1,
       name: category.name,
       sortId: category.hitRate
   }));
-    // newCategories.forEach((category) => {
-    //     const newCategory = {
-    //       _id: rest.mealType.length,
-    //       name: category.name,
-    //       sortId: category.hitRate,
-    //     };
-    //     rest.mealType.push(newCategory);
-    // });
-    console.log('transformed array ', transformedArray)
     rest.mealType = transformedArray;
 
     await rest.save();

@@ -16,7 +16,7 @@ import Switch from '@mui/material/Switch';
 import styles from "./MyAccountPage.module.scss";
 import {changePassword, changeTwoFactor, editProfileDetails, getProfileDetails}
   from "@src/services/profileCalls";
-import {deleteRestoAccount} from "@src/services/userCalls";
+import {deleteRestoAccount, getPaymentMethods} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -48,6 +48,8 @@ const MyAccountPage = () => {
   const [pwError, setPwError] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
+  const [saveFailureType, setSaveFailureType] = useState(null);
+  const [paymentIsSet, setPaymentIsSet] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate(); useState<boolean>(isEnabled());
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
@@ -58,7 +60,7 @@ const MyAccountPage = () => {
     fetchProfileData();
   }, []);
 
-  const fetchProfileData = () => {
+  const fetchProfileData = async () => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) { return; }
     getProfileDetails(userToken)
@@ -70,6 +72,10 @@ const MyAccountPage = () => {
         setPreferredLanguage(res.preferredLanguage || i18n.language);
         setTwoFactor(res.twoFactor === "true");
       });
+    let paymentMehtods = await getPaymentMethods(userToken);
+    if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
+      setPaymentIsSet(true);
+    }
   };
 
   const handleEmailChange = (e : any) => {
@@ -150,6 +156,7 @@ const MyAccountPage = () => {
 
   const handleSave = async () => {
     setDataChangeStatus(null);
+    setSaveFailureType(null);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setDataChangeStatus("failed");
@@ -164,10 +171,22 @@ const MyAccountPage = () => {
     i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
-    if (!res) {
+
+    if (typeof res === "string") {
+      if (!res) {
+        isError = true;
+      } else {
+        localStorage.setItem('user', res);
+      }
+    } else if (Array.isArray(res) && res.length === 2) {
       isError = true;
+      if (res[0] === true) {
+        setSaveFailureType("email");
+      } else {
+        setSaveFailureType("username");
+      }
     } else {
-      localStorage.setItem('user', res);
+      isError = true;
     }
 
     // TODO: add image mngt
@@ -333,6 +352,17 @@ const MyAccountPage = () => {
       });
   }
 
+  const errorExplanation = () => {
+    switch (saveFailureType) {
+    case 'email':
+      return t('pages.MyAccountPage.email-taken');
+    case 'username':
+      return t('pages.MyAccountPage.username-taken');
+    default:
+      return '';
+    }
+  };
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -345,7 +375,7 @@ const MyAccountPage = () => {
           >
             {dataChangeStatus === 'success'
               ? t('pages.MyAccountPage.data-changed-success')
-              : t('pages.MyAccountPage.data-changed-failure')}
+              : (t('pages.MyAccountPage.data-changed-failure') + errorExplanation())}
           </div>
         )}
         <img
@@ -477,9 +507,13 @@ const MyAccountPage = () => {
               </div>
             )}
           </div>
-          <button onClick={() => window.location.href = '/subscriptions'}>
-            {t('pages.MyAccountPage.subscriptions')}
-          </button>
+          {paymentIsSet ? (
+            <button onClick={() => window.location.href = '/subscriptions'}>
+              {t('pages.MyAccountPage.subscriptions')}
+            </button>
+          ) : (
+            <div></div>
+          )}
           <button onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>

@@ -7,7 +7,7 @@ import {
   getUserIdResto, getUserRestoCookiePreferences,
   updateRestoPassword, setUserRestoCookiePreferences,
   updateRestoProfileDetails, updateRecoveryPasswordResto,
-  addRestoChain, deleteRestoChain, addTwoFactorResto
+  addRestoChain, deleteRestoChain, addTwoFactorResto, isRestoNameOrEmailTaken
 } from '../controllers/userRestoController';
 
 const router = express.Router();
@@ -46,6 +46,14 @@ router.put('/', async (req, res) => {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
+    }
+
+    const errorArray = await isRestoNameOrEmailTaken(userID as number,
+      updateFields.username, updateFields.email);
+
+    if (errorArray.includes(true)) {
+      return res.status(207)
+        .send(errorArray);
     }
 
     const profileDetails = await updateRestoProfileDetails(userID as number,
