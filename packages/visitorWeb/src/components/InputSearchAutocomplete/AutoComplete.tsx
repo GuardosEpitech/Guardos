@@ -36,12 +36,12 @@ const AutoComplete = (props: AutoCompleteProps) => {
         (suggestion: any) =>
           suggestion.indexOf(query) > -1
       );
-      props.onChange(query);
       setSuggestions(filterSuggestions);
       setSuggestionsActive(true);
     } else {
       setSuggestionsActive(false);
     }
+    props.onChange(query);
   };
 
   const handleClick = (e: any) => {

@@ -78,7 +78,7 @@
         "search": "Rechercher"
       },
       "Map": {
-        "ima-alt": "Logo",
+        "alt-img": "Logo",
         "rating": "Note : {{ rating }}",
         "telephone": "Tél. : {{ phone }}",
         "address": "Adresse : {{ address }}",
@@ -368,12 +368,15 @@
         "what-you-looking-for": "Que recherchez-vous ?"
       },
       "MenuPage": {
-        "show-non-compatible-dishes": "Afficher les plats incompatibles"
+        "show-non-compatible-dishes": "Afficher les plats incompatibles",
+        "no-menu": "Aucun menu disponible"
       },
       "MyAccountPage": {
         "account-page": "Page de compte",
         "data-changed-success": "Détails du profil modifiés avec succès !",
         "data-changed-failure": "Échec de la modification des détails du profil.",
+        "email-taken": " L'email est déjà utilisé par un autre utilisateur.",
+        "username-taken": " Le nom d'utilisateur est déjà utilisé par un autre utilisateur.",
         "profile-pic": "Photo de profil :",
         "pic-alt": "Profil",
         "change-img": "Changer l'image",
@@ -404,8 +407,11 @@
         "just-ask": "Demandez simplement !",
         "subscriptions": "Gérer l'abonnement",
         "fav-restos": "Restaurants favoris",
+        "no-fav-restos": "Pas encore de restaurants favoris",
         "fav-dishes": "Plats favoris",
+        "no-fav-dishes": "Pas encore de plats favoris",
         "fav-reviews": "Mes commentaires",
+        "no-fav-reviews": "Pas encore de commentaires",
         "title-reviews": "Commentaire",
         "review-delete-success": "Commentaire supprimée !",
         "confirm-delete-account": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
@@ -472,7 +478,8 @@
       },
       "RestoPage": {
         "what-you-looking-for": "Que recherchez-vous ?",
-        "search-result": "Berlin - +12548 Restaurants",
+        "search-result": "Aucun filtre local n'a été défini.",
+        "search-query-text": "Filtre défini: ",
         "noresto": "Aucun restaurant adapté n'a été trouvé. Veuillez mettre à jour votre filtre.",
         "noAddress": "Adresse non trouvée",
         "loc": "Lieu de l'exposition",

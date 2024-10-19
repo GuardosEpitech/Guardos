@@ -287,7 +287,7 @@ const MenuPage = () => {
                 <div>
                   {menuDesignID === 0 ? (
                     <div>
-                      {getCurrentMenu().map((category: ICategories, index: number) => (
+                      {getCurrentMenu().length > 0 ? getCurrentMenu().map((category: ICategories, index: number) => (
                         <div key={category.name + index}>
                           <Category title={category.name}>
                             {category.dishes
@@ -339,107 +339,114 @@ const MenuPage = () => {
                             </Accordion>
                           </Category>
                         </div>
-                      ))}
+                      )) : (
+                        <div>
+                          <h2>{t('pages.MenuPage.no-menu')}</h2>
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div>
-                      {/* Placeholder for other menuDesignID cases */}
-                    </div>
-                  )}
-                  {menuDesignID >= 1 ? (
                     <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
-                      <div className={styles.secondLayoutList}>
-                        <ul>
-                          {getCurrentMenu().map((category: ICategories, index: number) => (
-                            <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
-                              {category.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className={styles.restoList}>
-                        {getCurrentMenu().map((category: ICategories, index: number) => {
-                          return (//@ts-ignore
-                            <div key={index} ref={sectionRefs.current[index]}>
-                              {index % 3 === 0 ? (
-                                <div style={{
-                                  backgroundImage: `url(${pic1})`
-                                }} className={styles.secondLayoutBanner} />
-                              ) : (
-                                <div/>
-                              )}
-                              {index % 3 === 1 ? (
-                                <div style={{
-                                  backgroundImage: `url(${pic2})`
-                                }} className={styles.secondLayoutBanner} />
-                              ) : (
-                                <div/>
-                              )}
-                              {index % 3 === 2 ? (
-                                <div style={{
-                                  backgroundImage: `url(${pic3})`
-                                }} className={styles.secondLayoutBanner}/>
-                              ) : (
-                                <div/>
-                              )}
+                      {getCurrentMenu().length > 0 ? (
+                        <>
+                          <div className={styles.secondLayoutList}>
+                            <ul>
+                              {getCurrentMenu().map((category: ICategories, index: number) => (
+                                <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
+                                  {category.name}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className={styles.restoList}>
+                            {getCurrentMenu().length > 0 ? getCurrentMenu().map((category: ICategories, index: number) => {
+                              return (//@ts-ignore
+                                <div key={index} ref={sectionRefs.current[index]}>
+                                  {index % 3 === 0 ? (
+                                    <div style={{
+                                      backgroundImage: `url(${pic1})`
+                                    }} className={styles.secondLayoutBanner} />
+                                  ) : (
+                                    <div/>
+                                  )}
+                                  {index % 3 === 1 ? (
+                                    <div style={{
+                                      backgroundImage: `url(${pic2})`
+                                    }} className={styles.secondLayoutBanner} />
+                                  ) : (
+                                    <div/>
+                                  )}
+                                  {index % 3 === 2 ? (
+                                    <div style={{
+                                      backgroundImage: `url(${pic3})`
+                                    }} className={styles.secondLayoutBanner}/>
+                                  ) : (
+                                    <div/>
+                                  )}
 
-                              <Category title={category.name}>
-                                {category.dishes
-                                  .filter((dish: IDishFE) => dish.fitsPreference)
-                                  .map((dish: IDishFE, dishIndex: number) => (
-                                    <Dish
-                                      key={dish.name + dishIndex}
-                                      dishName={dish.name}
-                                      dishAllergens={dish.allergens}
-                                      dishDescription={dish.description}
-                                      options={dish.category.extraGroup.join(", ")}
-                                      price={dish.price}
-                                      picturesId={dish.picturesId}
-                                      restoID={Number(id)}
-                                      dishID={dish.uid}
-                                      discount={dish.discount}
-                                      validTill={dish.validTill}
-                                      combo={dish.combo}
-                                      isTopLevel={true}
-                                      isFavourite={isFavouriteDishs.some(
-                                        (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
-                                      )}
-                                    />
-                                  ))}
-                                <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
-                                  {category.dishes
-                                    .filter((dish: IDishFE) => !dish.fitsPreference)
-                                    .map((dish: IDishFE, dishIndex: number) => (
-                                      <Dish
-                                        key={dish.name + dishIndex}
-                                        dishName={dish.name}
-                                        dishAllergens={dish.allergens}
-                                        dislikedIngredients={dislikedIngredients}
-                                        dishDescription={dish.description}
-                                        options={dish.category.extraGroup.join(", ")}
-                                        price={dish.price}
-                                        picturesId={dish.picturesId}
-                                        restoID={Number(id)}
-                                        dishID={dish.uid}
-                                        discount={dish.discount}
-                                        validTill={dish.validTill}
-                                        combo={dish.combo}
-                                        isTopLevel={true}
-                                        isFavourite={isFavouriteDishs.some(
-                                          (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
-                                        )}
-                                      />
-                                    ))}
-                                </Accordion>
-                              </Category>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      {/* Placeholder for other menuDesignID cases */}
+                                  <Category title={category.name}>
+                                    {category.dishes
+                                      .filter((dish: IDishFE) => dish.fitsPreference)
+                                      .map((dish: IDishFE, dishIndex: number) => (
+                                        <Dish
+                                          key={dish.name + dishIndex}
+                                          dishName={dish.name}
+                                          dishAllergens={dish.allergens}
+                                          dishDescription={dish.description}
+                                          options={dish.category.extraGroup.join(", ")}
+                                          price={dish.price}
+                                          picturesId={dish.picturesId}
+                                          restoID={Number(id)}
+                                          dishID={dish.uid}
+                                          discount={dish.discount}
+                                          validTill={dish.validTill}
+                                          combo={dish.combo}
+                                          isTopLevel={true}
+                                          isFavourite={isFavouriteDishs.some(
+                                            (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
+                                          )}
+                                        />
+                                      ))}
+                                    <Accordion title={t('pages.MenuPage.show-non-compatible-dishes')}>
+                                      {category.dishes
+                                        .filter((dish: IDishFE) => !dish.fitsPreference)
+                                        .map((dish: IDishFE, dishIndex: number) => (
+                                          <Dish
+                                            key={dish.name + dishIndex}
+                                            dishName={dish.name}
+                                            dishAllergens={dish.allergens}
+                                            dislikedIngredients={dislikedIngredients}
+                                            dishDescription={dish.description}
+                                            options={dish.category.extraGroup.join(", ")}
+                                            price={dish.price}
+                                            picturesId={dish.picturesId}
+                                            restoID={Number(id)}
+                                            dishID={dish.uid}
+                                            discount={dish.discount}
+                                            validTill={dish.validTill}
+                                            combo={dish.combo}
+                                            isTopLevel={true}
+                                            isFavourite={isFavouriteDishs.some(
+                                              (fav) => fav.restoID === Number(id) && fav.dish.uid === dish.uid
+                                            )}
+                                          />
+                                        ))}
+                                    </Accordion>
+                                  </Category>
+                                </div>
+                              )
+                            }) : (
+                              <div>
+                                <h2>{t('pages.MenuPage.no-menu')}</h2>
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <div>
+                          <h2>{t('pages.MenuPage.no-menu')}</h2>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

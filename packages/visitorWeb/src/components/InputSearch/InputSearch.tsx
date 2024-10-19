@@ -2,13 +2,12 @@ import React from "react";
 import styles from "@src/components/InputSearch/InputSearch.module.scss";
 import TextField from "@mui/material/TextField";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import FormControl from '@mui/material/FormControl';
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
-import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
-import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { useTranslation } from "react-i18next";
+import Autocomplete from "@src/components/InputSearchAutocomplete/AutoComplete";
+import autoCompleteData from "@src/components/InputSearchAutocomplete/filterDataLocation";
 
 const theme = createTheme({
   palette: {
@@ -47,12 +46,22 @@ const InputSearch = (props: any) => {
         <ThemeProvider theme={theme}>
           <TextField
             label={t("components.InputSearch.name")}
+            value={name}
             className={styles.InputSearch}
             onChange={onChangeName}
             focused
           />
         </ThemeProvider>
         <Autocomplete data={autoCompleteData} onChange={onChangeLocation} />
+        {/* <ThemeProvider theme={theme}>
+          <TextField
+            label={t("components.InputSearch.location")}
+            value={location}
+            className={styles.InputSearch}
+            onChange={onChangeLocation}
+            focused
+          />
+        </ThemeProvider> */}
       </div>
       <ThemeProvider theme={theme}>
         <Button

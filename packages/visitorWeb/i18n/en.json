@@ -78,7 +78,7 @@
         "search": "Search"
       },
       "Map": {
-        "ima-alt": "Logo",
+        "alt-img": "Logo",
         "rating": "Rating: {{ rating }}",
         "telephone": "Tel.: {{ phone }}",
         "address": "Address: {{ address }}",
@@ -378,12 +378,15 @@
         "what-you-looking-for": "What are you looking for ?"
       },
       "MenuPage": {
-        "show-non-compatible-dishes": "Show non-compatible dishes"
+        "show-non-compatible-dishes": "Show non-compatible dishes",
+        "no-menu": "No menu available"
       },
       "MyAccountPage": {
         "account-page": "Account page",
         "data-changed-success": "Profile details changed successfully!",
         "data-changed-failure": "Failed to change profile details.",
+        "email-taken": " Email is already used by another user.",
+        "username-taken": " Username is already used by another user.",
         "profile-pic": "Profile Picture:",
         "pic-alt": "Profile",
         "change-img": "Change Image",
@@ -414,8 +417,11 @@
         "just-ask": "Just ask for it!",
         "subscriptions": "Manage Subscription",
         "fav-restos": "Favourite Restaurants",
+        "no-fav-restos": "No favourite restaurants yet",
         "fav-dishes": "Favourite Dishes",
+        "no-fav-dishes": "No favourite dishes yet",
         "fav-reviews": "My reviews",
+        "no-fav-reviews": "No reviews yet",
         "title-reviews": "Comment",
         "review-delete-success": "Review deleted successfully",
         "confirm-delete-account": "Are you sure you want to delete your account? This action cannot be undone.",
@@ -472,7 +478,8 @@
       },
       "RestoPage": {
         "what-you-looking-for": "What are you looking for ?",
-        "search-result": "Berlin - +12548 Restauarants",
+        "search-result": "No location Filter applied.",
+        "search-query-text": "Applied Filter: ",
         "noresto": "No fitting restaurants found. Please update your filter.",
         "noAddress": "Address not found",
         "loc": "Show Location",

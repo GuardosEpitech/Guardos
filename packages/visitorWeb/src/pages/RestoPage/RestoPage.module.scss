@@ -74,6 +74,10 @@
   }
 }
 
+.DivContentRestoSection {
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .DivRect {
     width: 100%;
@@ -130,6 +134,12 @@
   }
 }
 
+@media only screen and (max-width: 600px) {
+  .RectOnImg {
+    height: 17rem;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -146,7 +156,8 @@
 }
 
 .addressInput,
-.addressButton {
+.addressButton,
+.addressButtonTrue {
   height: 2.5rem;
   padding: 0.5rem;
   box-sizing: border-box;
@@ -166,6 +177,17 @@
   align-items: center;
   justify-content: center;
   background-color: $burgundy;
+  color: white;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.addressButtonTrue {
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $orange;
   color: white;
   white-space: nowrap;
   cursor: pointer;

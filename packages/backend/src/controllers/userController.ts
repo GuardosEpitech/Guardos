@@ -126,6 +126,33 @@ export async function getProfileDetails(userId: number) {
   return inter;
 }
 
+export async function isNameOrEmailTaken(userId: number, username: string,
+  email: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  const errorArray = [false, false];
+  const existingEmail = await UserSchema.findOne({
+    $or: [
+      { email: email }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+  const existingName = await UserSchema.findOne({
+    $or: [
+      { username: username }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+
+  if (existingEmail) {
+    errorArray[0] = true;
+  }
+  if (existingName) {
+    errorArray[1] = true;
+  }
+
+  return errorArray;
+}
+
 // update username, email, allergens, disliked ingredients, preferred language
 export async function updateProfileDetails(userId: number,
   updateFields: Partial<IProfileCommunication>) {
