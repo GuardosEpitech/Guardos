@@ -78,43 +78,6 @@ const MenuPage = () => {
           </ListItem>
         </List>
       </div>
-      <Layout>
-        {menuDesignID === 0 ? (
-          <div>
-            {menu.map((category: ICategories) => {
-              return (
-                <div>
-                  {category.dishes.length > 0 && (
-                    <Category key={category.name} title={category.name}>
-                      {category.dishes.map((dish, index) => {
-                        return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true}/>;
-                      })}
-                    </Category>
-                )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div>
-            
-          </div>
-        )}
-        {menuDesignID >= 1 ? (
-          <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
-            <div className={styles.secondLayoutList}>
-              <ul>
-                {menu.map((category: ICategories, index: number) => {
-                  return (
-                    <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
-                      {category.name}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-            <div className={styles.secondLayoutDishes}>
-              {menu.map((category: ICategories, index: number) => {
       {hasMenu ? (
         <Layout>
           {menuDesignID === 0 ? (
