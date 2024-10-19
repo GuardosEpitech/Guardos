@@ -588,7 +588,7 @@ const Filter = (props: FilterProps) => {
             <div className={styles.filterLimit}>
               {t('components.Filter.saved-filters', { used: savedFilters.length, limit: filterLimit })}
             </div>
-            {savedFilters.map((filter, index) => (
+            {savedFilters?.map((filter, index) => (
               <MenuItem key={index}>
                 <span>{filter.filterName}</span>
                 <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
