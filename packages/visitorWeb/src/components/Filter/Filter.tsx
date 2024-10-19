@@ -139,6 +139,7 @@ const Filter = (props: FilterProps) => {
         });
       }
       setGroupProfiles([profileCopy]);
+      localStorage.setItem('groupProfiles', JSON.stringify([profileCopy]));
       setDefaultAllergens(profileCopy.allergens);
     });
 
@@ -269,6 +270,13 @@ const Filter = (props: FilterProps) => {
     setChangeStatus(null);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
+      return;
+    }
+
+    if (savedFilters.some((savedFilter) => savedFilter.filterName === filter.filterName)) {
+      setChangeStatus("failed");
+      setChangeStatusMsg(t('components.Filter.save-filter-failure'));
+      setNewFilterName("");
       return;
     }
 

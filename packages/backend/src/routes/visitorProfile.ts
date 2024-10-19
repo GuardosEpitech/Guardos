@@ -8,7 +8,7 @@ import {
   getProfileDetails, getSavedFilter, getSavedFilters,
   getUserId, getUserCookiePreferences,
   updatePassword, setUserCookiePreferences,
-  updateProfileDetails, updateRecoveryPassword
+  updateProfileDetails, updateRecoveryPassword, isNameOrEmailTaken
 } from '../controllers/userController';
 import {
   getVisitorPermissions
@@ -54,6 +54,14 @@ router.put('/', async (req, res) => {
       // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
+    }
+
+    const errorArray = await isNameOrEmailTaken(userID,
+      updateFields.username, updateFields.email);
+
+    if (errorArray.includes(true)) {
+      return res.status(207)
+        .send(errorArray);
     }
 
     const profileDetails = await updateProfileDetails(userID, updateFields);
@@ -206,6 +214,12 @@ router.post('/filter', async (req, res) => {
     if (savedFilters.length >= filterLimit) {
       return res.status(203)
         .send('Reached the maximum amount of saved filters.');
+    }
+
+    if (savedFilters.some((savedFilter) =>
+      savedFilter.filterName === filterName)) {
+      return res.status(203)
+        .send('Filter with that name already exists.');
     }
 
     const profileDetails = await addSavedFilter(userID, filter);
