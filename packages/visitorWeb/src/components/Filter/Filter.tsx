@@ -272,6 +272,13 @@ const Filter = (props: FilterProps) => {
       return;
     }
 
+    if (savedFilters.some((savedFilter) => savedFilter.filterName === filter.filterName)) {
+      setChangeStatus("failed");
+      setChangeStatusMsg(t('components.Filter.save-filter-failure'));
+      setNewFilterName("");
+      return;
+    }
+
     addSavedFilter(userToken, filter).then((res) => {
       if (!res || !filter.filterName || res.status == 500) {
         setChangeStatus("failed");
