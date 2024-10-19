@@ -293,7 +293,7 @@ const MenuPage = () => {
                                     key={dish.name + dishIndex}
                                     dishName={dish.name}
                                     dishAllergens={dish.allergens}
-                                    dislikedIngredients={dislikedIngredients}
+                                    dislikedIngredients={selectedProfileIndex === 0 ? dislikedIngredients : []}
                                     dishDescription={dish.description}
                                     options={dish.category.extraGroup.join(", ")}
                                     price={dish.price}
@@ -388,7 +388,7 @@ const MenuPage = () => {
                                             key={dish.name + dishIndex}
                                             dishName={dish.name}
                                             dishAllergens={dish.allergens}
-                                            dislikedIngredients={dislikedIngredients}
+                                            dislikedIngredients={selectedProfileIndex === 0 ? dislikedIngredients : []}
                                             dishDescription={dish.description}
                                             options={dish.category.extraGroup.join(", ")}
                                             price={dish.price}

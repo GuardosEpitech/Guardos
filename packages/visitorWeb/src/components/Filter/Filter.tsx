@@ -139,6 +139,7 @@ const Filter = (props: FilterProps) => {
         });
       }
       setGroupProfiles([profileCopy]);
+      setDefaultAllergens(profileCopy.allergens);
     });
 
     fetchSavedFilters();
@@ -192,7 +193,6 @@ const Filter = (props: FilterProps) => {
         }
       }
     }
-    setDefaultAllergens(updatedAllergens);
     setAllergens(updatedAllergens);
     setGroupProfiles([{
       name: userProfileName,
@@ -299,7 +299,8 @@ const Filter = (props: FilterProps) => {
       name: curFilter.name,
       location: curFilter.location,
       categories: curFilter.categories,
-      allergenList: curFilter.allergenList
+      allergenList: curFilter.allergenList,
+      groupProfiles: groupProfiles
     });
     handleMenuClose();
   };
@@ -340,10 +341,8 @@ const Filter = (props: FilterProps) => {
       }
     }
     setAllergens(updatedAllergens);
-    setGroupProfiles([{
-      name: userProfileName,
-      allergens: updatedAllergens
-    }])
+    const tempGroupProfiles = newFilter.groupProfiles ?? [{ name: userProfileName, allergens: updatedAllergens }];
+    setGroupProfiles(tempGroupProfiles);
 
     setRating(newFilter.rating[0]);
     setRange(newFilter.range);
@@ -352,7 +351,7 @@ const Filter = (props: FilterProps) => {
 
     // Notify parent component
     props.onChange(newFilter, updatedCategories, updatedAllergens);
-    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: updatedAllergens }]));
+    localStorage.setItem('groupProfiles', JSON.stringify(tempGroupProfiles));
     handleMenuClose();
   }
 
@@ -487,6 +486,7 @@ const Filter = (props: FilterProps) => {
       name: userProfileName,
       allergens: defaultAllergens
     }])
+    setSelectedProfileIndex("0");
     setRating(0);
     setRange(0);
 

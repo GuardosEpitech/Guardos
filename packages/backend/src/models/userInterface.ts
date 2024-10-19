@@ -20,6 +20,16 @@ export const userSchema = new mongoose.Schema({
     location: String,
     categories: [String],
     allergenList: [String],
+    groupProfiles: [{
+      _id: false,
+      name: String,
+      allergens: [{
+        _id: false,
+        name: String,
+        value: Boolean,
+        colorButton: String
+      }],
+    }],
   }],
   favouriteLists: {
     restoIDs: [Number],
