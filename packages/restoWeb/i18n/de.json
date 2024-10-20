@@ -332,7 +332,8 @@
         "enter-code": "Geben Sie den 8-stelligen Code ein",
         "enter-code-error": "Bitte geben Sie den 8-stelligen Code ein",
         "incorrect-code": "Der Code, den Sie eingegeben haben, ist falsch. Bitte versuchen Sie es erneut.",
-        "code-error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+        "code-error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+        "unverified": "Bitte verifizieren Sie zuerst Ihre E-Mail-Adresse."
       },
       "MenuPage": {
         "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu."
@@ -707,6 +708,11 @@
         "update-week": "Daten beziehen sich auf folgende Woche",
         "user-allergens": "Benutzer mit diesen allergenen Präferenzen haben dieses Restaurant besucht",
         "user-disliked-ingredients": "Benutzer, die diese Zutaten nicht mögen, haben dieses Restaurant besucht"
+      },
+      "VerifyEmailPage": {
+        "title": "E-Mail-Verifizierung",
+        "login": "Zum Login",
+        "resend": "Bestätigungslink erneut senden"
       }
     }
   }
