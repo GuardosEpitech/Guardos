@@ -72,9 +72,12 @@ const MyAccountPage = () => {
         setPreferredLanguage(res.preferredLanguage || i18n.language);
         setTwoFactor(res.twoFactor === "true");
       });
-    let paymentMehtods = await getPaymentMethods(userToken);
-    if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
-      setPaymentIsSet(true);
+
+    const paymentMehtods = await getPaymentMethods(userToken);
+    if (paymentMehtods) {
+      if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
+        setPaymentIsSet(true);
+      }
     }
   };
 
