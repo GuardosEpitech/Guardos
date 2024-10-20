@@ -609,7 +609,7 @@ const Filter = (props: FilterProps) => {
               </div>
             )}
             <ul className={styles.filterList}>
-              {savedFilters.map((filter, index) => (
+              {savedFilters?.map((filter, index) => (
                 <li key={index}>
                   <span>{filter.filterName}</span>
                   <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
