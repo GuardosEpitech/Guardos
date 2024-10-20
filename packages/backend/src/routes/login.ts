@@ -17,6 +17,8 @@ router.post('/', async function (req: Request, res: Response) {
     const answer = await loginUser(data.username, data.password);
 
     if (answer !== false) {
+      if (answer === 'unverified')
+        return res.status(404).send(answer);
       return res.status(200)
         .send(answer);
     } else {
@@ -57,6 +59,9 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
 
     if (answer === false) {
       return res.send('Invalid Access');
+    }
+    if (answer.isVerified !== true) {
+      return res.send('Unverified email');
     }
     if (answer.twoFactor !== '') {
       if (answer.twoFactor === 'false') {

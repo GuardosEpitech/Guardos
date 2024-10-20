@@ -8,13 +8,18 @@ import {
   getProfileDetails, getSavedFilter, getSavedFilters,
   getUserId, getUserCookiePreferences,
   updatePassword, setUserCookiePreferences,
-  updateProfileDetails, updateRecoveryPassword, isNameOrEmailTaken
+  updateProfileDetails, updateRecoveryPassword, isNameOrEmailTaken,
+  setValidEmailFalseVisitor
 } from '../controllers/userController';
 import {
   getVisitorPermissions
 } from '../controllers/visitorPermissionController';
+import sgMail from '@sendgrid/mail'; 
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 const premiumUserFilterAmount = 3;
 const basicUserFilterAmount = 2;
@@ -64,7 +69,26 @@ router.put('/', async (req, res) => {
         .send(errorArray);
     }
 
+    const oldUser = await getProfileDetails(userID);
+
     const profileDetails = await updateProfileDetails(userID, updateFields);
+
+    if (oldUser.email !== updateFields.email) {
+      await setValidEmailFalseVisitor(userID);
+      const email = updateFields.email;
+      const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+      const msg = {
+        to: email,
+        from: process.env.SMTP_USER,
+        subject: 'Email Verification',
+        html: `<p>You changed your email. Please click the following link to verify your new email:</p>
+              <a href="${process.env.USER_SITE}/verify-email?token=${token}">Verify Email</a>`,
+      };
+
+      await sgMail.send(msg);
+    }
+
     return res.status(200)
       .send(profileDetails);
   } catch (error) {
