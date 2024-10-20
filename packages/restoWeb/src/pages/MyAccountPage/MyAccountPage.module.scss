@@ -14,6 +14,7 @@ body {
 .buttonContainer .dropdownToggle {
   width: 200px;
   max-width: 100%;
+  padding: 10px;
   margin-bottom: 10px;
 }
 
@@ -114,18 +115,6 @@ body {
   opacity: 90%;
 }
 
-.deleteButton {
-  background-color: white !important;
-  color: $burgundy !important;
-  border: 1px solid $burgundy !important;
-}
-
-.deleteButton:hover {
-  background-color: $burgundy !important;
-  color: white !important;
-  border: 1px solid white !important;
-}
-
 .selectInput {
   div {
     margin-bottom: 0;
@@ -184,22 +173,42 @@ body {
   background-color: #ffcdd2;
 }
 
-.saveButton {
-  background-color: $burgundy;
-  color: #fff;
-  cursor: pointer;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-}
-
-.saveButton:hover {
-  opacity: 90%;
-}
-
 @media (min-width: 768px) {
   .MyAccountPage {
     display: flex;
   }
+}
+
+
+.uniformButton {
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.uniformButton:hover {
+  opacity: 90%;
+}
+
+.saveButton,
+.deleteButton {
+  background-color: $burgundy;
+  color: #fff;
+  border: none;
+}
+
+.deleteButton {
+  background-color: white !important;
+  color: $burgundy !important;
+  border: 1px solid $burgundy !important;
+}
+
+.deleteButton:hover {
+  background-color: $burgundy !important;
+  color: white !important;
+  border: 1px solid white !important;
 }

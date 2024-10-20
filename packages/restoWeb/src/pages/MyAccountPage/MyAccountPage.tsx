@@ -453,7 +453,7 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.two-factor-activate')}
           />
           <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
-            <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleTogglePasswordChange}>
               {t('pages.MyAccountPage.change-pw')}
             </button>
             {passwordChangeOpen && (
@@ -517,16 +517,16 @@ const MyAccountPage = () => {
           ) : (
             <div></div>
           )}
-          <button onClick={() => window.location.href = '/payment'}>
+          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <div>
-            <button className={styles.saveButton} onClick={handleSave}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
               {t('pages.MyAccountPage.save-changes')}
             </button>
           </div>
           <button
-            className={styles.deleteButton}
+            className={`${styles.deleteButton} ${styles.uniformButton}`}
             onClick={handleOpenDeletePopup}
           >
             {t('pages.MyAccountPage.delete-account')}
