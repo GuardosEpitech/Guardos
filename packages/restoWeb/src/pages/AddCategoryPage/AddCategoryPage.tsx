@@ -207,14 +207,32 @@ const AddCategoryPage = () => {
         )}
         {activeRestaurant !== -1 && (
           <div className={styles.categoryContainers}>
-            {newCategories.map((category, index) => (
-              <div key={index} className={styles.categoryContainer}>
-                <div>{t('pages.AddCategory.name')} {category.name}</div>
-                <div>{t('pages.AddCategory.id')} {category.hitRate}</div>
-                <EditIcon onClick={() => handleEditCategory(category)} />
-                <DeleteIcon onClick={() => handleDeleteConfirmation(category)} />
+            {newCategories.length === 0 ? 
+            (
+              <div className={styles.ErrorContainer}>
+                <span className={styles.ErrorHeader}>
+                  {t('pages.AddCategory.noCategory')}
+                </span>
+                <br/>
+                <br/>
+                <br/>
+                <span className={styles.ErrorText}>
+                  {t('pages.AddCategory.noCategory2')} 
+                </span>
+                <br/>
               </div>
-            ))}
+            ) : (
+              <div>
+                {newCategories.map((category, index) => (
+                  <div key={index} className={styles.categoryContainer}>
+                    <div>{t('pages.AddCategory.name')} {category.name}</div>
+                    <div>{t('pages.AddCategory.id')} {category.hitRate}</div>
+                    <EditIcon onClick={() => handleEditCategory(category)} />
+                    <DeleteIcon onClick={() => handleDeleteConfirmation(category)} />
+                  </div>
+                ))}
+              </div>
+            )}
             {showNewCategoryInput && (
               <div className={styles.categoryContainer}>
                 <input
