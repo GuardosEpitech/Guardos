@@ -10,7 +10,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Rating from '@mui/material/Rating';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styles from "./MyAccountPage.module.scss";
-import {deleteAccount} from "@src/services/userCalls";
+import {deleteAccount, getPaymentMethods} from "@src/services/userCalls";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -62,6 +62,7 @@ const MyAccountPage = () => {
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [userReview, setUserReview] = useState([]);
   const [favoriteDishes, setFavoriteDishes] = useState([]);
+  const [paymentIsSet, setPaymentIsSet] = useState(false);
   const [activeTab, setActiveTab] = useState("restaurants");
   const [openReviewPopUp, setopenReviewPopUp] = React.useState(false);
   const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
@@ -116,6 +117,10 @@ const MyAccountPage = () => {
         setPicture(res.profilePicId);
         setPreferredLanguage(res.preferredLanguage || i18n.language);
       });
+    let paymentMehtods = await getPaymentMethods(userToken);
+    if (paymentMehtods && paymentMehtods !== '' && paymentMehtods.length !== 0) {
+      setPaymentIsSet(true);
+    }
   };
 
   const fetchFavoriteRestaurants = async () => {
@@ -655,9 +660,13 @@ const MyAccountPage = () => {
           )}
         </div>
         <div>
-          <button onClick={() => window.location.href = '/subscriptions'}>
-            {t('pages.MyAccountPage.subscriptions')}
-          </button>
+          {paymentIsSet ? (
+            <button onClick={() => window.location.href = '/subscriptions'}>
+              {t('pages.MyAccountPage.subscriptions')}
+            </button>
+          ) : (
+            <div></div>
+          )}
           <button onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>

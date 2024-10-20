@@ -83,7 +83,6 @@ router.post('/:name', async (req, res) => {
         .send('Coudnt find restaurant named '
           + req.params.name + ' for this user');
     }
-
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
     await addRestoProduct(req.body, restaurant.name);
     return res.status(200)
