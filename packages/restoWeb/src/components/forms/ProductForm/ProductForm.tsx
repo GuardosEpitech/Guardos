@@ -67,11 +67,15 @@ const ProductForm = (props: IDishFormProps) => {
   const [apiIngredients, setApiIngredients] = useState<IIngredient[]>([]);
   const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
   const [productName, setProductName] = useState<string>(initialProductName || "");
-  let selectedResto: string[] = [];
+  const [selectedResto, setSelectedResto] = useState<string[]>([]);
+
   const { t } = useTranslation();
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
+    if (productRestaurant) {
+      setSelectedResto([productRestaurant[0].name]);
+    }
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         if (editable) {
@@ -225,7 +229,7 @@ const ProductForm = (props: IDishFormProps) => {
       setProductIngredients(value);
       setIsInputEmpty(value.length === 0);
 
-      for (let ingredient of value) {
+      for (const ingredient of value) {
         if (!allIngredients.some(ing => ing.name === ingredient)) {
           const response = await addIngredient(ingredient);
           if (response.ok) {
@@ -282,7 +286,7 @@ const ProductForm = (props: IDishFormProps) => {
                   required
                   error={isInputEmptyIngredients}
                   helperText={isInputEmptyIngredients ?
-                  t('components.ProductForm.input-empty-error') : ''}
+                    t('components.ProductForm.input-empty-error') : ''}
                 />
               )}
             />
@@ -300,8 +304,8 @@ const ProductForm = (props: IDishFormProps) => {
               defaultValue={productRestaurant}
               filterSelectedOptions
               onChange={(e, value) => {
-                selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
-                  restoNameVar.name);
+                setSelectedResto(value.map(
+                  (restoNameVar: IRestaurantFrontEnd) => restoNameVar.name));
               }}
               renderInput={(params) => (
                 <TextField
@@ -310,7 +314,7 @@ const ProductForm = (props: IDishFormProps) => {
                   required
                   error={isInputEmptyRestaurant}
                   helperText={isInputEmptyRestaurant ?
-                  t('components.ProductForm.input-empty-error') : ''}
+                    t('components.ProductForm.input-empty-error') : ''}
                 />
               )}
             />
