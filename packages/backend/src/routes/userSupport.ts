@@ -32,7 +32,7 @@ router.post('/', async function (req: Request, res: Response) {
     const headers = toBoolean(data.isPremium) ? { 'X-Priority': '1 (Highest)' } : {};
 
     const msg = {
-      to: process.env.TEST_USER,
+      to: process.env.SUPPORT,
       from: process.env.SMTP_USER,
       subject: toBoolean(data.isPremium) ? `[IMPORTANT] ${data.subject}` : data.subject,
       text: `Name: ${data.name}\nRequest: ${data.request}`,
