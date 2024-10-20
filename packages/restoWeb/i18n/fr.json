@@ -514,7 +514,9 @@
         "noresto2": "Ajoutez votre premier restaurant en cliquant ",
         "noresto2-2": "ici",
         "noresto2-3": ".",
-        "delete": "Êtes-vous certain(e) de vouloir supprimer cette catégorie ?"
+        "delete": "Êtes-vous certain(e) de vouloir supprimer cette catégorie ?",
+        "noCategory": "Oups, on dirait que vous n'avez pas encore de catégories !",
+        "noCategory2": "Ajoutez des catégories en cliquant sur 'Nouveau'."
       },
       "AddRestoChain": {
         "name": "Nom:",

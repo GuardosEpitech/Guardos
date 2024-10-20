@@ -416,8 +416,10 @@ export async function createNewRestaurant(
   let loc = obj.location;
   const address = formatLocation(obj.location);
   const coordinates = await geocodeAddress(address);
-  loc.latitude = coordinates.lat;
-  loc.longitude = coordinates.lng;
+  if (coordinates) {
+    loc.latitude = coordinates.lat;
+    loc.longitude = coordinates.lng;
+  }
   const upload = new RestaurantSchema({
     _id: id,
     name: obj.name,

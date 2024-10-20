@@ -57,6 +57,7 @@ const MyAccountPage = () => {
   const {t, i18n} = useTranslation();
 
   useEffect(() => {
+    console.log(profilePic);
     fetchProfileData();
   }, []);
 
@@ -73,7 +74,7 @@ const MyAccountPage = () => {
         setTwoFactor(res.twoFactor === "true");
       });
     let paymentMehtods = await getPaymentMethods(userToken);
-    if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
+    if (paymentMehtods && paymentMehtods !== '' && paymentMehtods.length !== 0) {
       setPaymentIsSet(true);
     }
   };
