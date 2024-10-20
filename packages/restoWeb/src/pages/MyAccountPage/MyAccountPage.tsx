@@ -57,6 +57,7 @@ const MyAccountPage = () => {
   const {t, i18n} = useTranslation();
 
   useEffect(() => {
+    console.log(profilePic);
     fetchProfileData();
   }, []);
 
@@ -72,12 +73,9 @@ const MyAccountPage = () => {
         setPreferredLanguage(res.preferredLanguage || i18n.language);
         setTwoFactor(res.twoFactor === "true");
       });
-
-    const paymentMehtods = await getPaymentMethods(userToken);
-    if (paymentMehtods) {
-      if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
-        setPaymentIsSet(true);
-      }
+    let paymentMehtods = await getPaymentMethods(userToken);
+    if (paymentMehtods && paymentMehtods !== '' && paymentMehtods.length !== 0) {
+      setPaymentIsSet(true);
     }
   };
 
@@ -453,7 +451,7 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.two-factor-activate')}
           />
           <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
-            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleTogglePasswordChange}>
+            <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
               {t('pages.MyAccountPage.change-pw')}
             </button>
             {passwordChangeOpen && (
@@ -517,16 +515,16 @@ const MyAccountPage = () => {
           ) : (
             <div></div>
           )}
-          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/payment'}>
+          <button onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <div>
-            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
+            <button className={styles.saveButton} onClick={handleSave}>
               {t('pages.MyAccountPage.save-changes')}
             </button>
           </div>
           <button
-            className={`${styles.deleteButton} ${styles.uniformButton}`}
+            className={styles.deleteButton}
             onClick={handleOpenDeletePopup}
           >
             {t('pages.MyAccountPage.delete-account')}

@@ -14,7 +14,7 @@ export async function getMaxProductId() {
       console.log('No products found.');
       return -1;
     }
-
+    console.log(product);
     const maxProductId = product[0]._id +1;
     console.log('Max product id is: ', maxProductId);
     return maxProductId;
@@ -96,43 +96,6 @@ export async function addProductsFromRestaurantToOwnDB(restaurantId: number) {
      ID: ${restaurantId}`);
   } catch (error) {
     console.error(`Error while adding products from Restaurant with
-     ID: ${restaurantId} to Product collection: `, error);
-  }
-}
-
-export async function addProductsToDB(restaurantId: number, product: IProduct) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const Product = mongoose.model('Product', productSchema);
-  try {
-
-    const restaurant = await Restaurant.findById(restaurantId);
-    if (!restaurant) {
-      console.log(`Restaurant with ID: ${restaurantId} not found`);
-      return;
-    }
-
-    const existingProduct = await Product.findOne({ name: product.name });
-    if (!existingProduct) {
-      const maxProductId = await getMaxProductId();
-      if (!maxProductId) {
-        console.log('Error while getting max product id');
-        return;
-      }
-      const newProduct = new Product({
-        _id: maxProductId,
-        userID: restaurant.userID,
-        name: product.name,
-        allergens: product.allergens,
-        ingredients: product.ingredients,
-        restaurantId: [restaurantId]
-      });
-      await newProduct.save();
-    } else if (!existingProduct.restaurantId.includes(restaurantId)) {
-      existingProduct.restaurantId.push(restaurantId);
-      await existingProduct.save();
-    }
-  } catch (error) {
-    console.error(`Error while adding product from Restaurant with
      ID: ${restaurantId} to Product collection: `, error);
   }
 }

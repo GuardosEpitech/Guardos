@@ -31,7 +31,7 @@ const DiscountDishPage = () => {
   const { dish } = useLocation().state as IDiscountDishPageProps;
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
-  const { name, uid, products, description, price, allergens, resto,
+  const { name, uid, products, description, price, resto,
     category, picturesId, discount, validTill }
     = dish;
 

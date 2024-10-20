@@ -12,5 +12,9 @@ export async function geocodeAddress(address: string) {
       apiKey: process.env.MAP_API
     }
   });
-  return result.data.items[0].position;
+
+  if (result.data.items) {
+    return result.data.items[0].position;
+  }
+  return null;
 };
