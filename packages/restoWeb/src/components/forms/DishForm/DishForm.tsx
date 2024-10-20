@@ -440,24 +440,6 @@ const DishForm = (props: IDishFormProps) => {
               <Autocomplete
                 multiple
                 id="tags-outlined"
-                options={suggestionsAller}
-                getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={selectAllergene}
-                filterSelectedOptions
-                onChange={(e, value) => setSelectAllergene(
-                  value.map((allergene: string) => allergene))}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={t('components.DishForm.allergens')}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={4} sm={8} md={12}>
-              <Autocomplete
-                multiple
-                id="tags-outlined"
                 options={restoList}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
                 defaultValue={dishResto}

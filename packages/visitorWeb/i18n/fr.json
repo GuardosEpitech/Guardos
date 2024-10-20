@@ -47,6 +47,7 @@
         "save-filter-failure": "Échec de l'enregistrement du filtre",
         "save-filter-success": "Filtre enregistré avec succès",
         "saved-filters": "{{used}} / {{limit}} filtres enregistrés",
+        "same-filter-name": "Le nom du filtre a déjà été utilisé. Veuillez en saisir un nouveau.",
         "save-filter-limit-reached": "Vous avez atteint la limite des filtres enregistrés",
         "load-filter-success": "Filtre chargé avec succès",
         "delete-filter-success": "Filtre supprimé avec succès",
