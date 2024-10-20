@@ -136,7 +136,7 @@ export async function getProductByName(productName: string):Promise<IProductBE> 
 export async function getProductsByUser(loggedInUserId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    return await Product.find({userID: loggedInUserId});
+    return await Product.find({ userID: loggedInUserId });
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return [];

@@ -39,9 +39,11 @@ router.post('/', async (req, res) => {
         allergens.push(req.body.allergens);
       }
 
-      const createResult = await createNewIngredient(req.body.name, id, allergens);
+      const createResult = await 
+      createNewIngredient(req.body.name, id, allergens);
       if (createResult.status !== 200) {
-        return res.status(createResult.status).send(createResult.message);
+        return res.status(createResult.status)
+          .send(createResult.message);
       }
 
       await addRestoProduct({
