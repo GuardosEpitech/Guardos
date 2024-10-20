@@ -79,9 +79,7 @@ const ProductForm = (props: IDishFormProps) => {
           const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
             !productRestaurantIds?.includes(option.uid || 0));
           setRestoList(newFilteredList);
-          console.log(newFilteredList);
           if (productRestaurant) {
-            console.log(productRestaurant);
             setSelectedResto([productRestaurant[0].name]);
           }
         } else {
