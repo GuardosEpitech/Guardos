@@ -22,8 +22,10 @@
       "ingredients": "Zutaten",
       "my-ingredients": "Meine Zutaten",
       "products": "Produkte",
+      "product": "Produkt",
       "my-products": "Meine Produkte",
       "dishes": "Gerichte",
+      "dish": "Gericht",
       "my-dishes": "Meine Gerichte",
       "restos": "Restaurants",
       "my-restos": "Meine Restaurants",
@@ -59,7 +61,7 @@
         "guides": "Ratgeber"
       },
       "SuccessAlert": {
-        "success-msg": "Dies ist eine Erfolgsmeldung!"
+        "success-msg": "Erfolgreich ein {{ objectName }} erstellt!"
       },
       "DishForm": {
         "alt-img": "Restaurantbild",
