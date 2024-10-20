@@ -60,3 +60,16 @@
   height: 65px;
   background-color: rgba(0, 0, 0, 0.12);
 }
+
+.errorTxt {
+  color: red;
+}
+
+.resendButton {
+  background-color: var(--secondary);
+  color: white;
+
+  &:hover {
+    background-color: var(--secondary-dark);
+  }
+}
