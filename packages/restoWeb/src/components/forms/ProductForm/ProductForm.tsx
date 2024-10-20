@@ -73,15 +73,17 @@ const ProductForm = (props: IDishFormProps) => {
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
-    if (productRestaurant) {
-      setSelectedResto([productRestaurant[0].name]);
-    }
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
         if (editable) {
           const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
             !productRestaurantIds?.includes(option.uid || 0));
           setRestoList(newFilteredList);
+          console.log(newFilteredList);
+          if (productRestaurant) {
+            console.log(productRestaurant);
+            setSelectedResto([productRestaurant[0].name]);
+          }
         } else {
           setRestoList(res);
         }
