@@ -63,7 +63,7 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     if (answer.isVerified !== true) {
       return res.send('Unverified email');
     }
-    if (answer.twoFactor !== '') {
+    if (answer.twoFactor !== '' && answer.isVerified === true) {
       if (answer.twoFactor === 'false') {
         return res.status(200)
           .send({token: answer.token});
