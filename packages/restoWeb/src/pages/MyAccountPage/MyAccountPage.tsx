@@ -451,7 +451,7 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.two-factor-activate')}
           />
           <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
-            <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleTogglePasswordChange}>
               {t('pages.MyAccountPage.change-pw')}
             </button>
             {passwordChangeOpen && (
@@ -501,7 +501,7 @@ const MyAccountPage = () => {
                   helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
                 />
                 <div>
-                  <button className={styles.saveButton} onClick={handleSavePassword}>
+                  <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSavePassword}>
                     {t('pages.MyAccountPage.save-pw')}
                   </button>
                 </div>
@@ -509,17 +509,17 @@ const MyAccountPage = () => {
             )}
           </div>
           {paymentIsSet ? (
-            <button onClick={() => window.location.href = '/subscriptions'}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/subscriptions'}>
               {t('pages.MyAccountPage.subscriptions')}
             </button>
           ) : (
             <div></div>
           )}
-          <button onClick={() => window.location.href = '/payment'}>
+          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <div>
-            <button className={styles.saveButton} onClick={handleSave}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
               {t('pages.MyAccountPage.save-changes')}
             </button>
           </div>

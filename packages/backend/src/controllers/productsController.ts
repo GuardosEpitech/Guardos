@@ -24,36 +24,59 @@ export async function getMaxProductId() {
   }
 }
 
-export async function createOrUpdateProduct(product: IProduct,
-  restaurantId: number) {
+export async function createOrUpdateProduct(product: IProduct, restaurantId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    const existingProduct = await Product.findOne({name: product.name});
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
     const restaurant = await Restaurant.findById(restaurantId);
-
     if (!restaurant) {
       console.log(`Restaurant with ID: ${restaurantId} not found`);
       return;
     }
-    if (!existingProduct) {
+
+    const existingProduct = await Product.findOne({ name: product.name });
+
+    if (existingProduct) {
+      if (existingProduct.userID === restaurant.userID) {
+        existingProduct.allergens = product.allergens;
+        existingProduct.ingredients = product.ingredients;
+        if (!existingProduct.restaurantId.includes(restaurantId)) {
+          existingProduct.restaurantId.push(restaurantId);
+        }
+        await existingProduct.save();
+      } else {
+        const maxProductIdResult = await getMaxProductId();
+        if (maxProductIdResult === null) {
+          console.log('Error while getting max product id');
+          return;
+        }
+
+        const newProduct = new Product({
+          _id: maxProductIdResult,
+          userID: restaurant.userID,
+          name: product.name,
+          allergens: product.allergens,
+          ingredients: product.ingredients,
+          restaurantId: [restaurantId],
+        });
+        await newProduct.save();
+      }
+    } else {
       const maxProductIdResult = await getMaxProductId();
       if (maxProductIdResult === null) {
         console.log('Error while getting max product id');
         return;
       }
+
       const newProduct = new Product({
         _id: maxProductIdResult,
         userID: restaurant.userID,
         name: product.name,
         allergens: product.allergens,
         ingredients: product.ingredients,
-        restaurantId: [restaurantId]
+        restaurantId: [restaurantId],
       });
       await newProduct.save();
-    } else if (!existingProduct.restaurantId.includes(restaurantId)) {
-      existingProduct.restaurantId.push(restaurantId);
-      await existingProduct.save();
     }
   } catch (error) {
     console.error('Error while creating or updating a product: ', error);
@@ -113,7 +136,7 @@ export async function getProductByName(productName: string):Promise<IProductBE> 
 export async function getProductsByUser(loggedInUserId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    return await Product.find({userID: loggedInUserId});
+    return await Product.find({ userID: loggedInUserId });
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return [];
@@ -130,19 +153,28 @@ export async function getAllProducts() {
   }
 }
 
-export async function deleteProductByName(productName: string) {
+export async function deleteProductByName(productName: string, userId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
-    const existingProduct = await Product.findOne({ name: productName });
-    if (!existingProduct) {
+    const existingProducts = await Product.find({ name: productName });
+    if (!existingProducts || existingProducts.length === 0) {
       console.log('Product not found');
       return false;
     }
-    await Product.deleteOne({ name: productName });
-    console.log('Product deleted successfully');
-    return true;
+    let productDeleted = false;
+    for (const product of existingProducts) {
+      if (product.userID === userId) {
+        await Product.deleteOne({ _id: product._id });
+        console.log(`Product with ID ${product._id} deleted successfully`);
+        productDeleted = true;
+      }
+    }
+    if (productDeleted) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
-    console.error('Error while deleting the product: ', error);
     return false;
   }
 }

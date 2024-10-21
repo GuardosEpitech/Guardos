@@ -12,7 +12,7 @@ import {
   checkIfRestaurantExists
 } from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
-import {detectAllergens} from '../controllers/allergenDetectionController';
+import {detectAllergensInDish} from '../controllers/allergenDetectionController';
 import {
   doesUserOwnRestaurantByName,
   getRestaurantByID
@@ -74,7 +74,7 @@ router.post('/dishIDs', async (req, res) => {
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
-})
+});
 
 router.post('/dishIDsByID', async (req, res) => {
   try {
@@ -95,7 +95,7 @@ router.post('/dishIDsByID', async (req, res) => {
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
-})
+});
 
 router.get('/:name', async (req, res) => {
   try {
@@ -314,15 +314,17 @@ router.post('/:name', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const allergensDB = await detectAllergens(req);
+    const allergensDB = await detectAllergensInDish(req, userID as number);
     if (allergensDB.status !== 200) {
-      return allergensDB;
+      return res.status(allergensDB.status)
+        .send(allergensDB.data);
     }
     const allergens: [string] = allergensDB.data[0].allergens;
     dish.allergens.push(...allergens);
     const newDish = await createNewDish(resto, dish, userID as number);
     if (restoChainID) {
-      await createNewForEveryRestoChainDish(dish, userID as number, restoChainID, resto);
+      await createNewForEveryRestoChainDish(dish,
+          userID as number, restoChainID, resto);
     }
     return res.status(200)
       .send(newDish);
