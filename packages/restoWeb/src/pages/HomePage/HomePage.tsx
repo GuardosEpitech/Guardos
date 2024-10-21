@@ -119,7 +119,7 @@ const HomePage = () => {
       {isUserTokenSet && (
         <FixedBtn title={t('pages.HomePage.add-resto')} redirect="/addResto" />
       )}
-      <SuccessAlert />
+      <SuccessAlert objectName={t('components.DishForm.resto')}/>
     </div>
   );
 };
