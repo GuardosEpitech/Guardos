@@ -1,0 +1,98 @@
+:root {
+    // Light mode variables
+    --background: #f9f9f9;
+    --text: #333;
+    --primary: #4caf50;
+    --primary-dark: #388e3c;
+    --secondary: #f44336;
+    --secondary-dark: #d32f2f;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      // Dark mode variables
+      --dark-background: #121212;
+      --dark-text: #e0e0e0;
+      --dark-primary: #81c784;
+      --dark-primary-dark: #66bb6a;
+      --dark-secondary: #e57373;
+      --dark-secondary-dark: #ef5350;
+    }
+  }
+  
+
+// Light Mode Styles
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--background);
+    color: var(--text);
+    height: 100vh;
+  }
+  
+  .heading {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .message {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  button {
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .successButton {
+    background-color: var(--primary);
+    color: white;
+  
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+  
+  .resendButton {
+    background-color: var(--secondary);
+    color: white;
+  
+    &:hover {
+      background-color: var(--secondary-dark);
+    }
+  }
+  
+  // Dark Mode Styles
+  @media (prefers-color-scheme: dark) {
+    .container {
+      background-color: var(--dark-background);
+      color: var(--dark-text);
+    }
+  
+    .successButton {
+      background-color: var(--dark-primary);
+  
+      &:hover {
+        background-color: var(--dark-primary-dark);
+      }
+    }
+  
+    .resendButton {
+      background-color: var(--dark-secondary);
+  
+      &:hover {
+        background-color: var(--dark-secondary-dark);
+      }
+    }
+  }
+  

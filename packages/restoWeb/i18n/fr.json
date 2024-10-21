@@ -334,7 +334,8 @@
         "enter-code": "Veuillez entrer le code à 8 chiffres",
         "enter-code-error": "Veuillez entrer le code à 8 chiffres",
         "incorrect-code": "Le code que vous avez saisi est incorrect. Veuillez réessayer.",
-        "code-error": "Une erreur s'est produite. Veuillez réessayer."
+        "code-error": "Une erreur s'est produite. Veuillez réessayer.",
+        "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
       },
       "MenuPage": {
         "no-menu": "Aucun menu disponible pour l'instant. Veuillez ajouter un plat à une catégorie."
@@ -709,6 +710,11 @@
         "update-week": "Les données se réfèrent à la semaine suivante",
         "user-allergens": "Les utilisateurs avec ces préférences allergènes ont visité ce restaurant",
         "user-disliked-ingredients": "Les utilisateurs qui n'aiment pas ces ingrédients ont visité ce restaurant"
+      },
+      "VerifyEmailPage": {
+        "title": "Vérification de l'Email",
+        "login": "Aller à la connexion",
+        "resend": "Renvoyer le lien de vérification"
       }
     }
   }

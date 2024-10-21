@@ -38,7 +38,9 @@ const Login = (props:LoginPageProps) => {
   const [errorForm, setErrorForm] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/`;
+  const verifyLink = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register/resend-verification`;
   const {t} = useTranslation();
+  const [isUnverified, setIsUnverified] = useState(false);
 
   useEffect(() => {
     checkDarkMode();
@@ -78,6 +80,7 @@ const Login = (props:LoginPageProps) => {
       });
   
       if (response.status === 200) {
+        setIsUnverified(false);
         localStorage.setItem('user', response.data);
         localStorage.setItem('userName', user.username);
         setErrorForm(false);
@@ -92,6 +95,10 @@ const Login = (props:LoginPageProps) => {
           if (error.response.status === 403) {
             setErrorForm(true);
             localStorage.removeItem('user');
+          }
+          if (error.response.status === 404) {
+            localStorage.removeItem('user');
+            setIsUnverified(true);
           }
         } else {
           console.error(`Error with request: ${error.message}`);
@@ -123,11 +130,33 @@ const Login = (props:LoginPageProps) => {
     }
   };
 
+  const resendValidationLink = async () => {
+    const email = user.username;
+    try {
+      const response = await axios.post(verifyLink, { email });
+      
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(`Error with request: ${error.message}`);
+      } else {
+        console.error(`Unexpected error: ${error}`);
+      }
+    }
+  };
+
   return (
     <>
       {/* <Layout> */}
         <div className={styles.loginForm}>
           <h2>{t('pages.LoginPage.login')}</h2>
+          {isUnverified && (
+            <div>
+              <h3 className={styles.errorTxt}>{t('pages.LoginPage.unverified')}</h3>
+              <button className={styles.resendButton} onClick={resendValidationLink}>
+                {t('pages.VerifyEmailPage.resend')}
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <TextField
               label={t('pages.LoginPage.username-or-email')}
