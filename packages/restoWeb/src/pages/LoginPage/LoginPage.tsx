@@ -37,6 +37,8 @@ const Login = (props: LoginPageProps) => {
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/login/restoWeb`;
   const { t } = useTranslation();
+  const [isUnverified, setIsUnverified] = useState(false);
+  const verifyLink = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register/restoWeb/resend-verification`;
 
   useEffect(() => {
     checkDarkMode();
@@ -60,7 +62,11 @@ const Login = (props: LoginPageProps) => {
       if (response.data === 'Invalid Access') {
         setErrorForm(true);
         localStorage.removeItem('user');
+      } else if (response.data === 'Unverified email') {
+          setIsUnverified(true);
+          localStorage.removeItem('user');
       } else {
+        setIsUnverified(false);
         if (response.data.twoFactor === true) {
           setShowTwoFactor(true);
           setUser((prevState) => ({ ...prevState, id: response.data.userId }));
@@ -103,11 +109,33 @@ const Login = (props: LoginPageProps) => {
     setUser((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const resendValidationLink = async () => {
+    const email = user.username;
+    try {
+      const response = await axios.post(verifyLink, { email });
+      
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(`Error with request: ${error.message}`);
+      } else {
+        console.error(`Unexpected error: ${error}`);
+      }
+    }
+  };
+
   return (
     <>
       {/* <Layout> */}
         <div className={styles.loginForm}>
           <h2>{t('pages.LoginPage.login')}</h2>
+          {isUnverified && (
+            <div>
+              <h3 className={styles.errorTxt}>{t('pages.LoginPage.unverified')}</h3>
+              <button className={styles.resendButton} onClick={resendValidationLink}>
+                {t('pages.VerifyEmailPage.resend')}
+              </button>
+            </div>
+          )}
           {!showTwoFactor ? (
             <form onSubmit={handleSubmit}>
               <TextField

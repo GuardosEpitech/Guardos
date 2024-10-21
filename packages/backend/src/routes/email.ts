@@ -1,7 +1,7 @@
 // email.ts
 
 import express from 'express';
-import * as nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail'; 
 import { getUserToken } from '../controllers/userController';
 import { getUserTokenResto } from '../controllers/userRestoController';
 
@@ -9,30 +9,20 @@ import 'dotenv/config';
 
 const router = express.Router();
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
+
 router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
-    const smtpConfig = {
-      host: 'smtp.office365.com',
-      port: 587,
-      secure: false, 
-      auth: {
-        user: process.env.SMTP_USER, 
-        pass: process.env.SMTP_PASS,
-      },
-    } as nodemailer.TransportOptions;
-
-    const transporter = nodemailer.createTransport(smtpConfig);
-
-    const mailOptions: nodemailer.SendMailOptions = {
+    const msg = {
+      to: process.env.SUPPORT,
       from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER,
       subject: `From: ${name}: ${subject}`,
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
 
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
@@ -45,18 +35,6 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
   try {
     const { email, username } = req.body;
 
-    const smtpConfig = {
-      host: 'smtp.office365.com',
-      port: 587,
-      secure: false, 
-      auth: {
-        user: process.env.SMTP_USER, 
-        pass: process.env.SMTP_PASS,
-      },
-    } as nodemailer.TransportOptions;
-
-    const transporter = nodemailer.createTransport(smtpConfig);
-
     const timeToken = Date.now();
     let userToken = await getUserToken(email);
 
@@ -68,7 +46,7 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
     // Construct the recovery link with userToken and timeToken
     const recoveryLink = `${process.env.USER_SITE}/change-password?email=${email}&userToken=${userToken}&timeToken=${timeToken}`;
 
-    const mailOptions: nodemailer.SendMailOptions = {
+    const msg = {
       from: process.env.SMTP_USER,
       to: email,
       subject: `Guardos User Recovery Link`,
@@ -78,7 +56,7 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
          <p>Your password recovery link: <a href="${recoveryLink}">Reset your Password.</a></p>`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
 
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
@@ -91,18 +69,6 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
   try {
     const { email, username } = req.body;
 
-    const smtpConfig = {
-      host: 'smtp.office365.com',
-      port: 587,
-      secure: false, 
-      auth: {
-        user: process.env.SMTP_USER, 
-        pass: process.env.SMTP_PASS,
-      },
-    } as nodemailer.TransportOptions;
-
-    const transporter = nodemailer.createTransport(smtpConfig);
-
     const timeToken = Date.now();
     let userToken = await getUserTokenResto(email);
 
@@ -114,7 +80,7 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
     // Construct the recovery link with userToken and timeToken
     const recoveryLink = `${process.env.RESTO_SITE}/change-password?email=${email}&userToken=${userToken}&timeToken=${timeToken}`;
 
-    const mailOptions: nodemailer.SendMailOptions = {
+    const msg = {
       from: process.env.SMTP_USER,
       to: email,
       subject: `Guardos Restaurant User Recovery Link`,
@@ -124,7 +90,7 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
          <p>Your password recovery link: <a href="${recoveryLink}">Reset your Password.</a></p>`,
     };
 
-    await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
 
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {

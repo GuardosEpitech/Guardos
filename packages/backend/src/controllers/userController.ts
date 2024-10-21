@@ -22,6 +22,7 @@ export async function addUser(username: string,
       .toString(),
     allergens: [],
     dislikedIngredients: [],
+    validEmail: false,
   });
   const existingUsername = await UserSchema.findOne({ username: username })
     .exec();
@@ -49,12 +50,16 @@ export async function loginUser(username: string,
     for (const elem of userData) {
       if ((elem.username === username || elem.email === username)
           && AES.decrypt(elem.password as string, 'Guardos')
-            .toString(enc.Utf8) === password) {
+            .toString(enc.Utf8) === password && elem.validEmail === true) {
         const token = elem.username ? elem.username : elem.email;
 
         return AES.encrypt(token + password, 'Guardos')
           .toString();
-      }
+      } else if ((elem.username === username || elem.email === username)
+        && AES.decrypt(elem.password as string, 'Guardos')
+          .toString(enc.Utf8) === password && elem.validEmail !== true) {
+            return 'unverified';
+          }
     }
     return false;
   } catch (error) {
@@ -534,4 +539,46 @@ export async function deleteSubscribtionID(userID: number) {
   );
 
   return result;
+}
+
+export async function updateUserVerificationStatusVisitor(email: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+  
+  const updatedUser = await UserSchema.findOneAndUpdate(
+    { email }, 
+    { validEmail: true },
+    { new: true }
+  );
+  
+  return updatedUser;
+}
+
+export async function checkIfEmailExistsVisitor(email: string) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+
+  const user = await UserSchema.findOne({ 
+    $or: [{ email: email }, { username: email }] 
+  });
+
+  if (!user) {
+    return false;
+  }
+
+  if (user.validEmail) {
+    return false; 
+  }
+
+  return user.email;
+}
+
+export async function setValidEmailFalseVisitor(userId: number) {
+  const UserSchema = mongoose.model('User', userSchema, 'User');
+
+  const updatedUser = await UserSchema.findOneAndUpdate(
+    {uid: userId}, 
+    { validEmail: false },
+    { new: true }
+  );
+
+  return updatedUser;
 }

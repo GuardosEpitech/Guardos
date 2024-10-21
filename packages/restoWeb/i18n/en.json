@@ -22,8 +22,10 @@
       "ingredients": "Ingredients",
       "my-ingredients": "My Ingredients",
       "products": "Products",
+      "product": "Product",
       "my-products": "My Products",
       "dishes": "Dishes",
+      "dish": "Dish",
       "my-dishes": "My Dishes",
       "restos": "Restaurants",
       "my-restos": "My Restaurants",
@@ -60,7 +62,7 @@
         "guides": "Guides"
       },
       "SuccessAlert": {
-        "success-msg": "This is a success message!"
+        "success-msg": "Successfully created an {{ objectName }}!"
       },
       "DishForm": {
         "alt-img": "Resto Img",
@@ -333,7 +335,8 @@
         "enter-code": "Enter 8-digit code",
         "enter-code-error": "Please enter an 8-digit code",
         "incorrect-code": "The code you entered is incorrect. Please try again.",
-        "code-error": "An error occurred while verifying the code. Please try again."
+        "code-error": "An error occurred while verifying the code. Please try again.",
+        "unverified": "Please verify your email first."
       },
       "MenuPage": {
         "no-menu": "No menu available yet. Please add a dish to a category."
@@ -708,6 +711,11 @@
         "update-week": "Data refers to the following week",
         "user-allergens": "Users with these allergenic preferences visited this restaurant",
         "user-disliked-ingredients": "Users who dislike these ingredients visited this restaurant"
+      },
+      "VerifyEmailPage": {
+        "title": "Email Verification",
+        "login": "Go to Login",
+        "resend": "Resend Verification Link"
       }
     }
   }

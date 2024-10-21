@@ -1,27 +1,22 @@
-import * as nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail'; 
+import 'dotenv/config';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 async function sendEmail
 (subject: string, name: string, request: string, emailAddress: string): Promise<void> {
-  const smtpConfig = {
-    host: 'smtp.office365.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  } as nodemailer.TransportOptions;
+  try {
+    const msg = {
+      to: emailAddress,
+      from: process.env.SMTP_USER,
+      subject: subject,
+      text: `Hey: ${name},\n${request}`,
+    };
 
-  const transporter = nodemailer.createTransport(smtpConfig);
-
-  const mailOptions: nodemailer.SendMailOptions = {
-    from: process.env.SMTP_USER,
-    to: emailAddress,
-    subject: subject,
-    text: `Hey: ${name},\n${request}`,
-  };
-
-  await transporter.sendMail(mailOptions);
+    await sgMail.send(msg);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 }
 
 export { sendEmail };

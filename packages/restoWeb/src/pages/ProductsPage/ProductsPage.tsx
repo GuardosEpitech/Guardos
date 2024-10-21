@@ -82,7 +82,7 @@ const ProductsPage = () => {
         title={t('pages.ProductsPage.add-product')}
         redirect="/addProduct"
       />
-      <SuccessAlert />
+      <SuccessAlert objectName={t('common.product')}/>
     </div>
   );
 };
