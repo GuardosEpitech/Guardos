@@ -319,6 +319,9 @@
         "request": "Message",
         "email-sent-success": "Email envoyé avec succès !"
       },
+      "MenuPage": {
+        "qr-code": "Afficher mon QR Code"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
         "redirect-google-login": "Redirection vers la connexion Google",

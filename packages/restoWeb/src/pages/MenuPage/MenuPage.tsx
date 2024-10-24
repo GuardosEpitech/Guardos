@@ -172,10 +172,10 @@ const MenuPage = () => {
             </div>
           )}
           <Button
-              className={styles.SaveBtn}
-              variant="contained"
-              sx={{width: "12.13rem"}}
-              onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
+            className={styles.SaveBtn}
+            variant="contained"
+            sx={{width: "12.13rem"}}
+            onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
           >
             {t('pages.MenuPage.qr-code')}
           </Button>
