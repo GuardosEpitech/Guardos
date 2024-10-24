@@ -39,6 +39,7 @@ import DiscountDishPage from "@src/pages/DiscountDishPage";
 import UserInsights from "@src/pages/UserInsights";
 import DishComboPage from "@src/pages/DishComboPage";
 import GuidesPage from "@src/pages/GuidesPage";
+import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -83,7 +84,8 @@ const MVPRouter = () => {
       <ScrollToTop />
       {isUserTokenSet === false && window.location.pathname !== '/register'
         && window.location.pathname !== '/account-recovery' &&
-        window.location.pathname !== '/payment-failed' && 
+        window.location.pathname !== '/payment-failed' &&
+        window.location.pathname !== '/verify-email' && 
         window.location.pathname !== '/payment-success' &&
         window.location.pathname !== '/change-password' &&
         window.location.pathname !== '/cookiestatement' &&
@@ -104,6 +106,7 @@ const MVPRouter = () => {
           <Route path="dishes" element={<DishesPage />} />
           <Route path="login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
           <Route path="register" element={<RegistrationPage />} />
+          <Route path="verify-email" element={<VerifyEmailPage />} />
           <Route path="account" element={<MyAccountPage />} />
           <Route path="editDish" element={<EditDishPage />} />
           <Route path="editProduct" element={<EditProductPage />} />

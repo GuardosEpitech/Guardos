@@ -16,6 +16,7 @@ import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {checkDarkMode} from "../../utils/DarkMode";
+import {useTranslation} from "react-i18next";
 
 const theme = createTheme({
   palette: {
@@ -34,13 +35,22 @@ interface IMenuPageProps {
 }
 
 const MenuPage = () => {
+<<<<<<< HEAD
   const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
   console.log("azdhaid", useLocation().state)
+=======
+  const { menu, restoName, address, menuDesignID } = useLocation().state;
+  const [hasMenu, setHasMenu] = useState(false);
+>>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
     padding: '40px',
     borderRadius: '10px',
   };
+<<<<<<< HEAD
+=======
+  const {t} = useTranslation();
+>>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
@@ -56,6 +66,11 @@ const MenuPage = () => {
     getQRCodeByName(uid)
       .then(res => setURL(res));
     checkDarkMode();
+    const filteredMenu = menu.filter((category: ICategories) =>
+      category.dishes.length > 0);
+    if (filteredMenu.length > 0) {
+      setHasMenu(true);
+    }
   }, []);
 
   return (
@@ -75,65 +90,19 @@ const MenuPage = () => {
           </ListItem>
         </List>
       </div>
-      <Layout>
-        {menuDesignID === 0 ? (
-          <div>
-            {menu.map((category: ICategories) => {
-              return (
-                <div>
-                  {category.dishes.length > 0 && (
-                    <Category key={category.name} title={category.name}>
-                      {category.dishes.map((dish, index) => {
-                        return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true}/>;
-                      })}
-                    </Category>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div>
-
-          </div>
-        )}
-        {menuDesignID >= 1 ? (
-          <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
-            <div className={styles.secondLayoutList}>
-              <ul>
-                {menu.map((category: ICategories, index: number) => {
-                  return (
-                    <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
-                      {category.name}
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-            <div className={styles.secondLayoutDishes}>
-              {menu.map((category: ICategories, index: number) => {
+      {hasMenu ? (
+        <Layout>
+          {menuDesignID === 0 ? (
+            <div>
+              {menu.map((category: ICategories) => {
                 return (
-                  <div key={index} ref={sectionRefs.current[index]}>
-                    {index % 3 === 0 ? (
-                      <div style={{
-                        backgroundImage: `url(${pic1})`
-                      }} className={styles.secondLayoutBanner} />
-                    ) : (
-                      <div/>
-                    )}
-                    {index % 3 === 1 ? (
-                      <div style={{
-                        backgroundImage: `url(${pic2})`
-                      }} className={styles.secondLayoutBanner} />
-                    ) : (
-                      <div/>
-                    )}
-                    {index % 3 === 2 ? (
-                      <div style={{
-                        backgroundImage: `url(${pic3})`
-                      }} className={styles.secondLayoutBanner}/>
-                    ) : (
-                      <div/>
+                  <div>
+                    {category.dishes.length > 0 && (
+                      <Category key={category.name} title={category.name}>
+                        {category.dishes.map((dish, index) => {
+                          return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true}/>;
+                        })}
+                      </Category>
                     )}
                     <div>
                       {category.dishes.length > 0 && (
@@ -147,21 +116,80 @@ const MenuPage = () => {
                 );
               })}
             </div>
-          </div>
-        ) : (
-          <div>
+          ) : (
+            <div>
 
-          </div>
-        )}
-        <Button
-          className={styles.SaveBtn}
-          variant="contained"
-          sx={{width: "12.13rem"}}
-          onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
-        >
-          {t('pages.MenuPage.qr-code')}
-        </Button>
-      </Layout>
+            </div>
+          )}
+          {menuDesignID >= 1 ? (
+            <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
+              <div className={styles.secondLayoutList}>
+                <ul>
+                  {menu.filter((category: ICategories) => category.dishes.length > 0)
+                    .map((category: ICategories, index: number) => {
+                      return (
+                        <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
+                          {category.name}
+                        </li>
+                      );
+                    }
+                  )}
+                </ul>
+              </div>
+              <div className={styles.secondLayoutDishes}>
+                {menu.filter((category: ICategories) => category.dishes.length > 0)
+                  .map((category: ICategories, index: number) => {
+                    return (
+                      <div key={index} ref={sectionRefs.current[index]}>
+                        {index % 3 === 0 ? (
+                          <div style={{
+                            backgroundImage: `url(${pic1})`
+                          }} className={styles.secondLayoutBanner} />
+                        ) : (
+                          <div/>
+                        )}
+                        {index % 3 === 1 ? (
+                          <div style={{
+                            backgroundImage: `url(${pic2})`
+                          }} className={styles.secondLayoutBanner} />
+                        ) : (
+                          <div/>
+                        )}
+                        {index % 3 === 2 ? (
+                          <div style={{
+                            backgroundImage: `url(${pic3})`
+                          }} className={styles.secondLayoutBanner}/>
+                        ) : (
+                          <div/>
+                        )}
+                        <div>
+                          {category.dishes.length > 0 && (
+                            <Category key={category.name} title={category.name}>
+                              {category.dishes.map((dish, index) => {
+                                return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
+                              })}
+                            </Category>
+                          )}
+                        </div>
+                      </div>
+                    );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div>
+
+            </div>
+          )}
+        </Layout>
+
+      ) : (
+        <Layout>
+          <h2 className={styles.NoMenu}>
+            {t('pages.MenuPage.no-menu')}
+          </h2>
+        </Layout>
+      )}
     </>
   );
 };

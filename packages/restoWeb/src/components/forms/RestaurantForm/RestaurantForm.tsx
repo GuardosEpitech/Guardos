@@ -11,7 +11,8 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
-  Autocomplete
+  Autocomplete,
+  FormHelperText
 } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -133,6 +134,13 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [valueRestoChain, setValueRestoChain] = useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
+  const [isStreetEmpty, setIsStreetEmpty] = useState(false);
+  const [isStreetNumberEmpty, setIsStreetNumberEmpty] = useState(false);
+  const [isPostalEmpty, setIsPostalEmpty] = useState(false);
+  const [isCityEmpty, setIsCityEmpty] = useState(false);
+  const [isCountryEmpty, setIsCountryEmpty] = useState(false);
+
   const origRestoName = restaurantName;
   const {t} = useTranslation();
 
@@ -249,8 +257,56 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
 
   async function sendRequestAndGoBack() {
     const userToken = localStorage.getItem('user');
+    let errorBool = false;
+
     if (userToken === null) {
       console.log("Error getting user ID");
+      return;
+    }
+
+    if (!selectedRestaurantName || selectedRestaurantName.length === 0) {
+      setIsNameEmpty(true);
+      errorBool = true;
+    } else {
+      setIsNameEmpty(false);
+    }
+
+    if (!selectedStreet || selectedStreet.length === 0) {
+      setIsStreetEmpty(true);
+      errorBool = true;
+    } else {
+      setIsStreetEmpty(false);
+    }
+
+    if (!selectedStreetNumber) {
+      setIsStreetNumberEmpty(true);
+      errorBool = true;
+    } else {
+      setIsStreetNumberEmpty(false);
+    }
+
+    if (!selectedPostalCode || selectedPostalCode.length === 0) {
+      setIsPostalEmpty(true);
+      errorBool = true;
+    } else {
+      setIsPostalEmpty(false);
+    }
+
+    if (!selectedCity || selectedCity.length === 0) {
+      setIsCityEmpty(true);
+      errorBool = true;
+    } else {
+      setIsCityEmpty(false);
+    }
+
+    if (!selectedCountry || selectedCountry.length === 0) {
+      setIsCountryEmpty(true);
+      errorBool = true;
+    } else {
+      setIsCountryEmpty(false);
+    }
+
+    if (errorBool) {
       return;
     }
 
@@ -372,13 +428,20 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           >
             <Grid item xs={4} sm={5} md={8} className={styles.FieldMarginRight}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.name')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.name') + '*'}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={restaurantName}
-                  label={t('components.RestaurantForm.name')}
+                  label={t('components.RestaurantForm.name') + '*'}
                   onChange={(e) => (setSelectedRestaurantName(e.target.value))}
+                  error={isNameEmpty}        
+                  required
                 />
+                {isNameEmpty && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={4} sm={3} md={4} className={styles.FieldMarginLeft}>
@@ -394,65 +457,100 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={3} sm={7} md={10}>
+            <Grid item xs={2} sm={4} md={10}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  {t('components.RestaurantForm.street-name')}
+                  {t('components.RestaurantForm.street-name') + '*'}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={street}
-                  label={t('components.RestaurantForm.street-name')}
+                  label={t('components.RestaurantForm.street-name') + '*'}
                   onChange={(e) => (setSelectedStreet(e.target.value))}
+                  error={isStreetEmpty}        
+                  required
                 />
+                {isStreetEmpty && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
-            <Grid item xs={1} sm={1} md={2}>
+            <Grid item xs={2} sm={4} md={2}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  {t('components.RestaurantForm.street-number')}
+                  {t('components.RestaurantForm.street-number') + '*'}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={streetNumber}
-                  label={t('components.RestaurantForm.street-number')}
+                  label={t('components.RestaurantForm.street-number') + '*'}
                   onChange={(e) => (setSelectedStreetNumber(parseInt(e.target.value)))}
+                  error={isStreetNumberEmpty}        
+                  required
                 />
+                {isStreetNumberEmpty && (
+                  <FormHelperText error id="accountId-error">
+                   {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={4} sm={8} md={12}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
-                  {t('components.RestaurantForm.postal-code')}
+                  {t('components.RestaurantForm.postal-code') + '*'}
                 </InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={postalCode}
-                  label={t('components.RestaurantForm.postal-code')}
+                  label={t('components.RestaurantForm.postal-code') + '*'}
                   onChange={(e) => (setSelectedPostalCode(e.target.value))}
+                  error={isPostalEmpty}        
+                  required
                 />
+                {isPostalEmpty && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.city')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.city') + '*'}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={city}
-                  label={t('components.RestaurantForm.city')}
+                  label={t('components.RestaurantForm.city') + '*'}
                   onChange={(e) => (setSelectedCity(e.target.value))}
+                  error={isCityEmpty}        
+                  required
                 />
+                {isCityEmpty && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <FormControl fullWidth>
-                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.country')}</InputLabel>
+                <InputLabel htmlFor="component-outlined">{t('components.RestaurantForm.country') + '*'}</InputLabel>
                 <OutlinedInput
                   id="component-outlined"
                   defaultValue={country}
-                  label={t('components.RestaurantForm.country')}
+                  label={t('components.RestaurantForm.country') + '*'}
                   onChange={(e) => (setSelectedCountry(e.target.value))}
+                  error={isCountryEmpty}        
+                  required
                 />
+                {isCountryEmpty && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={4} sm={8} md={12}>

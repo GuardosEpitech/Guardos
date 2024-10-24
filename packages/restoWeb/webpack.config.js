@@ -25,6 +25,10 @@ const config = {
     historyApiFallback: true,
     client: {
       webSocketURL: 'wss://restaurant.guardos.eu/ws',
+      overlay: {
+        errors: false, // suppress errors
+        warnings: false, // suppress warnings
+      },
     },
   },
   plugins: [

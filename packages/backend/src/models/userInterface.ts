@@ -20,6 +20,16 @@ export const userSchema = new mongoose.Schema({
     location: String,
     categories: [String],
     allergenList: [String],
+    groupProfiles: [{
+      _id: false,
+      name: String,
+      allergens: [{
+        _id: false,
+        name: String,
+        value: Boolean,
+        colorButton: String
+      }],
+    }],
   }],
   favouriteLists: {
     restoIDs: [Number],
@@ -43,4 +53,5 @@ export const userSchema = new mongoose.Schema({
   customerID: String,
   subscriptionID: String,
   activeSubscriptionIdentifier: String,
+  validEmail: Boolean,
 });

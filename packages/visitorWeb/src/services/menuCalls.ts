@@ -42,3 +42,27 @@ export const getDishesByID = async (restoId: number, body: any) => {
     console.error("Error fetching dishes by id:", error);
   }
 }
+
+export const getRestaurantDetails = async (restoID: number) => {
+  try {
+    const response = await axios({
+      url: `${baseUrl}/restaurants/`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const restaurants = response.data;
+    const restaurant = restaurants.find((resto: any) => resto.uid === restoID);
+
+    if (restaurant) {
+      return [restaurant.name, restaurant.location];
+    } else {
+      throw new Error("Restaurant not found");
+    }
+  } catch (error) {
+    console.error("Error fetching restaurant details:", error);
+    throw error;
+  }
+};

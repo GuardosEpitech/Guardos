@@ -86,9 +86,8 @@ const DishesPage = () => {
               )}
           </Layout>
           <FixedBtn title={t('pages.DishesPage.add-dish')} redirect="/addDish"/>
-          <SuccessAlert/>
+          <SuccessAlert objectName={t('common.dish')} />
         </>
-
       )}
     </div>
   );

@@ -30,6 +30,7 @@ import PaymentAddSuccessPage from "@src/pages/Payments/PaymentAddSuccess/Payment
 import UserSupportPage from "@src/pages/UserSupport/UserSupportPage";
 import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 import GuidesPage from "@src/pages/GuidesPage";
+import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -73,6 +74,7 @@ const MVPRouter = () => {
       <BrowserRouter>
         {isUserTokenSet === false && window.location.pathname !== '/register'
           && window.location.pathname !== '/account-recovery' &&
+          window.location.pathname !== '/verify-email' &&
           window.location.pathname !== '/payment-failed' &&
           window.location.pathname !== '/payment-success' &&
           window.location.pathname !== '/change-password' &&
@@ -93,6 +95,7 @@ const MVPRouter = () => {
             <Route path="/intropage" element={<IntroPage/>}/>
             <Route path="/login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>}/>
             <Route path="/register" element={<RegistrationPage/>}/>
+            <Route path="/verify-email" element={<VerifyEmailPage/>}/>
             <Route path="/menu/:id" element={<MenuPage />} />
             <Route path="/addreview" element={<RatingPage/>}/>
             <Route path="/map" element={<MapPage/>}/>

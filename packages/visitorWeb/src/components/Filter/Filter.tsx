@@ -120,6 +120,7 @@ const Filter = (props: FilterProps) => {
   const [defaultAllergens, setDefaultAllergens] = useState([]);
   const [openProfileDialog, setOpenProfileDialog] = useState(false);
   const [newProfileName, setNewProfileName] = useState('');
+  const [errorSameFilterName, setErrorSameFilterName] = useState(false);
   const {t} = useTranslation();
   const userProfileName = t('common.me');
 
@@ -139,6 +140,8 @@ const Filter = (props: FilterProps) => {
         });
       }
       setGroupProfiles([profileCopy]);
+      localStorage.setItem('groupProfiles', JSON.stringify([profileCopy]));
+      setDefaultAllergens(profileCopy.allergens);
     });
 
     fetchSavedFilters();
@@ -192,7 +195,6 @@ const Filter = (props: FilterProps) => {
         }
       }
     }
-    setDefaultAllergens(updatedAllergens);
     setAllergens(updatedAllergens);
     setGroupProfiles([{
       name: userProfileName,
@@ -272,6 +274,13 @@ const Filter = (props: FilterProps) => {
       return;
     }
 
+    if (savedFilters.some((savedFilter) => savedFilter.filterName === filter.filterName)) {
+      setChangeStatus("failed");
+      setChangeStatusMsg(t('components.Filter.save-filter-failure'));
+      setNewFilterName("");
+      return;
+    }
+
     addSavedFilter(userToken, filter).then((res) => {
       if (!res || !filter.filterName || res.status == 500) {
         setChangeStatus("failed");
@@ -292,6 +301,16 @@ const Filter = (props: FilterProps) => {
 
   const handleSaveFilter = () => {
     const curFilter : ISearchCommunication = props.fetchFilter();
+
+    for (let i = 0; i < savedFilters.length; i++) {
+      if (savedFilters[i].filterName === newFilterName) {
+        setErrorSameFilterName(true);
+        return;
+      }
+    }
+
+    setErrorSameFilterName(false);
+
     saveFilter({
       filterName: newFilterName,
       range: curFilter.range,
@@ -299,7 +318,8 @@ const Filter = (props: FilterProps) => {
       name: curFilter.name,
       location: curFilter.location,
       categories: curFilter.categories,
-      allergenList: curFilter.allergenList
+      allergenList: curFilter.allergenList,
+      groupProfiles: groupProfiles
     });
     handleMenuClose();
   };
@@ -340,10 +360,8 @@ const Filter = (props: FilterProps) => {
       }
     }
     setAllergens(updatedAllergens);
-    setGroupProfiles([{
-      name: userProfileName,
-      allergens: updatedAllergens
-    }])
+    const tempGroupProfiles = newFilter.groupProfiles ?? [{ name: userProfileName, allergens: updatedAllergens }];
+    setGroupProfiles(tempGroupProfiles);
 
     setRating(newFilter.rating[0]);
     setRange(newFilter.range);
@@ -352,7 +370,7 @@ const Filter = (props: FilterProps) => {
 
     // Notify parent component
     props.onChange(newFilter, updatedCategories, updatedAllergens);
-    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: updatedAllergens }]));
+    localStorage.setItem('groupProfiles', JSON.stringify(tempGroupProfiles));
     handleMenuClose();
   }
 
@@ -487,6 +505,7 @@ const Filter = (props: FilterProps) => {
       name: userProfileName,
       allergens: defaultAllergens
     }])
+    setSelectedProfileIndex("0");
     setRating(0);
     setRange(0);
 
@@ -545,6 +564,10 @@ const Filter = (props: FilterProps) => {
     setOpenProfileDialog(false);
   };
 
+  const handleInputField = (e:any) => {
+    setNewFilterName(e.target.value);
+  }
+
   return (
     <div className={styles.RectFilter}>
       <div className={styles.DivFilter}>
@@ -572,7 +595,7 @@ const Filter = (props: FilterProps) => {
               <TextField
                 label={t('components.Filter.filter-name') as string}
                 value={newFilterName}
-                onChange={(e) => setNewFilterName(e.target.value)}
+                onChange={handleInputField}
                 focused
                 fullWidth
               />
@@ -580,17 +603,24 @@ const Filter = (props: FilterProps) => {
             <div className={styles.filterLimit}>
               {t('components.Filter.saved-filters', { used: savedFilters.length, limit: filterLimit })}
             </div>
-            {savedFilters.map((filter, index) => (
-              <MenuItem key={index}>
-                <span>{filter.filterName}</span>
-                <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
-                  <DownloadIcon />
-                </IconButton>
-                <IconButton onClick={() => handleDeleteFilter(filter.filterName)}>
-                  <Delete />
-                </IconButton>
-              </MenuItem>
-            ))}
+            { errorSameFilterName && (
+              <div className={styles.filterNameError}>
+                {t('components.Filter.same-filter-name')}
+              </div>
+            )}
+            <ul className={styles.filterList}>
+              {savedFilters?.map((filter, index) => (
+                <li key={index}>
+                  <span>{filter.filterName}</span>
+                  <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
+                    <DownloadIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDeleteFilter(filter.filterName)}>
+                    <Delete />
+                  </IconButton>
+                </li>
+              ))}
+            </ul>
             <MenuItem>
               <Button onClick={handleClearFilter} variant="contained" color="secondary">
                 {t('components.Filter.clear-filter')}

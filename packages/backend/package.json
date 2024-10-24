@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@sendgrid/mail": "^8.1.4",
     "@types/nodemailer": "^6.4.14",
     "body-parser": "^1.20.2",
     "cookie-parser": "~1.4.4",
@@ -14,6 +15,7 @@
     "googleapis": "^135.0.0",
     "gridfs-stream": "^1.1.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.2",
     "lerna": "^6.6.1",
     "mongodb": "^4.12.1",
     "mongoose": "^6.8.0",
@@ -21,6 +23,7 @@
     "nodemailer": "^6.9.7",
     "pug": "2.0.0-beta11",
     "qrcode": "^1.5.4",
+    "sendgrid": "^5.2.3",
     "shared": "*",
     "stripe": "^14.21.0",
     "uuid": "^9.0.1"
@@ -51,6 +54,7 @@
     "@types/express": "^4.17.14",
     "@types/gridfs-stream": "^0.5.39",
     "@types/http-errors": "^2.0.1",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.11",
     "@types/node": "^16.18.7",

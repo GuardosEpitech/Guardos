@@ -83,7 +83,6 @@ router.post('/:name', async (req, res) => {
         .send('Coudnt find restaurant named '
           + req.params.name + ' for this user');
     }
-
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
     await addRestoProduct(req.body, restaurant.name);
     return res.status(200)
@@ -107,7 +106,7 @@ router.delete('/:name', async (req, res) => {
     }
 
     const productName = req.params.name;
-    if (await deleteProductByName(productName) === true)
+    if (await deleteProductByName(productName, userID as number) === true)
       return res.status(200)
         .send('Product deleted successfully');
     return res.status(404)

@@ -7,10 +7,15 @@ import {
   getUserIdResto, getUserRestoCookiePreferences,
   updateRestoPassword, setUserRestoCookiePreferences,
   updateRestoProfileDetails, updateRecoveryPasswordResto,
-  addRestoChain, deleteRestoChain, addTwoFactorResto
+  addRestoChain, deleteRestoChain, addTwoFactorResto, isRestoNameOrEmailTaken,
+  setValidEmailFalseResto
 } from '../controllers/userRestoController';
+import sgMail from '@sendgrid/mail'; 
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 router.get('/', async (req, res) => {
   try {
@@ -48,8 +53,35 @@ router.put('/', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
+    const errorArray = await isRestoNameOrEmailTaken(userID as number,
+      updateFields.username, updateFields.email);
+
+    if (errorArray.includes(true)) {
+      return res.status(207)
+        .send(errorArray);
+    }
+
+    const oldUser = await getRestoProfileDetails(userID as number);
+
     const profileDetails = await updateRestoProfileDetails(userID as number,
       updateFields);
+
+      if (oldUser.email !== updateFields.email) {
+        await setValidEmailFalseResto(userID as number);
+        const email = updateFields.email;
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  
+        const msg = {
+          to: email,
+          from: process.env.SMTP_USER,
+          subject: 'Email Verification',
+          html: `<p>You changed your email. Please click the following link to verify your new email:</p>
+                <a href="${process.env.USER_SITE}/verify-email?token=${token}">Verify Email</a>`,
+        };
+  
+        await sgMail.send(msg);
+      }
+
     return res.status(200)
       .send(profileDetails);
   } catch (error) {

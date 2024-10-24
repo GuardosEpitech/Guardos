@@ -47,6 +47,7 @@
         "save-filter-failure": "Échec de l'enregistrement du filtre",
         "save-filter-success": "Filtre enregistré avec succès",
         "saved-filters": "{{used}} / {{limit}} filtres enregistrés",
+        "same-filter-name": "Le nom du filtre a déjà été utilisé. Veuillez en saisir un nouveau.",
         "save-filter-limit-reached": "Vous avez atteint la limite des filtres enregistrés",
         "load-filter-success": "Filtre chargé avec succès",
         "delete-filter-success": "Filtre supprimé avec succès",
@@ -363,7 +364,8 @@
         "here": "ici",
         "or": "Ou",
         "facebook-img-alt": "Logo Facebook",
-        "google-img-alt": "Logo Google"
+        "google-img-alt": "Logo Google",
+        "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
       },
       "MapPage": {
         "what-you-looking-for": "Que recherchez-vous ?"
@@ -376,6 +378,8 @@
         "account-page": "Page de compte",
         "data-changed-success": "Détails du profil modifiés avec succès !",
         "data-changed-failure": "Échec de la modification des détails du profil.",
+        "email-taken": " L'email est déjà utilisé par un autre utilisateur.",
+        "username-taken": " Le nom d'utilisateur est déjà utilisé par un autre utilisateur.",
         "profile-pic": "Photo de profil :",
         "pic-alt": "Profil",
         "change-img": "Changer l'image",
@@ -732,6 +736,11 @@
         "deviceTxt": "L'application peut demander l'accès à certaines fonctionnalités de votre appareil (par exemple, services de localisation, caméra) pour fournir le Service. Vous pouvez gérer ces autorisations via les paramètres de votre appareil.",
         "update": "11. Modifications des Conditions Générales d'Utilisation",
         "updateTxt": "Guardos se réserve le droit de mettre à jour ou de modifier ces Conditions à tout moment sans préavis. Votre utilisation continue du Service après toute modification constitue votre acceptation des nouvelles Conditions. Il est de votre responsabilité de consulter périodiquement ces Conditions pour vérifier les mises à jour ou les modifications."
+      },
+      "VerifyEmailPage": {
+        "title": "Vérification de l'Email",
+        "login": "Aller à la connexion",
+        "resend": "Renvoyer le lien de vérification"
       }
     }
   }

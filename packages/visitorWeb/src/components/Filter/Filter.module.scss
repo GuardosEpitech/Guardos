@@ -119,6 +119,27 @@
   text-align: center;
 }
 
+.filterList {
+  list-style: none;
+
+  li {
+    padding: 0 16px;
+
+    span {
+      padding-right: 16px;
+    }
+
+    button {
+      margin-right: 16px;
+    }
+  }
+}
+
+.filterNameError {
+  color: $light-red;
+  padding: 16px;
+}
+
 @media (max-width: 768px) {
   .RectFilter {
     width: calc(100% - 40px);

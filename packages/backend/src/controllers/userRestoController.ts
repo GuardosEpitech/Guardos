@@ -28,6 +28,7 @@ export async function addUserResto(username: string,
     profilePicId: [],
     defaultMenuDesign: 'default',
     preferredLanguage: '',
+    validEmail: false,
   });
   const existingUsername = await UserRestoSchema.findOne({ username: username })
     .exec();
@@ -58,11 +59,25 @@ export async function loginUserResto(username: string,
       if ((elem.username === username ||
               elem.email === username) &&
           AES.decrypt(elem.password as string, 'GuardosResto')
-            .toString(enc.Utf8) === password) {
+            .toString(enc.Utf8) === password && elem.validEmail === true) {
         const token = elem.username ? elem.username : elem.email;
         const twoFactor = elem.twoFactor
           ? elem.twoFactor : '';
         return {
+          isVerified: true,
+          token: AES.encrypt(token + password, 'GuardosResto')
+            .toString(),
+          twoFactor: twoFactor
+        };
+      } else if ((elem.username === username ||
+        elem.email === username) &&
+    AES.decrypt(elem.password as string, 'GuardosResto')
+      .toString(enc.Utf8) === password && elem.validEmail !== true) {
+        const token = elem.username ? elem.username : elem.email;
+        const twoFactor = elem.twoFactor
+          ? elem.twoFactor : '';
+        return {
+          isVerified: false,
           token: AES.encrypt(token + password, 'GuardosResto')
             .toString(),
           twoFactor: twoFactor
@@ -140,6 +155,34 @@ export async function getRestoProfileDetails(userId: number) {
       userData.twoFactor as string,
   };
   return inter;
+}
+
+export async function isRestoNameOrEmailTaken(userId: number, username: string,
+  email: string) {
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const errorArray = [false, false];
+  const existingEmail = await UserRestoSchema.findOne({
+    $or: [
+      { email: email }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+  const existingName = await UserRestoSchema.findOne({
+    $or: [
+      { username: username }
+    ],
+    uid: { $ne: userId }  // Exclude the current user
+  });
+
+  if (existingEmail) {
+    errorArray[0] = true;
+  }
+  if (existingName) {
+    errorArray[1] = true;
+  }
+
+  return errorArray;
 }
 
 // update username, email, preferred language
@@ -529,4 +572,46 @@ export async function addTwoFactorResto(userId: number, twoFactor: string) {
     { new: true }
   );
   return answer.twoFactor as string;
+}
+
+export async function updateUserVerificationStatusResto(email: string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  
+  const updatedUser = await UserRestoSchema.findOneAndUpdate(
+    { email }, 
+    { validEmail: true },
+    { new: true }
+  );
+  
+  return updatedUser;
+}
+
+export async function checkIfEmailExistsResto(email:string) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+
+    const user = await UserRestoSchema.findOne({ 
+      $or: [{ email: email }, { username: email }] 
+    });
+
+    if (!user) {
+      return false;
+    }
+
+    if (user.validEmail) {
+      return false;
+    }
+
+    return user.email;
+}
+
+export async function setValidEmailFalseResto(userId: number) {
+  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+
+  const updatedUser = await UserRestoSchema.findOneAndUpdate(
+    {uid: userId}, 
+    { validEmail: false },
+    { new: true }
+  );
+
+  return updatedUser;
 }

@@ -22,8 +22,10 @@
       "ingredients": "Ingrédients",
       "my-ingredients": "Mes Ingrédients",
       "products": "Produits",
+      "product": "Produit",
       "my-products": "Mes Produits",
       "dishes": "Plats",
+      "dish": "Plat",
       "my-dishes": "Mes Plats",
       "restos": "Restaurants",
       "my-restos": "Mes Restaurants",
@@ -59,7 +61,7 @@
         "guides": "Guides"
       },
       "SuccessAlert": {
-        "success-msg": "Ceci est un message de succès!"
+        "success-msg": "Création réussie d'un {{ objectName }}!"
       },
       "DishForm": {
         "alt-img": "Image du Restaurant",
@@ -336,12 +338,18 @@
         "enter-code": "Veuillez entrer le code à 8 chiffres",
         "enter-code-error": "Veuillez entrer le code à 8 chiffres",
         "incorrect-code": "Le code que vous avez saisi est incorrect. Veuillez réessayer.",
-        "code-error": "Une erreur s'est produite. Veuillez réessayer."
+        "code-error": "Une erreur s'est produite. Veuillez réessayer.",
+        "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
+      },
+      "MenuPage": {
+        "no-menu": "Aucun menu disponible pour l'instant. Veuillez ajouter un plat à une catégorie."
       },
       "MyAccountPage": {
         "account-page": "Page du compte",
         "data-changed-success": "Détails du profil modifiés avec succès!",
         "data-changed-failure": "Impossible de modifier les détails du profil.",
+        "email-taken": " L'email est déjà utilisé par un autre utilisateur.",
+        "username-taken": " Le nom d'utilisateur est déjà utilisé par un autre utilisateur.",
         "profile-pic": "Image de profil :",
         "pic-alt": "Profil",
         "change-img": "Changer l'image",
@@ -513,7 +521,9 @@
         "noresto2": "Ajoutez votre premier restaurant en cliquant ",
         "noresto2-2": "ici",
         "noresto2-3": ".",
-        "delete": "Êtes-vous certain(e) de vouloir supprimer cette catégorie ?"
+        "delete": "Êtes-vous certain(e) de vouloir supprimer cette catégorie ?",
+        "noCategory": "Oups, on dirait que vous n'avez pas encore de catégories !",
+        "noCategory2": "Ajoutez des catégories en cliquant sur 'Nouveau'."
       },
       "AddRestoChain": {
         "name": "Nom:",
@@ -704,6 +714,11 @@
         "update-week": "Les données se réfèrent à la semaine suivante",
         "user-allergens": "Les utilisateurs avec ces préférences allergènes ont visité ce restaurant",
         "user-disliked-ingredients": "Les utilisateurs qui n'aiment pas ces ingrédients ont visité ce restaurant"
+      },
+      "VerifyEmailPage": {
+        "title": "Vérification de l'Email",
+        "login": "Aller à la connexion",
+        "resend": "Renvoyer le lien de vérification"
       }
     }
   }

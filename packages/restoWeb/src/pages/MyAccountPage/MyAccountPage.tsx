@@ -48,6 +48,7 @@ const MyAccountPage = () => {
   const [pwError, setPwError] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
+  const [saveFailureType, setSaveFailureType] = useState(null);
   const [paymentIsSet, setPaymentIsSet] = useState(false);
   const [openDeletePopup, setOpenDeletePopup] = useState(false);
   const navigate = useNavigate(); useState<boolean>(isEnabled());
@@ -56,6 +57,7 @@ const MyAccountPage = () => {
   const {t, i18n} = useTranslation();
 
   useEffect(() => {
+    console.log(profilePic);
     fetchProfileData();
   }, []);
 
@@ -72,7 +74,7 @@ const MyAccountPage = () => {
         setTwoFactor(res.twoFactor === "true");
       });
     let paymentMehtods = await getPaymentMethods(userToken);
-    if (paymentMehtods !== '' && paymentMehtods.length !== 0) {
+    if (paymentMehtods && paymentMehtods !== '' && paymentMehtods.length !== 0) {
       setPaymentIsSet(true);
     }
   };
@@ -155,6 +157,7 @@ const MyAccountPage = () => {
 
   const handleSave = async () => {
     setDataChangeStatus(null);
+    setSaveFailureType(null);
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       setDataChangeStatus("failed");
@@ -169,10 +172,22 @@ const MyAccountPage = () => {
     i18n.changeLanguage(preferredLanguage);
 
     let isError = false;
-    if (!res) {
+
+    if (typeof res === "string") {
+      if (!res) {
+        isError = true;
+      } else {
+        localStorage.setItem('user', res);
+      }
+    } else if (Array.isArray(res) && res.length === 2) {
       isError = true;
+      if (res[0] === true) {
+        setSaveFailureType("email");
+      } else {
+        setSaveFailureType("username");
+      }
     } else {
-      localStorage.setItem('user', res);
+      isError = true;
     }
 
     // TODO: add image mngt
@@ -338,6 +353,17 @@ const MyAccountPage = () => {
       });
   }
 
+  const errorExplanation = () => {
+    switch (saveFailureType) {
+    case 'email':
+      return t('pages.MyAccountPage.email-taken');
+    case 'username':
+      return t('pages.MyAccountPage.username-taken');
+    default:
+      return '';
+    }
+  };
+
   return (
     <div className={styles.MyAccountPage}>
       <div className={styles.profileSection}>
@@ -350,7 +376,7 @@ const MyAccountPage = () => {
           >
             {dataChangeStatus === 'success'
               ? t('pages.MyAccountPage.data-changed-success')
-              : t('pages.MyAccountPage.data-changed-failure')}
+              : (t('pages.MyAccountPage.data-changed-failure') + errorExplanation())}
           </div>
         )}
         <img
@@ -425,7 +451,7 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.two-factor-activate')}
           />
           <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
-            <button className={styles.dropdownToggle} onClick={handleTogglePasswordChange}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleTogglePasswordChange}>
               {t('pages.MyAccountPage.change-pw')}
             </button>
             {passwordChangeOpen && (
@@ -475,7 +501,7 @@ const MyAccountPage = () => {
                   helperText={samePwError ? t('pages.MyAccountPage.no-match-pw') : ''}
                 />
                 <div>
-                  <button className={styles.saveButton} onClick={handleSavePassword}>
+                  <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSavePassword}>
                     {t('pages.MyAccountPage.save-pw')}
                   </button>
                 </div>
@@ -483,17 +509,17 @@ const MyAccountPage = () => {
             )}
           </div>
           {paymentIsSet ? (
-            <button onClick={() => window.location.href = '/subscriptions'}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/subscriptions'}>
               {t('pages.MyAccountPage.subscriptions')}
             </button>
           ) : (
             <div></div>
           )}
-          <button onClick={() => window.location.href = '/payment'}>
+          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/payment'}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <div>
-            <button className={styles.saveButton} onClick={handleSave}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
               {t('pages.MyAccountPage.save-changes')}
             </button>
           </div>

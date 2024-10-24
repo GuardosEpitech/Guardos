@@ -47,6 +47,7 @@
         "save-filter-failure": "Failed to save filter",
         "save-filter-success": "Successfully saved filter",
         "saved-filters": "{{used}} / {{limit}} filters saved",
+        "same-filter-name": "The filter name has already been used. Please enter a new one.",
         "save-filter-limit-reached": "You reached the limit of saved filters",
         "load-filter-success": "Successfully loaded filter",
         "delete-filter-success": "Successfully deleted filter",
@@ -373,7 +374,8 @@
         "here": "here",
         "or": "Or",
         "facebook-img-alt": "Facebook Logo",
-        "google-img-alt": "Google Logo"
+        "google-img-alt": "Google Logo",
+        "unverified": "Please verify your email first."
       },
       "MapPage": {
         "what-you-looking-for": "What are you looking for ?"
@@ -386,6 +388,8 @@
         "account-page": "Account page",
         "data-changed-success": "Profile details changed successfully!",
         "data-changed-failure": "Failed to change profile details.",
+        "email-taken": " Email is already used by another user.",
+        "username-taken": " Username is already used by another user.",
         "profile-pic": "Profile Picture:",
         "pic-alt": "Profile",
         "change-img": "Change Image",
@@ -731,6 +735,11 @@
         "deviceTxt": "The app may request access to certain features on your device (e.g., location services, camera) to provide the Service. You can manage these permissions through your device settings.",
         "update": "11. Changes to Terms and Conditions",
         "updateTxt": "Guardos reserves the right to update or modify these Terms at any time without prior notice. Your continued use of the Service after any changes constitutes your acceptance of the new Terms. It is your responsibility to review these Terms periodically for any updates or changes."
+      },
+      "VerifyEmailPage": {
+        "title": "Email Verification",
+        "login": "Go to Login",
+        "resend": "Resend Verification Link"
       }
     }
   }

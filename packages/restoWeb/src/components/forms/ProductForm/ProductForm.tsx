@@ -61,11 +61,14 @@ const ProductForm = (props: IDishFormProps) => {
   const { productName: initialProductName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
+  const [isInputEmptyIngredients, setIsInputEmptyIngredients] = useState(false);
+  const [isInputEmptyRestaurant, setIsInputEmptyRestaurant] = useState(false); 
   const [ingredientFeedback, setIngredientFeedback] = useState<string>("");
   const [apiIngredients, setApiIngredients] = useState<IIngredient[]>([]);
   const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
   const [productName, setProductName] = useState<string>(initialProductName || "");
-  let selectedResto: string[] = [];
+  const [selectedResto, setSelectedResto] = useState<string[]>([]);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -76,6 +79,9 @@ const ProductForm = (props: IDishFormProps) => {
           const newFilteredList = res.filter((option: IRestaurantFrontEnd) =>
             !productRestaurantIds?.includes(option.uid || 0));
           setRestoList(newFilteredList);
+          if (productRestaurant) {
+            setSelectedResto([productRestaurant[0].name]);
+          }
         } else {
           setRestoList(res);
         }
@@ -157,9 +163,31 @@ const ProductForm = (props: IDishFormProps) => {
   const allIngredients = [...ingredients, ...apiIngredients];
 
   async function sendRequestAndGoBack() {
-    if (isInputEmpty) {
+    if (productName === '') {
+      setIsInputEmpty(true);
+      return;
+    } else {
+      setIsInputEmpty(false);
+    }
+
+    if (productIngredients.length === 0) {
+      setIsInputEmptyIngredients(true);
+    } else {
+      setIsInputEmptyIngredients(false);
+    }
+
+    if (selectedResto.length === 0) {
+      setIsInputEmptyRestaurant(true);
+    } else {
+      setIsInputEmptyRestaurant(false);
+    }
+
+    if (productName === '' ||
+      productIngredients.length === 0 ||
+      selectedResto.length === 0) {
       return;
     }
+
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       console.log("Error getting user ID");
@@ -201,7 +229,7 @@ const ProductForm = (props: IDishFormProps) => {
       setProductIngredients(value);
       setIsInputEmpty(value.length === 0);
 
-      for (let ingredient of value) {
+      for (const ingredient of value) {
         if (!allIngredients.some(ing => ing.name === ingredient)) {
           const response = await addIngredient(ingredient);
           if (response.ok) {
@@ -235,6 +263,7 @@ const ProductForm = (props: IDishFormProps) => {
                 value={productName}
                 id="component-outlined"
                 fullWidth
+                required
                 onChange={handleInputChange}
                 error={isInputEmpty}
                 helperText={isInputEmpty ?
@@ -251,7 +280,14 @@ const ProductForm = (props: IDishFormProps) => {
               onChange={handleIngredientChange}
               freeSolo
               renderInput={(params) => (
-                <TextField {...params} label={t('common.ingredients')} />
+                <TextField 
+                  {...params}
+                  label={t('common.ingredients')}
+                  required
+                  error={isInputEmptyIngredients}
+                  helperText={isInputEmptyIngredients ?
+                    t('components.ProductForm.input-empty-error') : ''}
+                />
               )}
             />
             <Typography variant="body2" color="textSecondary">
@@ -268,13 +304,17 @@ const ProductForm = (props: IDishFormProps) => {
               defaultValue={productRestaurant}
               filterSelectedOptions
               onChange={(e, value) => {
-                selectedResto = value.map((restoNameVar: IRestaurantFrontEnd) =>
-                  restoNameVar.name);
+                setSelectedResto(value.map(
+                  (restoNameVar: IRestaurantFrontEnd) => restoNameVar.name));
               }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={t('components.ProductForm.resto')}
+                  required
+                  error={isInputEmptyRestaurant}
+                  helperText={isInputEmptyRestaurant ?
+                    t('components.ProductForm.input-empty-error') : ''}
                 />
               )}
             />

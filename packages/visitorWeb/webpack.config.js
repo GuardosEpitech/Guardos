@@ -26,13 +26,17 @@ const config = {
     historyApiFallback: true,
     client: {
       webSocketURL: 'wss://guardos.eu/ws',
+      overlay: {
+        errors: false, // suppress errors
+        warnings: false, // suppress warnings
+      },
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       favicon: "./public/favicon.ico",
-      
+
     }),
     new MiniCssExtractPlugin(),
     new Dotenv(),
@@ -82,7 +86,6 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
     config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = "development";
