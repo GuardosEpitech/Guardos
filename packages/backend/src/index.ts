@@ -16,7 +16,7 @@ import logger from 'morgan';
 import path = require('path');
 import 'dotenv/config';
 import bodyParser from 'body-parser';
-
+import qrcode from './routes/qrcode';
 import basicApiIngredients from './routes/ingredients';
 import { connectDataBase, SUCCEED } from './controllers/connectDataBase';
 import dishes from './routes/dishes';
@@ -112,6 +112,7 @@ async function main() {
     app.use('/api/menuDesigns', asyncHandler(menuDesigns));
     app.use('/api/map', asyncHandler(map));
     app.use('/api/statistics', asyncHandler(statistics));
+    app.use('/api/qrcode', qrcode);
   }
 
   // Catch 404 and forward to error handler

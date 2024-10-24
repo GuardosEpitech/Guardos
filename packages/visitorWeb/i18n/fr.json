@@ -217,7 +217,8 @@
         "name": "Nom",
         "subject": "Sujet",
         "request": "Votre demande",
-        "email-sent-success": "Email envoyé avec succès !"
+        "email-sent-success": "Email envoyé avec succès !",
+        "require-fields": "Tous les champs sont obligatoires"
       },
       "GuidePage": {
         "title": "Guide des allergènes et conseils",

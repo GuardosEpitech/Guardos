@@ -36,6 +36,13 @@
   flex: 0.3;
 }
 
+.SaveBtn {
+  display: flex !important;
+  justify-content: center;
+  align-self: start !important;
+  background-color: #6D071A !important;
+}
+
 .secondLayoutListObject {
   cursor: pointer;
   list-style: none;

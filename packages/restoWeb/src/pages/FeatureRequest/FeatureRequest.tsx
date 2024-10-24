@@ -29,7 +29,7 @@ const FeatureRequest = () => {
   const {t} = useTranslation();
   const [premium, setPremium] = useState<boolean>(false);
   const userToken = localStorage.getItem('user');
-
+  const [errorData, setErrorData] = useState<boolean>(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
     setRequest((prevState) => ({...prevState, [name]: value}));
@@ -57,6 +57,10 @@ const FeatureRequest = () => {
       
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (request.name === '' || request.subject === '' || request.request === '') {
+      setErrorData(true);
+      return;
+    }
     try {
       const dataStorage = JSON.stringify({
         name: request.name,
@@ -115,6 +119,9 @@ const FeatureRequest = () => {
               rows={13}
               sx={{width: '100%', minHeight: '200px'}}
             />
+            {errorData &&
+                <span style={{color: "red"}}>{t('pages.FeatureRequest.require-fields')}</span>
+            }
             <Button
               type="submit"
               variant="contained"

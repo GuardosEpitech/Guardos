@@ -1,17 +1,16 @@
 
 import React, {useEffect, useState, useRef} from "react";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { List, ListItem } from "@mui/material";
+import { List, ListItem, Button } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
-
 import Category from "shared/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
-
 import { ICategories } from "shared/models/categoryInterfaces";
+import {useTranslation} from "react-i18next";
+import { getQRCodeByName } from "@src/services/qrcodeCall";
 import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
@@ -32,27 +31,40 @@ interface IMenuPageProps {
   restoName: string;
   address: string;
   menuDesignID: number;
+  uid: string;
 }
 
 const MenuPage = () => {
+<<<<<<< HEAD
+  const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
+  console.log("azdhaid", useLocation().state)
+=======
   const { menu, restoName, address, menuDesignID } = useLocation().state;
   const [hasMenu, setHasMenu] = useState(false);
+>>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
     padding: '40px',
     borderRadius: '10px',
   };
+<<<<<<< HEAD
+=======
   const {t} = useTranslation();
+>>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
-
+  const [URL, setURL] = useState(null);
+  const navigate = useNavigate();
+  const {t} = useTranslation();
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
     sectionRefs.current[index].current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
+    getQRCodeByName(uid)
+      .then(res => setURL(res));
     checkDarkMode();
     const filteredMenu = menu.filter((category: ICategories) =>
       category.dishes.length > 0);
@@ -95,8 +107,7 @@ const MenuPage = () => {
                     <div>
                       {category.dishes.length > 0 && (
                         <Category key={category.name} title={category.name}>
-                          {category.dishes.map((dish, index) => {
-                            return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
+                          {category.dishes.map((dish, index) => {return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
                           })}
                         </Category>
                       )}
