@@ -316,6 +316,9 @@
         "request": "Nachricht",
         "email-sent-success": "Nachricht erfolgreich gesendet!"
       },
+      "MenuPage": {
+        "qr-code": "meinen qr-code erhalten"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",
         "redirect-google-login": "Weiterleitung zur Google-Anmeldung",

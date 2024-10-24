@@ -1,23 +1,21 @@
 
 import React, {useEffect, useState, useRef} from "react";
-import { useLocation } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { List, ListItem } from "@mui/material";
+import { List, ListItem, Button } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
-
 import Category from "shared/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
-
 import { ICategories } from "shared/models/categoryInterfaces";
+import {useTranslation} from "react-i18next";
+import { getQRCodeByName } from "@src/services/qrcodeCall";
 import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {checkDarkMode} from "../../utils/DarkMode";
-
 
 const theme = createTheme({
   palette: {
@@ -32,26 +30,31 @@ interface IMenuPageProps {
   restoName: string;
   address: string;
   menuDesignID: number;
+  uid: string;
 }
 
-
 const MenuPage = () => {
-  const { menu, restoName, address, menuDesignID } = useLocation().state;
+  const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
+  console.log("azdhaid", useLocation().state)
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
     padding: '40px',
     borderRadius: '10px',
-  }
+  };
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
-
+  const [URL, setURL] = useState(null);
+  const navigate = useNavigate();
+  const {t} = useTranslation();
   // Function to scroll to a section
   const scrollToSection = (index:number) => {
     sectionRefs.current[index].current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
+    getQRCodeByName(uid)
+      .then(res => setURL(res));
     checkDarkMode();
   }, []);
 
@@ -84,14 +87,14 @@ const MenuPage = () => {
                         return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true}/>;
                       })}
                     </Category>
-                )}
+                  )}
                 </div>
               );
             })}
           </div>
         ) : (
           <div>
-            
+
           </div>
         )}
         {menuDesignID >= 1 ? (
@@ -112,22 +115,22 @@ const MenuPage = () => {
                 return (
                   <div key={index} ref={sectionRefs.current[index]}>
                     {index % 3 === 0 ? (
-                      <div style={{ 
+                      <div style={{
                         backgroundImage: `url(${pic1})`
                       }} className={styles.secondLayoutBanner} />
                     ) : (
                       <div/>
                     )}
                     {index % 3 === 1 ? (
-                      <div style={{ 
+                      <div style={{
                         backgroundImage: `url(${pic2})`
                       }} className={styles.secondLayoutBanner} />
                     ) : (
                       <div/>
                     )}
                     {index % 3 === 2 ? (
-                      <div style={{ 
-                        backgroundImage: `url(${pic3})` 
+                      <div style={{
+                        backgroundImage: `url(${pic3})`
                       }} className={styles.secondLayoutBanner}/>
                     ) : (
                       <div/>
@@ -135,8 +138,7 @@ const MenuPage = () => {
                     <div>
                       {category.dishes.length > 0 && (
                         <Category key={category.name} title={category.name}>
-                          {category.dishes.map((dish, index) => {
-                            return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
+                          {category.dishes.map((dish, index) => {return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
                           })}
                         </Category>
                       )}
@@ -148,9 +150,17 @@ const MenuPage = () => {
           </div>
         ) : (
           <div>
-            
+
           </div>
         )}
+        <Button
+          className={styles.SaveBtn}
+          variant="contained"
+          sx={{width: "12.13rem"}}
+          onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
+        >
+          {t('pages.MenuPage.qr-code')}
+        </Button>
       </Layout>
     </>
   );
