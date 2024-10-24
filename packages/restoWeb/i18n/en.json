@@ -211,7 +211,8 @@
         "name": "Name",
         "subject": "Subject",
         "request": "Your request",
-        "email-sent-success": "Email sent successfully!"
+        "email-sent-success": "Email sent successfully!",
+        "require-fields": "All fields are require"
       },
       "GuidePage": {
         "title": "Allergen Management Guide",
