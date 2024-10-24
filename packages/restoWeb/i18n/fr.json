@@ -319,9 +319,6 @@
         "request": "Message",
         "email-sent-success": "Email envoyé avec succès !"
       },
-      "MenuPage": {
-        "qr-code": "Afficher mon QR Code"
-      },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
         "redirect-google-login": "Redirection vers la connexion Google",
@@ -342,7 +339,8 @@
         "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
       },
       "MenuPage": {
-        "no-menu": "Aucun menu disponible pour l'instant. Veuillez ajouter un plat à une catégorie."
+        "no-menu": "Aucun menu disponible pour l'instant. Veuillez ajouter un plat à une catégorie.",
+        "qr-code": "Afficher mon QR Code"
       },
       "MyAccountPage": {
         "account-page": "Page du compte",
