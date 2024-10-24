@@ -117,7 +117,8 @@ const MVPRouter = () => {
           <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
           <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
           <Route path="/terms" element={<TermsPage />}></Route>
-        </Route>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

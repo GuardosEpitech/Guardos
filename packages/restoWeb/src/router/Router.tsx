@@ -132,6 +132,7 @@ const MVPRouter = () => {
           <Route path="/combo" element={<DishComboPage />}></Route>
           <Route path="/insights" element={<UserInsights />}></Route>
           <Route path="/guides" element={<GuidesPage />}></Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </BrowserRouter>
