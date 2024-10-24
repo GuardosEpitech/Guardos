@@ -342,7 +342,8 @@
         "unverified": "Bitte verifizieren Sie zuerst Ihre E-Mail-Adresse."
       },
       "MenuPage": {
-        "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu."
+        "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu.",
+        "qr-code": "meinen qr-code erhalten"
       },
       "MyAccountPage": {
         "account-page": "Kontoübersicht",

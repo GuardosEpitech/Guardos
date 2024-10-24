@@ -343,7 +343,8 @@
         "unverified": "Please verify your email first."
       },
       "MenuPage": {
-        "no-menu": "No menu available yet. Please add a dish to a category."
+        "no-menu": "No menu available yet. Please add a dish to a category.",
+        "qr-code": "Get my QR Code"
       },
       "MyAccountPage": {
         "account-page": "Account page",

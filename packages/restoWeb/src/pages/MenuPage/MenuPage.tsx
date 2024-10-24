@@ -9,7 +9,6 @@ import Dish from "@src/components/menu/Dish/Dish";
 import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 import { ICategories } from "shared/models/categoryInterfaces";
-import {useTranslation} from "react-i18next";
 import { getQRCodeByName } from "@src/services/qrcodeCall";
 import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
@@ -35,22 +34,13 @@ interface IMenuPageProps {
 }
 
 const MenuPage = () => {
-<<<<<<< HEAD
   const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
-  console.log("azdhaid", useLocation().state)
-=======
-  const { menu, restoName, address, menuDesignID } = useLocation().state;
   const [hasMenu, setHasMenu] = useState(false);
->>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
     padding: '40px',
     borderRadius: '10px',
   };
-<<<<<<< HEAD
-=======
-  const {t} = useTranslation();
->>>>>>> 2ca5c60bc0be52926dbad0fc0f7f1cac1e0ee1ae
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
@@ -181,6 +171,14 @@ const MenuPage = () => {
 
             </div>
           )}
+          <Button
+            className={styles.SaveBtn}
+            variant="contained"
+            sx={{width: "12.13rem"}}
+            onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
+          >
+            {t('pages.MenuPage.qr-code')}
+          </Button>
         </Layout>
 
       ) : (
