@@ -192,6 +192,7 @@ const MyAccountPage = () => {
   };
 
   const handleAddIngredient = async () => {
+    setIngredientFeedback('');
     try {
       const result = await addIngredient(newIngredient);
       if (result.ok) {
