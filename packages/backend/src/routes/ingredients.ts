@@ -59,11 +59,11 @@ router.post('/', async (req, res) => {
             ' but added ingredient to ingredients database');
       }
 
-      res.status(200)
+      return res.status(200)
         .send('Ingredient '
           + req.body.name + ' saved ' + ' with id ' + id);
     } else {
-      res.status(400)
+      return res.status(400)
         .send('Missing name or wrong id for ingredient');
     }
   } catch (error) {

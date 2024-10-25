@@ -16,7 +16,7 @@ export async function detectAllergens(req: Request) {
     }
     const answer = await detectAllergensByIngredients(products);
 
-    if (answer.some(a => a.includes('No allergens found'))) {
+    if (answer.some(a => a.allergens.includes('No allergens found'))) {
       console.log(answer);
       return { status: 404, data: answer };
     }
