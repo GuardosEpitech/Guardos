@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import FormControl from '@mui/material/FormControl';
-import {Autocomplete, Button, Typography, Snackbar, Alert} from '@mui/material';
+import {Alert, Autocomplete, Button, Divider, Snackbar, Typography} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Rating from '@mui/material/Rating';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,19 +22,35 @@ import TextField from "@mui/material/TextField";
 import {getDishFavourites, getRestoFavourites} from "@src/services/favourites";
 import RestoCard from "@src/components/RestoCard/RestoCard";
 import Dish from "@src/components/menu/Dish/Dish";
-import {enable, disable, setFetchMethod} from "darkreader";
+import {disable, enable, setFetchMethod} from "darkreader";
 
-import { IimageInterface } from "shared/models/imageInterface";
+import {IimageInterface} from "shared/models/imageInterface";
 import {addProfileImage, deleteProfileImage, getImages} from "@src/services/imageCalls";
-import {convertImageToBase64, displayImageFromBase64}
-  from "shared/utils/imageConverter";
+import {convertImageToBase64, displayImageFromBase64} from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
 import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 import {addIngredient, getAllIngredients} from "@src/services/ingredientsCalls";
-import { deleteRatingDataUser, getRatingDataUser } from "@src/services/ratingCalls";
+import {deleteRatingDataUser, getRatingDataUser} from "@src/services/ratingCalls";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import IconButton from "@mui/material/IconButton";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+
+const PageBtn = () => {
+  return createTheme({
+    palette: {
+      primary: {
+        main: "#6d071a",
+        contrastText: "#ffffff",
+      },
+      secondary: {
+        main: "#094067",
+        contrastText: "#ffffff",
+      },
+    },
+  });
+};
 
 const MyAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -140,7 +157,17 @@ const MyAccountPage = () => {
       return;
     }
     const favorites = await getDishFavourites(userToken);
-    setFavoriteDishes(favorites);
+
+    const groupedFavs = favorites.reduce((acc: any, favs: any) => {
+      const { restoID, restoName, dish } = favs;
+      if (!acc[restoID]) {
+        acc[restoID] = { restoName, dishes: [] };
+      }
+      acc[restoID].dishes.push(dish);
+      return acc;
+    }, {});
+
+    setFavoriteDishes(groupedFavs);
   };
   const fetchUserReview = async () => {
     const userToken = localStorage.getItem("user");
@@ -481,6 +508,9 @@ const MyAccountPage = () => {
     }
   };
 
+  const handleRestoClick = (restoId: string) => {
+    navigate('/menu/' + restoId);
+  };
 
   return (
     <div className={styles.MyAccountPage}>
@@ -723,7 +753,6 @@ const MyAccountPage = () => {
         <div className={styles.favoriteListContainer}>
           {activeTab === "restaurants" && (
             <div className={styles.favoriteList}>
-              <h2>{t('pages.MyAccountPage.fav-restos')}</h2>
               {loading ? (
                 <Stack spacing={1}>
                   <Skeleton variant="rounded" width={1000} height={130} />
@@ -752,7 +781,6 @@ const MyAccountPage = () => {
           )}
           {activeTab === "reviews" && (
             <div className={styles.favoriteList}>
-              <h2>{t('pages.MyAccountPage.fav-reviews')}</h2>
               {userReview && userReview.length === 0 ? (
                 <div>
                   <span>{t('pages.MyAccountPage.no-fav-reviews')}</span>
@@ -777,33 +805,48 @@ const MyAccountPage = () => {
 
           {activeTab === "dishes" && (
             <div className={styles.favoriteList}>
-              <h2>{t('pages.MyAccountPage.fav-dishes')}</h2>
               {favoriteDishes.length === 0 ? (
                 <div>
                   <span>{t('pages.MyAccountPage.no-fav-dishes')}</span>
                 </div>
-              ) : favoriteDishes.map((dish) => {
-                return (
-                  <Dish
-                    key={dish.dish.uid}
-                    dishName={dish.dish.name}
-                    dishAllergens={dish.dish.allergens}
-                    dishDescription={dish.dish.description}
-                    options={dish.dish.options}
-                    picturesId={dish.dish.picturesId}
-                    price={dish.dish.price}
-                    restoID={dish.restoID}
-                    dishID={dish.dish.uid}
-                    discount={dish.dish.discount}
-                    validTill={dish.dish.validTill}
-                    combo={dish.combo}
-                    isTopLevel={true}
-                    isFavourite={true}
-                  />
-                )
-              }
+              ) :
+                //@ts-ignore
+                Object.entries(favoriteDishes).map(([restoId, {restoName, dishes}]) => {
+                  return (
+                    <ThemeProvider theme={PageBtn()} key={restoId}>
+                      <Divider textAlign={"left"} className={styles.divider}>
+                        <h2 className={styles.dividerTitle}>
+                          {restoName}
+                          <IconButton className={styles.dividerIcon} onClick={() => handleRestoClick(restoId)} aria-label="menu">
+                            <RestaurantMenuIcon color="primary" />
+                          </IconButton>
+                        </h2>
 
-              )}
+                      </Divider>
+                      {dishes.map((dish: any) => {
+                        return (
+                          <Dish
+                            key={dish.uid}
+                            dishName={dish.name}
+                            dishAllergens={dish.allergens}
+                            dishDescription={dish.description}
+                            options={dish.options}
+                            picturesId={dish.picturesId}
+                            price={dish.price}
+                            restoID={Number(restoId)}
+                            dishID={dish.uid}
+                            discount={dish.discount}
+                            validTill={dish.validTill}
+                            combo={dish.combo}
+                            isTopLevel={true}
+                            isFavourite={true}
+                          />
+                        )
+                      })}
+                    </ThemeProvider>
+                  )
+                })
+              }
             </div>
           )}
         </div>
