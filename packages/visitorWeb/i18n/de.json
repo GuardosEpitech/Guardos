@@ -366,7 +366,9 @@
         "or": "Oder",
         "facebook-img-alt": "Facebook-Logo",
         "google-img-alt": "Google-Logo",
-        "unverified": "Bitte verifizieren Sie zuerst Ihre E-Mail-Adresse."
+        "unverified": "Bitte verifizieren Sie zuerst Ihre E-Mail-Adresse.",
+        "denied": "Login fehlgeschlagen",
+        "error3party": "Ihr Drittanbieter-Login-Versuch war ungültig. Bitte versuchen Sie es erneut."
       },
       "MapPage": {
         "what-you-looking-for": "Was suchen Sie?"

@@ -365,7 +365,9 @@
         "or": "Ou",
         "facebook-img-alt": "Logo Facebook",
         "google-img-alt": "Logo Google",
-        "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
+        "unverified": "Veuillez d'abord vérifier votre adresse e-mail.",
+        "denied": "Échec de la connexion",
+        "error3party": "Votre tentative de connexion via un tiers a échoué. Veuillez réessayer."
       },
       "MapPage": {
         "what-you-looking-for": "Que recherchez-vous ?"

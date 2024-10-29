@@ -374,7 +374,9 @@
         "or": "Or",
         "facebook-img-alt": "Facebook Logo",
         "google-img-alt": "Google Logo",
-        "unverified": "Please verify your email first."
+        "unverified": "Please verify your email first.",
+        "denied": "Login failed",
+        "error3party": "Your third-party login attempt was unsuccessful. Please try again."
       },
       "MapPage": {
         "what-you-looking-for": "What are you looking for ?"
