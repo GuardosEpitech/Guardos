@@ -209,7 +209,8 @@
         "name": "Name",
         "subject": "Betreff",
         "request": "Ihre Anfrage",
-        "email-sent-success": "E-Mail erfolgreich gesendet!"
+        "email-sent-success": "E-Mail erfolgreich gesendet!",
+        "require-fields": "Alle Felder sind erforderlich"
       },
       "GuidePage": {
         "title": "Allergenmanagement-Leitfaden",
@@ -318,6 +319,9 @@
         "request": "Nachricht",
         "email-sent-success": "Nachricht erfolgreich gesendet!"
       },
+      "MenuPage": {
+        "qr-code": "meinen qr-code erhalten"
+      },
       "LoginPage": {
         "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",
         "redirect-google-login": "Weiterleitung zur Google-Anmeldung",
@@ -338,7 +342,8 @@
         "unverified": "Bitte verifizieren Sie zuerst Ihre E-Mail-Adresse."
       },
       "MenuPage": {
-        "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu."
+        "no-menu": "Noch kein Menü verfügbar. Bitte fügen Sie einer Kategorie ein Gericht hinzu.",
+        "qr-code": "meinen qr-code erhalten"
       },
       "MyAccountPage": {
         "account-page": "Kontoübersicht",

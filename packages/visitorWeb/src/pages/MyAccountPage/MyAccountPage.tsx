@@ -458,6 +458,7 @@ const MyAccountPage = () => {
     setopenReviewPopUp(true);
     fetchUserReview(); 
   };
+
   useEffect(() => {
     fetchUserReview();
   }, []);
@@ -481,6 +482,15 @@ const MyAccountPage = () => {
     }
   };
 
+  const removeFavDish = (dishId: number, restoId: number) => {
+    const newFavs = favoriteDishes.filter((dish) => !(dish.dish.uid === dishId && dish.restoID === restoId));
+    setFavoriteDishes(newFavs);
+  }
+
+  const removeFavResto = (restoId: number) => {
+    const newFavs = favoriteRestaurants.filter((resto) => resto.uid != restoId);
+    setFavoriteRestaurants(newFavs);
+  }
 
   return (
     <div className={styles.MyAccountPage}>
@@ -738,12 +748,13 @@ const MyAccountPage = () => {
                     </div>
                   ) : (
                     favoriteRestaurants.map((restaurant) => (
-                    <RestoCard
-                    key={restaurant.id}
-                    resto={restaurant}
-                    isFavourite={true}
-                    dataIndex={0}
-                    />
+                      <RestoCard
+                        key={restaurant.id}
+                        resto={restaurant}
+                        isFavourite={true}
+                        dataIndex={0}
+                        deleteFavResto={removeFavResto}
+                      />
                     ))
                   )}
                 </>
@@ -799,6 +810,7 @@ const MyAccountPage = () => {
                     combo={dish.combo}
                     isTopLevel={true}
                     isFavourite={true}
+                    deleteFavDish={removeFavDish}
                   />
                 )
               }

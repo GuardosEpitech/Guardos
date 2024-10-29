@@ -190,6 +190,9 @@
         "error": "There was an error",
         "change-pw-failure": "Please try again to change the password. If the Error appears one more time, please contact us."
       },
+      "MenuPage": {
+        "qr-code": "Get my QR Code"
+      },
       "DishesPage": {
         "no-dishes-yet": "Oops, looks like you dont have any dishes yet!",
         "add-first-dish": "Add your first dish by clicking ",
@@ -210,7 +213,8 @@
         "name": "Name",
         "subject": "Subject",
         "request": "Your request",
-        "email-sent-success": "Email sent successfully!"
+        "email-sent-success": "Email sent successfully!",
+        "require-fields": "All fields are require"
       },
       "GuidePage": {
         "title": "Allergen Management Guide",
@@ -339,7 +343,8 @@
         "unverified": "Please verify your email first."
       },
       "MenuPage": {
-        "no-menu": "No menu available yet. Please add a dish to a category."
+        "no-menu": "No menu available yet. Please add a dish to a category.",
+        "qr-code": "Get my QR Code"
       },
       "MyAccountPage": {
         "account-page": "Account page",

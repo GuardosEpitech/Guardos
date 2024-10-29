@@ -34,6 +34,7 @@ interface IDishProps {
   validTill: string;
   combo: number[];
   isTopLevel?: boolean;
+  deleteFavDish?: (dishId: number, restoId: number) => void;
 }
 
 const Dish = (props: IDishProps) => {
@@ -112,12 +113,17 @@ const Dish = (props: IDishProps) => {
     } else {
       console.log("delete dish as favourite: " + props.restoID + " " + props.dishID);
       deleteDishFromFavourites(userToken, props.restoID, props.dishID);
+      if (props.deleteFavDish) {
+        setIsFavorite(true);
+        props.deleteFavDish(props.dishID, props.restoID);
+      }
     }
   };
 
   return (
     <Paper
       id="dish-card"
+      key={props.dishID + 'dish-card'}
       className={styles.DishBox}
       elevation={3}
       onClick={() => setExtended(!extended)}
@@ -138,6 +144,7 @@ const Dish = (props: IDishProps) => {
                 onKeyDown={e => e.key === 'Enter' && handleFavoriteClick(e)}
                 role="button"
                 aria-pressed={isFavorite}
+                key={props.dishID + 'fav-dish'}
               >
                 {isFavorite ? (
                   <FavoriteIcon id="favourite" color="error" />

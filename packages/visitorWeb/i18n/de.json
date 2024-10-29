@@ -218,7 +218,8 @@
         "name": "Name",
         "subject": "Betreff",
         "request": "Ihre Anfrage",
-        "email-sent-success": "E-Mail erfolgreich gesendet!"
+        "email-sent-success": "E-Mail erfolgreich gesendet!",
+        "require-fields": "Alle Felder sind erforderlich"
       },
       "GuidePage": {
         "title": "Allergene Ratgeber & Tipps",

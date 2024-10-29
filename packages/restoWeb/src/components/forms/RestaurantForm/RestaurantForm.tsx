@@ -568,7 +568,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
               const dayOpeningHours = selectedOpeningHours.find(item => item.day === index.id) || {};
               return (
                 <LocalizationProvider dateAdapter={AdapterDayjs} key={key}>
-                  <Grid item xs={4} sm={8} md={1.71}>
+                  <Grid item xs={4} sm={8} md={3}>
                     <FormControl fullWidth>
                       <span className={styles.DayDisplay}>{index.name}</span>
                       <TimePicker

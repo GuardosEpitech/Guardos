@@ -5,6 +5,7 @@
   "dependencies": {
     "@sendgrid/mail": "^8.1.4",
     "@types/nodemailer": "^6.4.14",
+    "axios": "^1.7.7",
     "body-parser": "^1.20.2",
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.1.1",
@@ -22,6 +23,7 @@
     "morgan": "~1.9.1",
     "nodemailer": "^6.9.7",
     "pug": "2.0.0-beta11",
+    "qrcode": "^1.5.4",
     "sendgrid": "^5.2.3",
     "shared": "*",
     "stripe": "^14.21.0",
@@ -57,6 +59,7 @@
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.11",
     "@types/node": "^16.18.7",
+    "@types/qrcode": "^1.5.5",
     "@types/stripe": "^8.0.417",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
