@@ -425,8 +425,7 @@
       },
       "UserSupport": {
         "user-support": "Benutzerunterstützung",
-        "support-description1": "Wir sind hier, um Ihnen bei allen Fragen und Anliegen zu helfen, die Sie haben. Nehmen Sie sich eine Minute Zeit und werfen Sie einen Blick auf unsere ",
-        "support-description2": " Andernfalls können Sie uns gerne über das unten stehende Kontaktformular erreichen, und wir werden uns so schnell wie möglich bei Ihnen melden",
+        "support-description": "Wir sind hier, um Ihnen bei all Ihren Fragen und Anliegen zu helfen. Falls Sie Unterstützung benötigen, können Sie uns jederzeit über das unten stehende Kontaktformular erreichen. Wir werden uns so schnell wie möglich bei Ihnen melden.",
         "Q&A": "Q&A",
         "name": "Name",
         "subject": "Betreff",
