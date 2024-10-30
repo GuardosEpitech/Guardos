@@ -125,6 +125,10 @@ const Filter = (props: FilterProps) => {
   const userProfileName = t('common.me');
 
   useEffect(() => {
+    setCategories(props.categories);
+  }, [props.categories]);
+
+  useEffect(() => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       return;
@@ -167,7 +171,7 @@ const Filter = (props: FilterProps) => {
     setRating(filter.rating[0]);
     setRange(filter.range);
 
-    const updatedCategories = categories.map(category => ({
+    const updatedCategories = props.categories.map(category => ({
       ...category,
       value: false
     }));
