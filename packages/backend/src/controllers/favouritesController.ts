@@ -3,7 +3,6 @@ import {userSchema} from '../models/userInterface';
 import {getRestaurantByID} from './restaurantController';
 import {getDishByID} from './dishesController';
 
-
 export async function getRestoFavourites(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
 
@@ -15,10 +14,8 @@ export async function getRestoFavourites(userID: number) {
     }
 
     const restoIDs = userData.favouriteLists.restoIDs;
-    const favouriteRestaurants = await Promise.all(restoIDs.map((restoID) =>
+    return  await Promise.all(restoIDs.map((restoID) =>
       getRestaurantByID(restoID)));
-
-    return favouriteRestaurants;
   } catch (error) {
     console.error('Error getting favourite restaurants:', error);
     throw error;
@@ -39,7 +36,8 @@ export async function getDishFavourites(userID: number) {
     return await Promise.all(dishIDs.map(async (item) => {
       const {restoID, dishID} = item;
       const dish = await getDishByID(restoID, dishID);
-      return {dish, restoID};
+      const resto = await getRestaurantByID(restoID);
+      return {dish, restoID, restoName: resto.name};
     }));
   } catch (error) {
     console.error('Error getting favourite dishes:', error);

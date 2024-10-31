@@ -84,7 +84,7 @@ body {
   max-height: 10rem;
   max-width: 10rem;
   border-radius: 100px;
-  object-fit: containe;
+  object-fit: contain;
   margin: auto;
   display: flex;
 }
@@ -233,12 +233,7 @@ body {
   width: 100%;
   overflow-y: auto;
   padding: 0.5rem;
-  max-height: 47rem;
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
+  max-height: 84rem;
 
   button {
     border: none;
@@ -253,6 +248,19 @@ body {
   .Dish {
     margin-bottom: 10px;
   }
+}
+
+.divider {
+  padding-top: 10px;
+}
+
+.dividerTitle {
+  display: flex;
+  align-items: center;
+}
+
+.dividerIcon {
+  width: unset !important;
 }
 
 @media (min-width: 768px) {
