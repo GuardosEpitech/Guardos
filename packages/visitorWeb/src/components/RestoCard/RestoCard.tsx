@@ -50,6 +50,7 @@ interface IRestoCardProps {
   isFavourite: boolean;
   dataIndex: number;
   key: number;
+  deleteFavResto?: (restoId: number) => void;
 }
 
 const RestoCard = (props: IRestoCardProps) => {
@@ -118,6 +119,10 @@ const RestoCard = (props: IRestoCardProps) => {
       addRestoAsFavourite(userToken, props.resto.uid);
     } else {
       deleteRestoFromFavourites(userToken, props.resto.uid);
+      if (props.deleteFavResto) {
+        setIsFavorite(true);
+        props.deleteFavResto(props.resto.uid);
+      }
     }
   };
 
@@ -128,7 +133,7 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   return (
-    <Paper id="resto-card" className={styles.DishBox} elevation={3} onClick={handleClick}>
+    <Paper id="resto-card" key={props.resto.uid + 'card'} className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={12} sm={3} className={styles.GridItemImage}>
           {pictures.length > 0 &&
@@ -151,6 +156,7 @@ const RestoCard = (props: IRestoCardProps) => {
               onKeyDown={handleFavoriteKeyDown}
               role="button"
               aria-pressed={isFavorite}
+              key={props.resto.uid + 'fav'}
             >
               {isFavorite ? (
                 <FavoriteIcon id="favourite" color="error" />
