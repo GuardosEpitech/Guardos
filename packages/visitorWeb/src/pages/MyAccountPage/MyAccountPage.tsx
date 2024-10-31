@@ -592,7 +592,7 @@ const MyAccountPage = () => {
             {t('pages.MyAccountPage.ingredient-not-found')}
           </Button>
           {ingredientFeedback && (
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant='body2' color='textSecondary'>
               {ingredientFeedback}
             </Typography>
           )}

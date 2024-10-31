@@ -11,20 +11,20 @@ export function isArrayOfStrings(value: any): value is string[] {
 export function findRelevantAllergens(healthLabels: string[]): [string] {
   const allergenMap: { [key: string]: string } =
       {
-        'gluten_free': 'Gluten-containing grains',
-        'crustacean_free': 'Crustaceans and crustacean products',
-        'egg_free': 'Eggs and egg products',
-        'fish_free': 'Fish and fish products',
-        'peanut_free': 'Peanuts and peanut products',
-        'soy_free': 'Soy and soy products',
-        'dairy_free': 'Milk and milk products (including lactose)',
-        'tree_nut_free': 'Tree nuts',
-        'celery_free': 'Celery and celery products',
-        'mustard_free': 'Mustard and mustard products',
-        'sesame_free': 'Sesame seeds and sesame products',
-        'sulphite_free': 'Sulphur dioxide and sulphites',
-        'lupine_free': 'Lupine',
-        'mollusk_free': 'Mollusks (shellfish)'
+        'gluten_free': 'gluten',
+        'crustacean_free': 'crustaceans',
+        'egg_free': 'eggs',
+        'fish_free': 'fish',
+        'peanut_free': 'peanuts',
+        'soy_free': 'soybeans',
+        'dairy_free': 'milk',
+        'tree_nut_free': 'tree nuts',
+        'celery_free': 'celery',
+        'mustard_free': 'mustard',
+        'sesame_free': 'sesame',
+        'sulphite_free': 'sulphides',
+        'lupine_free': 'lupin',
+        'mollusk_free': 'molluscs'
       };
   const presentLabels = new Set(healthLabels.map(label => label.toLowerCase()));
   const presentAllergens: [string] = [''];
