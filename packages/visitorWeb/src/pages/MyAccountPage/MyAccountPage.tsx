@@ -526,13 +526,27 @@ const MyAccountPage = () => {
   const handleRestoClick = (restoId: string) => {
     navigate('/menu/' + restoId);
   };
+
   const removeFavDish = (dishId: number, restoId: number) => {
-    const newFavs = favoriteDishes.filter((dish) => !(dish.dish.uid === dishId && dish.restoID === restoId));
-    setFavoriteDishes(newFavs);
+    setFavoriteDishes((prevFavorites) => {
+      const updatedFavorites = { ...prevFavorites };
+
+      if (updatedFavorites[restoId]) {
+        updatedFavorites[restoId].dishes = updatedFavorites[restoId].dishes.filter(
+          (dish: any) => dish.uid !== dishId
+        );
+
+        if (updatedFavorites[restoId].dishes.length === 0) {
+          delete updatedFavorites[restoId];
+        }
+      }
+
+      return updatedFavorites;
+    });
   }
 
   const removeFavResto = (restoId: number) => {
-    const newFavs = favoriteRestaurants.filter((resto) => resto.uid != restoId);
+    const newFavs = favoriteRestaurants?.filter((resto) => resto.uid != restoId);
     setFavoriteRestaurants(newFavs);
   }
 
@@ -835,7 +849,7 @@ const MyAccountPage = () => {
 
           {activeTab === "dishes" && (
             <div className={styles.favoriteList}>
-              {favoriteDishes.length === 0 ? (
+              {Object.entries(favoriteDishes).length === 0 ? (
                 <div>
                   <span>{t('pages.MyAccountPage.no-fav-dishes')}</span>
                 </div>
