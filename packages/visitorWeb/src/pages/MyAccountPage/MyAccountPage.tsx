@@ -75,6 +75,7 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [saveFailureType, setSaveFailureType] = useState(null);
+  const [ingredientFeedback, setIngredientFeedback] = useState('');
 
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [userReview, setUserReview] = useState([]);
@@ -218,11 +219,24 @@ const MyAccountPage = () => {
   };
 
   const handleAddIngredient = async () => {
-    const result = await addIngredient(newIngredient);
-    if (result) {
-      setDBIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+    setIngredientFeedback('');
+    try {
+      const result = await addIngredient(newIngredient);
+      if (result.ok) {
+        setDBIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+        setNewIngredient('');
+        handleAddIngredientPopupClose();
+        setIngredientFeedback(`Successfully added ingredient: ${newIngredient}`);
+      } else {
+        setNewIngredient('');
+        handleAddIngredientPopupClose();
+        setIngredientFeedback(`Error handling ingredient change: ${newIngredient}`);
+      }
+    } catch (error) {
       setNewIngredient('');
       handleAddIngredientPopupClose();
+      console.error("Error handling ingredient change:", error);
+      setIngredientFeedback(`Error: ${error.message}`);
     }
   };
 
@@ -485,6 +499,7 @@ const MyAccountPage = () => {
     setopenReviewPopUp(true);
     fetchUserReview(); 
   };
+
   useEffect(() => {
     fetchUserReview();
   }, []);
@@ -511,6 +526,15 @@ const MyAccountPage = () => {
   const handleRestoClick = (restoId: string) => {
     navigate('/menu/' + restoId);
   };
+  const removeFavDish = (dishId: number, restoId: number) => {
+    const newFavs = favoriteDishes.filter((dish) => !(dish.dish.uid === dishId && dish.restoID === restoId));
+    setFavoriteDishes(newFavs);
+  }
+
+  const removeFavResto = (restoId: number) => {
+    const newFavs = favoriteRestaurants.filter((resto) => resto.uid != restoId);
+    setFavoriteRestaurants(newFavs);
+  }
 
   return (
     <div className={styles.MyAccountPage}>
@@ -607,6 +631,11 @@ const MyAccountPage = () => {
           <Button onClick={handleAddIngredientPopupOpen}>
             {t('pages.MyAccountPage.ingredient-not-found')}
           </Button>
+          {ingredientFeedback && (
+            <Typography variant='body2' color='textSecondary'>
+              {ingredientFeedback}
+            </Typography>
+          )}
         </div>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
@@ -767,12 +796,13 @@ const MyAccountPage = () => {
                     </div>
                   ) : (
                     favoriteRestaurants.map((restaurant) => (
-                    <RestoCard
-                    key={restaurant.id}
-                    resto={restaurant}
-                    isFavourite={true}
-                    dataIndex={0}
-                    />
+                      <RestoCard
+                        key={restaurant.id}
+                        resto={restaurant}
+                        isFavourite={true}
+                        dataIndex={0}
+                        deleteFavResto={removeFavResto}
+                      />
                     ))
                   )}
                 </>
@@ -840,6 +870,7 @@ const MyAccountPage = () => {
                             combo={dish.combo}
                             isTopLevel={true}
                             isFavourite={true}
+                            deleteFavDish={removeFavDish}
                           />
                         )
                       })}

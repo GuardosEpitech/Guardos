@@ -15,6 +15,10 @@ export async function authenticateGoogle(req: Request, res: Response,
   }
 
   try {
+    let url = process.env.allowedVW;
+    if (url.endsWith(':')) {
+      url = `${process.env.allowedVW}${process.env.PORTVW}`;
+    }
     const oauth2Client =
         new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
     if (typeof code === 'string') {
@@ -29,12 +33,14 @@ export async function authenticateGoogle(req: Request, res: Response,
       next();
     } else {
       console.error('Code is not a string.');
-      return res.status(400)
-        .send('Invalid request: No code provided');
+      return res.redirect(`${url}/login?error=auth_failed`);
     }
   } catch (error) {
+    let url = process.env.allowedVW;
+    if (url.endsWith(':')) {
+      url = `${process.env.allowedVW}${process.env.PORTVW}`;
+    }
     console.error('Error exchanging code for tokens:', error);
-    res.status(500)
-      .send('Authentication failed');
+    return res.redirect(`${url}/login?error=auth_failed`);
   }
 }

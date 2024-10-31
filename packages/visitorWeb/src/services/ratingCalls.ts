@@ -9,7 +9,7 @@ export const getRatingData = async (name: string) =>
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      console.error(error);
     });
 
 export const getRatingDataUser = async (userName: string) =>
@@ -19,7 +19,7 @@ export const getRatingDataUser = async (userName: string) =>
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      console.error(error);
     });
 
 export const deleteRatingDataUser = async (
@@ -49,5 +49,5 @@ export const postRatingData = async (
       return response.data;
     })
     .catch(function (error) {
-      console.log(error);
+      console.error(error);
     });

@@ -86,9 +86,7 @@ const UserSupportPage = () => {
         <>
             <Layout>
             <p>
-              {(t('pages.UserSupport.support-description1'))}
-              <a href='/Q&A'>{t('pages.UserSupport.Q&A')}</a>
-                {(t('pages.UserSupport.support-description2'))}
+              {(t('pages.UserSupport.support-description'))}
             </p>
                 <div className={styles.requestform}>
                 <h2 style={{ marginTop: '10px' }}>{t('pages.UserSupport.user-support')}</h2>
