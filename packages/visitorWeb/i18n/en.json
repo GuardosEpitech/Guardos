@@ -60,6 +60,8 @@
         "rating": "Rating:",
         "range": "Range:",
         "categories": "Categories:",
+        "all-categories": "All Categories",
+        "show-all": "Show all categories",
         "allergens": "Allergens:"
       },
       "Header": {

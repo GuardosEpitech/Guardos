@@ -204,3 +204,30 @@
     margin-left: 0;
   }
 }
+
+.ButtonExpandFilter {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff !important;
+  background-color: $burgundy !important;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: mix(#000000, $burgundy, 90%);
+  }
+
+  &:active {
+    background-color: mix(#ffffff, $burgundy, 90%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0.125rem 0.125rem rgba(0, 0, 0, 0.25);
+  }
+}
+
