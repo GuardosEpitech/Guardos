@@ -58,6 +58,7 @@ const MyAccountPage = () => {
   const [passwordChangeStatus, setPasswordChangeStatus] = useState(null);
   const [dataChangeStatus, setDataChangeStatus] = useState(null);
   const [saveFailureType, setSaveFailureType] = useState(null);
+  const [ingredientFeedback, setIngredientFeedback] = useState('');
 
   const [favoriteRestaurants, setFavoriteRestaurants] = useState([]);
   const [userReview, setUserReview] = useState([]);
@@ -191,11 +192,24 @@ const MyAccountPage = () => {
   };
 
   const handleAddIngredient = async () => {
-    const result = await addIngredient(newIngredient);
-    if (result) {
-      setDBIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+    setIngredientFeedback('');
+    try {
+      const result = await addIngredient(newIngredient);
+      if (result.ok) {
+        setDBIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
+        setNewIngredient('');
+        handleAddIngredientPopupClose();
+        setIngredientFeedback(`Successfully added ingredient: ${newIngredient}`);
+      } else {
+        setNewIngredient('');
+        handleAddIngredientPopupClose();
+        setIngredientFeedback(`Error handling ingredient change: ${newIngredient}`);
+      }
+    } catch (error) {
       setNewIngredient('');
       handleAddIngredientPopupClose();
+      console.error("Error handling ingredient change:", error);
+      setIngredientFeedback(`Error: ${error.message}`);
     }
   };
 
@@ -587,6 +601,11 @@ const MyAccountPage = () => {
           <Button onClick={handleAddIngredientPopupOpen}>
             {t('pages.MyAccountPage.ingredient-not-found')}
           </Button>
+          {ingredientFeedback && (
+            <Typography variant='body2' color='textSecondary'>
+              {ingredientFeedback}
+            </Typography>
+          )}
         </div>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
