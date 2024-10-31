@@ -365,7 +365,9 @@
         "or": "Ou",
         "facebook-img-alt": "Logo Facebook",
         "google-img-alt": "Logo Google",
-        "unverified": "Veuillez d'abord vérifier votre adresse e-mail."
+        "unverified": "Veuillez d'abord vérifier votre adresse e-mail.",
+        "denied": "Échec de la connexion",
+        "error3party": "Votre tentative de connexion via un tiers a échoué. Veuillez réessayer."
       },
       "MapPage": {
         "what-you-looking-for": "Que recherchez-vous ?"
@@ -424,8 +426,7 @@
       },
       "UserSupport": {
         "user-support": "Support utilisateur",
-        "support-description1": "Nous sommes là pour vous aider à répondre à toutes vos questions ou préoccupations. Prenez une minute pour jeter un coup d'œil à notre ",
-        "support-description2": " sinon, n'hésitez pas à nous contacter en utilisant le formulaire de contact ci-dessous, et nous vous répondrons dans les plus brefs délais.",
+        "support-description": "Nous sommes ici pour vous aider avec toutes vos questions ou préoccupations. Si vous avez besoin d'assistance, n'hésitez pas à nous contacter via le formulaire ci-dessous, et nous vous répondrons dans les plus brefs délais.",
         "Q&A": "FAQ",
         "name": "Nom complet",
         "subject": "Object",
