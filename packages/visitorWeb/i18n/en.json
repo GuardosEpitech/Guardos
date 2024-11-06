@@ -83,7 +83,7 @@
         "rating": "Rating: {{ rating }}",
         "telephone": "Tel.: {{ phone }}",
         "address": "Address: {{ address }}",
-        "resto-page": "Restaurant page",
+        "resto-page": "Menu",
         "go-to-map-view": "Go to Map View"
       },
       "Dish": {

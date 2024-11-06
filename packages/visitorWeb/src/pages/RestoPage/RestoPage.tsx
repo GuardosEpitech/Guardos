@@ -332,7 +332,7 @@ const RestoPage = () => {
               isAddress={isAddress}
             />
             <div className={styles.mapContainer}>
-              <MapView data={filteredRestaurants} userPosition={userPosition} />
+              <MapView data={filteredRestaurants} userPosition={userPosition} favRestos={isFavouriteRestos}/>
             </div>
           </div>
         )}

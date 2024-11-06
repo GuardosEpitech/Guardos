@@ -3,7 +3,6 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
 import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
-import MapPage from "@src/pages/MapPage";
 import ContactPage from "@src/pages/ContactPage/ContactPage";
 import AboutUsPage from "@src/pages/AboutUsPage/AboutUsPage";
 import AppOutlet from "@src/pages/AppOutlet";
@@ -98,7 +97,6 @@ const MVPRouter = () => {
             <Route path="/verify-email" element={<VerifyEmailPage/>}/>
             <Route path="/menu/:id" element={<MenuPage />} />
             <Route path="/addreview" element={<RatingPage/>}/>
-            <Route path="/map" element={<MapPage/>}/>
             <Route path="/" element={<RestoPage/>}/>
             <Route path="/about-us" element={<AboutUsPage/>}/>
             <Route path="/contact" element={<ContactPage/>}/>

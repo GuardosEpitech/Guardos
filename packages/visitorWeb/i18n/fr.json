@@ -83,7 +83,7 @@
         "rating": "Note : {{ rating }}",
         "telephone": "Tél. : {{ phone }}",
         "address": "Adresse : {{ address }}",
-        "resto-page": "Page du Restaurant",
+        "resto-page": "Menu",
         "go-to-map-view": "Aller à la Vue Carte"
       },
       "Dish": {
