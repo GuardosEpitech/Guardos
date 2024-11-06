@@ -28,6 +28,8 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import AddIcon from '@mui/icons-material/Add';
 import {getUserAllergens} from "@src/services/userCalls";
+import AddressInput from '@src/components/AddressInput/AddressInput';
+import { getCurrentCoords } from '@src/services/mapCalls';
 
 const GlobalStyle = () => {
   return createTheme({
@@ -99,6 +101,7 @@ interface FilterProps {
   filter: ISearchCommunication,
   categories: category[],
   allergens: Allergen[],
+  onChangeUserPosition: Function;
 }
 
 const Filter = (props: FilterProps) => {
@@ -123,6 +126,9 @@ const Filter = (props: FilterProps) => {
   const [errorSameFilterName, setErrorSameFilterName] = useState(false);
   const {t} = useTranslation();
   const userProfileName = t('common.me');
+  const [address, setAddress] = React.useState('');
+  const [isAddress, setIsAddress] = React.useState<boolean>(false);
+  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -568,6 +574,29 @@ const Filter = (props: FilterProps) => {
     setNewFilterName(e.target.value);
   }
 
+  const handleAddressSearch = async () => {
+    try {
+      if (address) {
+        const coords = await getCurrentCoords(address);
+        if (coords) {
+          setIsAddress(true);
+          const { lat, lng } = coords;
+          setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
+          props.onChangeUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) })
+        } else {
+          alert(t('pages.RestoPage.noAddress'));
+        }
+      } else {
+        setIsAddress(false);
+        setUserPosition(null);
+        props.onChangeUserPosition(null);
+      }
+    } catch (error) {
+      console.error('Error fetching address data:', error);
+      alert('Error fetching address data');
+    }
+  };
+
   return (
     <div className={styles.RectFilter}>
       <div className={styles.DivFilter}>
@@ -686,6 +715,13 @@ const Filter = (props: FilterProps) => {
           <div>
             <span className={styles.TitleSubFilter}>{t('components.Filter.range')}</span>
           </div>
+          <AddressInput
+              address={address}
+              setAddress={setAddress}
+              handleAddressSearch={handleAddressSearch}
+              isAddress={isAddress}
+            />
+          {isAddress && (
           <div className={styles.DivSlider}>
             <ThemeProvider theme={GlobalStyle()}>
               <Box sx={{ width: "20rem" }} className={styles.sliderWidth}>
@@ -700,6 +736,7 @@ const Filter = (props: FilterProps) => {
               </Box>
             </ThemeProvider>
           </div>
+          )}
         </div>
         <div className={styles.DivCategoriesBox}>
           <span className={styles.TitleSubFilter}>{t('components.Filter.categories')}</span>

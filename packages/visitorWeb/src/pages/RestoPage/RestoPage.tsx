@@ -11,13 +11,10 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
-import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import AddressInput from '@src/components/AddressInput/AddressInput';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -57,8 +54,6 @@ const RestoPage = () => {
   const [inputFieldsOutput, setInputFieldsOutput] = useState('');
   const [inputFields, setInputFields] = useState(['', '']);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
-  const [address, setAddress] = React.useState('');
-  const [isAddress, setIsAddress] = React.useState<boolean>(false);
   const [step, setStep] = useState(1);
   const [categories, setCategories] = useState([
     // TODO: apply i18n
@@ -224,39 +219,6 @@ const RestoPage = () => {
     }
   }
 
-  const handleAddressSearch = async () => {
-    try {
-      if (address) {
-        const coords = await getCurrentCoords(address);
-        if (coords) {
-          setIsAddress(true);
-          const { lat, lng } = coords;
-          setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
-          const inter = {
-            range: rangeValue,
-            rating: [rating, 5],
-            name: inputFields[0],
-            location: inputFields[1],
-            categories: categories.filter(category => 
-              category.value).map(category => category.name),
-            allergenList: allergens.filter(allergen => 
-              allergen.value).map(allergen => allergen.name),
-            userLoc: {lat: parseFloat(lat), lng: parseFloat(lng)}
-          }
-          await handleFilterChange(inter);
-        } else {
-          alert(t('pages.RestoPage.noAddress'));
-        }
-      } else {
-        setIsAddress(false);
-        setUserPosition(null);
-      }
-    } catch (error) {
-      console.error('Error fetching address data:', error);
-      alert('Error fetching address data');
-    }
-  };
-
   return (
     <>
       <div className={styles.RectOnImg}>
@@ -285,6 +247,7 @@ const RestoPage = () => {
             filter={getFilter()}
             categories={categories}
             allergens={allergens}
+            onChangeUserPosition={setUserPosition}
           />
         </div>
         {step === 1 ? (
@@ -294,12 +257,6 @@ const RestoPage = () => {
             ) : (
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
-            <AddressInput
-              address={address}
-              setAddress={setAddress}
-              handleAddressSearch={handleAddressSearch}
-              isAddress={isAddress}
-            />
             {filteredRestaurants?.length === 0 ? (
               <h2 style={{textAlign: "center"}}>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
@@ -325,12 +282,6 @@ const RestoPage = () => {
           </div>
         ) : (
           <div className={styles.container}>
-            <AddressInput
-              address={address}
-              setAddress={setAddress}
-              handleAddressSearch={handleAddressSearch}
-              isAddress={isAddress}
-            />
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} />
             </div>
