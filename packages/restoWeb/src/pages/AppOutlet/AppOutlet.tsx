@@ -40,7 +40,7 @@ const AppOutlet = () => {
               <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
               <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
               <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
-              <li><a className={styles.links} href={visitorIntroPageURL}>{t('pages.AppOutlet.welcomeSite')}</a></li>
+              <li><a className={styles.links} href={visitorIntroPageURL} target="_blank">{t('pages.AppOutlet.welcomeSite')}</a></li>
             </ul>
           </div>
           <div>
