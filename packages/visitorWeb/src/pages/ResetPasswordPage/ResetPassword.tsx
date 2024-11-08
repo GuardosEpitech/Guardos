@@ -89,8 +89,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
   return (
     <div className={styles.container}>
-      <h1>{t('pages.ResetPassword.get-back-in-account')}</h1>
-      <p>{step === 1 ? t('pages.ResetPassword.enter-account-info') :
+      <h1 className={styles.h1}>{t('pages.ResetPassword.get-back-in-account')}</h1>
+      <p className={styles.p}>{step === 1 ? t('pages.ResetPassword.enter-account-info') :
         t('pages.ResetPassword.enter-username-prompt')}</p>
       {step === 1 ? (
         <>
@@ -110,7 +110,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       ) : (
         <>
           <div className={styles.emailSection}>
-            <label>{t('pages.ResetPassword.email')}</label>
+            <label>{t('pages.ResetPassword.email')}: </label>
             <div className={styles.emailDisplay}>
               <span>{email}</span>
               <span className={styles.pencilIcon} onClick={handleGoBack}>
