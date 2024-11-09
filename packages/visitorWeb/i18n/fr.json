@@ -431,7 +431,8 @@
         "name": "Nom complet",
         "subject": "Object",
         "request": "Message",
-        "email-sent-success": "Email envoyé avec succès !"
+        "email-sent-success": "Email envoyé avec succès !",
+        "require-fields": "Tous les champs sont obligatoires"
       },
       "Payments": {
         "payment-success": "Paiement réussi",
