@@ -234,7 +234,6 @@ const RestoPage = () => {
           allergen.value).map(allergen => allergen.name),
         userLoc: userPosition
       };
-      console.log('new filter: ', newFilter);
       localStorage.setItem('filter', JSON.stringify(newFilter));
   
       try {
