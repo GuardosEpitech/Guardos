@@ -101,6 +101,7 @@
         "day": "Day",
         "opening": "Opening",
         "closing": "Closing",
+        "linkCopiedTitle": "Share this menu",
         "linkCopied": "Link copied to clipboard"
       },
       "Slider": {
