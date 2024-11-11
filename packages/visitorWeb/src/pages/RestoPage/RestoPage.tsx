@@ -219,6 +219,37 @@ const RestoPage = () => {
     }
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      
+      const newFilter = {
+        range: rangeValue,
+        rating: [rating, 5],
+        name: inputFields[0],
+        location: inputFields[1],
+        categories: categories.filter(category => 
+          category.value).map(category => category.name),
+        allergenList: allergens.filter(allergen => 
+          allergen.value).map(allergen => allergen.name),
+        userLoc: userPosition
+      };
+      console.log('new filter: ', newFilter);
+      localStorage.setItem('filter', JSON.stringify(newFilter));
+  
+      try {
+        const restos = await getNewFilteredRestos(newFilter);
+        setFilteredRestaurants(insertAdCard(restos));
+      } catch (error) {
+        console.error("Error fetching filtered restaurants:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+    
+  }, [userPosition]);
+
   return (
     <>
       <div className={styles.RectOnImg}>
