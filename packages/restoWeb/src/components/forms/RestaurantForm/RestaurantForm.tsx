@@ -19,7 +19,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { addNewResto, editResto, getAllMenuDesigns, getAllRestaurantChainsByUser } from "@src/services/restoCalls";
+import {
+  addNewResto,
+  editResto,
+  getAllMenuDesigns,
+  getAllRestaurantChainsByUser,
+  restoByName
+} from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
 import { IAddRestoRequest, IAddResto }
@@ -31,6 +37,7 @@ import {convertImageToBase64, displayImageFromBase64}
 import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
+import {addQRCode} from "@src/services/qrcodeCall";
 
 const PageBtn = () => {
   return createTheme({
@@ -140,6 +147,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [isPostalEmpty, setIsPostalEmpty] = useState(false);
   const [isCityEmpty, setIsCityEmpty] = useState(false);
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
+  const [restaurantData, setRestaurantData] = useState();
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
@@ -332,8 +340,14 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       userToken: userToken,
       resto: resto,
     };
+    async function addQRCODE() {
+      const res = await restoByName(resto.name);
+      await addQRCode({uid: res.uid,
+        url: `https://guardos.eu/menu/${res.uid}`});
+    }
     if (props.add) {
       await addNewResto(data);
+      await addQRCODE();
     } else {
       await editResto(origRestoName, resto, userToken);
     }

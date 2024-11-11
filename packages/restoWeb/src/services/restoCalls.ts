@@ -19,6 +19,18 @@ export const getAllResto = async () => {
   }
 };
 
+export const restoByName = async (restoName: string) =>  {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: baseUrl + restoName
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching restoByName:", error);
+  }
+};
+
 export const addNewResto = async (body: any) => {
   try {
     const response = await axios({

@@ -16,6 +16,7 @@ import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {checkDarkMode} from "../../utils/DarkMode";
 import {useTranslation} from "react-i18next";
+import {restoByName} from "@src/services/restoCalls";
 
 const theme = createTheme({
   palette: {
@@ -35,6 +36,7 @@ interface IMenuPageProps {
 
 const MenuPage = () => {
   const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
+  const [restaurantData, setRestaurantData] = useState({uid: 1});
   const [hasMenu, setHasMenu] = useState(false);
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
@@ -53,6 +55,8 @@ const MenuPage = () => {
   };
 
   useEffect(() => {
+    restoByName(restoName)
+      .then(res => setRestaurantData(res));
     getQRCodeByName(uid)
       .then(res => setURL(res));
     checkDarkMode();
@@ -175,7 +179,7 @@ const MenuPage = () => {
             className={styles.SaveBtn}
             variant="contained"
             sx={{width: "12.13rem"}}
-            onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${URL.uid}`}
+            onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${restaurantData.uid}`}
           >
             {t('pages.MenuPage.qr-code')}
           </Button>
