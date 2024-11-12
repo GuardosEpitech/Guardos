@@ -115,6 +115,7 @@ const Filter = (props: FilterProps) => {
   const [range, setRange] = React.useState(props.filter.range ? props.filter.range : 0);
   const [rating, setRating] = React.useState(props.filter.rating ? props.filter.rating[0] : 0);
   const [categories, setCategories] = useState(props.categories);
+  const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false);
   const [allergens, setAllergens] = useState<Allergen[]>(props.allergens);
   const [changeStatus, setChangeStatus] = useState(null);
   const [changeStatusMsg, setChangeStatusMsg] = useState('');
@@ -129,6 +130,10 @@ const Filter = (props: FilterProps) => {
   const [address, setAddress] = React.useState('');
   const [isAddress, setIsAddress] = React.useState<boolean>(false);
   const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
+
+  useEffect(() => {
+    setCategories(props.categories);
+  }, [props.categories]);
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -175,7 +180,7 @@ const Filter = (props: FilterProps) => {
     setRating(filter.rating[0]);
     setRange(filter.range);
 
-    const updatedCategories = categories.map(category => ({
+    const updatedCategories = props.categories.map(category => ({
       ...category,
       value: false
     }));
@@ -605,97 +610,97 @@ const Filter = (props: FilterProps) => {
         <div>
           <div className={styles.DivTitleFilter}>
             <span className={styles.TitleFilter}>{t('components.Filter.filter-by')}</span>
-          <IconButton
-            aria-label="filter-menu"
-            aria-controls="filter-menu"
-            aria-haspopup="true"
-            className={styles.iconRight}
-            onClick={handleMenuClick}
-          >
-            <MoreVert />
-          </IconButton>
-          <Menu
-            id="filter-menu"
-            anchorEl={menuAnchorEl}
-            keepMounted
-            open={Boolean(menuAnchorEl)}
-            onClose={handleMenuClose}
-            className={styles.ButtonFilterSaver}
-          >
-            <MenuItem>
-              <TextField
-                label={t('components.Filter.filter-name') as string}
-                value={newFilterName}
-                onChange={handleInputField}
-                focused
-                fullWidth
-              />
-            </MenuItem>
-            <div className={styles.filterLimit}>
-              {t('components.Filter.saved-filters', { used: '0', limit: filterLimit })}
-            </div>
-            { errorSameFilterName && (
-              <div className={styles.filterNameError}>
-                {t('components.Filter.same-filter-name')}
+            <IconButton
+                aria-label="filter-menu"
+                aria-controls="filter-menu"
+                aria-haspopup="true"
+                className={styles.iconRight}
+                onClick={handleMenuClick}
+            >
+              <MoreVert/>
+            </IconButton>
+            <Menu
+                id="filter-menu"
+                anchorEl={menuAnchorEl}
+                keepMounted
+                open={Boolean(menuAnchorEl)}
+                onClose={handleMenuClose}
+                className={styles.ButtonFilterSaver}
+            >
+              <MenuItem>
+                <TextField
+                    label={t('components.Filter.filter-name') as string}
+                    value={newFilterName}
+                    onChange={handleInputField}
+                    focused
+                    fullWidth
+                />
+              </MenuItem>
+              <div className={styles.filterLimit}>
+                {t('components.Filter.saved-filters', {used: '0', limit: filterLimit})}
               </div>
-            )}
-            <ul className={styles.filterList}>
-              {savedFilters?.map((filter, index) => (
-                <li key={index}>
-                  <span>{filter.filterName}</span>
-                  <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
-                    <DownloadIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteFilter(filter.filterName)}>
-                    <Delete />
-                  </IconButton>
-                </li>
-              ))}
-            </ul>
-            <MenuItem>
-              <Button onClick={handleClearFilter} variant="contained" color="secondary">
-                {t('components.Filter.clear-filter')}
-              </Button>
-              <Button onClick={handleSaveFilter} variant="contained" className={styles.saveFilter}>
-                <Save /> {t('components.Filter.save-filter')}
-              </Button>
-            </MenuItem>
-          </Menu>
-
-          {/* Load Filters Dialog */}
-          <Dialog open={openLoadDialog} onClose={() => setOpenLoadDialog(false)}>
-            <DialogTitle>{t('components.Filter.load-filters')}</DialogTitle>
-            <DialogContent>
-              <List>
+              {errorSameFilterName && (
+                  <div className={styles.filterNameError}>
+                    {t('components.Filter.same-filter-name')}
+                  </div>
+              )}
+              <ul className={styles.filterList}>
                 {savedFilters?.map((filter, index) => (
-                  <ListItem button key={index}>
-                    <ListItemText primary={filter.name} />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        edge="end"
-                        aria-label="load"
-                        onClick={() => {
-                          setOpenLoadDialog(false);
-                        }}
-                      >
-                        <Edit />
+                    <li key={index}>
+                      <span>{filter.filterName}</span>
+                      <IconButton onClick={() => handleLoadFilter(filter.filterName)}>
+                        <DownloadIcon/>
                       </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                      <IconButton onClick={() => handleDeleteFilter(filter.filterName)}>
+                        <Delete/>
+                      </IconButton>
+                    </li>
                 ))}
-              </List>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setOpenLoadDialog(false)} color="primary">
-                {t('common.cancel')}
-              </Button>
-            </DialogActions>
-          </Dialog>
+              </ul>
+              <MenuItem>
+                <Button onClick={handleClearFilter} variant="contained" color="secondary">
+                  {t('components.Filter.clear-filter')}
+                </Button>
+                <Button onClick={handleSaveFilter} variant="contained" className={styles.saveFilter}>
+                  <Save/> {t('components.Filter.save-filter')}
+                </Button>
+              </MenuItem>
+            </Menu>
+
+            {/* Load Filters Dialog */}
+            <Dialog open={openLoadDialog} onClose={() => setOpenLoadDialog(false)}>
+              <DialogTitle>{t('components.Filter.load-filters')}</DialogTitle>
+              <DialogContent>
+                <List>
+                  {savedFilters?.map((filter, index) => (
+                      <ListItem button key={index}>
+                        <ListItemText primary={filter.name}/>
+                        <ListItemSecondaryAction>
+                          <IconButton
+                              edge="end"
+                              aria-label="load"
+                              onClick={() => {
+                                setOpenLoadDialog(false);
+                              }}
+                          >
+                            <Edit/>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                  ))}
+                </List>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setOpenLoadDialog(false)} color="primary">
+                  {t('common.cancel')}
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
 
         {changeStatus !== null && (
-          <span style={{ color: changeStatus === 'success' ? 'green' : 'red' }}>
+            <span style={{color: changeStatus === 'success' ? 'green' : 'red'}}>
                 {changeStatusMsg}
               </span>
         )}
@@ -726,14 +731,14 @@ const Filter = (props: FilterProps) => {
           {isAddress && (
           <div className={styles.DivSlider}>
             <ThemeProvider theme={GlobalStyle()}>
-              <Box sx={{ width: "20rem" }} className={styles.sliderWidth}>
-                <Slider 
-                  defaultValue={100}
-                  value={range}
-                  color="primary"
-                  marks={marks}
-                  valueLabelDisplay="on"
-                  onChange={(event) => onChangeRange(event)}
+              <Box sx={{width: "20rem"}} className={styles.sliderWidth}>
+                <Slider
+                    defaultValue={100}
+                    value={range}
+                    color="primary"
+                    marks={marks}
+                    valueLabelDisplay="on"
+                    onChange={(event) => onChangeRange(event)}
                 />
               </Box>
             </ThemeProvider>
@@ -743,16 +748,51 @@ const Filter = (props: FilterProps) => {
         <div className={styles.DivCategoriesBox}>
           <span className={styles.TitleSubFilter}>{t('components.Filter.categories')}</span>
           <div className={styles.DivCategories}>
-            {categories.map((category) => (
-              <ThemeProvider theme={GlobalStyle()} key={category.name}>
-                <FormControlLabel
-                  control={<Checkbox checked={category.value} defaultChecked={category.value} />}
-                  label={<span className={styles.TitleCheck}>{category.name}</span>}
-                  onChange={() => onChangeStates(category.name)}
-                />
-              </ThemeProvider>
+            {categories.slice(0, 10).map((category) => (
+                <ThemeProvider theme={GlobalStyle()} key={category.name}>
+                  <FormControlLabel
+                      control={<Checkbox checked={category.value}/>}
+                      label={<span className={styles.TitleCheck}>{category.name}</span>}
+                      onChange={() => onChangeStates(category.name)}
+                  />
+                </ThemeProvider>
             ))}
+            {categories.length > 10 && (
+                <Button
+                    onClick={() => setOpenCategoriesDialog(true)}
+                    className={styles.ButtonExpandFilter}
+                >
+                  {t('components.Filter.show-all')}
+                </Button>
+            )}
           </div>
+
+          <Dialog
+              open={openCategoriesDialog}
+              onClose={() => setOpenCategoriesDialog(false)}
+              fullWidth
+              maxWidth="sm"
+          >
+            <DialogTitle>{t('components.Filter.all-categories')}</DialogTitle>
+            <DialogContent dividers>
+              {categories.map((category) => (
+                  <ThemeProvider theme={GlobalStyle()} key={category.name}>
+                    <FormControlLabel
+                        control={<Checkbox checked={category.value}/>}
+                        label={<span className={styles.TitleCheck}>{category.name}</span>}
+                        onChange={() => onChangeStates(category.name)}
+                    />
+                  </ThemeProvider>
+              ))}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                  className={styles.ButtonExpandFilter}
+                  onClick={() => setOpenCategoriesDialog(false)} color="primary">
+                {t('common.close')}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
         <div className={styles.DivAller}>
           <div className={styles.DivTitleAller}>
@@ -763,51 +803,51 @@ const Filter = (props: FilterProps) => {
               <TabContext value={selectedProfileIndex}>
                 <TabList onChange={handleProfileChange} variant={"scrollable"} aria-label="Allergen profiles">
                   {groupProfiles.map((profile, index) => (
-                    <Tab key={index} label={profile.name} value={String(index)} />
+                      <Tab key={index} label={profile.name} value={String(index)}/>
                   ))}
                   <IconButton onClick={handleAddProfile}>
                     <AddIcon/>
                   </IconButton>
                 </TabList>
                 {groupProfiles.map((profile, index) => (
-                  <TabPanel style={{padding: 0, paddingTop: 24}} key={index} value={String(index)}>
-                    <Stack className={styles.allergenChips} direction="row" spacing={1}>
-                      {profile.allergens.map((allergen, allergenIndex) => (
-                        <ThemeProvider theme={GlobalStyle()} key={allergen.name}>
-                          <Chip
-                          className={styles.chip}
-                          label={allergen.name}
-                          color={allergen.colorButton}
-                          variant="outlined"
-                          onClick={() => handleClick(allergen.name)}
-                          />
-                        </ThemeProvider>
-                      ))}
-                    </Stack>
-                    {selectedProfileIndex !== "0" && (
-                      <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => handleRemoveProfile(index)}
-                        startIcon={<Delete />}
-                      >
-                        Remove Profile
-                      </Button>
-                    )}
-                  </TabPanel>
+                    <TabPanel style={{padding: 0, paddingTop: 24}} key={index} value={String(index)}>
+                      <Stack className={styles.allergenChips} direction="row" spacing={1}>
+                        {profile.allergens.map((allergen, allergenIndex) => (
+                            <ThemeProvider theme={GlobalStyle()} key={allergen.name}>
+                              <Chip
+                                  className={styles.chip}
+                                  label={allergen.name}
+                                  color={allergen.colorButton}
+                                  variant="outlined"
+                                  onClick={() => handleClick(allergen.name)}
+                              />
+                            </ThemeProvider>
+                        ))}
+                      </Stack>
+                      {selectedProfileIndex !== "0" && (
+                          <Button
+                              variant="contained"
+                              color="error"
+                              onClick={() => handleRemoveProfile(index)}
+                              startIcon={<Delete/>}
+                          >
+                            Remove Profile
+                          </Button>
+                      )}
+                    </TabPanel>
                 ))}
               </TabContext>
               <Dialog open={openProfileDialog} onClose={handleProfileCancel}>
                 <DialogTitle>Add New Profile</DialogTitle>
                 <DialogContent>
                   <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Profile Name"
-                    fullWidth
-                    variant="outlined"
-                    value={newProfileName}
-                    onChange={(e) => setNewProfileName(e.target.value)}
+                      autoFocus
+                      margin="dense"
+                      label="Profile Name"
+                      fullWidth
+                      variant="outlined"
+                      value={newProfileName}
+                      onChange={(e) => setNewProfileName(e.target.value)}
                   />
                 </DialogContent>
                 <DialogActions>
