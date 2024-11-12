@@ -12,7 +12,8 @@ import {
   checkIfRestaurantExists
 } from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
-import {detectAllergensInDish} from '../controllers/allergenDetectionController';
+import {detectAllergensInDish}
+  from '../controllers/allergenDetectionController';
 import {
   doesUserOwnRestaurantByName,
   getRestaurantByID
@@ -320,7 +321,8 @@ router.post('/:name', async (req, res) => {
         .send(allergensDB.data);
     }
     const allergens: [string] = allergensDB.data[0].allergens;
-    dish.allergens.push(...allergens);
+    if (allergens)
+      dish.allergens.push(...allergens);
     const newDish = await createNewDish(resto, dish, userID as number);
     if (restoChainID) {
       await createNewForEveryRestoChainDish(dish,
