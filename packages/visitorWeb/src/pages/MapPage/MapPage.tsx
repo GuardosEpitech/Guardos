@@ -45,7 +45,7 @@ const MapPage = () => {
     { name: "peanuts", value: false, colorButton: "primary" },
     { name: "sesame", value: false, colorButton: "primary" },
     { name: "soybeans", value: false, colorButton: "primary" },
-    { name: "sulphides", value: false, colorButton: "primary" },
+    { name: "sulphites", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
   const {t} = useTranslation();

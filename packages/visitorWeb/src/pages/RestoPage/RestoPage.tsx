@@ -12,10 +12,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
 import {useTranslation} from "react-i18next";
-import { getCurrentCoords } from '@src/services/mapCalls';
+import {checkDarkMode} from "../../utils/DarkMode";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import AddressInput from '@src/components/AddressInput/AddressInput';
+import {getUserAllergens} from "@src/services/userCalls";
 import {getCategories} from "@src/services/categorieCalls";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
@@ -77,12 +77,13 @@ const RestoPage = () => {
     { name: "peanuts", value: false, colorButton: "primary" },
     { name: "sesame", value: false, colorButton: "primary" },
     { name: "soybeans", value: false, colorButton: "primary" },
-    { name: "sulphides", value: false, colorButton: "primary" },
+    { name: "sulphites", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [loadingAllergens, setLoadingAllergens] = useState(true);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -95,11 +96,12 @@ const RestoPage = () => {
   };
 
   useEffect(() => {
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+
     const initializeData = async () => {
-      await fetchFavourites();
-      clearFilter();
-      const userToken = localStorage.getItem('user');
-      if (userToken === null) { return; }
       const fetchedCategories = await getCategories(userToken);
       if (!fetchedCategories) {return;}
       const formattedCategories = fetchedCategories.map((category: any) => ({
@@ -109,18 +111,49 @@ const RestoPage = () => {
       setCategories(formattedCategories);
     };
 
+    const loadAllergensAndFavourites = async () => {
+      setLoadingAllergens(true);
+      const userAllergens = await getUserAllergens(userToken);
+    
+      setAllergens((prevAllergens) =>
+        prevAllergens.map((allergen) => ({
+          ...allergen,
+          value: userAllergens.includes(allergen.name) ? true : allergen.value,
+        }))
+      );
+      const newFilter = {
+        range: rangeValue,
+        rating: [rating, 5],
+        name: inputFields[0],
+        location: inputFields[1],
+        categories: categories.filter(category => 
+          category.value).map(category => category.name),
+        allergenList: allergens.filter(allergen => 
+          allergen.value).map(allergen => allergen.name),
+        userLoc: userPosition
+      };
+      
+      localStorage.setItem('filter', JSON.stringify(newFilter));
+      setLoadingAllergens(false); 
+      await fetchFavourites();
+    };
+
     initializeData();
+
+    loadAllergensAndFavourites()
+      .then(() => console.log("Loaded allergens and favourites ", allergens))
+      .catch((error) => console.error("Error loading allergens or favourites:", error));
+
+    clearFilter(); 
+    checkDarkMode();
   }, []);
 
   useEffect(() => {
-    if (categories.length > 0 && !hasLoadedFilter.current) {
+    if (categories.length > 0 && !hasLoadedFilter.current && !loadingAllergens) {
       hasLoadedFilter.current = true;
       loadFilter().then(r => console.log('Reloaded filter'));
     }
-  }, [categories]);
-
-
-
+  }, [categories, loadingAllergens]);
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
@@ -178,16 +211,15 @@ const RestoPage = () => {
       return updatedCategories;
     });
 
-    setAllergens((prevAllergens :any) => {
-      const updatedAllergens = prevAllergens.map((allergen: any) => ({
-        ...allergen,
-        value: filter.allergenList ? filter.allergenList.includes(allergen.name) : allergen.value,
-        colorButton: filter.allergenList && filter.allergenList.includes(allergen.name)
-            ? "secondary" : "primary"
-      }));
-      return updatedAllergens;
-    });
+    const updatedAllergens: Allergen[] = allergens.map(allergen => ({
+      ...allergen,
+      value: filter.allergenList ? filter.allergenList
+        .includes(allergen.name) : allergen.value,
+      colorButton: filter.allergenList && filter.allergenList
+        .includes(allergen.name) ? "secondary" : "primary"
+    }));
 
+    setAllergens(updatedAllergens);
     setInputFieldsOutput('');
 
     if (inputFields[0] !== '' || inputFields[1] !== '') {
@@ -211,7 +243,7 @@ const RestoPage = () => {
       location: inputFields[1],
       categories: categories.filter(category =>
         category.value).map(category => category.name),
-      allergenList: allergens.filter(allergen =>
+      allergenList: updatedAllergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc
     };
@@ -266,8 +298,10 @@ const RestoPage = () => {
         setLoading(false);
       }
     };
-    fetchData();
-
+    if (userPosition) {
+      fetchData();
+    }
+    
   }, [userPosition]);
 
   return (
