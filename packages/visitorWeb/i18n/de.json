@@ -103,6 +103,7 @@
         "day": "Tag",
         "opening": "Öffnung",
         "closing": "Schließung",
+        "linkCopiedTitle": "Dieses Menü teilen",
         "linkCopied": "Link kopiert"
         
       },
@@ -434,7 +435,8 @@
         "name": "Name",
         "subject": "Betreff",
         "request": "Nachricht",
-        "email-sent-success": "Nachricht erfolgreich gesendet!"
+        "email-sent-success": "Nachricht erfolgreich gesendet!",
+        "require-fields": "Alle Felder sind erforderlich"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",
