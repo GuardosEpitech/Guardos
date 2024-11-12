@@ -104,7 +104,7 @@ const MyAccountPage = () => {
     'peanuts',
     'sesame',
     'soybeans',
-    'sulphides',
+    'sulphites',
     'tree nuts',
   ];
 
