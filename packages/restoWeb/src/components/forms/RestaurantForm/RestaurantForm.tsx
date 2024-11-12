@@ -471,7 +471,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={2} sm={4} md={10}>
+            <Grid item xs={2} sm={4} md={9}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
                   {t('components.RestaurantForm.street-name') + '*'}
@@ -491,7 +491,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item xs={2} sm={4} md={2}>
+            <Grid item xs={2} sm={4} md={3}>
               <FormControl fullWidth>
                 <InputLabel htmlFor="component-outlined">
                   {t('components.RestaurantForm.street-number') + '*'}
