@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo } from "react";
+import React, {useEffect, useState} from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
 import RegistrationPage from "@src/pages/RegistrationPage";
@@ -32,6 +32,7 @@ import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 import GuidesPage from "@src/pages/GuidesPage";
 import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
 import { checkDarkMode } from "../utils/DarkMode";
+import ViewRatingPage from "@src/pages/ViewRatingPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
@@ -106,6 +107,7 @@ const MVPRouter = () => {
             <Route path="/addreview" element={<RatingPage/>}/>
             <Route path="/map" element={<MapPage/>}/>
             <Route path="/" element={<RestoPage/>}/>
+            <Route path="/reviews" element={<ViewRatingPage/>}/>
             <Route path="/about-us" element={<AboutUsPage/>}/>
             <Route path="/contact" element={<ContactPage/>}/>
             <Route path="/account-recovery" element={<ResetPassword/>}/>
