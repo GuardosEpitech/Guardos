@@ -633,6 +633,7 @@ const MyAccountPage = () => {
           onChange={handleSelectDislikedIngredientsChange}
           options={dbIngredients ? dbIngredients : []}
           value={selectedDislikedIngredients}
+          className={styles.DropDownAllergens}
           filterSelectedOptions
           renderInput={(params) => (
             <TextField
