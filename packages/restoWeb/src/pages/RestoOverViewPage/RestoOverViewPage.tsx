@@ -16,23 +16,23 @@ const RestoOverViewPage = () => {
   return (
     <div className={styles.App}>
       <div className={styles.tileContainer}>
-        <a href="/" onClick={() => { navigate('/'); }} className={styles.tile}>
+        <a onClick={() => { navigate('/'); }} className={styles.tile}>
           <div className={styles.icon}><img src={home}/></div>
           <div className={styles.text}>{t('common.my-restos')}</div>
         </a>
-        <a href="/addCategory" onClick={() => { navigate('/addCategory'); }} className={styles.tile}>
+        <a onClick={() => { navigate('/addCategory'); }} className={styles.tile}>
           <div className={styles.icon}><img src={chain}/></div>
           <div className={styles.text}>{t('common.my-category')}</div>
         </a>
-        <a href="/addRestoChain" onClick={() => { navigate('/addRestoChain'); }} className={styles.tile}>
+        <a onClick={() => { navigate('/addRestoChain'); }} className={styles.tile}>
           <div className={styles.icon}><img src={restaurant}/></div>
           <div className={styles.text}>{t('common.my-restochain')}</div>
         </a>
-        <a href="/dishes" onClick={() => { navigate('/dishes'); }} className={styles.tile}>
+        <a onClick={() => { navigate('/dishes'); }} className={styles.tile}>
           <div className={styles.icon}><img src={dish}/></div>
           <div className={styles.text}>{t('common.my-dishes')}</div>
         </a>
-        <a href="/products" onClick={() => { navigate('/products'); }} className={styles.tile}>
+        <a onClick={() => { navigate('/products'); }} className={styles.tile}>
           <div className={styles.icon}><img src={ingredient}/></div>
           <div className={styles.text}>{t('common.my-products')}</div>
         </a>

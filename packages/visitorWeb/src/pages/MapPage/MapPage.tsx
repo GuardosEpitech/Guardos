@@ -7,9 +7,7 @@ import MapView from '@src/components/Map/Map';
 import {getFilteredRestos, getSelectedFilteredRestos} from "@src/services/filterCalls";
 import { ISearchCommunication } from "shared/models/communicationInterfaces";
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 type color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -54,7 +52,6 @@ const MapPage = () => {
 
   useEffect(() => {
     loadFilter().then(r => console.log("Loaded search data."));
-    checkDarkMode();
   }, []);
 
   const updateRestoData = () => {
@@ -227,6 +224,7 @@ const MapPage = () => {
             filter={getFilter()}
             categories={categories}
             allergens={allergens}
+            onChangeUserPosition={null}
           />
         </div>
         <MapView data={filteredRestaurants} />

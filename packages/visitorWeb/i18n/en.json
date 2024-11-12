@@ -101,6 +101,7 @@
         "day": "Day",
         "opening": "Opening",
         "closing": "Closing",
+        "linkCopiedTitle": "Share this menu",
         "linkCopied": "Link copied to clipboard"
       },
       "Slider": {
@@ -150,6 +151,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Preparing dishes..."
+      },
       "AboutUs": {
         "german-team-member": "4th year Epitech student from Germany",
         "french-team-member": "4th year Epitech student from France",
@@ -359,7 +363,8 @@
         "name": "Full Name",
         "subject": "Subject",
         "request": "Message",
-        "email-sent-success": "Message successfully sent!"
+        "email-sent-success": "Message successfully sent!",
+        "require-fields": "All fields are require"
       },
       "LoginPage": {
         "redirect-facebook-login": "Redirecting to Facebook login",

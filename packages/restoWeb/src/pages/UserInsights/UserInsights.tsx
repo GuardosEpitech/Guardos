@@ -3,8 +3,6 @@ import { Grid, Card, CardContent, Typography, Chip, Tooltip, MenuItem,
   Select, FormControl, InputLabel, Container } from "@mui/material";
 import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
 import { useTranslation } from "react-i18next";
-
-import { checkDarkMode } from "../../utils/DarkMode";
 import { getRestoStatistics } from "@src/services/statisticsCalls";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
 
@@ -32,7 +30,6 @@ const UserInsights = () => {
   };
 
   useEffect(() => {
-    checkDarkMode();
     getStatistics();
   }, []);
   //@ts-ignore

@@ -117,12 +117,12 @@ const CookieStatementPage: React.FC = () => {
         <hr className={styles.line} />
         <div className={styles.text}>
           <p>{t('pages.CookieStatement.intro')} 
-            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>.
+            <a href='/privacy' target='_blank'>{t('pages.CookieStatement.privacy')}</a>.
           </p>
           <br />
           <p>
             {t('pages.CookieStatement.intro2')}
-            <a href='/contact'>guardos-help@outlook.com</a>
+            <a href='/contact' target='_blank'>guardos-help@outlook.com</a>
             {t('pages.CookieStatement.intro2-2')}
             </p>
           <br />
@@ -146,7 +146,7 @@ const CookieStatementPage: React.FC = () => {
         <div className={styles.text}>
           <p>
             {t('pages.CookieStatement.cookies')}
-            <a href='/technologies'>{t('pages.CookieStatement.listOf')}</a>. 
+            <a href='/technologies' target='_blank'>{t('pages.CookieStatement.listOf')}</a>. 
             {t('pages.CookieStatement.cookies2')}
           </p>
         </div>
@@ -202,7 +202,7 @@ const CookieStatementPage: React.FC = () => {
           <br />
           <p>
             {t('pages.CookieStatement.securityTxt')}
-            <a href='/contact'>guardos-help@outlook.com</a>
+            <a href='/contact' target='_blank'>guardos-help@outlook.com</a>
             {t('pages.CookieStatement.securityTxt2')}
           </p>
           <br />
@@ -248,7 +248,7 @@ const CookieStatementPage: React.FC = () => {
           <br />
           <p>
             {t('pages.CookieStatement.inspect')}
-            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>
+            <a href='/privacy' target='_blank'>{t('pages.CookieStatement.privacy')}</a>
             {t('pages.CookieStatement.inspect2')}
           </p>
           <br />
@@ -258,7 +258,7 @@ const CookieStatementPage: React.FC = () => {
           <br />
           <p>
             {t('pages.CookieStatement.tips')}
-            <a href='/privacy'>{t('pages.CookieStatement.privacy')}</a>
+            <a href='/privacy' target='_blank'>{t('pages.CookieStatement.privacy')}</a>
             {t('pages.CookieStatement.tips2')}
           </p>
         </div>
@@ -271,7 +271,7 @@ const CookieStatementPage: React.FC = () => {
           <br />
           <p>
             {t('pages.CookieStatement.conclusion3')}
-            <a href='/contact'>guardos-help@outlook.com</a>
+            <a href='/contact' target='_blank'>guardos-help@outlook.com</a>
             {t('pages.CookieStatement.conclusion3-3')}
           </p>
           <br />

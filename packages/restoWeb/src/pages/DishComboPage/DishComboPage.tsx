@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/pages/DishComboPage/DishComboPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { checkDarkMode } from "../../utils/DarkMode";
 import { getDishesByResto } from "@src/services/dishCalls";
 import {
     Autocomplete,
@@ -26,7 +25,6 @@ const DishComboPage = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    checkDarkMode();
     const fetchDishes = async () => {
         const allDishes = await getDishesByResto(dish.resto);
         const cleanedDishes = allDishes[0].dishes.filter((d: IDishFE) => d.name !== dish.name);
