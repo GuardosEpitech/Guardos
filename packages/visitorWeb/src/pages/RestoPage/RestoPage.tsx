@@ -100,10 +100,20 @@ const RestoPage = () => {
     if (userToken === null) {
       return;
     }
+
+    const initializeData = async () => {
+      const fetchedCategories = await getCategories(userToken);
+      if (!fetchedCategories) {return;}
+      const formattedCategories = fetchedCategories.map((category: any) => ({
+        name: category,
+        value: false,
+      }));
+      setCategories(formattedCategories);
+    };
+
     const loadAllergensAndFavourites = async () => {
       setLoadingAllergens(true);
       const userAllergens = await getUserAllergens(userToken);
-      console.log(userAllergens);
     
       setAllergens((prevAllergens) =>
         prevAllergens.map((allergen) => ({
@@ -127,43 +137,23 @@ const RestoPage = () => {
       setLoadingAllergens(false); 
       await fetchFavourites();
     };
+
+    initializeData();
+
     loadAllergensAndFavourites()
       .then(() => console.log("Loaded allergens and favourites ", allergens))
       .catch((error) => console.error("Error loading allergens or favourites:", error));
+
     clearFilter(); 
     checkDarkMode();
-    const initializeData = async () => {
-      await fetchFavourites();
-      clearFilter();
-      const userToken = localStorage.getItem('user');
-      if (userToken === null) { return; }
-      const fetchedCategories = await getCategories(userToken);
-      if (!fetchedCategories) {return;}
-      const formattedCategories = fetchedCategories.map((category: any) => ({
-        name: category,
-        value: false,
-      }));
-      setCategories(formattedCategories);
-    };
-
-    initializeData();
   }, []);
 
   useEffect(() => {
-    if (categories.length > 0 && !hasLoadedFilter.current) {
+    if (categories.length > 0 && !hasLoadedFilter.current && !loadingAllergens) {
       hasLoadedFilter.current = true;
       loadFilter().then(r => console.log('Reloaded filter'));
     }
-  }, [categories]);
-
-
-
-
-  useEffect(() => {
-    if (!loadingAllergens) {
-      loadFilter().then(() => console.log("Loaded filter with updated allergens."));
-    }
-  }, [loadingAllergens]);
+  }, [categories, loadingAllergens]);
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
@@ -221,16 +211,15 @@ const RestoPage = () => {
       return updatedCategories;
     });
 
-    setAllergens((prevAllergens :any) => {
-      const updatedAllergens = prevAllergens.map((allergen: any) => ({
-        ...allergen,
-        value: filter.allergenList ? filter.allergenList.includes(allergen.name) : allergen.value,
-        colorButton: filter.allergenList && filter.allergenList.includes(allergen.name)
-            ? "secondary" : "primary"
-      }));
-      return updatedAllergens;
-    });
+    const updatedAllergens: Allergen[] = allergens.map(allergen => ({
+      ...allergen,
+      value: filter.allergenList ? filter.allergenList
+        .includes(allergen.name) : allergen.value,
+      colorButton: filter.allergenList && filter.allergenList
+        .includes(allergen.name) ? "secondary" : "primary"
+    }));
 
+    setAllergens(updatedAllergens);
     setInputFieldsOutput('');
 
     if (inputFields[0] !== '' || inputFields[1] !== '') {
@@ -254,7 +243,7 @@ const RestoPage = () => {
       location: inputFields[1],
       categories: categories.filter(category =>
         category.value).map(category => category.name),
-      allergenList: allergens.filter(allergen =>
+      allergenList: updatedAllergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc
     };
