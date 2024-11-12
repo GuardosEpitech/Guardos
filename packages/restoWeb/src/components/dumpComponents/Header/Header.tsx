@@ -40,9 +40,7 @@ const Header = () => {
       if (isUserTokenValid) {
         setLoggedIn(true);
       } else {
-        // ALL CONSOLE.LOGS HAVE TO STAY IN, OTHERWISE IT TRIGGERS A DISCONNECT IN FIREFOX 
-        console.log("logged out");
-        console.log("wait");
+        // ALL CONSOLE.LOGS HAVE TO STAY IN, OTHERWISE IT TRIGGERS A DISCONNECT IN FIREFOX
         const tmpObject = await checkIfTokenIsValid({ key: userToken });
         console.log(tmpObject);
         setLoggedIn(false);
