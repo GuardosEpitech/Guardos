@@ -7,11 +7,13 @@ import ramon from "@src/assets/profile/ramon.png";
 import renan from "@src/assets/profile/renan.png";
 import alban from "@src/assets/profile/alban.png";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import { useNavigate } from "react-router-dom";
+import { NavigateTo } from "@src/utils/NavigateTo";
 
 const AboutUsPage = () => {
   const [activeSection, setActiveSection] = useState('introduction');
   const {t} = useTranslation();
+  const navigate = useNavigate();
   const teamMembers = [
     {
       id: 1,
@@ -45,10 +47,6 @@ const AboutUsPage = () => {
     },
   ];
 
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
-
     return (
         <div>
             <div className={styles.aboutuscontainer}>
@@ -79,7 +77,7 @@ const AboutUsPage = () => {
                         {t('pages.AboutUs.introduction-text')}
                         <br />
                         <span>
-                          <a href="/register" className={styles.signupLink}>
+                          <a onClick={() => { navigate('/'); }} className={styles.signupLink}>
                             {t('pages.AboutUs.sign-up')}
                           </a>
                           {t('pages.AboutUs.for-free')}

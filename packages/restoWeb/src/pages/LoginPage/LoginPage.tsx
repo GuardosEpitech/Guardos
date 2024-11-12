@@ -7,11 +7,9 @@ import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
-import { enable, disable, setFetchMethod } from "darkreader";
 import VerificationCodeInput
   from "../../components/TwoFactorAuth/TwoFactorAuthentification";
 import { useTranslation } from "react-i18next";
-import { checkDarkMode } from "../../utils/DarkMode";
 import {verfyTwoFactorAndLogin} from "@src/services/userCalls";
 
 interface LoginUser {
@@ -39,10 +37,6 @@ const Login = (props: LoginPageProps) => {
   const { t } = useTranslation();
   const [isUnverified, setIsUnverified] = useState(false);
   const verifyLink = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register/restoWeb/resend-verification`;
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -161,11 +155,11 @@ const Login = (props: LoginPageProps) => {
                 {t('pages.LoginPage.login')}
               </Button>
               <p className={styles.registerInfo}>
-                <a className={styles.registerLink} href="/account-recovery">{t('pages.LoginPage.trouble-logging-in')}</a>
+                <a className={styles.registerLink} onClick={() => {navigate('/account-recovery'); }}>{t('pages.LoginPage.trouble-logging-in')}</a>
               </p>
               <p className={styles.registerInfo}>
                 {t('pages.LoginPage.register-if-no-account')}
-                <a className={styles.registerLink} href="/register">
+                <a className={styles.registerLink} onClick={() => {navigate('/register'); }}>
                   {t('pages.LoginPage.here')}
                 </a>.
               </p>

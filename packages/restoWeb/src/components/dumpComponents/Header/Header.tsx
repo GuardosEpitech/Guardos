@@ -40,6 +40,9 @@ const Header = () => {
       if (isUserTokenValid) {
         setLoggedIn(true);
       } else {
+        // ALL CONSOLE.LOGS HAVE TO STAY IN, OTHERWISE IT TRIGGERS A DISCONNECT IN FIREFOX
+        const tmpObject = await checkIfTokenIsValid({ key: userToken });
+        console.log(tmpObject);
         setLoggedIn(false);
         localStorage.removeItem('user');
       }
@@ -80,14 +83,14 @@ const Header = () => {
         </div>
         <div className={styles.headerLinks}>
           {!loggedIn ? (
-            <a className={styles.NavTitleDropDown} href="/login">{t('components.Header.login')}</a>
+            <a className={styles.NavTitleDropDown} onClick={() => { navigate('/login'); }}>{t('components.Header.login')}</a>
           ) : (
             <>
               <a className={styles.NavTitle} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
-              <a className={styles.NavTitle} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-              <a className={styles.NavTitle} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
-              <a className={styles.NavTitle} href="/insights" onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
-              <a className={styles.NavTitle} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
+              <a className={styles.NavTitle} onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
             </>
           )}
         </div>
@@ -95,14 +98,14 @@ const Header = () => {
       <Drawer anchor="left" open={showDrawer} onClose={() => setShowDrawer(false)} classes={{ paper: styles.drawer }}>
         <div className={styles.drawerContent}>
           {!loggedIn ? (
-            <a className={styles.NavTitleDropDown} href="login">{t('components.Header.login')}</a>
+            <a className={styles.NavTitleDropDown} onClick={() => { navigate('/login'); }}>{t('components.Header.login')}</a>
           ) : (
               <>
                 <a className={styles.NavTitleDropDown} onClick={logoutUser} role='link' tabIndex={0} href="javascript:void(0);">{t('components.Header.logout')}</a>
-                <a className={styles.NavTitleDropDown} href="/account" onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
-                <a className={styles.NavTitleDropDown} href="/restoOverview" onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
-                <a className={styles.NavTitleDropDown} href="/insights" onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
-                <a className={styles.NavTitleDropDown} href="/guides" onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/account'); }}>{t('components.Header.my-account')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/restoOverview'); }}>{t('common.resto-overview')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/guides'); }}>{t('components.Header.guides')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { handleOptionClick(); navigate('/insights'); }}>{t('common.insights')}</a>
               </>
             )}
         </div>

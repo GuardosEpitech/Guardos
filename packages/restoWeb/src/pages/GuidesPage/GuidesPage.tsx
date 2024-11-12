@@ -5,7 +5,6 @@ import Accordion from "@src/components/Accordion/Accordion";
 import Button from "@mui/material/Button";
 import {useTranslation} from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { checkDarkMode } from "@src/utils/DarkMode";
 
 const BtnTheme = () => {
   return createTheme({
@@ -36,10 +35,6 @@ interface Tip {
 
 const GuidesPage = () => {
   const {t} = useTranslation();
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   return (
     <>

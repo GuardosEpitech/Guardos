@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import AddressInput from '@src/components/AddressInput/AddressInput';
@@ -107,7 +107,6 @@ const RestoPage = () => {
         value: false,
       }));
       setCategories(formattedCategories);
-      checkDarkMode();
     };
 
     initializeData();

@@ -10,7 +10,6 @@ import GoogleLogo from '../../assets/Google.svg';
 import axios from 'axios';
 import styles from "@src/pages/LoginPage/LoginPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { checkDarkMode } from "../../utils/DarkMode";
 import LoginDenied from "@src/pages/LoginDenied";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -42,7 +41,6 @@ const Login = (props: LoginPageProps) => {
   const [thirdPartyError, setThirdPartyError] = useState(false);
 
   useEffect(() => {
-    checkDarkMode();
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     const userData = urlParams.get('user');
@@ -196,12 +194,12 @@ const Login = (props: LoginPageProps) => {
                   {t('pages.LoginPage.login')}
                 </Button>
                 <p className={styles.registerInfo}>
-                  <a className={styles.registerLink} href="/account-recovery">
+                  <a className={styles.registerLink} onClick={() => { navigate('/account-recovery'); }}>
                     {t('pages.LoginPage.trouble-logging-in')}
                   </a>.
                 </p>
                 <p className={styles.registerInfo}>
-                  {t('pages.LoginPage.register-if-no-account')} <a className={styles.registerLink} href="/register">
+                  {t('pages.LoginPage.register-if-no-account')} <a className={styles.registerLink} onClick={() => { navigate('/register'); }}>
                   {t('pages.LoginPage.here')}
                 </a>.
                 </p>

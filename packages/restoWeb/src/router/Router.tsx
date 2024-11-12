@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Navigate }
   from "react-router-dom";
 
@@ -40,11 +40,17 @@ import UserInsights from "@src/pages/UserInsights";
 import DishComboPage from "@src/pages/DishComboPage";
 import GuidesPage from "@src/pages/GuidesPage";
 import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
+import { checkDarkMode } from "../utils/DarkMode";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
   const [showCookies, setShowCookies] = useState<boolean>();
   const userToken = localStorage.getItem('user');
+  const [loading, setLoading] = useState(true);
+
+  useMemo(() => {
+    checkDarkMode();
+  }, [location]);
 
   const checkUserToken = () => {
     if (userToken === null) {

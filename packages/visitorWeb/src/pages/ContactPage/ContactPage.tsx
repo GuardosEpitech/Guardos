@@ -6,7 +6,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import axios from 'axios';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/sendEmail/`;
 
@@ -17,10 +16,6 @@ const ContactPage = () => {
     const [message, setMessage] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const {t} = useTranslation();
-
-    useEffect(() => {
-        checkDarkMode();
-      }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

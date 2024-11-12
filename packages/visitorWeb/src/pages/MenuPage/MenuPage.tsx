@@ -25,7 +25,6 @@ import { getRestosMenu, getRestaurantDetails } from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import { useTranslation } from "react-i18next";
 import { getUserAllergens, getUserDislikedIngredients } from "@src/services/userCalls";
-import { checkDarkMode } from "../../utils/DarkMode";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
@@ -140,7 +139,6 @@ const MenuPage = () => {
       fetchFavourites().then(() => console.log("Loaded favourite dish list"));
       fetchFavouriteRestos().then(() => console.log("Checked if resto is favourite."));
     }
-    checkDarkMode();
   }, [id, location.state]);
 
   const formatLocation = (location: any) => {

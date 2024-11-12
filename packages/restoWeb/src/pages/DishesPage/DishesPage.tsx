@@ -9,20 +9,20 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/DishesPage/DishesPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import {NavigateTo} from "@src/utils/NavigateTo";
+import {useNavigate} from "react-router-dom";
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateDishData();
-    checkDarkMode();
   }, []);
 
   const updateDishData = () => {
@@ -63,11 +63,11 @@ const DishesPage = () => {
                 <br/>
                 <span className={styles.ErrorText}>
                   {t('pages.DishesPage.add-first-dish')}
-                  <a href="/addDish">{t('pages.DishesPage.here')}</a>.
+                  <a onClick={() => { navigate('/addDish'); }}>{t('pages.DishesPage.here')}</a>.
                 </span>
                 <br/>
                 <span className={styles.ErrorText}>
-              Be sure to <a href="/addResto">add</a> a restaurant first.
+              Be sure to <a onClick={() => { navigate('/addResto'); }}>add</a> a restaurant first.
                 </span>
               </div>)
               :

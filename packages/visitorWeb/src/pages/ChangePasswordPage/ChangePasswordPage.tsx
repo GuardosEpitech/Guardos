@@ -12,7 +12,8 @@ import {
 import { set } from 'cypress/types/lodash';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import { useNavigate } from "react-router-dom";
+import { NavigateTo } from "@src/utils/NavigateTo";
 
 const ChangePasswordPage = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const ChangePasswordPage = () => {
   const [open, setOpen] = useState(true);
   const [openFailed, setOpenFailed] = useState(true);
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,7 +55,6 @@ const ChangePasswordPage = () => {
     }
 
     fetchData();
-    checkDarkMode();
   }, [email]);
 
   function isValidPassword(password: string): boolean {
@@ -110,7 +111,7 @@ const ChangePasswordPage = () => {
 
   const handleGoBackToLogin = () => {
     setOpen(false);
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   const handleGoBackToSite = () => {

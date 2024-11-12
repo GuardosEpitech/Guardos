@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from 'shared/components/Layout/Layout';
 import axios from 'axios';
 import styles from './UserSupportPage.module.scss';
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import { getRestoUserPermission } from '@src/services/permissionsCalls';
 import UserSupport from '.';
 
@@ -52,7 +50,6 @@ const UserSupportPage = () => {
 
       useEffect(() => {
         getPremium();
-        checkDarkMode();
       }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,7 +84,7 @@ const UserSupportPage = () => {
             <Layout>
             <p>
               {(t('pages.UserSupport.support-description1'))}
-              <a href='/Q&A'>{t('pages.UserSupport.Q&A')}</a>
+              <a onClick={() => { navigate('/Q&A'); }}>{t('pages.UserSupport.Q&A')}</a>
               {(t('pages.UserSupport.support-description2'))}
             </p>
                 <div className={styles.requestform}>

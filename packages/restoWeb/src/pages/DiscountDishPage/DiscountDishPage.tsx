@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/pages/DiscountDishPage/DiscountDishPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { checkDarkMode } from "../../utils/DarkMode";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { addDiscount, removeDiscount } from "@src/services/dishCalls";
@@ -60,7 +59,6 @@ const DiscountDishPage = () => {
   });
 
   useEffect(() => {
-    checkDarkMode();
 
     if (discount) {
       if (discount !== -1 && discountType === 'percent') {
