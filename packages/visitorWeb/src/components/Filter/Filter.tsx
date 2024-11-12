@@ -159,7 +159,9 @@ const Filter = (props: FilterProps) => {
     if (userToken === null) { return; }
     getSavedFilters(userToken)
       .then((res) => {
-        setSavedFilters(res);
+        if (res !== undefined) {
+          setSavedFilters(res);
+        }
       });
 
     getSavedFilterLimit(userToken)
@@ -630,7 +632,7 @@ const Filter = (props: FilterProps) => {
               />
             </MenuItem>
             <div className={styles.filterLimit}>
-              {t('components.Filter.saved-filters', { used: savedFilters.length, limit: filterLimit })}
+              {t('components.Filter.saved-filters', { used: '0', limit: filterLimit })}
             </div>
             { errorSameFilterName && (
               <div className={styles.filterNameError}>
@@ -665,7 +667,7 @@ const Filter = (props: FilterProps) => {
             <DialogTitle>{t('components.Filter.load-filters')}</DialogTitle>
             <DialogContent>
               <List>
-                {savedFilters.map((filter, index) => (
+                {savedFilters?.map((filter, index) => (
                   <ListItem button key={index}>
                     <ListItemText primary={filter.name} />
                     <ListItemSecondaryAction>
