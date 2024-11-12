@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from "@src/pages/RestoPage/RestoPage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import Filter from "@src/components/Filter/Filter";
@@ -16,6 +16,7 @@ import {checkDarkMode} from "../../utils/DarkMode";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import {getUserAllergens} from "@src/services/userCalls";
+import {getCategories} from "@src/services/categorieCalls";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -54,16 +55,10 @@ const Btn = () => {
 const RestoPage = () => {
   const [inputFieldsOutput, setInputFieldsOutput] = useState('');
   const [inputFields, setInputFields] = useState(['', '']);
-  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
+  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null);
   const [step, setStep] = useState(1);
-  const [categories, setCategories] = useState([
-    // TODO: apply i18n
-    { name: "Burger", value: false },
-    { name: "Pizza", value: false },
-    { name: "Salad", value: false },
-    { name: "Sushi", value: false },
-    { name: "Pasta", value: false }
-  ]);
+  const [categories, setCategories] = useState([]);
+  const hasLoadedFilter = useRef(false);
   const [rating, setRating] = useState(0);
   const [rangeValue, setRangeValue] = useState(0);
   const [filteredRestaurants, setFilteredRestaurants] = 
@@ -92,11 +87,12 @@ const RestoPage = () => {
 
   const clearFilter = () => {
     setInputFields(['', '']);
-    setCategories(categories.map(category => ({ ...category, value: false })));
+    setCategories(prevCategories =>
+        prevCategories.map(category => ({ ...category, value: false })));
     setRating(0);
     setRangeValue(0);
-    setAllergens(allergens.map(allergen => 
-      ({ ...allergen, value: false, colorButton: "primary" })));
+    setAllergens(prevAllergens =>
+        prevAllergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })));
   };
 
   useEffect(() => {
@@ -136,7 +132,32 @@ const RestoPage = () => {
       .catch((error) => console.error("Error loading allergens or favourites:", error));
     clearFilter(); 
     checkDarkMode();
+    const initializeData = async () => {
+      await fetchFavourites();
+      clearFilter();
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) { return; }
+      const fetchedCategories = await getCategories(userToken);
+      if (!fetchedCategories) {return;}
+      const formattedCategories = fetchedCategories.map((category: any) => ({
+        name: category,
+        value: false,
+      }));
+      setCategories(formattedCategories);
+    };
+
+    initializeData();
   }, []);
+
+  useEffect(() => {
+    if (categories.length > 0 && !hasLoadedFilter.current) {
+      hasLoadedFilter.current = true;
+      loadFilter().then(r => console.log('Reloaded filter'));
+    }
+  }, [categories]);
+
+
+
 
   useEffect(() => {
     if (!loadingAllergens) {
@@ -191,22 +212,25 @@ const RestoPage = () => {
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
-    const updatedCategories = categories.map(category => ({
-      ...category,
-      value: filter.categories ? filter.categories
-        .includes(category.name) : category.value
-    }));
 
-    const updatedAllergens: Allergen[] = allergens.map(allergen => ({
-      ...allergen,
-      value: filter.allergenList ? filter.allergenList
-        .includes(allergen.name) : allergen.value,
-      colorButton: filter.allergenList && filter.allergenList
-        .includes(allergen.name) ? "secondary" : "primary"
-    }));
+    setCategories(prevCategories => {
+      const updatedCategories = prevCategories.map(category => ({
+        ...category,
+        value: filter.categories ? filter.categories.includes(category.name) : category.value
+      }));
+      return updatedCategories;
+    });
 
-    setCategories(updatedCategories);
-    setAllergens(updatedAllergens);
+    setAllergens((prevAllergens :any) => {
+      const updatedAllergens = prevAllergens.map((allergen: any) => ({
+        ...allergen,
+        value: filter.allergenList ? filter.allergenList.includes(allergen.name) : allergen.value,
+        colorButton: filter.allergenList && filter.allergenList.includes(allergen.name)
+            ? "secondary" : "primary"
+      }));
+      return updatedAllergens;
+    });
+
     setInputFieldsOutput('');
 
     if (inputFields[0] !== '' || inputFields[1] !== '') {
@@ -228,9 +252,9 @@ const RestoPage = () => {
       rating: [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
-      categories: updatedCategories.filter(category => 
+      categories: categories.filter(category =>
         category.value).map(category => category.name),
-      allergenList: updatedAllergens.filter(allergen => 
+      allergenList: allergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc
     };
@@ -262,20 +286,20 @@ const RestoPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      
+
       const newFilter = {
         range: rangeValue,
         rating: [rating, 5],
         name: inputFields[0],
         location: inputFields[1],
-        categories: categories.filter(category => 
+        categories: categories.filter(category =>
           category.value).map(category => category.name),
-        allergenList: allergens.filter(allergen => 
+        allergenList: allergens.filter(allergen =>
           allergen.value).map(allergen => allergen.name),
         userLoc: userPosition
       };
       localStorage.setItem('filter', JSON.stringify(newFilter));
-  
+
       try {
         const restos = await getNewFilteredRestos(newFilter);
         setFilteredRestaurants(insertAdCard(restos));

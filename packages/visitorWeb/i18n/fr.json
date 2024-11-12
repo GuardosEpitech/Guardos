@@ -60,6 +60,8 @@
         "rating": "Note :",
         "range": "Plage :",
         "categories": "Catégories :",
+        "all-categories": "Toutes les catégories",
+        "show-all": "Afficher toutes les catégories",
         "allergens": "Allergènes :"
       },
       "Header": {

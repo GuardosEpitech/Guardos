@@ -34,6 +34,7 @@ import review from './routes/review';
 import menu from './routes/menu';
 import map from './routes/map';
 import statistics from './routes/statistics';
+import categories from './routes/categories';
 
 function constructAllowedOrigins(): string[] {
   const domains: { [key: string]: string | undefined } = {
@@ -83,7 +84,8 @@ async function main() {
     });
 
     const asyncHandler = (fn:any) => (req:any, res:any, next:any) => {
-      Promise.resolve(fn(req, res, next)).catch(next);
+      Promise.resolve(fn(req, res, next))
+        .catch(next);
     };
 
     app.use('/api/logout', asyncHandler(logout));
@@ -112,6 +114,7 @@ async function main() {
     app.use('/api/menuDesigns', asyncHandler(menuDesigns));
     app.use('/api/map', asyncHandler(map));
     app.use('/api/statistics', asyncHandler(statistics));
+    app.use('/api/categories', asyncHandler(categories));
     app.use('/api/qrcode', qrcode);
   }
 

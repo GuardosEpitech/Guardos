@@ -272,7 +272,16 @@ try {
   if (typeof userID !== 'number') {
     return res.status(404).send({ error: 'No UserID' });
   }
-  const customerID = await getCustomerResto(userID);
+  let customerID = await getCustomer(userID);
+  if (typeof customerID !== 'string') {
+    console.error('Invalid Customer ID, creating a new customer');
+    const user = await getProfileDetails(userID);
+    const customer = await stripe.customers.create({
+      email: user.email,
+      name: user.username,
+    });
+    customerID = await addCustomer(userID, customer.id);
+  }
   res.status(200).send(customerID);
 
 } catch (error) {
