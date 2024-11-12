@@ -9,9 +9,9 @@ import {
     checkIfVisitorUserExist, sendRecoveryLinkForVisitorUser
 } from '@src/services/userCalls';
 import { enable, disable, setFetchMethod} from "darkreader";
-
+import { useNavigate } from "react-router-dom";
+import { NavigateTo } from "@src/utils/NavigateTo";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 interface ResetPasswordProps {}
 
@@ -24,10 +24,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const [disableButton, setDisableButton] = useState(false);
   const [openFailed, setOpenFailed] = useState(true);
   const {t} = useTranslation();
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
+  const navigate = useNavigate();
 
   const isValidEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -80,7 +77,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
 
   const handleGoBackToLogin = () => {
     setOpen(false);
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   const handleGoBackToSite = () => {

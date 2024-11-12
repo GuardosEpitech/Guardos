@@ -7,9 +7,7 @@ import Button from "@mui/material/Button";
 import Layout from "shared/components/Layout/Layout";
 import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 interface User {
   username: string;
@@ -32,9 +30,6 @@ const Register = () => {
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register/restoWeb`;
   const {t} = useTranslation();
 
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;

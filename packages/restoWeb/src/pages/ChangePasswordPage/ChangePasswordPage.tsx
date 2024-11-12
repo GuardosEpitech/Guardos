@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,12 +9,12 @@ import {
   checkIfRestoUserExist, updateRestoPassword
 } from '@src/services/userCalls';
 import { set } from 'cypress/types/lodash';
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import { NavigateTo } from "@src/utils/NavigateTo";
 
 const ChangePasswordPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { search } = location;
   const params = new URLSearchParams(search);
   const email = params.get('email');
@@ -52,7 +52,6 @@ const ChangePasswordPage = () => {
     };
 
     fetchData();
-    checkDarkMode();
   }, [email]);
 
   function isValidPassword(password: string): boolean {
@@ -109,7 +108,7 @@ const ChangePasswordPage = () => {
 
   const handleGoBackToLogin = () => {
     setOpen(false);
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   const handleGoBackToSite = () => {

@@ -10,11 +10,9 @@ import Layout from 'shared/components/Layout/Layout';
 import styles from "@src/pages/MenuPage/MenuPage.module.scss";
 import { ICategories } from "shared/models/categoryInterfaces";
 import { getQRCodeByName } from "@src/services/qrcodeCall";
-import { enable, disable, setFetchMethod} from "darkreader";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
-import {checkDarkMode} from "../../utils/DarkMode";
 import {useTranslation} from "react-i18next";
 
 const theme = createTheme({
@@ -55,7 +53,6 @@ const MenuPage = () => {
   useEffect(() => {
     getQRCodeByName(uid)
       .then(res => setURL(res));
-    checkDarkMode();
     const filteredMenu = menu.filter((category: ICategories) =>
       category.dishes.length > 0);
     if (filteredMenu.length > 0) {

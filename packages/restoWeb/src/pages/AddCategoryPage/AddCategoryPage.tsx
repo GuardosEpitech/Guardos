@@ -7,6 +7,8 @@ import {useTranslation} from "react-i18next";
 import { Popup } from '@src/components/dumpComponents/popup/Popup';
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {NavigateTo} from "@src/utils/NavigateTo";
+import {useNavigate} from "react-router-dom";
 
 const AddCategoryPage = () => {
     const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -21,6 +23,7 @@ const AddCategoryPage = () => {
     const [categoryToDelete, setCategoryToDelete] = useState<ICategory | undefined>(undefined);
     const [categoryToEdit, setCategoryToEdit] = useState<ICategory | undefined>(undefined);
     const {t} = useTranslation();
+    const navigate = useNavigate();
   
     useEffect(() => {
       async function fetchRestaurants() {
@@ -193,7 +196,7 @@ const AddCategoryPage = () => {
             <br/>
             <span className={styles.ErrorText}>
               {t('pages.AddCategory.noresto2')} 
-              <a href="/addResto">{t('pages.AddCategory.noresto2-2')}</a>
+              <a onClick={() => { navigate('/addResto'); }}>{t('pages.AddCategory.noresto2-2')}</a>
               {t('pages.AddCategory.noresto2-3')}
             </span>
             <br/>

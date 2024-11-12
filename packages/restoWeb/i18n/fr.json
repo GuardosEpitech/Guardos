@@ -152,6 +152,9 @@
     }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Préparation des plats..."
+      },
       "AddDishPage": {
         "my-new-dish": "Mon nouveau plat"
       },

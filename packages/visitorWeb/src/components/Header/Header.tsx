@@ -90,11 +90,11 @@ const Header = () => {
           )}
           { loggedIn && (
             <>
-              <a className={styles.NavTitle} href='/my-account'>{t('components.Header.my-account')}</a>
-              <a className={styles.NavTitle} href='/guides'>{t('components.Header.guides')}</a>
+              <a className={styles.NavTitle} onClick={() => { navigate('/my-account'); }}>{t('components.Header.my-account')}</a>
+              <a className={styles.NavTitle} onClick={() => { navigate('/guides'); }}>{t('components.Header.guides')}</a>
             </>
           )}
-          <a className={styles.NavTitle} href='/intropage'>{t('components.Header.welcome')}</a>
+          <a className={styles.NavTitle} onClick={() => { navigate('/intropage'); }}>{t('components.Header.welcome')}</a>
         </div>
       </div>
       <Drawer anchor="left" open={showNavigationDrawer} onClose={() => setShowNavigationDrawer(false)} classes={{ paper: styles.drawer }}>
@@ -112,13 +112,13 @@ const Header = () => {
           </span>
           { loggedIn && (
               <>
-                <a className={styles.NavTitleDropDown} href='/'>{t('components.Header.home')}</a>
-                <a className={styles.NavTitleDropDown} href='/my-account'>{t('components.Header.my-account')}</a>
-                <a className={styles.NavTitleDropDown} href='/guides'>{t('components.Header.guides')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { navigate('/'); }}>{t('components.Header.home')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { navigate('/my-account'); }}>{t('components.Header.my-account')}</a>
+                <a className={styles.NavTitleDropDown} onClick={() => { navigate('/guides'); }}>{t('components.Header.guides')}</a>
               </>
             )
           }
-          <a className={styles.NavTitleDropDown} href='/intropage'>{t('components.Header.welcome')}</a>
+          <a className={styles.NavTitleDropDown} onClick={() => { navigate('/intropage'); }}>{t('components.Header.welcome')}</a>
         </div>
       </Drawer>
     </div>
