@@ -393,11 +393,11 @@ const MyAccountPage = () => {
             {t('pages.MyAccountPage.delete-img')}
           </button>
         </div>
-        <div>
+        <div className={styles.emailInput}>
           <label>{t('pages.MyAccountPage.email')}</label>
           <input className={styles.InputField} type="text" value={email} onChange={handleEmailChange} required/>
         </div>
-        <div>
+        <div className={styles.nameInput}>
           <label>{t('pages.MyAccountPage.name')}</label>
           <input className={styles.InputField} type="text" value={name} onChange={handleNameChange} required/>
         </div>
@@ -503,16 +503,14 @@ const MyAccountPage = () => {
               {t('pages.MyAccountPage.subscriptions')}
             </button>
           ) : (
-            <div></div>
+            <div className={styles.emptyDiv}></div>
           )}
           <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => { navigate('/payment'); }}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
-          <div>
-            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
-              {t('pages.MyAccountPage.save-changes')}
-            </button>
-          </div>
+          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
+            {t('pages.MyAccountPage.save-changes')}
+          </button>
           <button
             className={styles.deleteButton}
             onClick={handleOpenDeletePopup}
@@ -521,18 +519,18 @@ const MyAccountPage = () => {
           </button>
         </div>
 
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'}}>
+        <div className={styles.helpButtons}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
           <Button onClick={() => { navigate('/feature-request'); }}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px'}}>
+        <div className={styles.helpButtons}>
           <Button onClick={() => { navigate('/support'); }}>
             {t('pages.MyAccountPage.User-Support')}
           </Button>
         </div>
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'}}>
+        <div className={styles.darkModeButton}>
           <FormControlLabel
             control={<DarkModeButton checked={darkMode} onChange={toggleDarkMode}
               inputProps={{'aria-label': 'controlled'}} sx={{m: 1}}/>}

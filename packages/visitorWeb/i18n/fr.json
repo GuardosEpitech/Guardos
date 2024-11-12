@@ -101,6 +101,7 @@
         "day": "Jour",
         "opening": "Ouverture",
         "closing": "Fermeture",
+        "linkCopiedTitle": "Partagez ce menu",
         "linkCopied": "Lien copié"
       },
       "Slider": {
@@ -434,7 +435,8 @@
         "name": "Nom complet",
         "subject": "Object",
         "request": "Message",
-        "email-sent-success": "Email envoyé avec succès !"
+        "email-sent-success": "Email envoyé avec succès !",
+        "require-fields": "Tous les champs sont obligatoires"
       },
       "Payments": {
         "payment-success": "Paiement réussi",

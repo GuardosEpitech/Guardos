@@ -224,6 +224,7 @@ const MapPage = () => {
             filter={getFilter()}
             categories={categories}
             allergens={allergens}
+            onChangeUserPosition={null}
           />
         </div>
         <MapView data={filteredRestaurants} />
