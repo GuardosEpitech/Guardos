@@ -152,6 +152,9 @@
     }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Gerichte werden gekocht..."
+      },
       "AddDishPage": {
         "my-new-dish": "Mein neues Gericht"
       },

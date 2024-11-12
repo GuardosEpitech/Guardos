@@ -150,6 +150,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Preparing dishes..."
+      },
       "AboutUs": {
         "german-team-member": "4th year Epitech student from Germany",
         "french-team-member": "4th year Epitech student from France",

@@ -734,13 +734,13 @@ const MyAccountPage = () => {
         </div>
         <div>
           {paymentIsSet ? (
-            <button onClick={() => window.location.href = '/subscriptions'}>
+            <button onClick={() => { navigate('/subscriptions'); }}>
               {t('pages.MyAccountPage.subscriptions')}
             </button>
           ) : (
             <div></div>
           )}
-          <button onClick={() => window.location.href = '/payment'}>
+          <button onClick={() => { navigate('/payment'); }}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <button className={styles.saveButton} onClick={handleSave}>
@@ -753,12 +753,12 @@ const MyAccountPage = () => {
         </div>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
-          <Button onClick={() => window.location.href = '/feature-request'}>
+          <Button onClick={() => { navigate('/feature-request'); }}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
          </div>
          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px' }}>
-          <Button onClick={() => window.location.href = '/support'}>
+          <Button onClick={() => { navigate('/support'); }}>
             {t('pages.MyAccountPage.User-Support')}
           </Button>
          </div>

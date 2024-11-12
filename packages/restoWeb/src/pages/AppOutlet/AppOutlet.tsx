@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./AppOutlet.module.scss";
 import Header from "@src/components/dumpComponents/Header/Header";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import instagram from "../../../../shared/assets/whiteInstagram.png";
 import linkedIn from "../../../../shared/assets/linkedin.png";
 
@@ -14,10 +12,6 @@ const AppOutlet = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
   const visitorIntroPageURL = `${process.env.RESTAURANT_URL}/intropage`;
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   return (
     <div className={styles.ParentElement}>
@@ -36,11 +30,11 @@ const AppOutlet = () => {
           </div>
           <div>
             <ul className={styles.ListLinks}>
-              <li><a href="/terms" className={styles.links}>{t('pages.AppOutlet.terms')}</a></li>
-              <li><a href="/privacy" className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
-              <li><a href="/imprint" className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
-              <li><a href="/cookiestatement" className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
-              <li><a className={styles.links} href={visitorIntroPageURL}>{t('pages.AppOutlet.welcomeSite')}</a></li>
+              <li><a onClick={() => { navigate('/terms'); }} className={styles.links}>{t('pages.AppOutlet.terms')}</a></li>
+              <li><a onClick={() => { navigate('/privacy'); }} className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
+              <li><a onClick={() => { navigate('/imprint'); }} className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
+              <li><a onClick={() => { navigate('/cookiestatement'); }}className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
+              <li><a className={styles.links} onClick={() => { navigate(`${visitorIntroPageURL}`); }}>{t('pages.AppOutlet.welcomeSite')}</a></li>
             </ul>
           </div>
           <div>

@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "@src/utils/DarkMode";
 import { TextField } from "@mui/material";
 
 const RatingPage = () => {
@@ -17,10 +16,6 @@ const RatingPage = () => {
   const [ratingData, setRatingData] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const {t} = useTranslation();
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {

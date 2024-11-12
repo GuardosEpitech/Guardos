@@ -13,7 +13,6 @@ import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -106,7 +105,6 @@ const RestoPage = () => {
     fetchFavourites().then(r => console.log("Loaded favourite resto list"));
     clearFilter(); 
     loadFilter().then(() => console.log("Loaded search data."));
-    checkDarkMode();
   }, []);
 
   const fetchFavourites = async () => {

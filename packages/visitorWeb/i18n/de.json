@@ -151,6 +151,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Gerichte werden gekocht..."
+      },
       "AboutUs": {
         "german-team-member": "4. Jahr Epitech-Student aus Deutschland",
         "french-team-member": "4. Jahr Epitech-Student aus Frankreich",

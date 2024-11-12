@@ -6,7 +6,6 @@ import axios from 'axios';
 import styles from './UserSupportPage.module.scss';
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
 import UserSupport from '.';
 
@@ -52,7 +51,6 @@ const UserSupportPage = () => {
 
       useEffect(() => {
         getPremium();
-        checkDarkMode();
       }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

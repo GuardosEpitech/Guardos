@@ -6,7 +6,6 @@ import axios from 'axios';
 import styles from "@src/pages/FeatureRequest/FeatureRequest.module.scss"
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
 
 interface RequestUser {
@@ -51,7 +50,6 @@ const FeatureRequest = () => {
 
       useEffect(() => {
         getPremium();
-        checkDarkMode();
       }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

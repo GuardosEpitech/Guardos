@@ -23,6 +23,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { enable, disable, setFetchMethod, auto , isEnabled} from "darkreader";
+import { checkDarkMode } from "../../utils/DarkMode";
 import DarkModeButton from "@src/components/DarkModeButton/DarkModeButton";
 
 import {
@@ -57,7 +58,6 @@ const MyAccountPage = () => {
   const {t, i18n} = useTranslation();
 
   useEffect(() => {
-    console.log(profilePic);
     fetchProfileData();
   }, []);
 
@@ -235,19 +235,9 @@ const MyAccountPage = () => {
   };
 
   const enableDarkMode = () => {
-    setFetchMethod((url) => {
-      return fetch(url, {
-        mode: 'no-cors',
-      });
-    });
     localStorage.setItem('darkMode', JSON.stringify(true));
     setIsDarkMode(true);
-    enable({
-      brightness: 100,
-      contrast: 100,
-      darkSchemeBackgroundColor: '#181a1b',
-      darkSchemeTextColor: '#e8e6e3'
-    },);
+    checkDarkMode();
   };
 
   const disableDarkMode = () => {
@@ -509,13 +499,13 @@ const MyAccountPage = () => {
             )}
           </div>
           {paymentIsSet ? (
-            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/subscriptions'}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => { navigate('/subscriptions'); }}>
               {t('pages.MyAccountPage.subscriptions')}
             </button>
           ) : (
             <div></div>
           )}
-          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => window.location.href = '/payment'}>
+          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => { navigate('/payment'); }}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
           <div>
@@ -533,12 +523,12 @@ const MyAccountPage = () => {
 
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px'}}>
           <Typography variant="body1">{t('pages.MyAccountPage.feature-request')}</Typography>
-          <Button onClick={() => window.location.href = '/feature-request'}>
+          <Button onClick={() => { navigate('/feature-request'); }}>
             {t('pages.MyAccountPage.just-ask')}
           </Button>
         </div>
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '-10px'}}>
-          <Button onClick={() => window.location.href = '/support'}>
+          <Button onClick={() => { navigate('/support'); }}>
             {t('pages.MyAccountPage.User-Support')}
           </Button>
         </div>

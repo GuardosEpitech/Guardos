@@ -9,7 +9,6 @@ import axios from 'axios';
 import styles from "@src/pages/RegistrationPage/RegistrationPage.module.scss";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 interface User {
   username: string;
@@ -31,10 +30,6 @@ const Register = () => {
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/register`;
   const {t} = useTranslation();
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   function isValidPassword(password: string): boolean {
     const uppercaseRegex = /[A-Z]/;

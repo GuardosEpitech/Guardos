@@ -150,6 +150,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Préparation des plats..."
+      },
       "AboutUs": {
         "german-team-member": "Étudiant en 4ème année à Epitech, originaire d'Allemagne",
         "french-team-member": "Étudiant en 4ème année à Epitech, originaire de France",
