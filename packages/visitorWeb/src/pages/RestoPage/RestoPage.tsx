@@ -18,6 +18,7 @@ import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import AddressInput from '@src/components/AddressInput/AddressInput';
+import {getUserAllergens} from "@src/services/userCalls";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -86,12 +87,13 @@ const RestoPage = () => {
     { name: "peanuts", value: false, colorButton: "primary" },
     { name: "sesame", value: false, colorButton: "primary" },
     { name: "soybeans", value: false, colorButton: "primary" },
-    { name: "sulphides", value: false, colorButton: "primary" },
+    { name: "sulphites", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [loadingAllergens, setLoadingAllergens] = useState(true);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -103,11 +105,49 @@ const RestoPage = () => {
   };
 
   useEffect(() => {
-    fetchFavourites().then(r => console.log("Loaded favourite resto list"));
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+    const loadAllergensAndFavourites = async () => {
+      setLoadingAllergens(true);
+      const userAllergens = await getUserAllergens(userToken);
+      console.log(userAllergens);
+    
+      setAllergens((prevAllergens) =>
+        prevAllergens.map((allergen) => ({
+          ...allergen,
+          value: userAllergens.includes(allergen.name) ? true : allergen.value,
+        }))
+      );
+      const newFilter = {
+        range: rangeValue,
+        rating: [rating, 5],
+        name: inputFields[0],
+        location: inputFields[1],
+        categories: categories.filter(category => 
+          category.value).map(category => category.name),
+        allergenList: allergens.filter(allergen => 
+          allergen.value).map(allergen => allergen.name),
+        userLoc: userPosition
+      };
+      
+      localStorage.setItem('filter', JSON.stringify(newFilter));
+      setLoadingAllergens(false); 
+      await fetchFavourites();
+    };
+    loadAllergensAndFavourites()
+      .then(() => console.log("Loaded allergens and favourites ", allergens))
+      .catch((error) => console.error("Error loading allergens or favourites:", error));
     clearFilter(); 
-    loadFilter().then(() => console.log("Loaded search data."));
     checkDarkMode();
   }, []);
+
+  useEffect(() => {
+    if (!loadingAllergens) {
+      loadFilter().then(() => console.log("Loaded filter with updated allergens."));
+    }
+  }, [loadingAllergens]);
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
