@@ -31,12 +31,18 @@ import UserSupportPage from "@src/pages/UserSupport/UserSupportPage";
 import TermsPage from "@src/pages/TermsAndConditionsPage/T&CPage";
 import GuidesPage from "@src/pages/GuidesPage";
 import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
+import { checkDarkMode } from "../utils/DarkMode";
 import ViewRatingPage from "@src/pages/ViewRatingPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
   const [showCookies, setShowCookies] = useState<boolean>(true);
   const userToken = localStorage.getItem('user');
+  const [loading, setLoading] = useState(true);
+
+  useMemo(() => {
+    checkDarkMode();
+  }, [location]);
 
   const checkUserToken = () => {
     if (userToken === null) {

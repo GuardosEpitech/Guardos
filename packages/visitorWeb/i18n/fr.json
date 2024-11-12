@@ -60,6 +60,8 @@
         "rating": "Note :",
         "range": "Plage :",
         "categories": "Catégories :",
+        "all-categories": "Toutes les catégories",
+        "show-all": "Afficher toutes les catégories",
         "allergens": "Allergènes :"
       },
       "Header": {
@@ -151,6 +153,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Préparation des plats..."
+      },
       "AboutUs": {
         "german-team-member": "Étudiant en 4ème année à Epitech, originaire d'Allemagne",
         "french-team-member": "Étudiant en 4ème année à Epitech, originaire de France",

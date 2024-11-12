@@ -8,9 +8,7 @@ import styles from "@src/pages/EditProductPage/EditProductPage.module.scss";
 import { getAllResto } from "@src/services/restoCalls";
 import { IRestaurantFrontEnd }
   from "shared/models/restaurantInterfaces";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 interface IEditProductPageProps {
   product: IProductFE;
@@ -36,7 +34,6 @@ const EditProductPage = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 700);
-    checkDarkMode();
   }, []);
 
   return (

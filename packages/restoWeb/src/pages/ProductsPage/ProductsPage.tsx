@@ -10,17 +10,17 @@ import styles from "@src/pages/ProductsPage/ProductsPage.module.scss";
 import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { IProduct } from "shared/models/restaurantInterfaces";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
+import {NavigateTo} from "@src/utils/NavigateTo";
+import {useNavigate} from "react-router-dom";
 
 const ProductsPage = () => {
   const [productData, setProductData] = useState<Array<IProduct>>([]);
   const {t} = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateProductData();
-    checkDarkMode();
   }, []);
 
   const updateProductData = () => {
@@ -49,13 +49,13 @@ const ProductsPage = () => {
             <br/>
             <span className={styles.ErrorText}>
               {t('pages.ProductsPage.noprod2')} 
-              <a href="/addProduct">{t('pages.ProductsPage.noprod2-2')}</a>
+              <a onClick={() => { navigate('/addProduct'); }}>{t('pages.ProductsPage.noprod2-2')}</a>
               {t('pages.ProductsPage.noprod2-3')}
             </span>
             <br/>
             <span className={styles.ErrorText}>
               {t('pages.ProductsPage.noprod3')} 
-              <a href="/addResto">{t('pages.ProductsPage.noprod3-2')}</a> 
+              <a onClick={() => { navigate('/addResto'); }}>{t('pages.ProductsPage.noprod3-2')}</a> 
               {t('pages.ProductsPage.noprod3-3')}
             </span>
           </div>

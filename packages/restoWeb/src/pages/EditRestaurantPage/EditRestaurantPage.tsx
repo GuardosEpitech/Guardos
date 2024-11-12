@@ -6,9 +6,7 @@ import RestaurantForm
   from "@src/components/forms/RestaurantForm/RestaurantForm";
 import styles
   from "@src/pages/EditRestaurantPage/EditRestaurantPage.module.scss";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 
 interface IOpeningHours {
   open?: string;
@@ -49,10 +47,6 @@ const EditRestaurantPage = () => {
     openingHours
   } = useLocation().state as IEditRestaurantPageProps;
   const {t} = useTranslation();
-
-  useEffect(() => {
-    checkDarkMode();
-  }, []);
 
   return (
     <div>

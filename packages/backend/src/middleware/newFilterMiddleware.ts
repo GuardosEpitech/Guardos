@@ -133,7 +133,10 @@ export async function newfilterRestaurants
         filteredRestaurants = filteredRestaurants.filter(restaurant => {
             const totalDishes = restaurant.dishes?.length || 1;
             const dishesWithoutAllergen = restaurant.dishes?.filter(dish => 
-                !dish.allergens?.some(allergen => searchParams.allergenList?.includes(allergen.toLowerCase()))) || [];
+                !dish.allergens?.some(allergen => 
+                    searchParams.allergenList?.some(searchAllergen => 
+                        allergen.toLowerCase().includes(searchAllergen.toLowerCase())
+                    ))) || [];
             const percentageWithoutAllergen = (dishesWithoutAllergen.length / totalDishes) * 100;
             return percentageWithoutAllergen >= 50;
         });

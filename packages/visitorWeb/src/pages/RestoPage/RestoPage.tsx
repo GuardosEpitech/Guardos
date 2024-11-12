@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styles from "@src/pages/RestoPage/RestoPage.module.scss";
 import InputSearch from "@src/components/InputSearch/InputSearch";
 import Filter from "@src/components/Filter/Filter";
@@ -11,13 +11,12 @@ import RestoCard from "@src/components/RestoCard/RestoCard";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import {getRestoFavourites} from "@src/services/favourites";
-import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "../../utils/DarkMode";
-import { getCurrentCoords } from '@src/services/mapCalls';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import AddressInput from '@src/components/AddressInput/AddressInput';
+import {getUserAllergens} from "@src/services/userCalls";
+import {getCategories} from "@src/services/categorieCalls";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -56,18 +55,10 @@ const Btn = () => {
 const RestoPage = () => {
   const [inputFieldsOutput, setInputFieldsOutput] = useState('');
   const [inputFields, setInputFields] = useState(['', '']);
-  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null); 
-  const [address, setAddress] = React.useState('');
-  const [isAddress, setIsAddress] = React.useState<boolean>(false);
+  const [userPosition, setUserPosition] = React.useState<{ lat: number; lng: number } | null>(null);
   const [step, setStep] = useState(1);
-  const [categories, setCategories] = useState([
-    // TODO: apply i18n
-    { name: "Burger", value: false },
-    { name: "Pizza", value: false },
-    { name: "Salad", value: false },
-    { name: "Sushi", value: false },
-    { name: "Pasta", value: false }
-  ]);
+  const [categories, setCategories] = useState([]);
+  const hasLoadedFilter = useRef(false);
   const [rating, setRating] = useState(0);
   const [rangeValue, setRangeValue] = useState(0);
   const [filteredRestaurants, setFilteredRestaurants] = 
@@ -86,28 +77,83 @@ const RestoPage = () => {
     { name: "peanuts", value: false, colorButton: "primary" },
     { name: "sesame", value: false, colorButton: "primary" },
     { name: "soybeans", value: false, colorButton: "primary" },
-    { name: "sulphides", value: false, colorButton: "primary" },
+    { name: "sulphites", value: false, colorButton: "primary" },
     { name: "tree nuts", value: false, colorButton: "primary" }
   ]);
   const [isFavouriteRestos, setIsFavouriteRestos] = React.useState<Array<number>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [loadingAllergens, setLoadingAllergens] = useState(true);
 
   const clearFilter = () => {
     setInputFields(['', '']);
-    setCategories(categories.map(category => ({ ...category, value: false })));
+    setCategories(prevCategories =>
+        prevCategories.map(category => ({ ...category, value: false })));
     setRating(0);
     setRangeValue(0);
-    setAllergens(allergens.map(allergen => 
-      ({ ...allergen, value: false, colorButton: "primary" })));
+    setAllergens(prevAllergens =>
+        prevAllergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })));
   };
 
   useEffect(() => {
-    fetchFavourites().then(r => console.log("Loaded favourite resto list"));
+    const userToken = localStorage.getItem('user');
+    if (userToken === null) {
+      return;
+    }
+
+    const initializeData = async () => {
+      const fetchedCategories = await getCategories(userToken);
+      if (!fetchedCategories) {return;}
+      const formattedCategories = fetchedCategories.map((category: any) => ({
+        name: category,
+        value: false,
+      }));
+      setCategories(formattedCategories);
+    };
+
+    const loadAllergensAndFavourites = async () => {
+      setLoadingAllergens(true);
+      const userAllergens = await getUserAllergens(userToken);
+    
+      setAllergens((prevAllergens) =>
+        prevAllergens.map((allergen) => ({
+          ...allergen,
+          value: userAllergens.includes(allergen.name) ? true : allergen.value,
+        }))
+      );
+      const newFilter = {
+        range: rangeValue,
+        rating: [rating, 5],
+        name: inputFields[0],
+        location: inputFields[1],
+        categories: categories.filter(category => 
+          category.value).map(category => category.name),
+        allergenList: allergens.filter(allergen => 
+          allergen.value).map(allergen => allergen.name),
+        userLoc: userPosition
+      };
+      
+      localStorage.setItem('filter', JSON.stringify(newFilter));
+      setLoadingAllergens(false); 
+      await fetchFavourites();
+    };
+
+    initializeData();
+
+    loadAllergensAndFavourites()
+      .then(() => console.log("Loaded allergens and favourites ", allergens))
+      .catch((error) => console.error("Error loading allergens or favourites:", error));
+
     clearFilter(); 
-    loadFilter().then(() => console.log("Loaded search data."));
     checkDarkMode();
   }, []);
+
+  useEffect(() => {
+    if (categories.length > 0 && !hasLoadedFilter.current && !loadingAllergens) {
+      hasLoadedFilter.current = true;
+      loadFilter().then(r => console.log('Reloaded filter'));
+    }
+  }, [categories, loadingAllergens]);
 
   const fetchFavourites = async () => {
     const userToken = localStorage.getItem('user');
@@ -156,11 +202,14 @@ const RestoPage = () => {
     if (filter.range) setRangeValue(filter.range);
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
-    const updatedCategories = categories.map(category => ({
-      ...category,
-      value: filter.categories ? filter.categories
-        .includes(category.name) : category.value
-    }));
+
+    setCategories(prevCategories => {
+      const updatedCategories = prevCategories.map(category => ({
+        ...category,
+        value: filter.categories ? filter.categories.includes(category.name) : category.value
+      }));
+      return updatedCategories;
+    });
 
     const updatedAllergens: Allergen[] = allergens.map(allergen => ({
       ...allergen,
@@ -170,7 +219,6 @@ const RestoPage = () => {
         .includes(allergen.name) ? "secondary" : "primary"
     }));
 
-    setCategories(updatedCategories);
     setAllergens(updatedAllergens);
     setInputFieldsOutput('');
 
@@ -193,9 +241,9 @@ const RestoPage = () => {
       rating: [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
-      categories: updatedCategories.filter(category => 
+      categories: categories.filter(category =>
         category.value).map(category => category.name),
-      allergenList: updatedAllergens.filter(allergen => 
+      allergenList: updatedAllergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc
     };
@@ -224,38 +272,37 @@ const RestoPage = () => {
     }
   }
 
-  const handleAddressSearch = async () => {
-    try {
-      if (address) {
-        const coords = await getCurrentCoords(address);
-        if (coords) {
-          setIsAddress(true);
-          const { lat, lng } = coords;
-          setUserPosition({ lat: parseFloat(lat), lng: parseFloat(lng) });
-          const inter = {
-            range: rangeValue,
-            rating: [rating, 5],
-            name: inputFields[0],
-            location: inputFields[1],
-            categories: categories.filter(category => 
-              category.value).map(category => category.name),
-            allergenList: allergens.filter(allergen => 
-              allergen.value).map(allergen => allergen.name),
-            userLoc: {lat: parseFloat(lat), lng: parseFloat(lng)}
-          }
-          await handleFilterChange(inter);
-        } else {
-          alert(t('pages.RestoPage.noAddress'));
-        }
-      } else {
-        setIsAddress(false);
-        setUserPosition(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      const newFilter = {
+        range: rangeValue,
+        rating: [rating, 5],
+        name: inputFields[0],
+        location: inputFields[1],
+        categories: categories.filter(category =>
+          category.value).map(category => category.name),
+        allergenList: allergens.filter(allergen =>
+          allergen.value).map(allergen => allergen.name),
+        userLoc: userPosition
+      };
+      localStorage.setItem('filter', JSON.stringify(newFilter));
+
+      try {
+        const restos = await getNewFilteredRestos(newFilter);
+        setFilteredRestaurants(insertAdCard(restos));
+      } catch (error) {
+        console.error("Error fetching filtered restaurants:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching address data:', error);
-      alert('Error fetching address data');
+    };
+    if (userPosition) {
+      fetchData();
     }
-  };
+    
+  }, [userPosition]);
 
   return (
     <>
@@ -285,6 +332,7 @@ const RestoPage = () => {
             filter={getFilter()}
             categories={categories}
             allergens={allergens}
+            onChangeUserPosition={setUserPosition}
           />
         </div>
         {step === 1 ? (
@@ -294,12 +342,6 @@ const RestoPage = () => {
             ) : (
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
-            <AddressInput
-              address={address}
-              setAddress={setAddress}
-              handleAddressSearch={handleAddressSearch}
-              isAddress={isAddress}
-            />
             {filteredRestaurants?.length === 0 ? (
               <h2 style={{textAlign: "center"}}>{t('pages.RestoPage.noresto')}</h2>
             ) : (loading ? 
@@ -325,12 +367,6 @@ const RestoPage = () => {
           </div>
         ) : (
           <div className={styles.container}>
-            <AddressInput
-              address={address}
-              setAddress={setAddress}
-              handleAddressSearch={handleAddressSearch}
-              isAddress={isAddress}
-            />
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} />
             </div>

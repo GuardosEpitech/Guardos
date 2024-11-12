@@ -96,7 +96,7 @@ const DeclineBtn = () => {
 
 const CookieBanner: React.FC = () => {
   const {t} = useTranslation();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [sliderButtons, setSliderButtons] = useState([
     { name: t('components.CookieBanner.strictly'), isActive: true },
     { name: t('components.CookieBanner.Func'), isActive: false },
@@ -107,8 +107,8 @@ const CookieBanner: React.FC = () => {
   useEffect(() => {
     const hasVisitedBefore = localStorage.getItem('visitedRestoBefore');
     
-    if (hasVisitedBefore) {
-      setIsOpen(false);
+    if (!hasVisitedBefore) {
+      setIsOpen(true);
     }
   }, []);
 
@@ -221,9 +221,9 @@ const CookieBanner: React.FC = () => {
             </p>
             <p>
               {t('components.CookieBanner.txt6')}
-              <a href="/privacy">{t('components.CookieBanner.privacy')}</a>
+              <a href="/privacy" target="_blank">{t('components.CookieBanner.privacy')}</a>
               {t('components.CookieBanner.and')}
-              <a href="/cookiestatement">{t('components.CookieBanner.cookie')}</a>.
+              <a href="/cookiestatement" target="_blank">{t('components.CookieBanner.cookie')}</a>.
             </p>
             <div className={styles.sliderContainer}>
               {sliderButtons.map((button, index) => (
