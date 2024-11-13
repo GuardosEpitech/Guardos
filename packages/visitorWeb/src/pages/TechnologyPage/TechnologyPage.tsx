@@ -11,7 +11,7 @@ const TechnologyPage: React.FC = () => {
         <hr className={styles.line} />
         <div className={styles.text}>
           <p>{t('pages.TechnologyPage.intro')} 
-          <a href='/cookiestatement'>{t('pages.TechnologyPage.cookie')}</a>.
+          <a href='/cookiestatement' target='_blank'>{t('pages.TechnologyPage.cookie')}</a>.
         </p>
         </div>
         <h2 className={styles.title}>{t('pages.TechnologyPage.func')}</h2>

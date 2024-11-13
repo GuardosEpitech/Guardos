@@ -60,6 +60,8 @@
         "rating": "Note :",
         "range": "Plage :",
         "categories": "Catégories :",
+        "all-categories": "Toutes les catégories",
+        "show-all": "Afficher toutes les catégories",
         "allergens": "Allergènes :"
       },
       "Header": {
@@ -101,6 +103,7 @@
         "day": "Jour",
         "opening": "Ouverture",
         "closing": "Fermeture",
+        "linkCopiedTitle": "Partagez ce menu",
         "linkCopied": "Lien copié"
       },
       "Slider": {
@@ -150,6 +153,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Préparation des plats..."
+      },
       "AboutUs": {
         "german-team-member": "Étudiant en 4ème année à Epitech, originaire d'Allemagne",
         "french-team-member": "Étudiant en 4ème année à Epitech, originaire de France",
@@ -431,7 +437,8 @@
         "name": "Nom complet",
         "subject": "Object",
         "request": "Message",
-        "email-sent-success": "Email envoyé avec succès !"
+        "email-sent-success": "Email envoyé avec succès !",
+        "require-fields": "Tous les champs sont obligatoires"
       },
       "Payments": {
         "payment-success": "Paiement réussi",

@@ -22,7 +22,7 @@ export function findRelevantAllergens(healthLabels: string[]): [string] {
         'celery_free': 'celery',
         'mustard_free': 'mustard',
         'sesame_free': 'sesame',
-        'sulphite_free': 'sulphides',
+        'sulphite_free': 'sulphites',
         'lupine_free': 'lupin',
         'mollusk_free': 'molluscs'
       };

@@ -40,7 +40,13 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
 
   return (
     <div className={styles.ReviewContainer}>
-      <Rating name="read-only" value={averageRating()} readOnly />
+      <Button
+          onClick={() => NavigateTo("/reviews", navigate, {
+            restoName: restoName,
+          })}
+      >
+        <Rating name="read-only" value={averageRating()} readOnly />
+      </Button>
       <span className={styles.AverageTxt}>{Array.isArray(ratingData) ? ratingData.length : 0}</span>
       <Button
         className={styles.AddReview}

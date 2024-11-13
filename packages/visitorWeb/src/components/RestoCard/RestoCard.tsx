@@ -5,9 +5,9 @@ import PlaceIcon from "@mui/icons-material/Place";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Button from "@mui/material/Button";
+import { Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
-import { Grid, Paper } from "@mui/material";
 import styles from "./RestoCard.module.scss";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
@@ -61,6 +61,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const { name, rating, description, categories, ratingCount, picturesId } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const handleClick = () => {
     setExtended((prevState) => !prevState);
@@ -104,7 +105,7 @@ const RestoCard = (props: IRestoCardProps) => {
     event.stopPropagation();
     const menuUrl = `${window.location.origin}/menu/${props.resto.uid}`;
     navigator.clipboard.writeText(menuUrl);
-    alert(t('components.RestoCard.linkCopied'));
+    setIsDialogOpen(true);
   };
 
   const handleFavoriteClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -206,6 +207,17 @@ const RestoCard = (props: IRestoCardProps) => {
       </Grid>
       {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)}
                                                pictureBase64={pictures[0].base64} />}
+      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+        <DialogTitle>{t('components.RestoCard.linkCopiedTitle')}</DialogTitle>
+        <DialogContent>
+          <p>{t('components.RestoCard.linkCopied')}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDialogOpen(false)} color="primary">
+            {t('common.close')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

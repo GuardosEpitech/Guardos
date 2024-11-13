@@ -60,6 +60,8 @@
         "rating": "Bewertung:",
         "range": "Bereich:",
         "categories": "Kategorien:",
+        "all-categories": "Alle Kategorien",
+        "show-all": "Zeige alle Kategorien",
         "allergens": "Allergene:"
       },
       "Header": {
@@ -101,6 +103,7 @@
         "day": "Tag",
         "opening": "Öffnung",
         "closing": "Schließung",
+        "linkCopiedTitle": "Dieses Menü teilen",
         "linkCopied": "Link kopiert"
         
       },
@@ -151,6 +154,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Gerichte werden gekocht..."
+      },
       "AboutUs": {
         "german-team-member": "4. Jahr Epitech-Student aus Deutschland",
         "french-team-member": "4. Jahr Epitech-Student aus Frankreich",
@@ -432,7 +438,8 @@
         "name": "Name",
         "subject": "Betreff",
         "request": "Nachricht",
-        "email-sent-success": "Nachricht erfolgreich gesendet!"
+        "email-sent-success": "Nachricht erfolgreich gesendet!",
+        "require-fields": "Alle Felder sind erforderlich"
       },
       "Payments": {
         "payment-success": "Zahlung erfolgreich",

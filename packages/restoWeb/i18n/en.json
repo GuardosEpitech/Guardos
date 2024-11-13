@@ -153,6 +153,9 @@
       }
     },
     "pages": {
+      "Loading": {
+        "loading-text": "Preparing dishes..."
+      },
       "AddDishPage": {
         "my-new-dish": "My new dish"
       },

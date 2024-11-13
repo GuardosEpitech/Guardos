@@ -13,7 +13,6 @@ import SuccessAlert
   from "@src/components/dumpComponents/SuccessAlert/SuccessAlert";
 import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
-import {checkDarkMode} from "../../utils/DarkMode";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 
@@ -28,7 +27,6 @@ const HomePage = () => {
 
   useEffect(() => {
     updateRestoData("");
-    checkDarkMode();
   }, []);
 
   document.addEventListener('loggedOut', function() {
