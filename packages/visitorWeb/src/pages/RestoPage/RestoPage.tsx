@@ -254,7 +254,8 @@ const RestoPage = () => {
     setLoading(false); 
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    await fetchFavourites();
     setStep(prevStep => (prevStep === 1 ? 2 : 1));
   };
 
@@ -368,7 +369,7 @@ const RestoPage = () => {
         ) : (
           <div className={styles.container}>
             <div className={styles.mapContainer}>
-              <MapView data={filteredRestaurants} userPosition={userPosition} />
+              <MapView data={filteredRestaurants} userPosition={userPosition} favRestos={isFavouriteRestos}/>
             </div>
           </div>
         )}

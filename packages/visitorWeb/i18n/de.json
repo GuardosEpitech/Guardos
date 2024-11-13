@@ -85,7 +85,7 @@
         "rating": "Bewertung: {{ rating }}",
         "telephone": "Tel.: {{ phone }}",
         "address": "Adresse: {{ address }}",
-        "resto-page": "Restaurantseite",
+        "resto-page": "Menü",
         "go-to-map-view": "Zur Kartenansicht gehen"
       },
       "Dish": {

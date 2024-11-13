@@ -19,8 +19,15 @@ import { useNavigate } from "react-router-dom";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 import { useTranslation } from "react-i18next";
+import { addRestoAsFavourite, deleteRestoFromFavourites } from "@src/services/favourites";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
+import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
+import { event } from "cypress/types/jquery";
 
-const Epitech = [13.328820, 52.508540]; // long, lat
+// Coordinates for initial map view
+const Epitech = [13.328820, 52.508540];
 
 const stylesMarker = {
   'icon': new Style({
@@ -68,6 +75,8 @@ const PageBtn = () => {
 interface MapProps {
   data: IRestaurantFrontEnd[];
   userPosition?: { lat: number; lng: number } | null;
+  favRestos: number[];
+  deleteFavResto?: (restoId: number) => void;
 }
 
 const MapView = (props: MapProps) => {
@@ -78,6 +87,41 @@ const MapView = (props: MapProps) => {
   const [clickedFeature, setClickedFeature] = useState<IRestaurantFrontEnd | null>(null);
   const [popupContent, setPopupContent] = useState<JSX.Element | null>(null);
   const { t } = useTranslation();
+  const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
+  const [localFavRestos, setLocalFavRestos] = useState<number[]>(props.favRestos);
+
+  useEffect(() => {
+    setLocalFavRestos(props.favRestos);
+  }, [props.favRestos]);
+
+  const handleFavoriteClick = (
+    event: React.MouseEvent<HTMLDivElement>, 
+    resto: IRestaurantFrontEnd
+  ) => {
+    event.stopPropagation();
+    const userToken = localStorage.getItem('user');
+    if (!userToken) return;
+
+    const isAlreadyFavorite = localFavRestos.includes(resto.uid);
+
+    if (!isAlreadyFavorite) {
+      addRestoAsFavourite(userToken, resto.uid);
+      setLocalFavRestos((prev) => [...prev, resto.uid]);
+    } else {
+      deleteRestoFromFavourites(userToken, resto.uid);
+      setLocalFavRestos((prev) => prev.filter((id) => id !== resto.uid));
+    }
+
+    if (props.deleteFavResto) {
+      props.deleteFavResto(resto.uid);
+    }
+  };
+
+  const handleFavoriteKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, resto: IRestaurantFrontEnd) => {
+    if (event.key === 'Enter') {
+      handleFavoriteClick(event as unknown as React.MouseEvent<HTMLDivElement>, resto);
+    }
+  };
 
   const createFeatures = (data: IRestaurantFrontEnd[]) => {
     return data
@@ -188,34 +232,79 @@ const MapView = (props: MapProps) => {
 
       map.addOverlay(popup);
 
-      const handleMapClick = (evt: any) => {
-        if (!popup) return;
+      const handleDetailPageOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        setIsDetailPageOpen(true);
+      };
 
+      const handleMapClick = (evt: any) => {
+        const targetElement = evt.originalEvent.target;
+        let targetClass = "";
+        if (targetElement.className instanceof SVGAnimatedString) {
+            targetClass = targetElement.className.baseVal || targetElement.className.animVal;
+        } else {
+            targetClass = targetElement.className;
+        }    
+        if (
+          targetClass.includes("MuiButtonBase-root") || 
+          targetClass.includes("MuiSvgIcon-root")
+        ) {
+          return;
+        }
+    
+        if (!popup) return;
         popup.setPosition(undefined);
         setClickedFeature(null);
-
+    
         const feature = map.forEachFeatureAtPixel(evt.pixel, (feature: Feature) => feature);
         if (feature) {
           const geometry = feature.getGeometry();
           if (geometry instanceof Point) {
             popup.setPosition(geometry.getCoordinates());
             const restaurant = feature.get('objectR') as IRestaurantFrontEnd;
-            const picture = restaurant.pictures[0];
-            const rating = restaurant.rating;
-            const description = feature.get('description');
-            const telephone = feature.get('telephone');
-            const address = feature.get('address');
+            const { telephone, address } = feature.getProperties();
             setPopupContent(
-              <div>
-                <img src={picture} alt={t('components.Map.alt-img')} className={styles.popupImg} />
-                <h2>{description}</h2>
-                <p>{t('components.Map.rating', { rating })}</p>
+              <>
+                <img 
+                  key={0 + restaurant.name}
+                  src={restaurant.pictures[0]} 
+                  alt={restaurant.name}
+                  className={styles.popoverImage} 
+                />
+                <div className={styles.popoverTitle}>{restaurant.name}</div>
                 <p>{t('components.Map.telephone', { phone: telephone })}</p>
                 <p>{t('components.Map.address', { address })}</p>
+                <RatingDisplay 
+                  restoRating={restaurant.rating} 
+                  restoRatingsCount={restaurant.ratingCount} 
+                  restoName={restaurant.name} 
+                />
+                <div 
+                  className={styles.FavoriteIcon} 
+                  tabIndex={0} 
+                  onClick={(e) => handleFavoriteClick(e, restaurant)} 
+                  onKeyDown={(e) => handleFavoriteKeyDown(e, restaurant)}
+                  role="button"
+                  aria-pressed={localFavRestos.includes(restaurant.uid)}
+                  key={restaurant.uid + 'fav'}
+                >
+                  {localFavRestos.includes(restaurant.uid) ? (
+                    <FavoriteIcon id="favourite" color="error" />
+                  ) : (
+                    <FavoriteBorderIcon id="no-favourite" color="error" />
+                  )}
+                </div>
                 <ThemeProvider theme={PageBtn()}>
                   <Button
+                    className={styles.RestoBtn}
                     variant="contained"
-                    sx={{ width: "12.13rem" }}
+                    onClick={handleDetailPageOpen}
+                  >
+                    {t('components.RestoCard.details')}
+                  </Button>
+                  <Button 
+                    variant="contained" 
+                    sx={{ width: "12.13rem" }} 
                     onClick={() => NavigateTo(`/menu/${restaurant.uid}`, navigate, {
                       menu: restaurant.categories,
                       restoName: restaurant.name,
@@ -227,45 +316,36 @@ const MapView = (props: MapProps) => {
                     {t('components.Map.resto-page')}
                   </Button>
                 </ThemeProvider>
-              </div>
+              </>
             );
             setClickedFeature(restaurant);
           }
         }
-      };
-
-      const handlePointerMove = (evt: any) => {
-        if (evt.dragging) return;
-        const pixel = map.getEventPixel(evt.originalEvent);
-        const hit = map.hasFeatureAtPixel(pixel);
-        const targetElement = map.getTarget() as HTMLElement;
-        if (targetElement) {
-          targetElement.style.cursor = hit ? 'pointer' : '';
-        }
-      };
+    };
 
       map.on('click', handleMapClick);
-      map.on('pointermove', handlePointerMove);
 
       return () => {
         map.un('click', handleMapClick);
-        map.un('pointermove', handlePointerMove);
-        if (map) {
-          map.removeOverlay(popup);
-        }
       };
     }
-  }, [map, element, navigate, t]);
+  }, [map, localFavRestos]);
 
   return (
     <>
       <div ref={mapElement} className={styles.map} id="map" />
       <div ref={element} id="popup" className={styles.popup}>
-        <a href="#" id="popup-closer" className="ol-popup-closer"></a>
         <div className={styles.popoverContent} id="popup-content">
           {popupContent}
         </div>
       </div>
+      {isDetailPageOpen && clickedFeature && (
+        <RestoDetailOverlay 
+          restaurant={clickedFeature} 
+          onClose={() => setIsDetailPageOpen(false)} 
+          pictureBase64={clickedFeature.pictures[0]} 
+        />
+      )}
     </>
   );
 };
