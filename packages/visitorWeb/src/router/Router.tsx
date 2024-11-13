@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
 import RegistrationPage from "@src/pages/RegistrationPage";
