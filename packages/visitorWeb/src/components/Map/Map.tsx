@@ -241,7 +241,7 @@ const MapView = (props: MapProps) => {
         const targetElement = evt.originalEvent.target;
         let targetClass = "";
         if (targetElement.className instanceof SVGAnimatedString) {
-            targetClass = targetElement.className.baseVal || targetElement.className.animVal;  // Handle both baseVal and animVal
+            targetClass = targetElement.className.baseVal || targetElement.className.animVal;
         } else {
             targetClass = targetElement.className;
         }    

@@ -254,7 +254,8 @@ const RestoPage = () => {
     setLoading(false); 
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    await fetchFavourites();
     setStep(prevStep => (prevStep === 1 ? 2 : 1));
   };
 
