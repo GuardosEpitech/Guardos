@@ -6,6 +6,10 @@
   padding-bottom: 0.5rem;
 }
 
+.FlexParentRating {
+  padding-bottom: 0.5rem;
+}
+
 .GridItem {
   padding: 2rem;
 }
@@ -86,4 +90,14 @@
   .GridContainer {
     flex-direction: column !important;
   }
+
+  .FlexParentRating {
+    padding-bottom: 0.5rem;
+  
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  
 }
