@@ -114,13 +114,14 @@ const RestoPage = () => {
     const loadAllergensAndFavourites = async () => {
       setLoadingAllergens(true);
       const userAllergens = await getUserAllergens(userToken);
+
+      const updatedAllergens = allergens.map((allergen) => ({
+        ...allergen,
+        value: userAllergens.includes(allergen.name) ? true : allergen.value,
+      }));
+      
+      setAllergens(updatedAllergens);
     
-      setAllergens((prevAllergens) =>
-        prevAllergens.map((allergen) => ({
-          ...allergen,
-          value: userAllergens.includes(allergen.name) ? true : allergen.value,
-        }))
-      );
       const newFilter = {
         range: rangeValue,
         rating: [rating, 5],
@@ -128,7 +129,7 @@ const RestoPage = () => {
         location: inputFields[1],
         categories: categories.filter(category => 
           category.value).map(category => category.name),
-        allergenList: allergens.filter(allergen => 
+        allergenList: updatedAllergens.filter(allergen => 
           allergen.value).map(allergen => allergen.name),
         userLoc: userPosition
       };
