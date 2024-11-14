@@ -265,56 +265,64 @@ const MapView = (props: MapProps) => {
             const { telephone, address } = feature.getProperties();
             setPopupContent(
               <>
-                <img 
-                  key={0 + restaurant.name}
-                  src={restaurant.pictures[0]} 
-                  alt={restaurant.name}
-                  className={styles.popoverImage} 
-                />
-                <div className={styles.popoverTitle}>{restaurant.name}</div>
+                {restaurant.pictures[0] !== "empty.jpg" && (
+                  <img 
+                    key={0 + restaurant.name}
+                    src={restaurant.pictures[0]} 
+                    alt={restaurant.name}
+                    className={styles.popoverImage} 
+                  />
+                )}
+                <div className={styles.popoverTitle}>
+                  {restaurant.name}
+                  <div 
+                    className={styles.FavoriteIcon} 
+                    tabIndex={0} 
+                    onClick={(e) => handleFavoriteClick(e, restaurant)} 
+                    onKeyDown={(e) => handleFavoriteKeyDown(e, restaurant)}
+                    role="button"
+                    aria-pressed={localFavRestos.includes(restaurant.uid)}
+                    key={restaurant.uid + 'fav'}
+                  >
+                    {localFavRestos.includes(restaurant.uid) ? (
+                      <FavoriteIcon id="favourite" color="error" />
+                    ) : (
+                      <FavoriteBorderIcon id="no-favourite" color="error" />
+                    )}
+                  </div>
+                </div>
                 <p>{t('components.Map.telephone', { phone: telephone })}</p>
                 <p>{t('components.Map.address', { address })}</p>
-                <RatingDisplay 
-                  restoRating={restaurant.rating} 
-                  restoRatingsCount={restaurant.ratingCount} 
-                  restoName={restaurant.name} 
-                />
-                <div 
-                  className={styles.FavoriteIcon} 
-                  tabIndex={0} 
-                  onClick={(e) => handleFavoriteClick(e, restaurant)} 
-                  onKeyDown={(e) => handleFavoriteKeyDown(e, restaurant)}
-                  role="button"
-                  aria-pressed={localFavRestos.includes(restaurant.uid)}
-                  key={restaurant.uid + 'fav'}
-                >
-                  {localFavRestos.includes(restaurant.uid) ? (
-                    <FavoriteIcon id="favourite" color="error" />
-                  ) : (
-                    <FavoriteBorderIcon id="no-favourite" color="error" />
-                  )}
+                <div className={styles.ratingDisplay}>
+                  <RatingDisplay 
+                    restoRating={restaurant.rating} 
+                    restoRatingsCount={restaurant.ratingCount} 
+                    restoName={restaurant.name} 
+                  />
                 </div>
                 <ThemeProvider theme={PageBtn()}>
-                  <Button
-                    className={styles.RestoBtn}
-                    variant="contained"
-                    onClick={handleDetailPageOpen}
-                  >
-                    {t('components.RestoCard.details')}
-                  </Button>
-                  <Button 
-                    variant="contained" 
-                    sx={{ width: "12.13rem" }} 
-                    onClick={() => NavigateTo(`/menu/${restaurant.uid}`, navigate, {
-                      menu: restaurant.categories,
-                      restoName: restaurant.name,
-                      restoID: restaurant.uid,
-                      address: `${restaurant.location.streetName} ${restaurant.location.streetNumber}, ${restaurant.location.postalCode} ${restaurant.location.city}, ${restaurant.location.country}`,
-                      menuDesignID: restaurant.menuDesignID
-                    })}
-                  >
-                    {t('components.Map.resto-page')}
-                  </Button>
+                  <div className={styles.restoDetailButtons}>
+                    <Button
+                      className={styles.RestoBtn}
+                      variant="contained"
+                      onClick={handleDetailPageOpen}
+                    >
+                      {t('components.RestoCard.details')}
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      sx={{ width: "12.13rem" }} 
+                      onClick={() => NavigateTo(`/menu/${restaurant.uid}`, navigate, {
+                        menu: restaurant.categories,
+                        restoName: restaurant.name,
+                        restoID: restaurant.uid,
+                        address: `${restaurant.location.streetName} ${restaurant.location.streetNumber}, ${restaurant.location.postalCode} ${restaurant.location.city}, ${restaurant.location.country}`,
+                        menuDesignID: restaurant.menuDesignID
+                      })}
+                    >
+                      {t('components.Map.resto-page')}
+                    </Button>
+                  </div>
                 </ThemeProvider>
               </>
             );
