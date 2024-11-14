@@ -33,7 +33,6 @@ body {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  margin: 10px;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -223,6 +222,8 @@ body {
 
 .tabs {
   display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
 
   button {
     flex: 1;
@@ -286,5 +287,11 @@ body {
   .profileSection,
   .restaurantsSection {
     margin-right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .restaurantSection {
+    max-width: 600px;
   }
 }
