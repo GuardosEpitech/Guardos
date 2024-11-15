@@ -93,14 +93,14 @@ const MVPRouter = () => {
         window.location.pathname !== '/payment-failed' &&
         window.location.pathname !== '/verify-email' && 
         window.location.pathname !== '/payment-success' &&
+        window.location.pathname !== '/login' &&
         window.location.pathname !== '/change-password' &&
         window.location.pathname !== '/cookiestatement' &&
-        window.location.pathname !== '/technologies' &&  (
+        window.location.pathname !== '/technologies' && (
         <Navigate to="login" />
       )}
       {isUserTokenSet === true && (window.location.pathname === '/register'
-      || window.location.pathname === '/account-recovery' ||
-      window.location.pathname === '/login'
+      || window.location.pathname === '/account-recovery'
       ) && (
         <Navigate to="/" />
       )}
@@ -111,7 +111,7 @@ const MVPRouter = () => {
           <Route path="addResto" element={<AddRestaurantPage />} />
           <Route path="dishes" element={<DishesPage />} />
           <Route path="login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
-          <Route path="register" element={<RegistrationPage />} />
+          <Route path="/register" element={<RegistrationPage />} />
           <Route path="verify-email" element={<VerifyEmailPage />} />
           <Route path="account" element={<MyAccountPage />} />
           <Route path="editDish" element={<EditDishPage />} />

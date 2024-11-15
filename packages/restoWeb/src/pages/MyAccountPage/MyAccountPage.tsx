@@ -210,7 +210,7 @@ const MyAccountPage = () => {
           localStorage.removeItem('user');
           localStorage.removeItem('visitedRestoBefore');
           document.dispatchEvent(event);
-          NavigateTo('/', navigate, {});
+          NavigateTo('/login', navigate, {});
         }
       });
     setOpenDeletePopup(false);

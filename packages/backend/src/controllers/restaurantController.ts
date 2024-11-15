@@ -440,6 +440,7 @@ export async function createNewRestaurant(
     products: obj.products ? obj.products : [],
     extras: obj.extras ? obj.extras : [],
     menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
+    ...(obj.restoChainID !== null && { restoChainID: obj.restoChainID })
   });
   await upload.save();
   return upload;

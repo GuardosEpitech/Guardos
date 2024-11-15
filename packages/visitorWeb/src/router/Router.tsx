@@ -83,6 +83,7 @@ const MVPRouter = () => {
           window.location.pathname !== '/verify-email' &&
           window.location.pathname !== '/payment-failed' &&
           window.location.pathname !== '/payment-success' &&
+          window.location.pathname !== '/login' &&
           window.location.pathname !== '/change-password' &&
           window.location.pathname !== '/intropage' &&
           window.location.pathname !== '/cookiestatement' &&
