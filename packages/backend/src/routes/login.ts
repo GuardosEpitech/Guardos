@@ -70,6 +70,10 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
       }
       const userId = await getUserIdResto(answer.token);
       const userInfo = await getRestoProfileDetails(userId as number);
+      if (userInfo.preferredLanguage === '' ||
+          userInfo.preferredLanguage === null) {
+        userInfo.preferredLanguage = 'en';
+      }
       await generateAndSendCode(
           userId as number,
           userInfo.email,
@@ -78,7 +82,8 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
       return res.status(200)
         .send({twoFactor: true, userId: userId});
     } else {
-      return res.status(200).send({twoFactor: false, token: answer.token});
+      return res.status(200)
+        .send({twoFactor: false, token: answer.token});
     }
   } catch (error) {
     return res.send('An error occurred while processing your request');
