@@ -204,13 +204,11 @@ const RestoPage = () => {
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
 
-    setCategories(prevCategories => {
-      const updatedCategories = prevCategories.map(category => ({
-        ...category,
-        value: filter.categories ? filter.categories?.includes(category.name) : category.value
-      }));
-      return updatedCategories;
-    });
+    const updatedCategories = categories.map((category) => ({
+      ...category,
+      value: filter.categories ? filter.categories?.includes(category.name) : category.value,
+    }));
+    setCategories(updatedCategories);
 
     const updatedAllergens: Allergen[] = allergens.map(allergen => ({
       ...allergen,
@@ -240,7 +238,7 @@ const RestoPage = () => {
       rating: [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
-      categories: categories.filter(category =>
+      categories: updatedCategories.filter(category =>
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
