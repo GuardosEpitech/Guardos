@@ -389,6 +389,7 @@ const Filter = (props: FilterProps) => {
       setAddress(userPosName);
       setIsAddress(true);
       setUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng });
+      props.onChangeUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng });
     }
 
     localStorage.removeItem('filter');
