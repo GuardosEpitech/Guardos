@@ -99,17 +99,21 @@ const Dish = (props: IEditableDishProps) => {
       }
     };
     const getComboDishes = async () => {
-      const comboDishes = await getDishesByID(dish.resto, {ids: combo});
-      setRecommendedDishes(comboDishes);
-    }
-
-    if (combo) {
+      try {
+        const comboDishes = await getDishesByID(dish.resto, { ids: combo });
+        const validCombos = comboDishes.filter((dish : any) => dish != null);
+        setRecommendedDishes(validCombos);
+      } catch (error) {
+        console.error("Failed to load combo dishes", error);
+      }
+    };
+  
+    if (combo && combo.length > 0) {
       getComboDishes();
     }
-
+  
     loadImages();
-  }, [dish.picturesId]);
-
+  }, [dish.picturesId, combo, onUpdate]);  // Trigger re-fetch on updates
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
       {/*mobile version of dish element*/}
@@ -270,7 +274,7 @@ const Dish = (props: IEditableDishProps) => {
             />}
           </Grid>
         </Grid>
-        {isTopLevel && combo && combo.length > 0 && (
+        {isTopLevel && recommendedDishes.length > 0 && (
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <h4>{t('components.Dish.recommendedCombos')}</h4>
