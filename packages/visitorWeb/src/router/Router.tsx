@@ -91,8 +91,7 @@ const MVPRouter = () => {
             <Navigate to="login"/>
           )}
         {isUserTokenSet === true && (window.location.pathname === '/register'
-          || window.location.pathname === '/account-recovery' ||
-          window.location.pathname === '/login'
+          || window.location.pathname === '/account-recovery'
         ) && (
           <Navigate to="/"/>
         )}

@@ -209,9 +209,9 @@
       },
       "FeatureRequest": {
         "feature-request": "Demande de fonctionnalité",
-        "name": "Nom",
-        "subject": "Sujet",
-        "request": "Votre demande",
+        "name": "Nom *",
+        "subject": "Sujet *",
+        "request": "Votre demande *",
         "email-sent-success": "Email envoyé avec succès!",
         "require-fields": "Tous les champs sont obligatoires"
       },
@@ -317,10 +317,11 @@
         "support-description1": "Nous sommes là pour vous aider à répondre à toutes vos questions ou préoccupations. Prenez une minute pour jeter un coup d'œil à notre ",
         "support-description2": " sinon, n'hésitez pas à nous contacter en utilisant le formulaire de contact ci-dessous, et nous vous répondrons dans les plus brefs délais.",
         "Q&A": "FAQ",
-        "name": "Nom complet",
-        "subject": "Object",
-        "request": "Message",
-        "email-sent-success": "Email envoyé avec succès !"
+        "name": "Nom complet *",
+        "subject": "Object *",
+        "request": "Message *",
+        "email-sent-success": "Email envoyé avec succès !",
+        "require-field": "Ce champ est requis"
       },
       "MenuPage": {
         "qr-code": "Afficher mon QR Code"

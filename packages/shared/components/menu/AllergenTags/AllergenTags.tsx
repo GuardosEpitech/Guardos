@@ -1,6 +1,7 @@
 import React from "react";
 import { Chip } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {useTranslation} from "react-i18next";
 
 import styles from "./AllergenTags.module.scss";
 
@@ -32,13 +33,14 @@ interface IAllergenTagsProps {
 
 const AllergenTags = (props: IAllergenTagsProps) => {
   const { dishAllergens } = props;
+  const {t, i18n} = useTranslation();
 
   return (
     <ThemeProvider theme={Tags()}>
       {dishAllergens.length != 0 && dishAllergens.map((allergen) => (
         <Chip
           key={allergen}
-          label={allergen}
+          label={t('food-allergene.' + allergen)}
           color="primary"
           variant="filled"
           size="small"

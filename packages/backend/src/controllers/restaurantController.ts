@@ -540,11 +540,28 @@ export async function addRestoReview(review: IReview, restoName: string) {
   const Restaurant = mongoose.model("Restaurant", restaurantSchema);
   review.date = new Date();
   review._id = uuidv4();
-  return Restaurant.findOneAndUpdate(
+  const updatedRestaurant = await Restaurant.findOneAndUpdate(
     { name: restoName },
     { $push: { reviews: review } },
-    { new: true }
+    { new: true } 
   );
+
+  if (!updatedRestaurant) {
+    throw new Error(`Restaurant with name "${restoName}" not found.`);
+  }
+
+  const reviews = updatedRestaurant.reviews as IReview[];
+  const totalRating = reviews.reduce(
+    (sum, rev) => sum + (rev.note ? +rev.note : 0), 
+    0
+  );
+  const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+  updatedRestaurant.rating = averageRating;
+  updatedRestaurant.ratingCount = reviews.length;
+  await updatedRestaurant.save();
+
+  return updatedRestaurant;
 }
 
 export async function getReviewByUserName(userName: string) {
@@ -572,39 +589,71 @@ export async function getReviewByUserName(userName: string) {
 
 export async function deleteRestoReview(reviewId: string, restoName: string) {
   const Restaurant = mongoose.model("Restaurant", restaurantSchema);
-  return Restaurant.findOneAndUpdate(
+
+  const updatedRestaurant = await Restaurant.findOneAndUpdate(
     { name: restoName },
     { $pull: { reviews: { _id: reviewId } } },
     { new: true }
   );
+
+  if (!updatedRestaurant) {
+    throw new Error(`Restaurant with name "${restoName}" not found.`);
+  }
+
+  const reviews = updatedRestaurant.reviews as IReview[];
+  const totalRating = reviews.reduce(
+    (sum, rev) => sum + (rev.note ? +rev.note : 0),
+    0
+  );
+  const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+  updatedRestaurant.rating = averageRating;
+  updatedRestaurant.ratingCount = reviews.length;
+
+  await updatedRestaurant.save();
+
+  return updatedRestaurant;
 }
 
 export async function modifyRestoReview(
   reviewId: string,
-  modifiedFields: any,
+  modifiedFields: Partial<IReview>,
   restoName: string
 ) {
   const Restaurant = mongoose.model("Restaurant", restaurantSchema);
 
-  // Check if modifiedFields is empty or undefined
   if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
-    // If modifiedFields is not provided, return the original review
     return Restaurant.findOne({ name: restoName });
   }
 
-  // Construct the update query to update only provided fields
-  const updateQuery: any = {};
+  const updateQuery: Record<string, any> = {};
   for (const key in modifiedFields) {
-    // Use type assertion here
-    updateQuery[`reviews.$.${key}` as keyof IReview] = modifiedFields[key];
+    if (Object.prototype.hasOwnProperty.call(modifiedFields, key)) {
+      updateQuery[`reviews.$.${key}`] = modifiedFields[key as keyof IReview];
+    }
   }
 
-  // Execute the update operation
-  return Restaurant.findOneAndUpdate(
+  const updatedRestaurant = await Restaurant.findOneAndUpdate(
     { name: restoName, "reviews._id": reviewId },
     { $set: updateQuery },
     { new: true }
   );
+
+  if (!updatedRestaurant) {
+    throw new Error(`Restaurant with name "${restoName}" not found.`);
+  }
+
+  const reviews = updatedRestaurant.reviews as IReview[];
+  const totalRating = reviews.reduce(
+    (sum, rev) => sum + (rev.note ? +rev.note : 0),
+    0
+  );
+  const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
+  updatedRestaurant.rating = averageRating;
+  await updatedRestaurant.save();
+
+  return updatedRestaurant;
 }
 
 export async function addCategory(

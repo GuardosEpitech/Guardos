@@ -29,3 +29,23 @@ export async function geocodeAddress(address: string) {
     };
   }
 }
+
+export async function revGeocodeAddress(lat: number, lng: number) {
+  try {
+    const result = await axios({
+      method: 'GET',
+      url: 'https://revgeocode.search.hereapi.com/v1/revgeocode',
+      params: {
+        at: `${lat},${lng}`,
+        lang: 'en-US',
+        apiKey: process.env.MAP_API
+      }
+    });
+    if (result.data.items) {
+      return result.data.items[0].title;
+    }
+    return 'No position found';
+  } catch (error) {
+    return 'No position found';
+  }
+}

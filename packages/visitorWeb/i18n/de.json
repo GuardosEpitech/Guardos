@@ -1,5 +1,21 @@
 {
   "translation": {
+    "food-allergene": {
+      "celery": "Sellerie",
+      "gluten": "Gluten",
+      "crustaceans": "Krustentiere",
+      "eggs": "Eier",
+      "fish": "Fisch",
+      "lupin": "Lupine",
+      "milk": "Milch",
+      "molluscs": "Weichtiere",
+      "mustard": "Senf",
+      "peanuts": "Erdnüsse",
+      "sesame": "Sesam",
+      "soybeans": "Sojabohnen",
+      "sulphites": "Sulfite",
+      "tree nuts": "Baumnüsse"
+    },
     "common": {
       "save": "Speichern",
       "submit": "Absenden",

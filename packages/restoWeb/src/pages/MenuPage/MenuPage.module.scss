@@ -18,6 +18,15 @@
   margin: 0;
 }
 
+.Popover {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
 .RestaurantAddress {
   font-family: "Calibri", sans-serif;
   font-size: 1.8rem;

@@ -209,9 +209,9 @@
       },
       "FeatureRequest": {
         "feature-request": "Feature-Anfrage",
-        "name": "Name",
-        "subject": "Betreff",
-        "request": "Ihre Anfrage",
+        "name": "Name *",
+        "subject": "Betreff *",
+        "request": "Ihre Anfrage *",
         "email-sent-success": "E-Mail erfolgreich gesendet!",
         "require-fields": "Alle Felder sind erforderlich"
       },
@@ -317,10 +317,11 @@
         "support-description1": "Wir sind hier, um Ihnen bei allen Fragen und Anliegen zu helfen, die Sie haben. Nehmen Sie sich eine Minute Zeit und werfen Sie einen Blick auf unsere ",
         "support-description2": " Andernfalls können Sie uns gerne über das unten stehende Kontaktformular erreichen, und wir werden uns so schnell wie möglich bei Ihnen melden",
         "Q&A": "Q&A",
-        "name": "Name",
-        "subject": "Betreff",
-        "request": "Nachricht",
-        "email-sent-success": "Nachricht erfolgreich gesendet!"
+        "name": "Name *",
+        "subject": "Betreff *",
+        "request": "Nachricht *",
+        "email-sent-success": "Nachricht erfolgreich gesendet!",
+        "require-field": "Bitte fülle dieses Feld aus."
       },
       "MenuPage": {
         "qr-code": "meinen qr-code erhalten"

@@ -117,7 +117,7 @@ const RestoPage = () => {
 
       const updatedAllergens = allergens.map((allergen) => ({
         ...allergen,
-        value: userAllergens.includes(allergen.name) ? true : allergen.value,
+        value: userAllergens?.includes(allergen.name) ? true : allergen.value,
       }));
       
       setAllergens(updatedAllergens);
@@ -204,20 +204,16 @@ const RestoPage = () => {
     if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
 
-    setCategories(prevCategories => {
-      const updatedCategories = prevCategories.map(category => ({
-        ...category,
-        value: filter.categories ? filter.categories.includes(category.name) : category.value
-      }));
-      return updatedCategories;
-    });
+    const updatedCategories = categories.map((category) => ({
+      ...category,
+      value: filter.categories ? filter.categories?.includes(category.name) : category.value,
+    }));
+    setCategories(updatedCategories);
 
     const updatedAllergens: Allergen[] = allergens.map(allergen => ({
       ...allergen,
-      value: filter.allergenList ? filter.allergenList
-        .includes(allergen.name) : allergen.value,
-      colorButton: filter.allergenList && filter.allergenList
-        .includes(allergen.name) ? "secondary" : "primary"
+      value: filter.allergenList ? filter.allergenList?.includes(allergen.name) : allergen.value,
+      colorButton: filter.allergenList && filter.allergenList?.includes(allergen.name) ? "secondary" : "primary"
     }));
 
     setAllergens(updatedAllergens);
@@ -239,10 +235,10 @@ const RestoPage = () => {
 
     const newFilter = {
       range: filter.range ? filter.range : rangeValue,
-      rating: [rating, 5],
+      rating: [filter.rating[0], 5],
       name: inputFields[0],
       location: inputFields[1],
-      categories: categories.filter(category =>
+      categories: updatedCategories.filter(category =>
         category.value).map(category => category.name),
       allergenList: updatedAllergens.filter(allergen =>
         allergen.value).map(allergen => allergen.name),
@@ -360,7 +356,7 @@ const RestoPage = () => {
                 if ('isAd' in item) {
                   return <AdCard key={`ad-${index}`} />;
                 }
-                const isFavourite = isFavouriteRestos.includes(item.uid);
+                const isFavourite = isFavouriteRestos?.includes(item.uid);
                 return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
               }))
             )}
