@@ -235,7 +235,7 @@ const RestoPage = () => {
 
     const newFilter = {
       range: filter.range,
-      rating: [rating, 5],
+      rating: [filter.rating[0], 5],
       name: inputFields[0],
       location: inputFields[1],
       categories: updatedCategories.filter(category =>
