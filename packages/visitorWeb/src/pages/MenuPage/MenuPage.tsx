@@ -88,12 +88,14 @@ const MenuPage = () => {
     let profiles: AllergenProfile[] = [];
     // Extract state from location
     if (location.state) {
-      const { restoName: passedName, address: passedAddress } = location.state as {
+      const { restoName: passedName, address: passedAddress, menuDesignId: passedMenuDesignID } = location.state as {
         restoName: string;
         address: string;
+        menuDesignId: number;
       };
       setRestoName(passedName);
       setAddress(passedAddress);
+      setMenuDesignID(passedMenuDesignID);
 
       profiles = JSON.parse(localStorage.getItem('groupProfiles') || '[]');
 
