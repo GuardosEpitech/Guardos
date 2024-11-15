@@ -35,7 +35,7 @@ import ViewRatingPage from "@src/pages/ViewRatingPage";
 
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
-  const [showCookies, setShowCookies] = useState<boolean>(true);
+  const [showCookies, setShowCookies] = useState<boolean>(false);
   const userToken = localStorage.getItem('user');
   const [loading, setLoading] = useState(true);
 

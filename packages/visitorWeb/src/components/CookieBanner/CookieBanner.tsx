@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
 import styles from "./CookieBanner.module.scss";
 import {useTranslation} from "react-i18next";
-import { setUserPreferences } from "../../services/profileCalls";
+import { setUserPreferences, getUserPreferences } from "../../services/profileCalls";
 
 const OkBtn = () => {
   return createTheme({
@@ -105,12 +105,27 @@ const CookieBanner: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const hasVisitedBefore = localStorage.getItem('visitedRestoBefore');
-    
-    if (!hasVisitedBefore) {
-      setIsOpen(true);
-    }
+    areCookiesSet();
   }, []);
+
+  const areCookiesSet = async () => {
+    const hasVisitedBefore = localStorage.getItem('visitedBefore');
+    const userToken = localStorage.getItem('user');
+
+    if (userToken) {
+      const data = await getUserPreferences(userToken);
+      if (data.isSet) {
+        setIsOpen(false);
+        localStorage.setItem('visitedBefore', 'true');
+      } else {
+        setIsOpen(true);
+      }
+    } else {
+      if (!hasVisitedBefore) {
+        setIsOpen(true);
+      }
+    }
+  };
 
   const handleClose = () => {
     setIsOpen(false);
@@ -140,7 +155,7 @@ const CookieBanner: React.FC = () => {
     }
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedRestoBefore', 'true');
+      localStorage.setItem('visitedBefore', 'true');
       handleClose();
     }
   };
@@ -162,7 +177,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedRestoBefore', 'true');
+      localStorage.setItem('visitedBefore', 'true');
       handleClose();
     }
   };
@@ -184,7 +199,7 @@ const CookieBanner: React.FC = () => {
     
     const response = await setUserPreferences(userToken, data);
     if (response == "OK") {
-      localStorage.setItem('visitedRestoBefore', 'true');
+      localStorage.setItem('visitedBefore', 'true');
       handleClose();
     }
   };

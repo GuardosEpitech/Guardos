@@ -375,10 +375,10 @@ const MyAccountPage = () => {
     setOpenDeletePopup(false);
   };
 
-  const toggleDarkMode = () => {
-    const darkModeEnabled = localStorage.getItem('darkMode');    
+  const toggleDarkMode = () => {  
     setDarkMode(!darkMode);
-    if (darkModeEnabled == 'false') {
+    
+    if (!darkMode) {
       enableDarkMode();
     } else {
       disableDarkMode();

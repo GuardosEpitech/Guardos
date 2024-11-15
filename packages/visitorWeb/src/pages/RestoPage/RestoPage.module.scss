@@ -90,6 +90,10 @@
     flex-direction: column;
   }
 
+  .container {
+    width: 100%;
+  }
+
   .TitleSearch {
     font-size: 1.5rem;
   }
@@ -137,6 +141,10 @@
 @media only screen and (max-width: 600px) {
   .RectOnImg {
     height: 17rem;
+  }
+
+  .container {
+    margin-right: 0px !important;
   }
 }
 

@@ -67,6 +67,8 @@
 
 .popoverTitle {
   font-weight: bold;
+  word-break: break-word;
+  display: flex;
 }
 
 .popoverContent {
@@ -83,5 +85,30 @@
 
   button {
     font-size: 16px !important;
+  }
+}
+
+.popoverImage {
+  width: 100%;
+  word-break: break-word;
+}
+
+.FavoriteIcon {
+  display: flex;
+  align-items: center;
+}
+
+.ratingDisplay div {
+  display: flex;
+  flex-direction: column;
+}
+
+.restoDetailButtons {
+  padding-top: 20px;
+  display: flex;
+  gap: 10px;
+
+  button {
+    flex: 0.5;
   }
 }

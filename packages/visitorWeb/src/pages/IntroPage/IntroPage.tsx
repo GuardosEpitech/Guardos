@@ -165,10 +165,10 @@ const IntroPage = () => {
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
+            contentStyle={{ background: '#4caf50', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '7px solid #4caf50' }}
             date="02/2024  - 05/2024"
-            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+            iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
             <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.beta-growth')}</h3>
@@ -176,10 +176,10 @@ const IntroPage = () => {
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'rgb(233, 30, 99)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '7px solid  rgb(233, 30, 99)' }}
+            contentStyle={{ background: '#4caf50', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '7px solid  #4caf50' }}
             date="06/2024  - 09/2024"
-            iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
+            iconStyle={{ background: "#4caf50", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
             <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.consolidation')}</h3>
@@ -187,10 +187,10 @@ const IntroPage = () => {
           </VerticalTimelineElement>
           <VerticalTimelineElement
             className="vertical-timeline-element--work"
-            contentStyle={{ background: 'rgb(233, 30, 99)', color: '#fff' }}
-            contentArrowStyle={{ borderRight: '7px solid  rgb(233, 30, 99)' }}
+            contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+            contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
             date="10/2024  - 01/2025"
-            iconStyle={{ background: "rgb(233, 30, 99)", color: "#fff" }}
+            iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
             icon={<i className="fas fa-tasks" />}
           >
             <h3 className="vertical-timeline-element-title">{t('pages.IntroPage.launch-metrics')}</h3>

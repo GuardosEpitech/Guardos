@@ -62,6 +62,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
     openingHours,
     phoneNumber,
     website,
+    menuDesignID
   } = props.restaurant;
   const picture = props.pictureBase64;
   const {streetName, streetNumber, postalCode, city, country} = location;
@@ -106,7 +107,7 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
               {name}
             </Typography>
           </div>
-          <div className={styles.FlexParent}>
+          <div className={styles.FlexParentRating}>
             <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
           </div>
           <div className={styles.FlexParent}>
@@ -137,8 +138,8 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
               <Button
                 className={styles.RestoBtn}
                 variant="contained"
-                onClick={() => NavigateTo("/menu", navigate, {
-                  menu: categories,
+                onClick={() => NavigateTo(`/menu/${props.restaurant.uid}`, navigate, {
+                  menuDesignID: menuDesignID,
                   restoName: name,
                   restoID: props.restaurant.uid,
                   address: address,
