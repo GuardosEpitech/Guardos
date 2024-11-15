@@ -38,6 +38,7 @@ import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
 import {addQRCode} from "@src/services/qrcodeCall";
+import { SignalCellularConnectedNoInternet4BarSharp } from "@mui/icons-material";
 
 const PageBtn = () => {
   return createTheme({
@@ -126,7 +127,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [menuDesigns, setMenuDesigns] = useState<IMenuDesigns[]>([]);
   const [restoChains, setRestoChains] = useState<{uid: number, name: string}[]>([]);
   const [selectedMenuDesignId, setSelectedMenuDesignId] = useState(0);
-  const [selectedRestoChainId, setSelectedRestoChainId] = useState(0);
+  const [selectedRestoChainId, setSelectedRestoChainId] = useState(null);
   const [selectedRestaurantName, setSelectedRestaurantName] = useState('');
   const [selectedStreet, setSelectedStreet] = useState('');
   const [selectedStreetNumber, setSelectedStreetNumber] = useState(0);
@@ -335,8 +336,9 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         longitude: "0",
       },
       menuDesignID: selectedMenuDesignId,
-      restoChainID: selectedRestoChainId
+      ...(selectedRestoChainId !== null && { restoChainID: selectedRestoChainId })
     };
+    
     const data: IAddRestoRequest  = {
       userToken: userToken,
       resto: resto,

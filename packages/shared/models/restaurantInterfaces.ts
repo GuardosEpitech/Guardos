@@ -101,7 +101,7 @@ export interface IAddResto {
   openingHours: IOpeningHours[];
   location: ILocation;
   menuDesignID: number;
-  restoChainID: number;
+  restoChainID?: number;
 };
 
 export interface IAddRestoRequest {
