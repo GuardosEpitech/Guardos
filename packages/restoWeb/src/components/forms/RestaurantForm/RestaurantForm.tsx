@@ -213,6 +213,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
 
         if (menuDesignID !== undefined) {
           setValue(res.find((menuDesign:IMenuDesigns) => menuDesign._id === menuDesignID));
+          setSelectedMenuDesignId(menuDesignID);
         }
       });
     getAllRestaurantChainsByUser(userToken)
