@@ -424,13 +424,13 @@ export async function createNewRestaurant(
     _id: id,
     name: obj.name,
     userID: userID,
-    phoneNumber: obj.phoneNumber ? obj.phoneNumber : "+1000000000",
-    website: obj.website ? obj.website : "www.default.de",
+    phoneNumber: obj.phoneNumber ? obj.phoneNumber : '',
+    website: obj.website ? obj.website : '',
     rating: 0,
     ratingCount: 0,
-    description: obj.description ? obj.description : "default description",
+    description: obj.description ? obj.description : '',
     dishes: obj.dishes ? obj.dishes : [],
-    pictures: obj.pictures ? obj.pictures : ["empty.jpg"],
+    pictures: obj.pictures ? obj.pictures : [''],
     picturesId: obj.picturesId ? obj.picturesId : [],
     openingHours: obj.openingHours
       ? obj.openingHours
