@@ -7,11 +7,12 @@ import Header from "@src/components/dumpComponents/Header/Header";
 import {useTranslation} from "react-i18next";
 import instagram from "../../../../shared/assets/whiteInstagram.png";
 import linkedIn from "../../../../shared/assets/linkedin.png";
+import { log } from "console";
 
 const AppOutlet = () => {
   const {t} = useTranslation();
   const navigate = useNavigate();
-  const visitorIntroPageURL = `${process.env.RESTAURANT_URL}/intropage`;
+  const visitorIntroPageURL = `${process.env.VISITOR_INTRO_URL}/intropage`;
 
   return (
     <div className={styles.ParentElement}>
@@ -34,7 +35,7 @@ const AppOutlet = () => {
               <li><a onClick={() => { navigate('/privacy'); }} className={styles.links}>{t('pages.AppOutlet.privacy')}</a></li>
               <li><a onClick={() => { navigate('/imprint'); }} className={styles.links}>{t('pages.AppOutlet.imprint')}</a></li>
               <li><a onClick={() => { navigate('/cookiestatement'); }}className={styles.links}>{t('pages.AppOutlet.cookieStatement')}</a></li>
-              <li><a className={styles.links} onClick={() => { navigate(`${visitorIntroPageURL}`); }}>{t('pages.AppOutlet.welcomeSite')}</a></li>
+              <li><a className={styles.links} href={visitorIntroPageURL} target="_blank" rel="noopener noreferrer">{t('pages.AppOutlet.welcomeSite')}</a></li>
             </ul>
           </div>
           <div>
