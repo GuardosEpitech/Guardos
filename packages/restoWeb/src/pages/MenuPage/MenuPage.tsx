@@ -2,7 +2,7 @@
 import React, {useEffect, useState, useRef} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { List, ListItem, Button } from "@mui/material";
+import { List, ListItem, Button, Popover } from "@mui/material";
 import PlaceIcon from "@mui/icons-material/Place";
 import Category from "shared/components/menu/Category/Category";
 import Dish from "@src/components/menu/Dish/Dish";
@@ -15,6 +15,8 @@ import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {useTranslation} from "react-i18next";
 import {restoByName} from "@src/services/restoCalls";
+import { Buffer } from 'buffer';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const theme = createTheme({
   palette: {
@@ -36,6 +38,7 @@ const MenuPage = () => {
   const { menu, restoName, address, menuDesignID, uid } = useLocation().state;
   const [restaurantData, setRestaurantData] = useState({uid: 1});
   const [hasMenu, setHasMenu] = useState(false);
+  const [QRCODEimg, setQRCODEimg] = useState('');
   const thirdLayout = {
     backgroundColor: 'rgba(255,126,145,0.5)',
     padding: '40px',
@@ -44,7 +47,6 @@ const MenuPage = () => {
 
   // Create refs for each section
   const sectionRefs = useRef(menu.map(() => React.createRef()));
-  const [URL, setURL] = useState(null);
   const navigate = useNavigate();
   const {t} = useTranslation();
   // Function to scroll to a section
@@ -52,11 +54,26 @@ const MenuPage = () => {
     sectionRefs.current[index].current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    const imgCode = await getQRCodeByName(restaurantData.uid);
+    const base64String = Buffer.from(imgCode.qrCodeImage.data)
+      .toString('base64');
+    setQRCODEimg(`data:image/png;base64,${base64String}`);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const openPopover = Boolean(anchorEl);
+  const idPopover = open ? 'simple-popover' : undefined;
+
   useEffect(() => {
     restoByName(restoName)
       .then(res => setRestaurantData(res));
-    getQRCodeByName(uid)
-      .then(res => setURL(res));
     const filteredMenu = menu.filter((category: ICategories) =>
       category.dishes.length > 0);
     if (filteredMenu.length > 0) {
@@ -98,7 +115,9 @@ const MenuPage = () => {
                     <div>
                       {category.dishes.length > 0 && (
                         <Category key={category.name} title={category.name}>
-                          {category.dishes.map((dish, index) => {return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
+                          {category.dishes.map((dish, index) => {
+                            return <Dish key={dish.name + index} dish={dish} editable={true}
+                              isTopLevel={true}/>;
                           })}
                         </Category>
                       )}
@@ -113,18 +132,20 @@ const MenuPage = () => {
             </div>
           )}
           {menuDesignID >= 1 ? (
-            <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`} style={menuDesignID === 2 ? thirdLayout : null}>
+            <div className={`${styles.secondLayout} ${menuDesignID === 3 ? styles.fancyLayout : ''}`}
+              style={menuDesignID === 2 ? thirdLayout : null}>
               <div className={styles.secondLayoutList}>
                 <ul>
                   {menu.filter((category: ICategories) => category.dishes.length > 0)
                     .map((category: ICategories, index: number) => {
                       return (
-                        <li key={index} onClick={() => scrollToSection(index)} className={styles.secondLayoutListObject}>
+                        <li key={index} onClick={() => scrollToSection(index)}
+                          className={styles.secondLayoutListObject}>
                           {category.name}
                         </li>
                       );
                     }
-                  )}
+                    )}
                 </ul>
               </div>
               <div className={styles.secondLayoutDishes}>
@@ -135,14 +156,14 @@ const MenuPage = () => {
                         {index % 3 === 0 ? (
                           <div style={{
                             backgroundImage: `url(${pic1})`
-                          }} className={styles.secondLayoutBanner} />
+                          }} className={styles.secondLayoutBanner}/>
                         ) : (
                           <div/>
                         )}
                         {index % 3 === 1 ? (
                           <div style={{
                             backgroundImage: `url(${pic2})`
-                          }} className={styles.secondLayoutBanner} />
+                          }} className={styles.secondLayoutBanner}/>
                         ) : (
                           <div/>
                         )}
@@ -157,14 +178,15 @@ const MenuPage = () => {
                           {category.dishes.length > 0 && (
                             <Category key={category.name} title={category.name}>
                               {category.dishes.map((dish, index) => {
-                                return <Dish key={dish.name + index} dish={dish} editable={true} isTopLevel={true} />;
+                                return <Dish key={dish.name + index} dish={dish} editable={true}
+                                  isTopLevel={true}/>;
                               })}
                             </Category>
                           )}
                         </div>
                       </div>
                     );
-                })}
+                  })}
               </div>
             </div>
           ) : (
@@ -172,16 +194,34 @@ const MenuPage = () => {
 
             </div>
           )}
-          <Button
-            className={styles.SaveBtn}
-            variant="contained"
-            sx={{width: "12.13rem"}}
-            onClick={() => window.location.href = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/qrcode/base64/${restaurantData.uid}`}
-          >
-            {t('pages.MenuPage.qr-code')}
-          </Button>
+          <div>
+            <Button
+              aria-describedby={idPopover}
+              className={styles.SaveBtn}
+              variant="contained"
+              sx={{width: "12.13rem"}} onClick={handleClick}
+            >
+              {t('pages.MenuPage.qr-code')}
+            </Button>
+            <Popover
+              id={idPopover}
+              open={openPopover}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+            >
+              <div className={styles.Popover}>
+                <img src={QRCODEimg} alt="QR Code"/>
+                <a href={QRCODEimg} download="QRCode.png">
+                  <DownloadIcon color={"action"} />
+                </a>
+              </div>
+            </Popover>
+          </div>
         </Layout>
-
       ) : (
         <Layout>
           <h2 className={styles.NoMenu}>

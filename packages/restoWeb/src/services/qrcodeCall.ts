@@ -20,7 +20,7 @@ export const addQRCode = async (body: any) => {
     }
 };
 
-export const getQRCodeByNameBase64 = async (uid: string) => {
+export const getQRCodeByNameBase64 = async (uid: number) => {
     console.log("this is the uid", uid);
     try {
         const response = await axios({
@@ -34,7 +34,7 @@ export const getQRCodeByNameBase64 = async (uid: string) => {
     }
 };
 
-export const getQRCodeByName = async (uid: string) => {
+export const getQRCodeByName = async (uid: number) => {
     try {
         const response = await axios({
             url: `${baseUrl}/${uid}`,

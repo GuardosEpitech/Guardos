@@ -36,9 +36,10 @@ const ViewRatingPage = () => {
       </div>
       <div className={styles.Content}>
         <div className={styles.AllReviewContainer}>
-          {ratingData === undefined ?
+          {ratingData.length === 0 ?
             <h2>{t('pages.RatingPage.no-reviews-yet')}</h2>
           :
+          <>
             <div className={styles.RecapReview}>
               <h2>
                 {t('pages.RatingPage.review-overview', {ratingAmount: ratingData.length})}
@@ -46,16 +47,17 @@ const ViewRatingPage = () => {
               <span className={styles.AverageTxt}>{averageRating()}</span>
               <Rating size="small" name="read-only" value={averageRating()} readOnly />
             </div>
-          }
-          {ratingData?.map((data, key) => (
-            <div key={key} className={styles.CardReview}>
-              <div className={styles.NoteContainer}>
-                <span>{data.note}</span>
-                <Rating name="read-only" value={data.note} readOnly />
+            {ratingData?.map((data, key) => (
+              <div key={key} className={styles.CardReview}>
+                <div className={styles.NoteContainer}>
+                  <span>{data.note}</span>
+                  <Rating name="read-only" value={data.note} readOnly />
+                </div>
+                <span>{data.comment}</span>
               </div>
-              <span>{data.comment}</span>
-            </div>
-          ))}
+            ))}
+          </>
+          }
         </div>
       </div>
     </>

@@ -117,7 +117,7 @@ const RestoPage = () => {
 
       const updatedAllergens = allergens.map((allergen) => ({
         ...allergen,
-        value: userAllergens.includes(allergen.name) ? true : allergen.value,
+        value: userAllergens?.includes(allergen.name) ? true : allergen.value,
       }));
       
       setAllergens(updatedAllergens);
@@ -207,17 +207,15 @@ const RestoPage = () => {
     setCategories(prevCategories => {
       const updatedCategories = prevCategories.map(category => ({
         ...category,
-        value: filter.categories ? filter.categories.includes(category.name) : category.value
+        value: filter.categories ? filter.categories?.includes(category.name) : category.value
       }));
       return updatedCategories;
     });
 
     const updatedAllergens: Allergen[] = allergens.map(allergen => ({
       ...allergen,
-      value: filter.allergenList ? filter.allergenList
-        .includes(allergen.name) : allergen.value,
-      colorButton: filter.allergenList && filter.allergenList
-        .includes(allergen.name) ? "secondary" : "primary"
+      value: filter.allergenList ? filter.allergenList?.includes(allergen.name) : allergen.value,
+      colorButton: filter.allergenList && filter.allergenList?.includes(allergen.name) ? "secondary" : "primary"
     }));
 
     setAllergens(updatedAllergens);
@@ -362,7 +360,7 @@ const RestoPage = () => {
                 if ('isAd' in item) {
                   return <AdCard key={`ad-${index}`} />;
                 }
-                const isFavourite = isFavouriteRestos.includes(item.uid);
+                const isFavourite = isFavouriteRestos?.includes(item.uid);
                 return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
               }))
             )}

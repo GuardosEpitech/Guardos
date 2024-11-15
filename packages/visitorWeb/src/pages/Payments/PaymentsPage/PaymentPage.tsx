@@ -56,7 +56,7 @@ const PaymentPage = () => {
                 </div>
             ) : (
                 <>
-                {paymentMethods.length > 0 ? (
+                {paymentMethods && paymentMethods.length > 0 ? (
                 <div className={styles.creditCardsContainer}>
                     {paymentMethods.map((paymentMethod, index) => (
                         <CreditCard
