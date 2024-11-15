@@ -29,7 +29,7 @@ import TabList from '@mui/lab/TabList';
 import AddIcon from '@mui/icons-material/Add';
 import {getUserAllergens} from "@src/services/userCalls";
 import AddressInput from '@src/components/AddressInput/AddressInput';
-import { getCurrentCoords } from '@src/services/mapCalls';
+import { getCurrentCoords, getPosFromCoords } from '@src/services/mapCalls';
 
 const GlobalStyle = () => {
   return createTheme({
@@ -175,10 +175,17 @@ const Filter = (props: FilterProps) => {
       });
   };
 
-  const loadCurFilter = () => {
+  const loadCurFilter = async () => {
     const filter = props.fetchFilter();
     setRating(filter.rating[0]);
     setRange(filter.range);
+    if (filter.userLoc) {
+      const userPosName = await getPosFromCoords(filter.userLoc.lat, filter.userLoc.lng);
+      setAddress(userPosName);
+      setIsAddress(true);
+      setUserPosition({ lat: filter.userLoc.lat, lng: filter.userLoc.lng });
+      props.onChangeUserPosition({ lat: filter.userLoc.lat, lng: filter.userLoc.lng })
+    }
 
     const updatedCategories = props.categories.map(category => ({
       ...category,
@@ -332,12 +339,13 @@ const Filter = (props: FilterProps) => {
       location: curFilter.location,
       categories: curFilter.categories,
       allergenList: curFilter.allergenList,
-      groupProfiles: groupProfiles
+      groupProfiles: groupProfiles,
+      userLoc: curFilter.userLoc
     });
     handleMenuClose();
   };
 
-  const handleLoadFilter = (filterName: string) => {
+  const handleLoadFilter = async (filterName: string) => {
     const newFilter : ISearchCommunication = savedFilters
       .find((filter) => filter.filterName === filterName);
 
@@ -345,6 +353,14 @@ const Filter = (props: FilterProps) => {
     setChangeStatus("success");
     setChangeStatusMsg(t('components.Filter.load-filter-success'));
     props.onFilterLoad(newFilter);
+
+    if (newFilter.userLoc) {
+      const userPosName = await getPosFromCoords(newFilter.userLoc.lat, newFilter.userLoc.lng);
+      setAddress(userPosName);
+      setIsAddress(true);
+      setUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng });
+      props.onChangeUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng })
+    }
 
     const updatedCategories = categories.map(category => ({
       ...category,

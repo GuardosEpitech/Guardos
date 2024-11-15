@@ -15,6 +15,10 @@ export const userSchema = new mongoose.Schema({
   savedFilter: [{
     filterName: String,
     range: Number,
+    userLoc: {
+      lat: Number,
+      lng: Number
+    },
     rating: [Number],
     name: String,
     location: String,
