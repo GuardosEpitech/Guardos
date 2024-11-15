@@ -184,7 +184,6 @@ const Filter = (props: FilterProps) => {
       setAddress(userPosName);
       setIsAddress(true);
       setUserPosition({ lat: filter.userLoc.lat, lng: filter.userLoc.lng });
-      props.onChangeUserPosition({ lat: filter.userLoc.lat, lng: filter.userLoc.lng })
     }
 
     const updatedCategories = props.categories.map(category => ({
@@ -348,19 +347,10 @@ const Filter = (props: FilterProps) => {
   const handleLoadFilter = async (filterName: string) => {
     const newFilter : ISearchCommunication = savedFilters
       .find((filter) => filter.filterName === filterName);
-
     localStorage.setItem('filter', JSON.stringify(newFilter));
     setChangeStatus("success");
     setChangeStatusMsg(t('components.Filter.load-filter-success'));
     props.onFilterLoad(newFilter);
-
-    if (newFilter.userLoc) {
-      const userPosName = await getPosFromCoords(newFilter.userLoc.lat, newFilter.userLoc.lng);
-      setAddress(userPosName);
-      setIsAddress(true);
-      setUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng });
-      props.onChangeUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng })
-    }
 
     const updatedCategories = categories.map(category => ({
       ...category,
@@ -394,6 +384,12 @@ const Filter = (props: FilterProps) => {
 
     setRating(newFilter.rating[0]);
     setRange(newFilter.range);
+    if (newFilter.userLoc) {
+      const userPosName = await getPosFromCoords(newFilter.userLoc.lat, newFilter.userLoc.lng);
+      setAddress(userPosName);
+      setIsAddress(true);
+      setUserPosition({ lat: newFilter.userLoc.lat, lng: newFilter.userLoc.lng });
+    }
 
     localStorage.removeItem('filter');
 
