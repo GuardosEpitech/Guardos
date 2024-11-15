@@ -7,6 +7,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { deleteDish, getDishesByID } from "@src/services/dishCalls";
 import DishActions from "@src/components/menu/Dish/DishActions/DishActions";
+import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/components/menu/Dish/Dish.module.scss";
 import { Popup } from "@src/components/dumpComponents/popup/Popup";
@@ -30,7 +31,7 @@ const Dish = (props: IEditableDishProps) => {
   const [showCombos, setShowCombos] = useState(false);
   const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price, discount, validTill, combo } = dish;
+  const { name, description, price, discount, validTill, combo, allergens } = dish;
   const priceStr = `${price.toFixed(2)} €`;
   const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
@@ -39,10 +40,6 @@ const Dish = (props: IEditableDishProps) => {
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
-  };
-
-  const handleClick = () => {
-    setExtended(!extended);
   };
 
   const handleDeleteClick = (e: any) => {
@@ -121,7 +118,7 @@ const Dish = (props: IEditableDishProps) => {
     loadImages();
   }, [dish.picturesId, combo, onUpdate]);  // Trigger re-fetch on updates
   return (
-    <Paper className={styles.DishBox} elevation={3} onClick={handleClick}>
+    <Paper className={styles.DishBox} elevation={3} onClick={() => setExtended(!extended)}>
       {/*mobile version of dish element*/}
       <div className={styles.MobileVersion}>
         <Grid container justifyContent="space-between" className={styles.MobileVersion}>
@@ -172,7 +169,7 @@ const Dish = (props: IEditableDishProps) => {
                 </>
               )}
             </div>
-            {/* {extended && <AllergenTags dishAllergens={allergens.split(",")} />} */}
+            {extended && <AllergenTags dishAllergens={allergens} />}
           </Grid>
           <Grid item xs={12} className={styles.GridItemDescription}>
             <p
@@ -243,7 +240,7 @@ const Dish = (props: IEditableDishProps) => {
                 </>
               )}
             </div>
-            {/* {extended && <AllergenTags dishAllergens={allergens.split(",")} />} */}
+            {extended && <AllergenTags dishAllergens={allergens} />}
             <p
               className={
                 extended
