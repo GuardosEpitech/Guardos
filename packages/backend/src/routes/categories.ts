@@ -17,7 +17,11 @@ router.get('/', async (req, res) => {
 
     const restos = await getAllRestaurants();
     const categories: string[] = restos
-      .flatMap(resto => resto.categories?.map((cate: any) => cate.name) || [])
+      .flatMap(resto =>
+        resto.categories?.filter((cate: any) => 
+          cate.dishes && cate.dishes.length > 0)
+          .map((cate: any) => cate.name) || []
+      )
       .filter((name: string) => name?.length);
 
     const sortedCategories = categorizeAndSort(categories);
