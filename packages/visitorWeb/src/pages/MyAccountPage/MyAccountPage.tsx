@@ -361,7 +361,7 @@ const MyAccountPage = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('visitedBefore');
         document.dispatchEvent(event);
-        NavigateTo('/', navigate, {})
+        NavigateTo('/login', navigate, {})
       }
     });
     setOpenDeletePopup(false);
@@ -621,7 +621,7 @@ const MyAccountPage = () => {
             {
               allAllergens.map((allergen) => (
               <MenuItem key={allergen} value={allergen} selected={selectedOptions.includes(allergen)}>
-                {allergen}
+                {t('food-allergene.' + allergen)}
               </MenuItem>
             ))
             }

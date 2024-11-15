@@ -816,7 +816,7 @@ const Filter = (props: FilterProps) => {
                             <ThemeProvider theme={GlobalStyle()} key={allergen.name}>
                               <Chip
                                   className={styles.chip}
-                                  label={allergen.name}
+                                  label={t('food-allergene.' + allergen.name)}
                                   color={allergen.colorButton}
                                   variant="outlined"
                                   onClick={() => handleClick(allergen.name)}
