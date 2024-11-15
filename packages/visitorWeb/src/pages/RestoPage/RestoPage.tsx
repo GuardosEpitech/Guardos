@@ -238,7 +238,7 @@ const RestoPage = () => {
     setInputFieldsOutput(inputFieldOutput);
 
     const newFilter = {
-      range: filter.range,
+      range: filter.range ? filter.range : rangeValue,
       rating: [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
@@ -300,9 +300,7 @@ const RestoPage = () => {
         setLoading(false);
       }
     };
-    if (userPosition) {
       fetchData();
-    }
     
   }, [userPosition]);
 
