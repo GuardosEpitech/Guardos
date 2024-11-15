@@ -388,7 +388,7 @@ const DishForm = (props: IDishFormProps) => {
                   fullWidth
                   value={dishPrice}
                   onChange={(e) => {
-                    const regex = /^-?\d+(?:[.,]\d*?)?$/;
+                    const regex = /^\d+(?:[.,]\d*?)?$/;
                     if (e.target.value === "" || regex.test(e.target.value)) {
                       setDishPrice(e.target.value);
                     }
