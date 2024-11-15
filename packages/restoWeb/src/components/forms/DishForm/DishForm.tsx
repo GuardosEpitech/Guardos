@@ -503,14 +503,12 @@ const DishForm = (props: IDishFormProps) => {
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <Autocomplete
-                multiple
                 id="tags-outlined"
                 options={suggestions}
-                getOptionLabel={(option) => (option ? (option as string) : "")}
-                defaultValue={dishCategory}
-                filterSelectedOptions
+                getOptionLabel={(option) => (option ? option : "")}
+                value={dishCategory.length > 0 ? dishCategory[0] : null}
                 onChange={(e, value) => {
-                  setDishCategory(value.map((product: string) => product));
+                  setDishCategory(value ? [value] : []);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -518,11 +516,10 @@ const DishForm = (props: IDishFormProps) => {
                     label={t('components.DishForm.food-category')}
                     required
                     error={invalidCategory}
-                    helperText={invalidCategory ?
-                      t('components.DishForm.select-min-one-category') : null}
+                    helperText={invalidCategory ? t('components.DishForm.select-min-one-category') : null}
                   />
                 )}
-              />
+                />
             </Grid>
           </Grid>
         </Grid>
