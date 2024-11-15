@@ -22,6 +22,9 @@ const initialRequestState = {
 const FeatureRequest = () => {
   const [request, setRequest] = useState<RequestUser>(initialRequestState);
   const [showPopup, setShowPopup] = useState(false);
+  const [invalidName, setInvalidName] = useState(false);
+  const [invalidSubject, setInvalidSubject] = useState(false);
+  const [invalidRequest, setInvalidRequest] = useState(false);
   const navigate = useNavigate();
   const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api/featureRequest`;
   const {t} = useTranslation();
@@ -54,11 +57,24 @@ const FeatureRequest = () => {
       
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (request.name === '' || request.subject === '' || request.request === '') {
-      setErrorData(true);
-      return;
-    }
+    setInvalidName(false);
+    setInvalidSubject(false);
+    setInvalidRequest(false);
+
     try {
+      if (!request.name) {
+        setInvalidName(true);
+      }
+      if (!request.subject) {
+        setInvalidSubject(true);
+      }
+      if (!request.request) {
+        setInvalidRequest(true);
+      }
+      if (!request.name || !request.subject || !request.request) {
+        return;
+      }
+
       const dataStorage = JSON.stringify({
         name: request.name,
         subject: request.subject,
@@ -93,6 +109,9 @@ const FeatureRequest = () => {
             <TextField
               label={t('pages.FeatureRequest.name')}
               name="name"
+              error={invalidName}
+              helperText={invalidName ?
+                t('pages.UserSupport.require-field') : ""}
               value={request.name}
               onChange={handleChange}
               margin='normal'
@@ -101,6 +120,9 @@ const FeatureRequest = () => {
             <TextField
               label={t('pages.FeatureRequest.subject')}
               name="subject"
+              error={invalidSubject}
+              helperText={invalidSubject ?
+                t('pages.UserSupport.require-field') : ""}
               value={request.subject}
               onChange={handleChange}
               margin='normal'
@@ -109,6 +131,9 @@ const FeatureRequest = () => {
             <TextField
               label={t('pages.FeatureRequest.request')}
               name="request"
+              error={invalidRequest}
+              helperText={invalidRequest ?
+                t('pages.UserSupport.require-field') : ""}
               value={request.request}
               onChange={handleChange}
               margin='normal'
