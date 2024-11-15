@@ -12,12 +12,13 @@ import {
   checkIfRestaurantExists
 } from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
-import {detectAllergensInDish}
+import {detectAllergensInDish, detectAllergensInDishEdit}
   from '../controllers/allergenDetectionController';
 import {
   doesUserOwnRestaurantByName,
   getRestaurantByID
 } from '../controllers/restaurantController';
+import { IDishesCommunication } from '../models/communicationInterfaces';
 
 const router = express.Router();
 
@@ -159,11 +160,27 @@ router.put('/:name', async (req, res) => {
         .send('Couldnt find restaurant named '
         + req.params.name + ' for this user');
     }
-    if (!await getDishByName(req.params.name, req.body.name)) {
+    let dishToChange = await getDishByName(req.params.name, req.body.name);
+
+    if (!dishToChange) {
       return res.status(404)
         .send('Coundt find dish named ' + req.body.name);
     }
-    const dish = await changeDishByName(req.params.name, req.body);
+    const allergensDB = await detectAllergensInDishEdit(dishToChange as IDishesCommunication, userID as number);
+    if (allergensDB.status !== 200) {
+      return res.status(allergensDB.status)
+        .send(allergensDB.data);
+    }
+
+    let filteredAllergens: string[] = Array.isArray(allergensDB.data)
+    ? [...allergensDB.data]
+    : [allergensDB.data];
+
+    filteredAllergens = Array.from(new Set(
+      filteredAllergens.filter(allergen => !allergen.includes("No allergens"))
+    ));
+
+    const dish = await changeDishByName(req.params.name, req.body, filteredAllergens);
     return res.status(200)
       .send(dish);
   } catch (error) {
@@ -320,9 +337,17 @@ router.post('/:name', async (req, res) => {
       return res.status(allergensDB.status)
         .send(allergensDB.data);
     }
-    const allergens: [string] = allergensDB.data[0].allergens;
-    if (allergens)
-      dish.allergens.push(...allergens);
+
+    let filteredAllergens: string[] = Array.isArray(allergensDB.data)
+    ? [...allergensDB.data]
+    : [allergensDB.data];
+
+    filteredAllergens = Array.from(new Set(
+      filteredAllergens.filter(allergen => !allergen.includes("No allergens"))
+    ));
+
+    if (filteredAllergens)
+      dish.allergens.push(...filteredAllergens);
     const newDish = await createNewDish(resto, dish, userID as number);
     if (restoChainID) {
       await createNewForEveryRestoChainDish(dish,

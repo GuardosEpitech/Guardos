@@ -1,6 +1,9 @@
 import { Request } from 'express';
 import { findIngredientInfos } from '../middleware/allergensMiddleware';
-import {getProductsByUser} from './productsController';
+import { getProductsByUser } from './productsController';
+import { IDishesCommunication } from '../models/communicationInterfaces';
+import {findRelevantAllergens}
+  from '../controllers/ingredientsController';
 
 export async function detectAllergens(req: Request) {
   try {
@@ -16,7 +19,7 @@ export async function detectAllergens(req: Request) {
     }
     const answer = await detectAllergensByIngredients(products);
 
-    if (answer.some(a => a.allergens?.includes('No allergens found'))) {
+    if (answer.some(a => a?.includes('No allergens found'))) {
       console.log(answer);
       return { status: 404, data: answer };
     }
@@ -61,6 +64,39 @@ export async function detectAllergensInDish(req: Request, userID: number) {
   }
 }
 
+export async function detectAllergensInDishEdit(dish: IDishesCommunication, userID: number) {
+  try {
+    let products: string[] = [];
+    if (dish) {
+      products = dish.products;
+    } else if (dish.name) {
+      products = [dish.name.toString()];
+    }
+
+    if (!products || products.length === 0) {
+      return { status: 400, data: 'No ingredients provided' };
+    }
+    const ingredients: string[] = [];
+    const productObject = await getProductsByUser(userID);
+    for (const prod of productObject) {
+      for (const ing of prod.ingredients) {
+        ingredients.push(ing);
+      }
+    }
+    const answer = await detectAllergensByIngredients(ingredients);
+
+    if (answer.includes('No allergens found')) {
+      console.log(answer);
+      return { status: 404, data: answer };
+    }
+
+    return { status: 200, data: answer };
+  } catch (error) {
+    console.error('Allergen detection error:', error);
+    return { status: 500, data: 'Failed to detect allergens' };
+  }
+}
+
 async function detectAllergensByIngredients(ingredients: string[]) {
   try {
     if (!ingredients || ingredients.length === 0) {
@@ -72,9 +108,14 @@ async function detectAllergensByIngredients(ingredients: string[]) {
       if (!answer) {
         ingredientsInfo.push(`No allergens found for ingredient: ${item}`);
       } else {
-        ingredientsInfo.push(answer);
+        let allergens = findRelevantAllergens(answer.healthLabels);
+
+        for (let i = 0; i < allergens.length; i++) {
+          ingredientsInfo.push(allergens[i]);
+        }
       }
     }
+    
     return ingredientsInfo;
   } catch (error) {
     console.error('Allergen detection error:', error);

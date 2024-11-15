@@ -100,9 +100,15 @@ const Dish = (props: IEditableDishProps) => {
     };
     const getComboDishes = async () => {
       try {
+        if (dish.resto === undefined) {
+          return;
+        }
         const comboDishes = await getDishesByID(dish.resto, { ids: combo });
-        const validCombos = comboDishes.filter((dish : any) => dish != null);
-        setRecommendedDishes(validCombos);
+
+        if (comboDishes) {
+          const validCombos = comboDishes.filter((dish : any) => dish != null);
+          setRecommendedDishes(validCombos);
+        }
       } catch (error) {
         console.error("Failed to load combo dishes", error);
       }
