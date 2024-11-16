@@ -3,15 +3,15 @@ import * as express from 'express';
 import { addRestoProduct } from '../controllers/restaurantController';
 import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
   from '../middleware/ingredientsMiddleWare';
-import {
-  getAllIngredients,
-  deleteIngredient, createNewIngredient,
-  findMaxIndexIngredients, getIngredientByName
-} from '../controllers/ingredientsControllerMVP';
 import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
 import {detectAllergens} from '../controllers/allergenDetectionController';
-import {isArrayOfStrings} from '../controllers/ingredientsController';
+import {
+  deleteIngredient,
+  findMaxIndexIngredients,
+  getAllIngredients, getIngredientByName,
+  isArrayOfStrings
+} from '../controllers/ingredientsController';
 
 const router = express.Router();
 
@@ -32,11 +32,11 @@ router.post('/', async (req, res) => {
         return allergensDB;
       }
       let allergens: string[] = Array.isArray(allergensDB.data)
-      ? [...allergensDB.data]
-      : [allergensDB.data];
+        ? [...allergensDB.data]
+        : [allergensDB.data];
 
       allergens = Array.from(new Set(
-        allergens.filter(allergen => !allergen.includes("No allergens"))
+        allergens.filter(allergen => !allergen.includes('No allergens'))
       ));
 
       if (isArrayOfStrings(req.body.allergens)) {
@@ -44,18 +44,10 @@ router.post('/', async (req, res) => {
       } else if (typeof req.body.allergens === 'string') {
         allergens.push(req.body.allergens);
       }
-
-      const createResult = await 
-      createNewIngredient(req.body.name, id, allergens);
-      if (createResult.status !== 200) {
-        return res.status(createResult.status)
-          .send(createResult.message);
-      }
-
       await addRestoProduct({
         name: req.body.name,
         allergens: allergens,
-        ingredients: req.body.ingredients,
+        ingredients: req.body.name,
       }, req.body.restoName);
 
       if (!await checkIfRestaurantExists(req.body.restoName)) {
