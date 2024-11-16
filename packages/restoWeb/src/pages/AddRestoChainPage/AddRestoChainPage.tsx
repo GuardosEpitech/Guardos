@@ -12,6 +12,7 @@ import {Popup} from "@src/components/dumpComponents/popup/Popup";
 const addRestoChainPage = () => {
   const [newRestoChain, setNewRestoChain] = useState<{name: string}[]>([]);
   const [newRestoChainName, setNewRestoChainName] = useState('');
+  const [toDeleteRestoChainName, setToDeleteRestoChainName] = useState('');
   const [showRestoChainInput, setShowRestoChainInput] = useState(false);
   const [newRestoChainNameError, setRestoChainNameError] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -38,7 +39,8 @@ const addRestoChainPage = () => {
     setShowRestoChainInput(true);
   };
 
-  const handleDeleteRestoChain = async (name: string) => {
+  const handleDeleteRestoChain = async () => {
+    const name = toDeleteRestoChainName;
     try {
       const userToken = localStorage.getItem('user');
       const returnValue = await deleteRestoChain(userToken, name);
@@ -49,6 +51,7 @@ const addRestoChainPage = () => {
           setNewRestoChain([...newRestoChain.slice(0, index), ...newRestoChain.slice(index + 1)]);
         }
       }
+      setShowPopup(false);
     } catch (error) {
       console.error('Error fetching resto chains:', error);
     }
@@ -91,9 +94,9 @@ const addRestoChainPage = () => {
     setShowRestoChainInput(false);
   };
 
-  const handleDeleteClick = (e: any) => {
-    e.stopPropagation();
+  const handleDeleteClick = (name: string) => {
     setShowPopup(true);
+    setToDeleteRestoChainName(name);
   };
   
   return (
@@ -103,19 +106,11 @@ const addRestoChainPage = () => {
           {newRestoChain.map((restoChain, index) => (
             <div key={index} className={styles.restoChainContainer}>
               <div>{t('pages.AddRestoChain.name')} {restoChain.name}</div>
-              <div className={styles.deleteRestoChain} onClick={handleDeleteClick}>
+              <div className={styles.deleteRestoChain} onClick={() => handleDeleteClick(restoChain.name)}>
                 <ListItemIcon>
                   <DeleteIcon fontSize="small" />
                 </ListItemIcon>
               </div>
-              {showPopup && (
-                <Popup
-                  message={t('components.ProductCard.confirm-delete',
-                    {productName: restoChain.name})}
-                  onConfirm={() => handleDeleteRestoChain(restoChain.name)}
-                  onCancel={() => setShowPopup(false)}
-                />
-              )}
             </div>
           ))}
           {showRestoChainInput && (
@@ -137,6 +132,15 @@ const addRestoChainPage = () => {
             <div className={styles.addNewRestoChainBtnContainer}>
               <button onClick={handleAddNewRestoChain}>{t('pages.AddRestoChain.add')}</button>
             </div>
+          )}
+          {showPopup && (
+            <Popup
+              key={toDeleteRestoChainName + 'delete-popup'}
+              message={t('components.ProductCard.confirm-delete',
+                {productName: toDeleteRestoChainName})}
+              onConfirm={handleDeleteRestoChain}
+              onCancel={() => setShowPopup(false)}
+            />
           )}
         </div>
       </div>
