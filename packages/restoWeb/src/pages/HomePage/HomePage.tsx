@@ -48,6 +48,7 @@ const HomePage = () => {
       const isBasicUser = permissions.includes('basicSubscription');
       if (isPremiumUser || isBasicUser) {
         setPremium(true);
+        setAdIndex(null);
       } else {
         setPremium(false);
       }
@@ -77,10 +78,13 @@ const HomePage = () => {
     if (filter === undefined) {
       filter = "";
     }
+    getPremium();
     getAllRestaurantsByUserAndFilter(userToken, filter)
       .then((res) => {
         setRestoData(res);
-        setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
+        if (!premium) {
+          setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
+        }
       });
     setLoading(false);
   };
