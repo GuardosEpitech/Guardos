@@ -81,7 +81,7 @@ const MVPRouter = () => {
 
     const loginToken = localStorage.getItem('freshLogin');
 
-    if (loginToken) {
+    if (loginToken && loginToken !== 'false') {
       setLogin(true);
     } else {
       setLogin(false);
