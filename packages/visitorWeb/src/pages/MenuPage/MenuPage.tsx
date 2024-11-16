@@ -88,10 +88,10 @@ const MenuPage = () => {
     let profiles: AllergenProfile[] = [];
     // Extract state from location
     if (location.state) {
-      const { restoName: passedName, address: passedAddress, menuDesignId: passedMenuDesignID } = location.state as {
+      const { restoName: passedName, address: passedAddress, menuDesignID: passedMenuDesignID } = location.state as {
         restoName: string;
         address: string;
-        menuDesignId: number;
+        menuDesignID: number;
       };
       setRestoName(passedName);
       setAddress(passedAddress);
