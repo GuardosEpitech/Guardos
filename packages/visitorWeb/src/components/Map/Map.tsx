@@ -257,6 +257,7 @@ const MapView = (props: MapProps) => {
         setClickedFeature(null);
     
         const feature = map.forEachFeatureAtPixel(evt.pixel, (feature: Feature) => feature);
+        if (feature.getProperties().type === 'location') { return; }
         if (feature) {
           const geometry = feature.getGeometry();
           if (geometry instanceof Point) {
