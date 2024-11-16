@@ -34,4 +34,10 @@
   font-family: "Calibri", sans-serif;
   font-size: 1.8rem;
   color: $burgundy;
+
+  a {
+    cursor: pointer;
+    font-weight: bold;
+    color: #0000FF;
+  }
 }

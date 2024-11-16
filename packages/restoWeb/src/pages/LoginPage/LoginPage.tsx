@@ -66,11 +66,10 @@ const Login = (props: LoginPageProps) => {
           setUser((prevState) => ({ ...prevState, id: response.data.userId }));
         } else {
           localStorage.setItem('user', response.data.token);
+          localStorage.setItem('freshLogin', 'true');
           setErrorForm(false);
           props.toggleCookieBanner(false);
-          NavigateTo("/", navigate, {
-            loginName: user.username
-          });
+          navigate("/");
         }
       }
     } catch (error) {

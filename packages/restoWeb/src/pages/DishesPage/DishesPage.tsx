@@ -67,7 +67,9 @@ const DishesPage = () => {
                 </span>
                 <br/>
                 <span className={styles.ErrorText}>
-              Be sure to <a onClick={() => { navigate('/addResto'); }}>add</a> a restaurant first.
+                  {t('pages.ProductsPage.noprod3')} 
+                  <a onClick={() => { navigate('/addResto'); }}>{t('pages.ProductsPage.noprod3-2')}</a> 
+                  {t('pages.ProductsPage.noprod3-3')}
                 </span>
               </div>)
               :

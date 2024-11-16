@@ -47,6 +47,7 @@ const MVPRouter = () => {
   const [showCookies, setShowCookies] = useState<boolean>();
   const userToken = localStorage.getItem('user');
   const [loading, setLoading] = useState(true);
+  const [login, setLogin] = useState(false);
 
   useMemo(() => {
     checkDarkMode();
@@ -77,6 +78,12 @@ const MVPRouter = () => {
   useEffect(() => {
     checkUserToken();
     areCookiesSet();
+
+    const loginToken = localStorage.getItem('freshLogin');
+
+    if (loginToken) {
+      setLogin(true);
+    }
   }, [isUserTokenSet, userToken]);
 
   const toggleCookieBanner = (value: boolean) => {
@@ -102,6 +109,9 @@ const MVPRouter = () => {
       {isUserTokenSet === true && (window.location.pathname === '/register'
       || window.location.pathname === '/account-recovery'
       ) && (
+        <Navigate to="/" />
+      )}
+      {login === true && (window.location.pathname === '/login') && (
         <Navigate to="/" />
       )}
       <Routes>

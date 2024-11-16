@@ -441,6 +441,9 @@ const MyAccountPage = () => {
               : t('pages.MyAccountPage.two-factor-activate')}
           />
           <div className={passwordChangeOpen ? styles.dropdownBgColorExtended : styles.dropdownBgColorCollapsed}>
+            <button className={`${styles.deleteButton} ${styles.uniformButton} ${styles.saveChangesButton}`} onClick={handleSave}>
+              {t('pages.MyAccountPage.save-changes')}
+            </button>
             <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleTogglePasswordChange}>
               {t('pages.MyAccountPage.change-pw')}
             </button>
@@ -508,15 +511,6 @@ const MyAccountPage = () => {
           <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={() => { navigate('/payment'); }}>
             {t('pages.MyAccountPage.payBtn')}
           </button>
-          <button className={`${styles.deleteButton} ${styles.uniformButton}`} onClick={handleSave}>
-            {t('pages.MyAccountPage.save-changes')}
-          </button>
-          <button
-            className={styles.deleteButton}
-            onClick={handleOpenDeletePopup}
-          >
-            {t('pages.MyAccountPage.delete-account')}
-          </button>
         </div>
 
         <div className={styles.helpButtons}>
@@ -536,6 +530,14 @@ const MyAccountPage = () => {
               inputProps={{'aria-label': 'controlled'}} sx={{m: 1}}/>}
             label={t('pages.MyAccountPage.enable-dark-mode')}
           />
+        </div>
+        <div className={styles.buttonContainer}>
+          <button
+              className={styles.deleteButton}
+              onClick={handleOpenDeletePopup}
+            >
+            {t('pages.MyAccountPage.delete-account')}
+          </button>
         </div>
       </div>
 
