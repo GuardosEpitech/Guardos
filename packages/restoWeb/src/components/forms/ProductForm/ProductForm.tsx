@@ -98,69 +98,8 @@ const ProductForm = (props: IDishFormProps) => {
         console.error("Error fetching ingredients:", error);
       });
   }, []);
-
-  const ingredients: IIngredient[] = [
-    { name: "Milk" },
-    { name: "Wheat" },
-    { name: "Egg" },
-    { name: "Tomato" },
-    { name: "Salt" },
-    { name: "Sugar" },
-    { name: "Pepper" },
-    { name: "Onion" },
-    { name: "Garlic" },
-    { name: "Chicken" },
-    { name: "Beef" },
-    { name: "Pork" },
-    { name: "Cheese" },
-    { name: "Butter" },
-    { name: "Olive Oil" },
-    { name: "Lettuce" },
-    { name: "Carrot" },
-    { name: "Potato" },
-    { name: "Basil" },
-    { name: "Oregano" },
-    { name: "Thyme" },
-    { name: "Rosemary" },
-    { name: "Parsley" },
-    { name: "Mushroom" },
-    { name: "Spinach" },
-    { name: "Broccoli" },
-    { name: "Cauliflower" },
-    { name: "Cucumber" },
-    { name: "Bell Pepper" },
-    { name: "Chili Pepper" },
-    { name: "Ginger" },
-    { name: "Soy Sauce" },
-    { name: "Vinegar" },
-    { name: "Lemon" },
-    { name: "Lime" },
-    { name: "Honey" },
-    { name: "Yogurt" },
-    { name: "Almonds" },
-    { name: "Walnuts" },
-    { name: "Peanuts" },
-    { name: "Strawberry" },
-    { name: "Blueberry" },
-    { name: "Raspberry" },
-    { name: "Apple" },
-    { name: "Banana" },
-    { name: "Orange" },
-    { name: "Grapes" },
-    { name: "Pineapple" },
-    { name: "Coconut" },
-    { name: "Mint" },
-    { name: "Cinnamon" },
-    { name: "Nutmeg" },
-    { name: "Cloves" },
-    { name: "Cardamom" },
-    { name: "Turmeric" },
-    { name: "Paprika" },
-    { name: "Coriander" },
-    { name: "Cumin" },
-  ];
   
-  const allIngredients = [...ingredients, ...apiIngredients];
+  const allIngredients = apiIngredients || [];
 
   async function sendRequestAndGoBack() {
     if (productName === '') {
@@ -290,6 +229,9 @@ const ProductForm = (props: IDishFormProps) => {
                 />
               )}
             />
+            <Typography variant="body2" color="textSecondary">
+              {t('components.ProductForm.english-please')}
+            </Typography>
             <Typography variant="body2" color="textSecondary">
               {ingredientFeedback}
             </Typography>

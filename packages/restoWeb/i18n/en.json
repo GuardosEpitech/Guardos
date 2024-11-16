@@ -101,7 +101,8 @@
       "ProductForm": {
         "name": "Name",
         "input-empty-error": "Input cannot be empty",
-        "resto": "Restaurant"
+        "resto": "Restaurant",
+        "english-please": "Note: please only insert the ingredients in English."
       },
       "RestaurantForm": {
         "alt-img": "Restaurant Image",
