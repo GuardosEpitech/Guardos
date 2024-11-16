@@ -206,7 +206,9 @@ const RestoCard = (props: IRestoCardProps) => {
         </Grid>
       </Grid>
       {isDetailPageOpen && <RestoDetailOverlay restaurant={props.resto} onClose={() => setIsDetailPageOpen(false)}
-                                               pictureBase64={pictures[0].base64} />}
+                                               pictureBase64={pictures.length > 0 ?
+                                                   pictures[0].base64 : defaultRestoImage}
+      />}
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <DialogTitle>{t('components.RestoCard.linkCopiedTitle')}</DialogTitle>
         <DialogContent>
