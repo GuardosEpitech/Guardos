@@ -1,5 +1,21 @@
 {
   "translation": {
+    "food-allergene": {
+      "celery": "Sellerie",
+      "gluten": "Gluten",
+      "crustaceans": "Krustentiere",
+      "eggs": "Eier",
+      "fish": "Fisch",
+      "lupin": "Lupine",
+      "milk": "Milch",
+      "molluscs": "Weichtiere",
+      "mustard": "Senf",
+      "peanuts": "Erdnüsse",
+      "sesame": "Sesam",
+      "soybeans": "Sojabohnen",
+      "sulphites": "Sulfite",
+      "tree nuts": "Baumnüsse"
+    },
     "common": {
       "save": "Speichern",
       "submit": "Einreichen",
@@ -78,7 +94,8 @@
         "select-min-one-category": "Bitte wählen Sie mindestens eine Kategorie aus",
         "resto": "Restaurant",
         "restoChain": "Restaurant Kette",
-        "select-min-one-resto": "Bitte wählen Sie mindestens ein Restaurant aus"
+        "select-min-one-resto": "Bitte wählen Sie mindestens ein Restaurant aus",
+        "resto-chain-info": "Diese Aktion wird das Gericht zu allen Restaurants in der Kette hinzufügen oder löschen."
       },
       "ProductForm": {
         "name": "Name",
