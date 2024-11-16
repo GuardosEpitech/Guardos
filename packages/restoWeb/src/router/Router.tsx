@@ -83,6 +83,8 @@ const MVPRouter = () => {
 
     if (loginToken) {
       setLogin(true);
+    } else {
+      setLogin(false);
     }
   }, [isUserTokenSet, userToken]);
 
@@ -113,6 +115,9 @@ const MVPRouter = () => {
       )}
       {login === true && (window.location.pathname === '/login') && (
         <Navigate to="/" />
+      )}
+      {isUserTokenSet === false && login === false && (window.location.pathname === '/login') && (
+        <Navigate to="login" />
       )}
       <Routes>
         <Route element={<AppOutlet />}>

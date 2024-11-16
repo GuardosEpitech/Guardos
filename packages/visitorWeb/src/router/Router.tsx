@@ -74,8 +74,9 @@ const MVPRouter = () => {
 
     if (loginToken) {
       setLogin(true);
+    } else {
+      setLogin(false);
     }
-    console.log(login);
   }, [isUserTokenSet, userToken]);
 
   const toggleCookieBanner = (value: boolean) => {
@@ -105,6 +106,9 @@ const MVPRouter = () => {
         )}
         {isUserTokenSet === true && login === true && (window.location.pathname === '/login') && (
           <Navigate to="/" />
+        )}
+        {isUserTokenSet === false && login === false && (window.location.pathname === '/login') && (
+          <Navigate to="login" />
         )}
         <Routes>
           <Route element={<AppOutlet/>}>
