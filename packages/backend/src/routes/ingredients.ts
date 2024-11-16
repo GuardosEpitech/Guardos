@@ -31,7 +31,13 @@ router.post('/', async (req, res) => {
       if (allergensDB.status !== 200) {
         return allergensDB;
       }
-      const allergens: [string] = allergensDB.data[0].allergens;
+      let allergens: string[] = Array.isArray(allergensDB.data)
+      ? [...allergensDB.data]
+      : [allergensDB.data];
+
+      allergens = Array.from(new Set(
+        allergens.filter(allergen => !allergen.includes("No allergens"))
+      ));
 
       if (isArrayOfStrings(req.body.allergens)) {
         allergens.push(...req.body.allergens);

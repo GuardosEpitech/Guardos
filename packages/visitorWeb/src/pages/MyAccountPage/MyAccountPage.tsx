@@ -25,7 +25,7 @@ import Dish from "@src/components/menu/Dish/Dish";
 import {disable, enable, setFetchMethod} from "darkreader";
 
 import {IimageInterface} from "shared/models/imageInterface";
-import {addProfileImage, deleteProfileImage, getImages} from "@src/services/imageCalls";
+import {addProfileImage, deleteProfileImage, getImages, deleteProfileImageDB} from "@src/services/imageCalls";
 import {convertImageToBase64, displayImageFromBase64} from "shared/utils/imageConverter";
 import {defaultProfileImage} from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
@@ -463,8 +463,7 @@ const MyAccountPage = () => {
                   filename: file.name, size: file.size,
                   uploadDate: "0", id: r.message }]);
                 if (picture) {
-                  deleteProfileImage(picture, userToken);
-                }
+                  deleteProfileImageDB(picture, userToken);                }
                 setPicture(r.message);
               });
       })

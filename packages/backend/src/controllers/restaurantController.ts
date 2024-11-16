@@ -13,8 +13,7 @@ import { ICategories } from '../../../shared/models/categoryInterfaces';
 import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { ILocation } from '../../../shared/models/locationInterfaces';
-import { IRestaurantCommunication } from '../models/communicationInterfaces';
-//import { IRestoProfileCommunication } from '../models/communicationInterfaces';
+import {IProfileCommunication, IRestaurantCommunication, ISearchCommunication} from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { geocodeAddress } from './mapController';
 
@@ -721,5 +720,41 @@ export async function doesUserOwnRestaurantByName(
   } catch (error) {
     console.error('Error finding restaurant for user:', error);
     throw error;
+  }
+}
+
+export async function getProfileDetailsResto(userId: number) {
+  const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const userData = await UserSchema.findOne({uid: userId});
+  const inter: IProfileCommunication = {
+    username: userData.username === undefined ? ''
+      : userData.username as string,
+    email: userData.email === undefined ? ''
+      : userData.email as string,
+    city: '',
+    allergens: [],
+    dislikedIngredients: [],
+    savedFilter: [] as unknown as [ISearchCommunication],
+    profilePicId: userData.profilePicId === undefined ? 0
+      : userData.profilePicId[0] as number,
+    preferredLanguage: userData.preferredLanguage === undefined ? ''
+      : userData.preferredLanguage as string
+  };
+  return inter;
+}
+
+export async function addCustomerResto(userID: number, customerID: string) {
+  const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const existingUser = await UserSchema.findOne({ uid: userID });
+
+  if (existingUser && existingUser.customerID) {
+    return existingUser.customerID;
+  } else {
+    const answer = await UserSchema.findOneAndUpdate(
+      { uid: userID },
+      { $set: { customerID: customerID } },
+      { new: true }
+    );
+    return answer.customerID;
   }
 }

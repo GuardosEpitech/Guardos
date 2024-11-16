@@ -253,6 +253,29 @@ router.delete('/profile', async (req, res) => {
   }
 });
 
+router.delete('/profilePicDB', async (req, res) => {
+  try {
+    const userToken = String(req.query.key);
+    const userID = await getUserId(userToken);
+    if (userID === false) {
+      // If user ID is not found, return 404 Not Found
+      return res.status(404)
+        .send('User not found');
+    }
+    const error: string = await errorHandlingImageDelete(req);
+    if (error) {
+      return res.status(404)
+        .send(error);
+    }
+    await deleteImageFromDB(req.body.imageId);
+    return res.status(200)
+      .send('Delete Image for profile successfully');
+  } catch (error) {
+    console.error('Error deleting profile pic from DB ', error);
+    return res.status(404).send('Failed to delete from DB');
+  }
+})
+
 router.delete('/restoProfile', async (req, res) => {
   try {
     const userToken = String(req.query.key);

@@ -62,3 +62,21 @@ export const deleteProfileImage = async (imageId: number,
     console.error("Error deleting image:", error);
   }
 };
+
+export const deleteProfileImageDB = async (imageId: number,
+  userToken: string) => {
+  try {
+    const body = {
+      imageId: imageId
+    };
+    const response = await axios({
+      url: baseUrl + 'profilePicDB',
+      method: "DELETE",
+      params: {key: userToken},
+      data: body,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting image:", error);
+  }
+};
