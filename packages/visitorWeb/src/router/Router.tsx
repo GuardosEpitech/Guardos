@@ -71,7 +71,6 @@ const MVPRouter = () => {
     areCookiesSet();
     
     const loginToken = localStorage.getItem('freshLogin');
-
     if (loginToken && loginToken !== 'false') {
       setLogin(true);
     } else {
@@ -106,9 +105,6 @@ const MVPRouter = () => {
         )}
         {isUserTokenSet === true && login === true && (window.location.pathname === '/login') && (
           <Navigate to="/" />
-        )}
-        {isUserTokenSet === false && login === false && (window.location.pathname === '/login') && (
-          <Navigate to="login" />
         )}
         <Routes>
           <Route element={<AppOutlet/>}>
