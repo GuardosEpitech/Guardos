@@ -15,6 +15,7 @@ import { enable, disable, setFetchMethod} from "darkreader";
 import {useTranslation} from "react-i18next";
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import { getRestoUserPermission } from '@src/services/permissionsCalls';
 
 const HomePage = () => {
   const [restoData, setRestoData] = useState<IRestaurantFrontEnd[]>([]);
@@ -24,6 +25,7 @@ const HomePage = () => {
   const { t } = useTranslation();
   const [searchFilter, setSearchFilter] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [premium, setPremium] = useState<boolean>(false);
 
   useEffect(() => {
     updateRestoData("");
@@ -33,6 +35,31 @@ const HomePage = () => {
     setRestoData([]);
     setIsUserTokenSet(false);
   });
+
+  const getPremium = async () => {
+    try {
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) {
+        setIsUserTokenSet(false);
+        return;
+      }
+      const permissions = await getRestoUserPermission(userToken);
+      const isPremiumUser = permissions.includes('premiumUser');
+      const isBasicUser = permissions.includes('basicSubscription');
+      if (isPremiumUser || isBasicUser) {
+        setPremium(true);
+        setAdIndex(null);
+      } else {
+        setPremium(false);
+      }
+    } catch (error) {
+      console.error("Error getting permissions: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getPremium();
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFilter = event.target.value;
@@ -51,10 +78,13 @@ const HomePage = () => {
     if (filter === undefined) {
       filter = "";
     }
+    getPremium();
     getAllRestaurantsByUserAndFilter(userToken, filter)
       .then((res) => {
         setRestoData(res);
-        setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
+        if (!premium) {
+          setAdIndex(Math.floor(Math.random() * (res.length + 1)));  // Set a random index for AdCard
+        }
       });
     setLoading(false);
   };
@@ -111,7 +141,7 @@ const HomePage = () => {
                 </React.Fragment>
               ))
             )}
-            {restoData.length === adIndex && <AdCard />}
+            {!premium && restoData.length === adIndex && <AdCard />}
           </div>
         </div>
       </Layout>
