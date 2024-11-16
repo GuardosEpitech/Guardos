@@ -72,7 +72,6 @@ const DishesPage = () => {
               </div>)
               :
               (dishData.map((dish, index) => {
-                console.log("Dish: ", dish);
                 return (
                   <Dish
                     key={dish.name + index}

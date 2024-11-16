@@ -39,9 +39,9 @@ const UserInsights = () => {
   //@ts-ignore
   const renderAllergens = (allergens) => { //@ts-ignore
     return allergens.map((allergen, index) => (
-      <Tooltip key={index} title={`${allergen.allergen} (${allergen.count})`}>
+      <Tooltip key={index} title={t("food-allergene." + allergen.allergen) + ` (${allergen.count})`}>
         <Chip
-          label={allergen.allergen}
+          label={t("food-allergene." + allergen.allergen)}
           style={{
             marginRight: "8px",
             marginBottom: "8px",
