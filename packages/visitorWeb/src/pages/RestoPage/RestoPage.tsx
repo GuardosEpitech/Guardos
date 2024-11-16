@@ -122,19 +122,19 @@ const RestoPage = () => {
       }));
       
       setAllergens(updatedAllergens);
-    
+
       const newFilter = {
         range: rangeValue,
         rating: [rating, 5],
         name: inputFields[0],
         location: inputFields[1],
-        categories: categories.filter(category => 
+        categories: categories.filter(category =>
           category.value).map(category => category.name),
-        allergenList: updatedAllergens.filter(allergen => 
+        allergenList: updatedAllergens.filter(allergen =>
           allergen.value).map(allergen => allergen.name),
         userLoc: userPosition
       };
-      
+
       localStorage.setItem('filter', JSON.stringify(newFilter));
       setLoadingAllergens(false); 
       await fetchFavourites();
@@ -200,9 +200,12 @@ const RestoPage = () => {
 
   const handleFilterChange = async (filter: ISearchCommunication) => {
     let inputFieldOutput = '';
-
+    if (filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0) {
+      setRating(filter.rating[0]);
+    } else {
+      setRating(0);
+    }
     if (filter.range) setRangeValue(filter.range);
-    if (filter.rating) setRating(filter.rating[0]);
     setLoading(true);
 
     const updatedCategories = categories.map((category) => ({
@@ -236,14 +239,19 @@ const RestoPage = () => {
 
     const newFilter = {
       range: filter.range ? filter.range : rangeValue,
-      rating: [filter.rating[0], 5],
+      rating:
+          filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0
+              ? [filter.rating[0], 5]
+              : [rating, 5],
       name: inputFields[0],
       location: inputFields[1],
-      categories: updatedCategories.filter(category =>
-        category.value).map(category => category.name),
-      allergenList: updatedAllergens.filter(allergen =>
-        allergen.value).map(allergen => allergen.name),
-      userLoc: userPosition ? userPosition : filter.userLoc
+      categories: updatedCategories
+          .filter((category) => category.value)
+          .map((category) => category.name),
+      allergenList: updatedAllergens
+          .filter((allergen) => allergen.value)
+          .map((allergen) => allergen.name),
+      userLoc: userPosition ? userPosition : filter.userLoc,
     };
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
