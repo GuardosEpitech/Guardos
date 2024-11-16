@@ -32,6 +32,10 @@
   word-break: break-word;
 }
 
+.popUp div {
+  z-index: 100;
+}
+
 .DishPrice {
   font-family: "Calibri", sans-serif;
   font-size: 1.5rem;

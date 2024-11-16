@@ -96,6 +96,7 @@ const RestoPage = () => {
   };
 
   useEffect(() => {
+    localStorage.setItem('freshLogin', 'false');
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       return;

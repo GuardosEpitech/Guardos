@@ -39,7 +39,6 @@ body {
   align-items: center;
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -94,7 +93,10 @@ body {
 .imageButtonContainer {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+
+  .deleteButton {
+    margin: 10px !important;
+  }
 }
 
 .imageButton {
@@ -154,6 +156,12 @@ body {
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 16px;
+}
+
+.saveChangesButton.uniformButton {
+  &:hover {
+    background-color: #4caf50 !important;
+  }
 }
 
 .passwordChangeStatus {

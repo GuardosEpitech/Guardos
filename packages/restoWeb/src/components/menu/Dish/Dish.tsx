@@ -158,14 +158,16 @@ const Dish = (props: IEditableDishProps) => {
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
                   />
-                  {showPopup && (
-                    <Popup
-                      message={t('components.Dish.confirm-delete',
-                        {dishName: dish.name})}
-                      onConfirm={getOnDelete}
-                      onCancel={() => setShowPopup(false)}
-                    />
-                  )}
+                  <div className={styles.popUp}>
+                    {showPopup && (
+                        <Popup
+                          message={t('components.Dish.confirm-delete',
+                            {dishName: dish.name})}
+                          onConfirm={getOnDelete}
+                          onCancel={() => setShowPopup(false)}
+                        />
+                    )}
+                  </div>
                 </>
               )}
             </div>
@@ -231,11 +233,13 @@ const Dish = (props: IEditableDishProps) => {
                     onClick={handleChildClick}
                   />
                   {showPopup && (
-                    <Popup
-                      message={t('components.Dish.confirm-delete', {dishName: dish.name})}
-                      onConfirm={getOnDelete}
-                      onCancel={() => setShowPopup(false)}
-                    />
+                    <div className={styles.popUp}>
+                      <Popup
+                        message={t('components.Dish.confirm-delete', {dishName: dish.name})}
+                        onConfirm={getOnDelete}
+                        onCancel={() => setShowPopup(false)}
+                      />
+                    </div>
                   )}
                 </>
               )}

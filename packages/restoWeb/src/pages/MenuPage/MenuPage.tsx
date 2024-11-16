@@ -112,16 +112,6 @@ const MenuPage = () => {
                         })}
                       </Category>
                     )}
-                    <div>
-                      {category.dishes.length > 0 && (
-                        <Category key={category.name} title={category.name}>
-                          {category.dishes.map((dish, index) => {
-                            return <Dish key={dish.name + index} dish={dish} editable={true}
-                              isTopLevel={true}/>;
-                          })}
-                        </Category>
-                      )}
-                    </div>
                   </div>
                 );
               })}

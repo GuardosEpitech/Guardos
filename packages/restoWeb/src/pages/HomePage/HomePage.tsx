@@ -60,6 +60,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    localStorage.setItem('freshLogin', 'false');
     updateRestoData(searchFilter);
   }, []);
 
