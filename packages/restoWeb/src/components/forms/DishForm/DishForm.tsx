@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getProductsByUser} from "@src/services/productCalls";
-import {addNewDish, editDish} from "@src/services/dishCalls";
+import {addNewDish, deleteDish, editDish} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
@@ -25,9 +25,10 @@ import {addImageDish, deleteImageDish, getImages}
   from "@src/services/callImages";
 import {convertImageToBase64, displayImageFromBase64}
   from "shared/utils/imageConverter";
-import {defaultDishImage, defaultRestoImage}
+import {defaultDishImage}
   from 'shared/assets/placeholderImageBase64';
 import {useTranslation} from "react-i18next";
+import {Text} from "recharts";
 
 const PageBtn = () => {
   return createTheme({
@@ -66,13 +67,13 @@ interface IDishFormProps {
   selectCategory?: string[];
   selectAllergene?: string[];
   restoName?: string[];
+  restoChainId?: number;
   picturesId?: number[];
   discount?: number;
   validTill?: string;
   combo?: number[];
 }
 
-// TODO: on creation of dish, add dish image and send it to backend
 const DishForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
   const [dish, setDish] = useState<string>(props.dishName || "");
@@ -82,8 +83,9 @@ const DishForm = (props: IDishFormProps) => {
   const [dishCategory, setDishCategory] =
       useState<string[]>(props.selectCategory || []);
   const [dishResto, setDishResto] = useState<string[]>(props.restoName || []);
-  const [restoChains, setRestoChains] = useState<{uid: number, name: string}[]>([]);
-  const [selectedRestoChainId, setSelectedRestoChainId] = useState(0);
+  const [originalDishResto, setOriginalDishResto] = useState<string[]>(props.restoName || []);
+  const [restoChains, setRestoChains] = useState<{uid: number, name: string, restos: string[]}[]>([]);
+  const [selectedRestoChainId, setSelectedRestoChainId] = useState(props.restoChainId);
   const [valueRestoChain, setValueRestoChain] = useState(null);
   const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
@@ -99,7 +101,6 @@ const DishForm = (props: IDishFormProps) => {
   const [restoList, setRestoList] = useState<Array<string>>([]);
   let allRestoNames: string[] = [];
   let allDishProd: string[] = [];
-  // TODO: apply i18n
   const [suggestions, setSuggestions] = useState<string[]>(props.selectCategory || []);
   const suggestionsAller: string[] = ["No Allergens", "Celery", "Gluten",
     "Crustaceans", "Eggs", "Fish", "Lupin", "Milk", "Molluscs", "Mustard",
@@ -138,6 +139,25 @@ const DishForm = (props: IDishFormProps) => {
     const userToken = localStorage.getItem('user');
     getAllRestaurantsByUser({ key: userToken })
       .then((res) => {
+        getAllRestaurantChainsByUser(userToken)
+          .then((restoChainsRes) => {
+            const chains = restoChainsRes.map((chain: {uid: number, name: string}) => ({
+              uid: chain.uid,
+              name: chain.name,
+              restos: res.filter((resto: IRestaurantFrontEnd) => resto.restoChainID === chain.uid)
+                .map((resto: IRestaurantFrontEnd) => resto.name),
+            }));
+            setRestoChains(chains);
+            setValueRestoChain(chains.find((chain:any) => chain.uid === props.restoChainId));
+          });
+
+        const allDishRestos = res
+          .filter((item: IRestaurantFrontEnd) => item.dishes
+            .some((dish) => dish.name === props.dishName))
+          .map((item: IRestaurantFrontEnd) => item.name);
+        setDishResto(allDishRestos);
+        setOriginalDishResto(allDishRestos.map((resto: string) => resto));
+
         allRestoNames = res.map((item: IRestaurantFrontEnd) => item.name);
         setRestoList(allRestoNames);
         const mappedCategories = res.map((restaurant: IRestaurantFrontEnd) => ({
@@ -145,10 +165,6 @@ const DishForm = (props: IDishFormProps) => {
           categories: restaurant.categories.map((cat: ICategories) => cat.name)
         }));
         setCategories(mappedCategories);
-      });
-    getAllRestaurantChainsByUser(userToken)
-      .then((res) => {
-        setRestoChains(res);
       });
   }, []);
 
@@ -207,6 +223,7 @@ const DishForm = (props: IDishFormProps) => {
           menuGroup: dishCategory[0]
         },
         resto: dishResto[i],
+        restoChainID: selectedRestoChainId,
         discount: props.discount ? props.discount : -1,
         validTill: props.validTill ? props.validTill : "",
         combo: props.combo ? props.combo : []
@@ -223,8 +240,21 @@ const DishForm = (props: IDishFormProps) => {
         await addNewDish(data, userToken);
       }
     } else {
+      const deleteFromResto = originalDishResto.filter((resto) => !dishResto.includes(resto));
       for (let i = 0; i < dishList.length; i++) {
-        await editDish(dishList[i].resto, dishList[i], userToken);
+        if (originalDishResto.includes(dishList[i].resto)) {
+          await editDish(dishList[i].resto, dishList[i], userToken);
+        } else {
+          const data: IAddDish = {
+            resto: dishList[i].resto,
+            dish: dishList[i],
+            restoChainID: selectedRestoChainId
+          };
+          await addNewDish(data, userToken);
+        }
+      }
+      for (const resto of deleteFromResto) {
+        await deleteDish(resto, dish, userToken);
       }
     }
     return NavigateTo("/dishes", navigate, {successfulForm: true});
@@ -321,6 +351,30 @@ const DishForm = (props: IDishFormProps) => {
     const filteredCategories = selectedCategories.filter((item, index, self) =>
       index === self.findIndex((t) => t.toLowerCase() === item.toLowerCase()));
     setSuggestions(filteredCategories);
+  };
+
+  const changeSelectedRestoChain = (restoChainId: number, value: any) => {
+    const previousRestoChain = selectedRestoChainId;
+    let dishRestos = dishResto;
+
+    if (valueRestoChain !== null) {
+      restoChains
+        .filter((chain) => chain.uid === previousRestoChain)
+        ?.forEach((chain) => chain.restos.forEach((resto) => {
+          dishRestos = dishRestos.filter((restoName) => restoName !== resto);
+        }));
+    }
+    if (value !== null) {
+      restoChains
+        .filter((chain) => chain.uid === restoChainId)
+        .forEach((chain) => {
+          dishRestos.push(...chain.restos.map((resto) => resto));
+        });
+    }
+    handleRestoChange(null, dishRestos.filter((resto, index) => dishRestos.indexOf(resto) === index));
+
+    setSelectedRestoChainId(restoChainId);
+    setValueRestoChain(value);
   };
 
   return (
@@ -455,6 +509,7 @@ const DishForm = (props: IDishFormProps) => {
                 multiple
                 id="tags-outlined"
                 options={restoList}
+                value={dishResto}
                 getOptionLabel={(option) => (option ? (option as string) : "")}
                 defaultValue={dishResto}
                 filterSelectedOptions
@@ -481,11 +536,9 @@ const DishForm = (props: IDishFormProps) => {
                     (option ? (option as {uid:number, name:string}).name : "")}
                   onChange={(e, value, reason) => {
                     if (reason !== 'clear') {
-                      setValueRestoChain(value);
-                      setSelectedRestoChainId(value.uid);
+                      changeSelectedRestoChain(value.uid, value);
                     } else {
-                      setValueRestoChain(null);
-                      setSelectedRestoChainId(0);
+                      changeSelectedRestoChain(-1, null);
                     }
                   }}
                   inputValue={inputValueRestoChain}
@@ -500,6 +553,7 @@ const DishForm = (props: IDishFormProps) => {
                   )}
                 />
               </FormControl>
+              <Text className={styles.info}>{t('components.DishForm.resto-chain-info')}</Text>
             </Grid>
             <Grid item xs={2} sm={4} md={6}>
               <Autocomplete
@@ -519,7 +573,7 @@ const DishForm = (props: IDishFormProps) => {
                     helperText={invalidCategory ? t('components.DishForm.select-min-one-category') : null}
                   />
                 )}
-                />
+              />
             </Grid>
           </Grid>
         </Grid>

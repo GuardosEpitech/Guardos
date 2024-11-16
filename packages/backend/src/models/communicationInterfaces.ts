@@ -25,6 +25,7 @@ export interface IDishesCommunication {
     extraGroup: string[],
   },
   userID: number;
+  restoChainID: number;
   discount: number;
   validTill: String;
 }

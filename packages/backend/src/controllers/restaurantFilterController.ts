@@ -87,6 +87,7 @@ export default class Filter {
         price: dish.price,
         allergens: dish.allergens,
         category: dish.category,
+        restoChainID: dish.restoChainID,
         discount: dish.discount,
         validTill: dish.validTill,
         combo: dish.combo
@@ -114,6 +115,7 @@ export default class Filter {
         allergens: extra.allergens,
         category: extra.category,
         discount: extra.discount,
+        restoChainID: extra.restoChainID,
         validTill: extra.validTill,
         combo: extra.combo
       };
@@ -184,6 +186,7 @@ export default class Filter {
               menuGroup: dish.category.menuGroup
             },
             resto: restaurant.name,
+            restoChainID: dish.restoChainID,
             products: dish.products,
             discount: dish.discount,
             validTill: dish.validTill,

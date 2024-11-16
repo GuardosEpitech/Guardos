@@ -44,6 +44,7 @@ export const restaurantSchema = new mongoose.Schema({
         extraGroup: [String],
       },
       userID: Number,
+      restoChainID: Number,
       discount: Number,
       validTill: String,
       combo: [Number],
@@ -78,6 +79,7 @@ export const restaurantSchema = new mongoose.Schema({
       },
       allergens: [String],
       products: [String],
+      restoChainID: Number,
       category: {
         menuGroup: String,
         foodGroup: String,
