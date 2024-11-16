@@ -156,7 +156,7 @@ const Filter = (props: FilterProps) => {
     });
 
     fetchSavedFilters();
-    loadCurFilter();
+    loadCurFilter().then();
   }, []);
 
   const fetchSavedFilters = () => {
@@ -224,6 +224,7 @@ const Filter = (props: FilterProps) => {
   }
 
   const handleClick = async (name: string) => {
+    console.log('click');
     const curAllergens = [...groupProfiles[Number(selectedProfileIndex)].allergens];
     const allergensCopy = [...groupProfiles[Number(selectedProfileIndex)].allergens];
     const allergenListChanged: string[] = [];
@@ -468,46 +469,65 @@ const Filter = (props: FilterProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const user = localStorage.getItem('user');
-      const dataStorage = JSON.stringify({
-        username: JSON.parse(user).username
-      });
+      try {
+        const user = localStorage.getItem('user');
+        if (!user) {
+          console.error('User not found in localStorage');
+          return;
+        }
 
-      const response = await axios({
-        method: 'POST',
-        url: baseUrl + '/get',
-        data: dataStorage,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-      });
-      
-      const allergensCopy = [...allergens];
+        const parsedUser = JSON.parse(user);
+        if (!parsedUser || !parsedUser.username) {
+          console.error('Invalid user data');
+          return;
+        }
 
-      if (response.data.allergens) {
-        allergens.map((state, index) => {
-          response.data.allergens.map((stateAllergens:string, indexAllergens:number) => {
-            if (stateAllergens === state.name) {
-              allergensCopy[index].value = !allergensCopy[index].value;
-              if (allergensCopy[index].colorButton == "primary") {
-                allergensCopy[index].colorButton = "secondary";
-              } else {
-                allergensCopy[index].colorButton = "primary";
-              }
-            }
-          })
+        const dataStorage = JSON.stringify({
+          username: parsedUser.username,
         });
-        setAllergens(allergensCopy);
-        const groupFilterCopy = groupProfiles;
-        groupFilterCopy[0].allergens = allergensCopy;
-        setGroupProfiles(groupFilterCopy);
+
+        const response = await axios({
+          method: 'POST',
+          url: baseUrl + '/get',
+          data: dataStorage,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.data && response.data.allergens) {
+          const allergensCopy = [...allergens];
+
+          response.data.allergens.forEach((stateAllergen: string) => {
+            allergensCopy.forEach((allergen, index) => {
+              if (stateAllergen === allergen.name) {
+                allergensCopy[index].value = !allergensCopy[index].value;
+                allergensCopy[index].colorButton =
+                    allergensCopy[index].colorButton === 'primary'
+                        ? 'secondary'
+                        : 'primary';
+              }
+            });
+          });
+
+          setAllergens(allergensCopy);
+
+          const groupFilterCopy = [...groupProfiles];
+          groupFilterCopy[0].allergens = allergensCopy;
+          setGroupProfiles(groupFilterCopy);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoaded(true);
       }
-      setIsLoaded(true);
-    }
+    };
+
     if (!isLoaded) {
-      fetchData().catch(console.error);
+      fetchData();
     }
-  });
+  }, [isLoaded, allergens, groupProfiles]);
+
 
   const handleClearFilter = () => {
     // default values
