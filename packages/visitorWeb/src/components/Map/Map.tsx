@@ -251,12 +251,12 @@ const MapView = (props: MapProps) => {
         ) {
           return;
         }
-    
         if (!popup) return;
         popup.setPosition(undefined);
         setClickedFeature(null);
     
         const feature = map.forEachFeatureAtPixel(evt.pixel, (feature: Feature) => feature);
+        if (!feature) return;
         if (feature.getProperties().type === 'location') { return; }
         if (feature) {
           const geometry = feature.getGeometry();
