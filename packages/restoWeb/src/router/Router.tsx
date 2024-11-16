@@ -116,9 +116,6 @@ const MVPRouter = () => {
       {login === true && (window.location.pathname === '/login') && (
         <Navigate to="/" />
       )}
-      {isUserTokenSet === false && login === false && (window.location.pathname === '/login') && (
-        <Navigate to="login" />
-      )}
       <Routes>
         <Route element={<AppOutlet />}>
           <Route path="addDish" element={<AddDishPage />} />
