@@ -100,15 +100,12 @@ const MVPRouter = () => {
             <Navigate to="login"/>
           )}
         {isUserTokenSet === true && (window.location.pathname === '/register'
-          || window.location.pathname === '/account-recovery'
+          || window.location.pathname === '/account-recovery' || window.location.pathname === '/login'
         ) && (
           <Navigate to="/"/>
         )}
         {isUserTokenSet === true && login === true && (window.location.pathname === '/login') && (
           <Navigate to="/" />
-        )}
-        {isUserTokenSet === false && login === false && (window.location.pathname === '/login') && (
-          <Navigate to="login" />
         )}
         <Routes>
           <Route element={<AppOutlet/>}>
