@@ -145,8 +145,6 @@ router.post('/save/create-checkout-session', async (req, res) => {
   try {
     const domainURL = req.body.domainURL;
     const customerID = req.body.customerId;
-    console.log(domainURL);
-    console.log(customerID);
     if (!domainURL) {
       return res.status(400)
         .send({ error: 'domainURL is required' });
