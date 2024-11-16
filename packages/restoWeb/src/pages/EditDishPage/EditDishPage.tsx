@@ -41,6 +41,7 @@ const EditDishPage = () => {
           price={price}
           selectAllergene={selectAllergens}
           restoName={selectResto}
+          restoChainId={dish.restoChainID}
           selectCategory={selectCategories}
           picturesId={picturesId}
           discount={discount}

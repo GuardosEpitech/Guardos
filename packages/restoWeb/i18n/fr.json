@@ -78,7 +78,8 @@
         "select-min-one-category": "Veuillez sélectionner au moins une catégorie",
         "resto": "Restaurant",
         "restoChain": "Chaîne de restaurants",
-        "select-min-one-resto": "Veuillez sélectionner au moins un restaurant"
+        "select-min-one-resto": "Veuillez sélectionner au moins un restaurant",
+        "resto-chain-info": "Cette action ajoutera / supprimera le plat dans tous les restaurants de la chaîne."
       },
       "ProductForm": {
         "name": "Nom",

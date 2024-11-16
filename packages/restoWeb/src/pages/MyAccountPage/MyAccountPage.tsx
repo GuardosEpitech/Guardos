@@ -190,8 +190,6 @@ const MyAccountPage = () => {
       isError = true;
     }
 
-    // TODO: add image mngt
-
     if (isError) {
       setDataChangeStatus("failed");
     } else {

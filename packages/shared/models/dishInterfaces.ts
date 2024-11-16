@@ -11,6 +11,7 @@ export interface IDishBE {
   products: string[];
   category: ICategoryBE;
   discount: number;
+  restoChainID: number;
   validTill: string;
   combo: number[];
 }
@@ -30,6 +31,7 @@ export interface IDishFE {
   discount: number;
   validTill: string;
   combo: number[];
+  restoChainID: number;
 }
 
 export interface IAddDish {
