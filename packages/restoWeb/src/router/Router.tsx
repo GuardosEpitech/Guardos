@@ -81,7 +81,7 @@ const MVPRouter = () => {
 
     const loginToken = localStorage.getItem('freshLogin');
 
-    if (loginToken) {
+    if (loginToken && loginToken !== 'false') {
       setLogin(true);
     } else {
       setLogin(false);
@@ -109,7 +109,7 @@ const MVPRouter = () => {
         <Navigate to="login" />
       )}
       {isUserTokenSet === true && (window.location.pathname === '/register'
-      || window.location.pathname === '/account-recovery'
+      || window.location.pathname === '/account-recovery' || window.location.pathname === '/login'
       ) && (
         <Navigate to="/" />
       )}
