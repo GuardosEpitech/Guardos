@@ -17,6 +17,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import {getUserAllergens} from "@src/services/userCalls";
 import {getCategories} from "@src/services/categorieCalls";
+import { getVisitorUserPermission } from '@src/services/permissionsCalls';
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -84,6 +85,7 @@ const RestoPage = () => {
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const [loadingAllergens, setLoadingAllergens] = useState(true);
+  const [premium, setPremium] = useState<boolean>(false);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -94,6 +96,29 @@ const RestoPage = () => {
     setAllergens(prevAllergens =>
         prevAllergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })));
   };
+
+  const getPremium = async () => {
+    try {
+      const userToken = localStorage.getItem('user');
+      if (userToken === null) {
+        return;
+      }
+      const permissions = await getVisitorUserPermission(userToken);
+      const isPremiumUser = permissions.includes('premiumUser');
+      const isBasicUser = permissions.includes('basicSubscription');
+      if (isPremiumUser || isBasicUser) {
+        setPremium(true);
+      } else {
+        setPremium(false);
+      }
+    } catch (error) {
+        console.error("Error getting permissions: ", error);
+    }
+};
+
+  useEffect(() => {
+    getPremium();
+  }, []);
 
   useEffect(() => {
     const userToken = localStorage.getItem('user');
@@ -247,7 +272,11 @@ const RestoPage = () => {
 
     localStorage.setItem('filter', JSON.stringify(newFilter));
     const restos = await getNewFilteredRestos(newFilter);
-    setFilteredRestaurants(insertAdCard(restos));
+    if (!premium) {
+      setFilteredRestaurants(insertAdCard(restos));
+    } else {
+      setFilteredRestaurants(restos);
+    }
     setLoading(false); 
   };
 
@@ -289,7 +318,11 @@ const RestoPage = () => {
 
       try {
         const restos = await getNewFilteredRestos(newFilter);
-        setFilteredRestaurants(insertAdCard(restos));
+        if (!premium) {
+          setFilteredRestaurants(insertAdCard(restos));
+        } else {
+          setFilteredRestaurants(restos);
+        }
       } catch (error) {
         console.error("Error fetching filtered restaurants:", error);
       } finally {
