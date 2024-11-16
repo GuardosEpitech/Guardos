@@ -100,7 +100,8 @@
       "ProductForm": {
         "name": "Nom",
         "input-empty-error": "Le champ ne peut pas être vide",
-        "resto": "Restaurant"
+        "resto": "Restaurant",
+        "english-please": "Remarque : veuillez insérer uniquement les ingrédients en anglais."
       },
       "RestaurantForm": {
         "alt-img": "Image du Restaurant",
