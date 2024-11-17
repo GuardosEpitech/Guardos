@@ -252,6 +252,46 @@ export async function updateDish(
   );
 }
 
+export async function updateDishByID(
+  restaurantID: number, dish: IDishBE) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  return Restaurant.findOneAndUpdate(
+    { _id: restaurantID, 'dishes.uid': dish.uid },
+    { $set: { 'dishes.$': dish } },
+    { new: true }
+  );
+}
+
+export async function changeDishByID(
+  restaurantID: number, dish: IDishesCommunication, allergens: string[]) {
+  const oldDish = await getDishByID(restaurantID, dish.uid);
+  const newDish: IDishBE = {
+    //if the new dish has a property, use it, else use the old one
+    name: dish.name ? dish.name : oldDish.name as string,
+    uid: oldDish.uid as number,
+    description: dish.description ?
+      dish.description : oldDish.description as string,
+    price: dish.price ? dish.price : oldDish.price as number,
+    products: dish.products ? dish.products : oldDish.products as [string],
+    pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+    picturesId: dish.picturesId
+      ? dish.picturesId as [number] : oldDish.picturesId as [number],
+    allergens: allergens ? allergens as [string] :
+        oldDish.allergens as [string],
+    category: dish.category ? dish.category : oldDish.category as {
+        menuGroup: string;
+        foodGroup: string;
+        extraGroup: [string];
+      },
+    restoChainID: dish.restoChainID ?? oldDish.restoChainID as number,
+    discount: dish.discount,
+    validTill: dish.validTill as string,
+    combo: oldDish.combo as [number],
+  };
+  await updateDishByID(restaurantID, newDish);
+  return newDish;
+}
+
 export async function changeDishByName(
   restaurantName: string, dish: IDishesCommunication, allergens: string[]) {
   const oldDish = await getDishByName(restaurantName, dish.name);
