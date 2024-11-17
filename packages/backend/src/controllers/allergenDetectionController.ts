@@ -82,8 +82,10 @@ export async function detectAllergensInDishEdit(
     const ingredients: string[] = [];
     const productObject = await getProductsByUser(userID);
     for (const prod of productObject) {
-      for (const ing of prod.ingredients) {
-        ingredients.push(ing);
+      if (products.includes(prod.name)) {
+        for (const ing of prod.ingredients) {
+          ingredients.push(ing);
+        }
       }
     }
     const answer = await detectAllergensByIngredients(ingredients);

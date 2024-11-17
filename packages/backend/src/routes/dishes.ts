@@ -1,10 +1,10 @@
 import * as express from 'express';
 
 import {
-  changeDishByName, createNewDish, deleteDishByName,
+  createNewDish, deleteDishByName,
   getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName,
   addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
-  createNewForEveryRestoChainDish
+  createNewForEveryRestoChainDish, getDishByID, changeDishByID
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -160,13 +160,18 @@ router.put('/:name', async (req, res) => {
         .send('Couldnt find restaurant named '
         + req.params.name + ' for this user');
     }
-    const dishToChange = await getDishByName(req.params.name, req.body.name);
-
+    if (!req.body.uid) {
+      return res.status(404)
+        .send('Coundt find dish named ' + req.body.name);
+    }
+    const dishToChange = await getDishByID(restaurant.uid,req.body.uid);
     if (!dishToChange) {
       return res.status(404)
         .send('Coundt find dish named ' + req.body.name);
     }
-    const allergensDB = await detectAllergensInDishEdit(dishToChange as IDishesCommunication, userID as number);
+    const newDish: IDishesCommunication = req.body;
+    const allergensDB = await detectAllergensInDishEdit(
+        newDish as IDishesCommunication, userID as number);
     if (allergensDB.status !== 200) {
       return res.status(allergensDB.status)
         .send(allergensDB.data);
@@ -180,7 +185,8 @@ router.put('/:name', async (req, res) => {
       filteredAllergens.filter(allergen => !allergen.includes('No allergens'))
     ));
 
-    const dish = await changeDishByName(req.params.name, req.body, filteredAllergens);
+    const dish = await changeDishByID(
+      restaurant.uid, req.body, filteredAllergens);
     return res.status(200)
       .send(dish);
   } catch (error) {
