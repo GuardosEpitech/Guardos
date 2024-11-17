@@ -12,15 +12,6 @@ export async function checkIfIdExists(id: number) {
     });
 }
 
-export async function checkIfIdExistsIngredients(id: number) {
-  const IngredientSchema = mongoose.model('IngredientsMVP',
-    ingredientsSchemaMVP);
-  return await IngredientSchema.findOne({_id: id})
-    .then((result) => {
-      return result;
-    });
-}
-
 export async function checkIfNameAndIdExistsIngredients(
   req: IIngredientsCommunication) {
 
