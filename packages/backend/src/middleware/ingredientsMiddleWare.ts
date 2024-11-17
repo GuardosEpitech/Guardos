@@ -15,12 +15,10 @@ export async function checkIfIdExists(id: number) {
 export async function checkIfNameAndIdExistsIngredients(
   req: IIngredientsCommunication) {
 
-  const id = req.id ? req.id : (await findMaxIndexIngredients() + 1);
+  const id = await findMaxIndexIngredients() + 1;
   if (!req.name || !id) {
     console.log('Missing name or id');
     return false;
   }
-  const ingredient = await checkIfIdExists(id);
-
-  return !ingredient;
+  return true;
 }

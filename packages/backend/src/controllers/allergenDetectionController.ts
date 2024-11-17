@@ -46,8 +46,10 @@ export async function detectAllergensInDish(req: Request, userID: number) {
     const allergens: string[] = [];
     const productObject = await getProductsByUser(userID);
     for (const prod of productObject) {
-      for (const ing of prod.ingredients) {
-        allergens.push(ing);
+      if (products.includes(prod.name)) {
+        for (const ing of prod.ingredients) {
+          allergens.push(ing);
+        }
       }
     }
     const answer = await detectAllergensByIngredients(allergens);
@@ -64,7 +66,8 @@ export async function detectAllergensInDish(req: Request, userID: number) {
   }
 }
 
-export async function detectAllergensInDishEdit(dish: IDishesCommunication, userID: number) {
+export async function detectAllergensInDishEdit(
+  dish: IDishesCommunication, userID: number) {
   try {
     let products: string[] = [];
     if (dish) {

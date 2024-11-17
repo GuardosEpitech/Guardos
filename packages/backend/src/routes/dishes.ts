@@ -160,7 +160,7 @@ router.put('/:name', async (req, res) => {
         .send('Couldnt find restaurant named '
         + req.params.name + ' for this user');
     }
-    let dishToChange = await getDishByName(req.params.name, req.body.name);
+    const dishToChange = await getDishByName(req.params.name, req.body.name);
 
     if (!dishToChange) {
       return res.status(404)
@@ -173,11 +173,11 @@ router.put('/:name', async (req, res) => {
     }
 
     let filteredAllergens: string[] = Array.isArray(allergensDB.data)
-    ? [...allergensDB.data]
-    : [allergensDB.data];
+      ? [...allergensDB.data]
+      : [allergensDB.data];
 
     filteredAllergens = Array.from(new Set(
-      filteredAllergens.filter(allergen => !allergen.includes("No allergens"))
+      filteredAllergens.filter(allergen => !allergen.includes('No allergens'))
     ));
 
     const dish = await changeDishByName(req.params.name, req.body, filteredAllergens);
@@ -339,11 +339,11 @@ router.post('/:name', async (req, res) => {
     }
 
     let filteredAllergens: string[] = Array.isArray(allergensDB.data)
-    ? [...allergensDB.data]
-    : [allergensDB.data];
+      ? [...allergensDB.data]
+      : [allergensDB.data];
 
     filteredAllergens = Array.from(new Set(
-      filteredAllergens.filter(allergen => !allergen.includes("No allergens"))
+      filteredAllergens.filter(allergen => !allergen.includes('No allergens'))
     ));
 
     if (filteredAllergens)
