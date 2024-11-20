@@ -27,6 +27,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.tsx', // Specify the files to include in coverage (all TypeScript files in src folder)
     '!src/**/*.d.tsx', // Exclude TypeScript definition files from coverage
+    '!src/**/index.tsx', // Exclude TypeScript definition files from coverage
     '!src/types/**', // Ignore specific folders or files
   ],
   coverageDirectory: 'coverage', // Directory where coverage reports are saved
