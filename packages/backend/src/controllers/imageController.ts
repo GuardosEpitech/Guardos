@@ -1,6 +1,9 @@
 import {IImage, imageSchema} from '../models/imageInterfaces';
 import mongoose from 'mongoose';
-import {restaurantSchema} from '../models/restaurantInterfaces';
+import {
+  restaurantSchema,
+  createNewPromise
+} from '../models/restaurantInterfaces';
 
 export function convertToBase64(file: Blob) {
   return new Promise((resolve, reject) => {
@@ -45,7 +48,7 @@ export async function deleteImageFromDB(id: number) {
 
 export function getLatestID(): Promise<number | null> {
   const Image = mongoose.model('Image', imageSchema);
-  return new Promise((resolve, reject) => {
+  return createNewPromise((resolve, reject) => {
     Image.findOne()
       .sort({ _id: -1 })
       .exec()
@@ -59,7 +62,7 @@ export function getLatestID(): Promise<number | null> {
       .catch(err => {
         reject(err);
       });
-  });
+  }) as Promise<number | null>;
 }
 
 export async function getImageById(id: number) {

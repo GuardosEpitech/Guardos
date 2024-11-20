@@ -4,42 +4,42 @@ import {AES, enc} from 'crypto-js';
 import {IProfileCommunication, ISearchCommunication}
   from '../models/communicationInterfaces';
 
-export async function addUser(username: string,
-  email: string, password: string) {
-
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const lastRecord = await UserSchema.findOne({})
-    .sort({ uid: -1 })
-    .exec();
-  const highestUid = lastRecord ? lastRecord.uid as number + 1 : 0;
-
-  const errorArray = [false, false];
-  const upload = new UserSchema({
-    uid: highestUid,
-    username: username,
-    email: email,
-    password: AES.encrypt(password, 'Guardos')
-      .toString(),
-    allergens: [],
-    dislikedIngredients: [],
-  });
-  const existingUsername = await UserSchema.findOne({ username: username })
-    .exec();
-  const existingEmail = await UserSchema.findOne({ email: email })
-    .exec();
-
-  if (existingEmail) {
-    errorArray[0] = true;
-  }
-  if (existingUsername) {
-    errorArray[1] = true;
-  }
-  if (errorArray.includes(true)) {
-    return errorArray;
-  }
-  await upload.save();
-  return errorArray;
-}
+// export async function addUser(username: string,
+//   email: string, password: string) {
+//
+//   const UserSchema = mongoose.model('User', userSchema, 'User');
+//   const lastRecord = await UserSchema.findOne({})
+//     .sort({ uid: -1 })
+//     .exec();
+//   const highestUid = lastRecord ? lastRecord.uid as number + 1 : 0;
+//
+//   const errorArray = [false, false];
+//   const upload = new UserSchema({
+//     uid: highestUid,
+//     username: username,
+//     email: email,
+//     password: AES.encrypt(password, 'Guardos')
+//       .toString(),
+//     allergens: [],
+//     dislikedIngredients: [],
+//   });
+//   const existingUsername = await UserSchema.findOne({ username: username })
+//     .exec();
+//   const existingEmail = await UserSchema.findOne({ email: email })
+//     .exec();
+//
+//   if (existingEmail) {
+//     errorArray[0] = true;
+//   }
+//   if (existingUsername) {
+//     errorArray[1] = true;
+//   }
+//   if (errorArray.includes(true)) {
+//     return errorArray;
+//   }
+//   await upload.save();
+//   return errorArray;
+// }
 
 export async function loginUser(username: string,
   password: string) {
@@ -453,49 +453,49 @@ export async function getSubscribtionID(userID: number) {
   return false;
 }
 
-export async function deleteActiveSubscriptionVisitor(userID: number) {
-  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+// export async function deleteActiveSubscriptionVisitor(userID: number) {
+//   const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+//
+//   const result = await UserRestoSchema.updateOne(
+//     { uid: userID },
+//     { $unset: { activeSubscriptionIdentifier: 1 } }
+//   );
+//
+//   return result;
+// }
 
-  const result = await UserRestoSchema.updateOne(
-    { uid: userID }, 
-    { $unset: { activeSubscriptionIdentifier: 1 } }
-  );
+// export async function addActiveSubscriptionVisitor(userID: number, activeSubscriptionIdentifier: string) {
+//   const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+//   const existingUser = await UserRestoSchema.findOne({ uid: userID });
+//
+//   if (existingUser) {
+//     const answer = await UserRestoSchema.findOneAndUpdate(
+//       { uid: userID },
+//       { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
+//       { new: true }
+//     );
+//     return answer
+//   }
+//   return false;
+// }
 
-  return result;
-}
+// export async function getActiveSubscriptionVisitor(userID: number) {
+//   const UserRestoSchema = mongoose.model('User', userSchema, 'User');
+//   const existingUser = await UserRestoSchema.findOne({ uid: userID });
+//
+//   if (existingUser.activeSubscriptionIdentifier) {
+//     return existingUser.activeSubscriptionIdentifier
+//   }
+//   return 'default';
+// }
 
-export async function addActiveSubscriptionVisitor(userID: number, activeSubscriptionIdentifier: string) {
-  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
-  const existingUser = await UserRestoSchema.findOne({ uid: userID });
-
-  if (existingUser) {
-    const answer = await UserRestoSchema.findOneAndUpdate(
-      { uid: userID },
-      { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
-      { new: true }
-    );
-    return answer
-  }
-  return false;
-}
-
-export async function getActiveSubscriptionVisitor(userID: number) {
-  const UserRestoSchema = mongoose.model('User', userSchema, 'User');
-  const existingUser = await UserRestoSchema.findOne({ uid: userID });
-
-  if (existingUser.activeSubscriptionIdentifier) {
-    return existingUser.activeSubscriptionIdentifier
-  }
-  return 'default';
-}
-
-export async function deleteSubscribtionID(userID: number) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-
-  const result = await UserSchema.updateOne(
-    { uid: userID }, 
-    { $unset: { subscriptionID: 1 } }
-  );
-
-  return result;
-}
+// export async function deleteSubscribtionID(userID: number) {
+//   const UserSchema = mongoose.model('User', userSchema, 'User');
+//
+//   const result = await UserSchema.updateOne(
+//     { uid: userID },
+//     { $unset: { subscriptionID: 1 } }
+//   );
+//
+//   return result;
+// }

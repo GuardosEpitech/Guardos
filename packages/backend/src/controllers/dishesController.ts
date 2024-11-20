@@ -277,35 +277,35 @@ export async function changeDishByName(
   return newDish;
 }
 
-export async function addDishDiscount(
-  restoID: number, dish: IDishesCommunication) {
-  const restaurant = await getRestaurantByID(restoID);
-  const oldDish = await getDishByName(restaurant.name, dish.name);
-  const newDish: IDishBE = {
-    //if the new dish has a property, use it, else use the old one
-    name: dish.name ? dish.name : oldDish.name as string,
-    uid: oldDish.uid as number,
-    description: dish.description ?
-      dish.description : oldDish.description as string,
-    price: dish.price ? dish.price : oldDish.price as number,
-    products: dish.products ? dish.products : oldDish.products as [string],
-    pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
-    picturesId: dish.picturesId
-      ? dish.picturesId as [number] : oldDish.picturesId as [number],
-    allergens: dish.allergens ? dish.allergens as [string] :
-      oldDish.allergens as [string],
-    category: dish.category ? dish.category : oldDish.category as {
-      menuGroup: string;
-      foodGroup: string;
-      extraGroup: [string];
-    },
-    discount: dish.discount,
-    validTill: dish.validTill as string,
-    combo: oldDish.combo as [number]
-  };
-  await updateDish(restaurant.name, newDish);
-  return newDish;
-}
+// export async function addDishDiscount(
+//   restoID: number, dish: IDishesCommunication) {
+//   const restaurant = await getRestaurantByID(restoID);
+//   const oldDish = await getDishByName(restaurant.name, dish.name);
+//   const newDish: IDishBE = {
+//     //if the new dish has a property, use it, else use the old one
+//     name: dish.name ? dish.name : oldDish.name as string,
+//     uid: oldDish.uid as number,
+//     description: dish.description ?
+//       dish.description : oldDish.description as string,
+//     price: dish.price ? dish.price : oldDish.price as number,
+//     products: dish.products ? dish.products : oldDish.products as [string],
+//     pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+//     picturesId: dish.picturesId
+//       ? dish.picturesId as [number] : oldDish.picturesId as [number],
+//     allergens: dish.allergens ? dish.allergens as [string] :
+//       oldDish.allergens as [string],
+//     category: dish.category ? dish.category : oldDish.category as {
+//       menuGroup: string;
+//       foodGroup: string;
+//       extraGroup: [string];
+//     },
+//     discount: dish.discount,
+//     validTill: dish.validTill as string,
+//     combo: oldDish.combo as [number]
+//   };
+//   await updateDish(restaurant.name, newDish);
+//   return newDish;
+// }
 
 export async function removeDishDiscount(
   restoID: number, dish: IDishesCommunication ) {

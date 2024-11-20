@@ -135,27 +135,27 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd) {
     for (const dish of restaurant.dishes) {
       // fix to get all dishes ?!? !?!??!?!??!!?! investigate later TODO: !!!
       if (dish.category.menuGroup === x.name) {
-        const dishObj: IDishFE = {
-          name: dish.name,
-          uid: dish.uid,
-          description: dish.description,
-          price: dish.price,
-          pictures: dish.pictures,
-          picturesId: dish.picturesId,
-          allergens: dish.allergens,
-          category: {
-            foodGroup: dish.category.foodGroup,
-            extraGroup: dish.category.extraGroup,
-            menuGroup: dish.category.menuGroup,
-          },
-          resto: restaurant.name,
-          products: dish.products,
-          discount: dish.discount,
-          validTill: dish.validTill,
-          combo: dish.combo,
-        };
-        categories.dishes.push(dishObj);
-        obj.dishes.push(dishObj);
+        // const dishObj: IDishFE = {
+        //   name: dish.name,
+        //   uid: dish.uid,
+        //   description: dish.description,
+        //   price: dish.price,
+        //   pictures: dish.pictures,
+        //   picturesId: dish.picturesId,
+        //   allergens: dish.allergens,
+        //   category: {
+        //     foodGroup: dish.category.foodGroup,
+        //     extraGroup: dish.category.extraGroup,
+        //     menuGroup: dish.category.menuGroup,
+        //   },
+        //   resto: restaurant.name,
+        //   products: dish.products,
+        //   discount: dish.discount,
+        //   validTill: dish.validTill,
+        //   combo: dish.combo,
+        // };
+        // categories.dishes.push(dishObj);
+        // obj.dishes.push(dishObj);
       }
     }
     obj.categories.push(categories);
@@ -406,42 +406,42 @@ function formatLocation(location: ILocation): string {
   return formattedAddress;
 }
 
-export async function createNewRestaurant(
-  obj: IRestaurantCommunication,
-  userID: number,
-  id: number
-) {
-  const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
-  const loc = obj.location;
-  const address = formatLocation(obj.location);
-  const coordinates = await geocodeAddress(address);
-  loc.latitude = coordinates.lat;
-  loc.longitude = coordinates.lng;
-  const upload = new RestaurantSchema({
-    _id: id,
-    name: obj.name,
-    userID: userID,
-    phoneNumber: obj.phoneNumber ? obj.phoneNumber : '+1000000000',
-    website: obj.website ? obj.website : 'www.default.de',
-    rating: 0,
-    ratingCount: 0,
-    description: obj.description ? obj.description : 'default description',
-    dishes: obj.dishes ? obj.dishes : [],
-    pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
-    picturesId: obj.picturesId ? obj.picturesId : [],
-    openingHours: obj.openingHours
-      ? obj.openingHours
-      : [{ open: '11:00', close: '22:00', day: 0 }],
-    location: obj.location ? loc : {},
-    mealType: obj.mealType ? obj.mealType : [],
-    products: obj.products ? obj.products : [],
-    extras: obj.extras ? obj.extras : [],
-    menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
-  });
-  await upload.save();
-  console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
-  return upload;
-}
+// export async function createNewRestaurant(
+//   obj: IRestaurantCommunication,
+//   userID: number,
+//   id: number
+// ) {
+//   const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
+//   const loc = obj.location;
+//   const address = formatLocation(obj.location);
+//   const coordinates = await geocodeAddress(address);
+//   loc.latitude = coordinates.lat;
+//   loc.longitude = coordinates.lng;
+//   const upload = new RestaurantSchema({
+//     _id: id,
+//     name: obj.name,
+//     userID: userID,
+//     phoneNumber: obj.phoneNumber ? obj.phoneNumber : '+1000000000',
+//     website: obj.website ? obj.website : 'www.default.de',
+//     rating: 0,
+//     ratingCount: 0,
+//     description: obj.description ? obj.description : 'default description',
+//     dishes: obj.dishes ? obj.dishes : [],
+//     pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
+//     picturesId: obj.picturesId ? obj.picturesId : [],
+//     openingHours: obj.openingHours
+//       ? obj.openingHours
+//       : [{ open: '11:00', close: '22:00', day: 0 }],
+//     location: obj.location ? loc : {},
+//     mealType: obj.mealType ? obj.mealType : [],
+//     products: obj.products ? obj.products : [],
+//     extras: obj.extras ? obj.extras : [],
+//     menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
+//   });
+//   await upload.save();
+//   console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
+//   return upload;
+// }
 
 export async function deleteRestaurantByName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);

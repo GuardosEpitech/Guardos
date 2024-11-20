@@ -1,5 +1,5 @@
 import axios from 'axios';
-import geocodeAddress from '../../src/controllers/mapController';
+import {geocodeAddress} from '../../src/controllers/mapController';
 
 jest.mock('axios');
 

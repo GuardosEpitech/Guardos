@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import {ingredientsSchema} from '../models/ingredientsInterfaces';
 
-const IngredientSchema = mongoose.model('Ingredients', ingredientsSchema);
+export const IngredientSchema =
+  mongoose.model('Ingredients', ingredientsSchema);
 
 export function isArrayOfStrings(value: any): value is string[] {
   return Array.isArray(value) &&

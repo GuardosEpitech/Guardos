@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+export const createNewPromise = (executor: (resolve: any, reject: any) => void) => {
+  return new Promise(executor);
+};
+
 //Database structure for restaurants
 export const restaurantSchema = new mongoose.Schema({
   _id: Number,

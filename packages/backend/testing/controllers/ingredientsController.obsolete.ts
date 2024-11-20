@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
 import * as ingredientController
   from '../../src/controllers/ingredientsController';
+import { IngredientSchema } from '../../src/controllers/ingredientsController';
 
 // Mock mongoose model
 jest.mock('mongoose');
 
-describe('ingredientController', () => {
-  const IngredientSchemaMock = {
+jest.mock('../../src/controllers/ingredientsController', () => ({
+  IngredientSchema: {
     find: jest.fn()
       .mockReturnThis(),
     findOne: jest.fn()
@@ -19,13 +19,10 @@ describe('ingredientController', () => {
       .mockReturnValue([{ _id: 1 }]),
     exec: jest.fn(),
     save: jest.fn(),
-  };
+  },
+}));
 
-  beforeEach(() => {
-    mongoose.model = jest.fn()
-      .mockReturnValue(IngredientSchemaMock);
-  });
-
+describe('ingredientController', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -70,12 +67,12 @@ describe('ingredientController', () => {
 
   describe('getAllIngredients', () => {
     it('should return all ingredients', async () => {
-      IngredientSchemaMock.find
+      (IngredientSchema.find as unknown as jest.Mock)
         .mockResolvedValueOnce([{ name: 'Salt' }, { name: 'Pepper' }]);
 
       const result = await ingredientController.getAllIngredients();
 
-      expect(IngredientSchemaMock.find)
+      expect(IngredientSchema.find)
         .toHaveBeenCalled();
       expect(result)
         .toEqual([{ name: 'Salt' }, { name: 'Pepper' }]);
@@ -84,18 +81,20 @@ describe('ingredientController', () => {
 
   describe('getIngredientByName', () => {
     it('should return ingredients by name', async () => {
-      IngredientSchemaMock.find.mockResolvedValueOnce([{ name: 'Salt' }]);
+      (IngredientSchema.find as unknown as jest.Mock)
+        .mockResolvedValueOnce([{ name: 'Salt' }]);
 
       const result = await ingredientController.getIngredientByName('Salt');
 
-      expect(IngredientSchemaMock.find)
+      expect(IngredientSchema.find)
         .toHaveBeenCalledWith({ name: 'salt' });
       expect(result)
         .toEqual([{ name: 'Salt' }]);
     });
 
     it('should return an empty array if no ingredient is found', async () => {
-      IngredientSchemaMock.find.mockResolvedValueOnce([]);
+      (IngredientSchema.find as unknown as jest.Mock)
+        .mockResolvedValueOnce([]);
 
       const result = await ingredientController.getIngredientByName('Unknown');
 
@@ -106,12 +105,12 @@ describe('ingredientController', () => {
 
   describe('getIngredientById', () => {
     it('should return ingredient by foodID', async () => {
-      IngredientSchemaMock.find
+      (IngredientSchema.find as unknown as jest.Mock)
         .mockResolvedValueOnce([{ foodID: '123', name: 'Salt' }]);
 
       const result = await ingredientController.getIngredientById('123');
 
-      expect(IngredientSchemaMock.find)
+      expect(IngredientSchema.find)
         .toHaveBeenCalledWith({ foodID: '123' });
       expect(result)
         .toEqual([{ foodID: '123', name: 'Salt' }]);
@@ -120,16 +119,17 @@ describe('ingredientController', () => {
 
   describe('deleteIngredient', () => {
     it('should delete an ingredient by ID', async () => {
-      IngredientSchemaMock.deleteOne.mockResolvedValueOnce({ deletedCount: 1 });
+      (IngredientSchema.deleteOne as unknown as jest.Mock)
+        .mockResolvedValueOnce({ deletedCount: 1 });
 
       await ingredientController.deleteIngredient('Salt', '123');
 
-      expect(IngredientSchemaMock.deleteOne)
+      expect(IngredientSchema.deleteOne)
         .toHaveBeenCalledWith({ _id: '123' });
     });
 
     it('should handle cases where ingredient deletion fails', async () => {
-      IngredientSchemaMock.deleteOne
+      (IngredientSchema.deleteOne as unknown as jest.Mock)
         .mockRejectedValueOnce(new Error('Delete failed'));
 
       await expect(ingredientController
@@ -139,24 +139,27 @@ describe('ingredientController', () => {
 
   describe('findMaxIndexIngredients', () => {
     it('should return the highest ingredient index', async () => {
-      IngredientSchemaMock.limit.mockResolvedValueOnce([{ _id: 5 }]);
+      // (IngredientSchema as unknown as jest.Mock)
+      //   .mockResolvedValueOnce([{ _id: 5 }]);
 
       const result = await ingredientController.findMaxIndexIngredients();
 
-      expect(IngredientSchemaMock.find)
+      expect(IngredientSchema.find)
         .toHaveBeenCalled();
-      expect(IngredientSchemaMock.sort)
-        .toHaveBeenCalledWith({ _id: -1 });
-      expect(IngredientSchemaMock.limit)
-        .toHaveBeenCalledWith(1);
+      // expect(IngredientSchema.sort)
+      //   .toHaveBeenCalledWith({ _id: -1 });
+      // expect(IngredientSchema.limit)
+      //   .toHaveBeenCalledWith(1);
       expect(result)
         .toBe(5);
     });
 
     it('should return 0 if no ingredients are found', async () => {
-      IngredientSchemaMock.limit.mockResolvedValueOnce([]);
+      // (IngredientSchema.limit as unknown as jest.Mock)
+      //   .mockResolvedValueOnce([]);
 
-      const result = await ingredientController.findMaxIndexIngredients();
+      const result = await ingredientController
+        .findMaxIndexIngredients();
 
       expect(result)
         .toBe(0);

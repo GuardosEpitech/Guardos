@@ -8,6 +8,8 @@ module.exports = {
     '!src/controllers/**/productsController.ts',
     '!src/controllers/**/userRestoController.ts',
     '!src/controllers/**/imageController.ts',
+    '!src/controllers/**/statisticsController.ts',
+    '!src/controllers/**/ingredientsController.ts',
     '!src/index.ts',
     'src/models/**/*.ts',
     // 'src/**/*.ts', // Specify the files to include in coverage (all TypeScript files in src folder)

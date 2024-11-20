@@ -101,7 +101,7 @@ export async function updateRestoUserStatistics(
 export async function getStatisticsForResto(userId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const restaurants = await Restaurant.find({ userID: userId });
-  if (!restaurants) {
+  if (!restaurants || restaurants.length === 0) {
     return null;
   }
   const statistics = [];
