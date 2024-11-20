@@ -8,9 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { 
   checkIfRestoUserExist, updateRestoPassword
 } from '@src/services/userCalls';
-import { set } from 'cypress/types/lodash';
 import {useTranslation} from "react-i18next";
-import { NavigateTo } from "@src/utils/NavigateTo";
 
 const ChangePasswordPage = () => {
   const location = useLocation();

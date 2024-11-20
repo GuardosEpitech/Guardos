@@ -7,3 +7,4 @@ packages/visitorWeb/cypress/screenshots
 packages/visitorWeb/cypress/videos
 packages/restoWeb/cypress/screenshots
 packages/restoWeb/cypress/videos
+packages/restoWeb/coverage
