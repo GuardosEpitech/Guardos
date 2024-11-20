@@ -23,22 +23,22 @@ module.exports = {
   //   // ".(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": '<rootDir>/src/test/fileMocks.js',
   //   '.(css|less|scss)$': '<rootDir>/src/test/styleMock.js'
   // },
-  // collectCoverage: true,
-  // collectCoverageFrom: [
-  //   'src/**/*.ts', // Specify the files to include in coverage (all TypeScript files in src folder)
-  //   '!src/**/*.d.ts', // Exclude TypeScript definition files from coverage
-  //   '!src/types/**', // Ignore specific folders or files
-  // ],
-  // coverageDirectory: 'coverage', // Directory where coverage reports are saved
-  // coverageReporters: ['html', 'text', 'text-summary'], // Generate HTML and text reports
-  // coverageThreshold: {
-  //   global: {
-  //     branches: 60,
-  //     functions: 80,
-  //     lines: 80,
-  //     statements: 80,
-  //   },
-  // },
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.tsx', // Specify the files to include in coverage (all TypeScript files in src folder)
+    '!src/**/*.d.tsx', // Exclude TypeScript definition files from coverage
+    '!src/types/**', // Ignore specific folders or files
+  ],
+  coverageDirectory: 'coverage', // Directory where coverage reports are saved
+  coverageReporters: ['html', 'text', 'text-summary'], // Generate HTML and text reports
+  coverageThreshold: {
+    global: {
+      branches: 60,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
   roots: ['src'],
   testMatch: ['<rootDir>/src/**/?(*.)test.{ts,tsx}'],
   //
