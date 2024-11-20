@@ -2,7 +2,6 @@ import * as process from 'process';
 import * as dotenv from 'dotenv';
 
 import {restaurantSchema} from '../models/restaurantInterfaces';
-import {IRestaurantBackEnd} from '../../../shared/models/restaurantInterfaces';
 
 const mongoose = require('mongoose');  /* eslint-disable-line */
 
@@ -32,28 +31,6 @@ export async function connectDataBase() {
     console.error(e);
     return FAILED;
   }
-}
-
-export async function createNewRestaurant(obj: IRestaurantBackEnd, id: number) {
-  const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
-  const upload = new RestaurantSchema({
-    _id: id,
-    name: obj.name,
-    phoneNumber: obj.phoneNumber,
-    website: obj.website,
-    rating: obj.rating,
-    ratingCount: obj.ratingCount,
-    description: obj.description,
-    dishes: obj.dishes,
-    pictures: obj.pictures,
-    openingHours: obj.openingHours,
-    location: obj.location,
-    mealType: obj.mealType,
-    products: obj.products,
-    extras: obj.extras,
-  });
-  upload.save();
-  console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
 }
 
 export async function readAndGetAllRestaurants() {

@@ -164,14 +164,14 @@ async function createDish(restaurantName: string, dish: IDishesCommunication) {
     );
   }
 
-    let highestDishId = 0;
-    const dishes = restaurant?.dishes;
-    if (dishes.length > 0) {
-      highestDishId =
+  let highestDishId = 0;
+  const dishes = restaurant?.dishes;
+  if (dishes.length > 0) {
+    highestDishId =
         Math.max(...dishes.map((dish) => dish.uid));
-    }
-    const newDishId = highestDishId + 1;
-    dish.uid = newDishId;
+  }
+  const newDishId = highestDishId + 1;
+  dish.uid = newDishId;
   return Restaurant.findOneAndUpdate(
     { name: restaurantName },
     { $push: { dishes: dish } },
@@ -279,8 +279,8 @@ export async function changeDishByName(
 
 export async function addDishDiscount(
   restoID: number, dish: IDishesCommunication) {
-    const restaurant = await getRestaurantByID(restoID);
-    const oldDish = await getDishByName(restaurant.name, dish.name);
+  const restaurant = await getRestaurantByID(restoID);
+  const oldDish = await getDishByName(restaurant.name, dish.name);
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
@@ -309,88 +309,88 @@ export async function addDishDiscount(
 
 export async function removeDishDiscount(
   restoID: number, dish: IDishesCommunication ) {
-    const restaurant = await getRestaurantByID(restoID);
-    const oldDish = await getDishByName(restaurant.name, dish.name);
-    const newDish: IDishBE = {
-      //if the new dish has a property, use it, else use the old one
-      name: dish.name ? dish.name : oldDish.name as string,
-      uid: oldDish.uid as number,
-      description: dish.description ?
-        dish.description : oldDish.description as string,
-      price: dish.price ? dish.price : oldDish.price as number,
-      products: dish.products ? dish.products : oldDish.products as [string],
-      pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
-      picturesId: dish.picturesId
-        ? dish.picturesId as [number] : oldDish.picturesId as [number],
-      allergens: dish.allergens ? dish.allergens as [string] :
+  const restaurant = await getRestaurantByID(restoID);
+  const oldDish = await getDishByName(restaurant.name, dish.name);
+  const newDish: IDishBE = {
+    //if the new dish has a property, use it, else use the old one
+    name: dish.name ? dish.name : oldDish.name as string,
+    uid: oldDish.uid as number,
+    description: dish.description ?
+      dish.description : oldDish.description as string,
+    price: dish.price ? dish.price : oldDish.price as number,
+    products: dish.products ? dish.products : oldDish.products as [string],
+    pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+    picturesId: dish.picturesId
+      ? dish.picturesId as [number] : oldDish.picturesId as [number],
+    allergens: dish.allergens ? dish.allergens as [string] :
         oldDish.allergens as [string],
-      category: dish.category ? dish.category : oldDish.category as {
+    category: dish.category ? dish.category : oldDish.category as {
         menuGroup: string;
         foodGroup: string;
         extraGroup: [string];
       },
-      discount: -1,
-      validTill: '',
-      combo: oldDish.combo as [number]
-    };
-    await updateDish(restaurant.name, newDish);
-    return newDish;
-  }
+    discount: -1,
+    validTill: '',
+    combo: oldDish.combo as [number]
+  };
+  await updateDish(restaurant.name, newDish);
+  return newDish;
+}
 
 export async function addDishCombo(
   resto: IRestaurantFrontEnd, dish: IDishesCommunication, combo: number[]) {
-    const oldDish = await getDishByName(resto.name, dish.name);
-    const newDish: IDishBE = {
-      //if the new dish has a property, use it, else use the old one
-      name: dish.name ? dish.name : oldDish.name as string,
-      uid: oldDish.uid as number,
-      description: dish.description ?
-        dish.description : oldDish.description as string,
-      price: dish.price ? dish.price : oldDish.price as number,
-      products: dish.products ? dish.products : oldDish.products as [string],
-      pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
-      picturesId: dish.picturesId
-        ? dish.picturesId as [number] : oldDish.picturesId as [number],
-      allergens: dish.allergens ? dish.allergens as [string] :
+  const oldDish = await getDishByName(resto.name, dish.name);
+  const newDish: IDishBE = {
+    //if the new dish has a property, use it, else use the old one
+    name: dish.name ? dish.name : oldDish.name as string,
+    uid: oldDish.uid as number,
+    description: dish.description ?
+      dish.description : oldDish.description as string,
+    price: dish.price ? dish.price : oldDish.price as number,
+    products: dish.products ? dish.products : oldDish.products as [string],
+    pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+    picturesId: dish.picturesId
+      ? dish.picturesId as [number] : oldDish.picturesId as [number],
+    allergens: dish.allergens ? dish.allergens as [string] :
         oldDish.allergens as [string],
-      category: dish.category ? dish.category : oldDish.category as {
+    category: dish.category ? dish.category : oldDish.category as {
         menuGroup: string;
         foodGroup: string;
         extraGroup: [string];
       },
-      discount: oldDish.discount as number,
-      validTill: oldDish.validTill as string,
-      combo: combo
-    };
-    await updateDish(resto.name, newDish);
-    return newDish;
+    discount: oldDish.discount as number,
+    validTill: oldDish.validTill as string,
+    combo: combo
+  };
+  await updateDish(resto.name, newDish);
+  return newDish;
 }
 
 export async function removeDishCombo(
   resto: IRestaurantFrontEnd, dish: IDishesCommunication) {
-    const oldDish = await getDishByName(resto.name, dish.name);
-    const newDish: IDishBE = {
-      //if the new dish has a property, use it, else use the old one
-      name: dish.name ? dish.name : oldDish.name as string,
-      uid: oldDish.uid as number,
-      description: dish.description ?
-        dish.description : oldDish.description as string,
-      price: dish.price ? dish.price : oldDish.price as number,
-      products: dish.products ? dish.products : oldDish.products as [string],
-      pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
-      picturesId: dish.picturesId
-        ? dish.picturesId as [number] : oldDish.picturesId as [number],
-      allergens: dish.allergens ? dish.allergens as [string] :
+  const oldDish = await getDishByName(resto.name, dish.name);
+  const newDish: IDishBE = {
+    //if the new dish has a property, use it, else use the old one
+    name: dish.name ? dish.name : oldDish.name as string,
+    uid: oldDish.uid as number,
+    description: dish.description ?
+      dish.description : oldDish.description as string,
+    price: dish.price ? dish.price : oldDish.price as number,
+    products: dish.products ? dish.products : oldDish.products as [string],
+    pictures: dish.pictures ? dish.pictures : oldDish.pictures as [string],
+    picturesId: dish.picturesId
+      ? dish.picturesId as [number] : oldDish.picturesId as [number],
+    allergens: dish.allergens ? dish.allergens as [string] :
         oldDish.allergens as [string],
-      category: dish.category ? dish.category : oldDish.category as {
+    category: dish.category ? dish.category : oldDish.category as {
         menuGroup: string;
         foodGroup: string;
         extraGroup: [string];
       },
-      discount: oldDish.discount as number,
-      validTill: oldDish.validTill as string,
-      combo: []
-    };
-    await updateDish(resto.name, newDish);
-    return newDish;
+    discount: oldDish.discount as number,
+    validTill: oldDish.validTill as string,
+    combo: []
+  };
+  await updateDish(resto.name, newDish);
+  return newDish;
 }

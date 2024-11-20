@@ -34,8 +34,8 @@
     "start:app": "ts-node src/index.ts",
     "ci:test": "echo \"Error: no test specified\" && exit 1",
     "start": "./node_modules/nodemon/bin/nodemon.js",
-    "test": "npx cypress run",
-    "test:coverage": "nyc --reporter=html --reporter=text cypress run"
+    "test": "npx jest",
+    "test:coverage": "npx jest --coverage"
   },
   "keywords": [],
   "author": "",

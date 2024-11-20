@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 import {
   IOpeningHours,
@@ -6,17 +6,16 @@ import {
   IRestaurantBackEnd,
   IRestaurantFrontEnd,
   IReview,
-} from "../../../shared/models/restaurantInterfaces";
-import { restaurantSchema } from "../models/restaurantInterfaces";
-import { userRestoSchema } from "../models/userRestaurantInterfaces";
-import { ICategories } from "../../../shared/models/categoryInterfaces";
-import { IDishBE, IDishFE } from "../../../shared/models/dishInterfaces";
-import { IMealType } from "../../../shared/models/mealTypeInterfaces";
-import { ILocation } from "../../../shared/models/locationInterfaces";
-import { IRestaurantCommunication } from "../models/communicationInterfaces";
-//import { IRestoProfileCommunication } from '../models/communicationInterfaces';
-import { v4 as uuidv4 } from "uuid";
-import { geocodeAddress } from "./mapController";
+} from '../../../shared/models/restaurantInterfaces';
+import { restaurantSchema } from '../models/restaurantInterfaces';
+import { userRestoSchema } from '../models/userRestaurantInterfaces';
+import { ICategories } from '../../../shared/models/categoryInterfaces';
+import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { IMealType } from '../../../shared/models/mealTypeInterfaces';
+import { ILocation } from '../../../shared/models/locationInterfaces';
+import { IRestaurantCommunication } from '../models/communicationInterfaces';
+import { v4 as uuidv4 } from 'uuid';
+import { geocodeAddress } from './mapController';
 
 export function createBackEndObj(restaurant: IRestaurantBackEnd) {
   const restaurantBE: IRestaurantBackEnd = {
@@ -166,7 +165,7 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd) {
 }
 
 export async function getRestaurantByName(restaurantName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({ name: restaurantName });
   if (!rest) return null;
 
@@ -194,7 +193,7 @@ export async function getRestaurantByName(restaurantName: string) {
 }
 
 export async function getRestaurantByID(restaurantID: number) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({ _id: restaurantID });
   if (!rest) return null;
 
@@ -222,7 +221,7 @@ export async function getRestaurantByID(restaurantID: number) {
 }
 
 export async function getAllRestaurants() {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const restaurants = await Restaurant.find();
   const answer: [IRestaurantFrontEnd] = [{} as IRestaurantFrontEnd];
   answer.pop();
@@ -254,7 +253,7 @@ export async function getAllRestaurants() {
 }
 
 export async function getAllUserRestaurants(loggedInUserId: number) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const restaurants = await Restaurant.find({ userID: loggedInUserId });
   const answer: [IRestaurantFrontEnd] = [{} as IRestaurantFrontEnd];
   answer.pop();
@@ -287,9 +286,9 @@ export async function getAllUserRestaurants(loggedInUserId: number) {
 
 export async function getAllUserRestaurantChains(loggedInUserId: number) {
   const UserRestoSchema = mongoose.model(
-    "UserResto",
+    'UserResto',
     userRestoSchema,
-    "UserResto"
+    'UserResto'
   );
   const userData = await UserRestoSchema.findOne({ uid: loggedInUserId });
 
@@ -300,7 +299,7 @@ export async function getAllRestosFromRestoChain(
   loggedInUserId: number,
   restaurantChainID: number
 ) {
-  const RestaurantModel = mongoose.model("Restaurant", restaurantSchema);
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
   const query: any = {
     userID: loggedInUserId,
     restoChainID: restaurantChainID,
@@ -340,7 +339,7 @@ export async function deleteRestoChainFromRestaurant(
   loggedInUserId: number,
   restoChainID: number
 ) {
-  const RestaurantModel = mongoose.model("Restaurant", restaurantSchema);
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
 
   // Use await to handle the asynchronous operation
   try {
@@ -350,7 +349,7 @@ export async function deleteRestoChainFromRestaurant(
     );
     return result;
   } catch (error) {
-    console.error("Error updating records:", error);
+    console.error('Error updating records:', error);
     return false;
   }
 }
@@ -359,15 +358,15 @@ export async function getAllUserRestaurantsFiltered(
   loggedInUserId: number,
   locationOrName?: string
 ): Promise<IRestaurantFrontEnd[]> {
-  const RestaurantModel = mongoose.model("Restaurant", restaurantSchema);
+  const RestaurantModel = mongoose.model('Restaurant', restaurantSchema);
   const query: any = { userID: loggedInUserId };
 
   if (locationOrName) {
     query.$or = [
-      { name: { $regex: new RegExp(locationOrName, "i") } },
-      { "location.streetName": { $regex: new RegExp(locationOrName, "i") } },
-      { "location.city": { $regex: new RegExp(locationOrName, "i") } },
-      { "location.postalCode": { $regex: new RegExp(locationOrName, "i") } },
+      { name: { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.streetName': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.city': { $regex: new RegExp(locationOrName, 'i') } },
+      { 'location.postalCode': { $regex: new RegExp(locationOrName, 'i') } },
     ];
   }
 
@@ -412,8 +411,8 @@ export async function createNewRestaurant(
   userID: number,
   id: number
 ) {
-  const RestaurantSchema = mongoose.model("Restaurants", restaurantSchema);
-  let loc = obj.location;
+  const RestaurantSchema = mongoose.model('Restaurants', restaurantSchema);
+  const loc = obj.location;
   const address = formatLocation(obj.location);
   const coordinates = await geocodeAddress(address);
   loc.latitude = coordinates.lat;
@@ -422,17 +421,17 @@ export async function createNewRestaurant(
     _id: id,
     name: obj.name,
     userID: userID,
-    phoneNumber: obj.phoneNumber ? obj.phoneNumber : "+1000000000",
-    website: obj.website ? obj.website : "www.default.de",
+    phoneNumber: obj.phoneNumber ? obj.phoneNumber : '+1000000000',
+    website: obj.website ? obj.website : 'www.default.de',
     rating: 0,
     ratingCount: 0,
-    description: obj.description ? obj.description : "default description",
+    description: obj.description ? obj.description : 'default description',
     dishes: obj.dishes ? obj.dishes : [],
-    pictures: obj.pictures ? obj.pictures : ["empty.jpg"],
+    pictures: obj.pictures ? obj.pictures : ['empty.jpg'],
     picturesId: obj.picturesId ? obj.picturesId : [],
     openingHours: obj.openingHours
       ? obj.openingHours
-      : [{ open: "11:00", close: "22:00", day: 0 }],
+      : [{ open: '11:00', close: '22:00', day: 0 }],
     location: obj.location ? loc : {},
     mealType: obj.mealType ? obj.mealType : [],
     products: obj.products ? obj.products : [],
@@ -440,21 +439,21 @@ export async function createNewRestaurant(
     menuDesignID: obj.menuDesignID ? obj.menuDesignID : 0,
   });
   await upload.save();
-  console.log("Restaurant " + obj.name + " saved " + " with id " + id);
+  console.log('Restaurant ' + obj.name + ' saved ' + ' with id ' + id);
   return upload;
 }
 
 export async function deleteRestaurantByName(restaurantName: string) {
-  const Restaurant = mongoose.model("Restaurants", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurants', restaurantSchema);
   await Restaurant.deleteOne({ name: restaurantName });
-  return "deleted " + restaurantName;
+  return 'deleted ' + restaurantName;
 }
 
 async function updateRestaurantByName(
   restaurant: IRestaurantBackEnd,
   restaurantName: string
 ) {
-  const Restaurant = mongoose.model("Restaurants", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurants', restaurantSchema);
   return Restaurant.findOneAndUpdate({ name: restaurantName }, restaurant, {
     new: true,
   });
@@ -464,11 +463,11 @@ export async function changeRestaurant(
   restaurant: IRestaurantCommunication,
   restaurantName: string
 ) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const oldRest = (await Restaurant.findOne({
     name: restaurantName,
   })) as IRestaurantBackEnd;
-  let loc = restaurant.location;
+  const loc = restaurant.location;
   const address = formatLocation(restaurant.location);
   const coordinates = await geocodeAddress(address);
   loc.latitude = coordinates.lat;
@@ -512,7 +511,7 @@ export async function changeRestaurant(
 }
 
 export async function addRestoProduct(product: IProduct, restoName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
     { name: restoName },
     { $push: { products: product } },
@@ -520,22 +519,15 @@ export async function addRestoProduct(product: IProduct, restoName: string) {
   );
 }
 
-export async function getAllRestoProducts(restoName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
-  const rest = await Restaurant.findOne({ name: restoName });
-  if (!rest) return null;
-  return rest.products;
-}
-
 export async function getAllRestoReviews(restoName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({ name: restoName });
   if (!rest) return null;
   return rest.reviews;
 }
 
 export async function addRestoReview(review: IReview, restoName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   review.date = new Date();
   review._id = uuidv4();
   return Restaurant.findOneAndUpdate(
@@ -546,7 +538,7 @@ export async function addRestoReview(review: IReview, restoName: string) {
 }
 
 export async function getReviewByUserName(userName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const restaurants = await Restaurant.find({});
 
   const reviews: IReview[] = [];
@@ -569,7 +561,7 @@ export async function getReviewByUserName(userName: string) {
 }
 
 export async function deleteRestoReview(reviewId: string, restoName: string) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
     { name: restoName },
     { $pull: { reviews: { _id: reviewId } } },
@@ -582,7 +574,7 @@ export async function modifyRestoReview(
   modifiedFields: any,
   restoName: string
 ) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   // Check if modifiedFields is empty or undefined
   if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
@@ -599,7 +591,7 @@ export async function modifyRestoReview(
 
   // Execute the update operation
   return Restaurant.findOneAndUpdate(
-    { name: restoName, "reviews._id": reviewId },
+    { name: restoName, 'reviews._id': reviewId },
     { $set: updateQuery },
     { new: true }
   );
@@ -609,19 +601,19 @@ export async function addCategory(
   uid: number,
   newCategories: [{ name: string; hitRate: number }]
 ) {
-  const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   try {
     const rest = await Restaurant.findOne({ _id: uid });
 
     if (!rest) {
-      throw new Error("Restaurant not found");
+      throw new Error('Restaurant not found');
     }
     const transformedArray= newCategories.map((category, index) => ({
       _id: index + 1,
       name: category.name,
       sortId: category.hitRate
-  }));
+    }));
     rest.mealType = transformedArray;
 
     await rest.save();
@@ -649,7 +641,7 @@ export async function addCategory(
 
     return createRestaurantObjFe(restaurantBE);
   } catch (error) {
-    console.error("Error adding/updating category:", error);
+    console.error('Error adding/updating category:', error);
     throw error;
   }
 }
@@ -665,7 +657,7 @@ export async function doesUserOwnRestaurantByName(
     }
     return restaurant;
   } catch (error) {
-    console.error("Error finding restaurant for user:", error);
+    console.error('Error finding restaurant for user:', error);
     throw error;
   }
 }

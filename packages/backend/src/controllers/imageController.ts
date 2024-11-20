@@ -1,4 +1,4 @@
-import Image, {IImage} from '../models/imageInterfaces';
+import {IImage, imageSchema} from '../models/imageInterfaces';
 import mongoose from 'mongoose';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 
@@ -15,6 +15,7 @@ export async function saveImageToDB(
   filename: string, contentType: string, size: number, base64: string) {
   try {
     const newId = await getLatestID();
+    const Image = mongoose.model('Image', imageSchema);
     const newImage = new Image({
       _id: newId + 1,
       filename: filename,
@@ -33,6 +34,7 @@ export async function saveImageToDB(
 
 export async function deleteImageFromDB(id: number) {
   try {
+    const Image = mongoose.model('Image', imageSchema);
     await Image.deleteOne({_id: id});
   } catch (e) {
     console.error(e);
@@ -42,6 +44,7 @@ export async function deleteImageFromDB(id: number) {
 }
 
 export function getLatestID(): Promise<number | null> {
+  const Image = mongoose.model('Image', imageSchema);
   return new Promise((resolve, reject) => {
     Image.findOne()
       .sort({ _id: -1 })
@@ -61,6 +64,7 @@ export function getLatestID(): Promise<number | null> {
 
 export async function getImageById(id: number) {
   try {
+    const Image = mongoose.model('Image', imageSchema);
     return await Image.findOne({_id: id})
       .exec();
   } catch (e) {

@@ -8,6 +8,10 @@ export async function getMenuByRestoID(restoID: number, allergenList: string[],
   const dislikedIngredients = dislikedIngredientsList ?
     dislikedIngredientsList.map(a => a.toLowerCase()) : [];
 
+  if (!restaurant) {
+    return null;
+  }
+
   for (let i = 0; i < restaurant.categories.length; i++) {
     for (let j = 0; j < restaurant.categories[i].dishes.length; j++) {
       const dishAllergens = restaurant.categories[i].dishes[j].allergens

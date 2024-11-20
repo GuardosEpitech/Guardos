@@ -11,10 +11,12 @@ export async function addUserResto(username: string,
   const errorArray = [false, false];
   const UserRestoSchema = mongoose
     .model('UserResto', userRestoSchema, 'UserResto');
-  const lastrecord = await UserRestoSchema.findOne({})
+  const lastrecord = await UserRestoSchema.find({})
     .sort({ uid: -1 })
+    .limit(1)
     .exec();
-  const highestUid = lastrecord ? lastrecord.uid as number + 1 : 0;
+  const highestUid = lastrecord.length > 0 ?
+    lastrecord[0].uid as number + 1 : 0;
 
   const upload = new UserRestoSchema({
     uid: highestUid,
@@ -278,6 +280,7 @@ export async function deleteRestoChain(userId: number, restoChainName: string) {
     return true;
   } catch (error) {
     console.error(error);
+    return error;
   }
 }
 
