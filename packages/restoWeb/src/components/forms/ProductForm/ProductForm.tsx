@@ -19,7 +19,6 @@ import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
 import { useTranslation } from "react-i18next";
 import { getAllIngredients, addIngredient } from "@src/services/ingredientsCalls";
-import { add } from "cypress/types/lodash";
 
 const PageBtn = () => {
   return createTheme({
