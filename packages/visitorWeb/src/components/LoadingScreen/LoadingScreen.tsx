@@ -8,8 +8,8 @@ const LoadingScreen = () => {
 
   return (
     <div className={styles.loadingScreen}>
-      <div className={styles.spinner}></div>
-      <p>{(t('pages.Loading.loading-text'))}</p>
+      <div className={styles.spinner} data-testid="spinner"></div>
+      <p>{t('pages.Loading.loading-text')}</p>
     </div>
   );
 };

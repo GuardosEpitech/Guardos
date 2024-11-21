@@ -2,13 +2,15 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
     moduleNameMapper: {
-  
+        '^@src/(.*)$': '<rootDir>/src/$1',
       // if your using tsconfig.paths thers is no harm in telling jest
       // '@components/(.*)$': '<rootDir>/src/components/$1',
       // '@/(.*)$': '<rootDir>/src/$1',
-  
+      '\\.module\\.scss$': 'identity-obj-proxy',
+      '^ol/(.*)$': '<rootDir>/__mocks__/ol.js',
       // mocking assests and styling
       '^.+\\.(css|less|scss|sass)$': '<rootDir>/src/test/styleMock.js',
+      '^.+\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/src/test/fileMock.js',
       // '^.+\\.(css|less|scss|sass)$': "identity-obj-proxy",
       // '^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       //   '<rootDir>/tests/mocks/fileMock.js',
@@ -43,7 +45,11 @@ module.exports = {
     roots: ['src'],
     testMatch: ['<rootDir>/src/**/?(*.)test.{ts,tsx}'],
     //
-    // transform: {
-    //   "^.+\\.tsx?$": "ts-jest"
-    // },
+    transform: {
+      "^.+\\.tsx?$": "ts-jest",
+      '^.+\\.scss$': 'jest-transform-css',
+    },
+    transformIgnorePatterns: [
+      '/node_modules/(?!ol)/',  // Allow OpenLayers (ol) to be transformed
+    ],
   };

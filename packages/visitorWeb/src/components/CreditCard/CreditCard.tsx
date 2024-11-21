@@ -37,7 +37,7 @@ const CreditCard: React.FC<ICreditCardProps> = (props: ICreditCardProps) => {
 
   return (
     <div className={styles.creditCard}>
-      <div className={styles.menu} onClick={handleDeleteConfirmation}>
+      <div className={styles.menu} onClick={handleDeleteConfirmation} data-testid="delete-icon">
         <div className={styles.menuIcon}>
           <DeleteIcon fontSize='small'/>
         </div>
