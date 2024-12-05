@@ -26,14 +26,16 @@
   font-family: "Calibri", sans-serif !important; 
 }
 
+@media (min-width: 850px) {
+  .ReviewContainer {
+    justify-content: unset !important;
+    align-items: unset !important;
+    display: unset;
+  }
+}
+
 .ReviewContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-@media (max-width: 850px) {
-  .ReviewContainer {
-    justify-content: unset !important;
-  }
 }
