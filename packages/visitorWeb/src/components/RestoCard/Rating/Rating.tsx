@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import Button from "@mui/material/Button";
@@ -17,6 +17,7 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
+  console.log("in rating container: ", restoName);
 
   const averageRating = () => {
     let sum = 0;
@@ -34,9 +35,10 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     getRatingData(restoName).then(res => setRatingData(res));
-  })
+    console.log('in rating container getRatingData: ', ratingData);
+  }, [restoName]);
 
   return (
     <div className={styles.ReviewContainer}>
