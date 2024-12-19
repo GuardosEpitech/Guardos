@@ -17,7 +17,6 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
-  console.log("in rating container: ", restoName);
 
   const averageRating = () => {
     let sum = 0;
@@ -37,7 +36,6 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
 
   useEffect(() => {
     getRatingData(restoName).then(res => setRatingData(res));
-    console.log('in rating container getRatingData: ', ratingData);
   }, [restoName]);
 
   return (
