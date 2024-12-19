@@ -638,7 +638,7 @@ const Filter = (props: FilterProps) => {
   };
 
   return (
-    <div className={styles.RectFilter}>
+    <div className={isAddress || groupProfiles.length > 1 ? styles.RectFilterBig : styles.RectFilter}>
       <div className={styles.DivFilter}>
         <div>
           <div className={styles.DivTitleFilter}>
