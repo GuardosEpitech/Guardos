@@ -190,6 +190,7 @@ export async function createNewDish(
     price: dishCom.price ? dishCom.price : -1,
     products: dishCom.products ? dishCom.products : [''],
     pictures: dishCom.pictures ? dishCom.pictures : [''],
+    picturesId: dishCom.picturesId ?? [],
     allergens: dishCom.allergens ? dishCom.allergens : [''],
     category: dishCom.category ? dishCom.category : {
       menuGroup: '',
