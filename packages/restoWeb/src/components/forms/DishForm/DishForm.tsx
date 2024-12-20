@@ -224,6 +224,7 @@ const DishForm = (props: IDishFormProps) => {
         },
         resto: dishResto[i],
         restoChainID: selectedRestoChainId,
+        picturesId: picturesId,
         discount: props.discount ? props.discount : -1,
         validTill: props.validTill ? props.validTill : "",
         combo: props.combo ? props.combo : []
