@@ -41,6 +41,11 @@ export function findRelevantAllergens(healthLabels: string[]): [string] {
 
 export async function createNewIngredient(foodID: string, name: string,
   nutrients: object, healthLabels: [string], allergens: [string]) {
+  if ((await getIngredientByName(name)).length > 0) {
+    console.log('Ingredient ' + name + ' already exists');
+    return;
+  }
+
   const id = await findMaxIndexIngredients() + 1;
   name = name.toLowerCase();
   const upload = new IngredientSchema({

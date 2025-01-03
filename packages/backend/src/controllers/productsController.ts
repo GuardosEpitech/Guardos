@@ -3,6 +3,7 @@ import {productSchema} from '../models/productsInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 import {IProduct} from '../../../shared/models/restaurantInterfaces';
 import {IProductBE} from '../../../shared/models/productInterfaces';
+import {getIngredientByName} from './ingredientsController';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -34,11 +35,20 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
       return;
     }
 
+    let allergens = [];
+    for (const ingredientName of product.ingredients) {
+      const ingredient = await getIngredientByName(ingredientName);
+      if (ingredient && ingredient.length > 0) {
+        allergens.push(...ingredient[0].allergens);
+      }
+    }
+    allergens = Array.from(new Set(allergens));
+
     const existingProduct = await Product.findOne({ name: product.name });
 
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
-        existingProduct.allergens = product.allergens;
+        existingProduct.allergens = allergens;
         existingProduct.ingredients = product.ingredients;
         if (!existingProduct.restaurantId.includes(restaurantId)) {
           existingProduct.restaurantId.push(restaurantId);
@@ -55,11 +65,12 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
           _id: maxProductIdResult,
           userID: restaurant.userID,
           name: product.name,
-          allergens: product.allergens,
+          allergens: allergens,
           ingredients: product.ingredients,
           restaurantId: [restaurantId],
         });
         await newProduct.save();
+        return newProduct;
       }
     } else {
       const maxProductIdResult = await getMaxProductId();
@@ -72,11 +83,12 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
         _id: maxProductIdResult,
         userID: restaurant.userID,
         name: product.name,
-        allergens: product.allergens,
+        allergens: allergens,
         ingredients: product.ingredients,
         restaurantId: [restaurantId],
       });
       await newProduct.save();
+      return newProduct;
     }
   } catch (error) {
     console.error('Error while creating or updating a product: ', error);
@@ -190,16 +202,26 @@ export async function updateProduct(product: IProductBE, oldName: string) {
 
 export async function changeProductByName(product: IProductBE, oldProductsName:string) {
   const oldProduct = await getProductByName(oldProductsName);
+
+  let allergens = [];
+  for (const ingredientName of product.ingredients) {
+    const ingredient = await getIngredientByName(ingredientName);
+    if (ingredient && ingredient.length > 0) {
+      allergens.push(...ingredient[0].allergens);
+    }
+  }
+  allergens = Array.from(new Set(allergens));
+
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
     userID: oldProduct.userID,
     id: oldProduct.id,
-    allergens: product.allergens ? product.allergens : oldProduct.allergens,
+    allergens: allergens,
     ingredients: product.ingredients ? product.ingredients :
       oldProduct.ingredients,
     restaurantId: product.restaurantId ? product.restaurantId :
       oldProduct.restaurantId,
   };
-  await updateProduct(product, oldProduct.name);
+  await updateProduct(newProduct, oldProductsName);
   return newProduct;
 }

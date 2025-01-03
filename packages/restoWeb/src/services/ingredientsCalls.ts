@@ -8,9 +8,11 @@ export const getAllIngredients = async () => {
       method: "GET",
       url: baseUrl,
     });
+
     return response.data;
   } catch (error) {
     console.error("Error fetching all ingredients:", error);
+    return [];
   }
 };
 
@@ -19,12 +21,12 @@ export const addIngredient = async (ingredient: any, timeout = 5000) => {
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   try {
-    const response = await fetch(baseUrl, {
+    const response = await axios(baseUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
         name: ingredient
       }),
       signal: controller.signal
@@ -36,7 +38,7 @@ export const addIngredient = async (ingredient: any, timeout = 5000) => {
     if (error.name === 'AbortError') {
       throw new Error('This request took too long to complete. Please try again or check for a spelling mistake.');
     } else {
-      throw new Error(`Failed to add ingredient: ${error.message}`);
+      throw new Error(`Failed to add ingredient: ${ingredient}. ${error.message}`);
     }
   }
 };
