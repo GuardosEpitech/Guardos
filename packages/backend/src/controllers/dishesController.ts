@@ -7,7 +7,10 @@ import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { IRestaurantBackEnd, IRestaurantFrontEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
-import {getAllUserRestaurants, getRestaurantByID, getAllRestosFromRestoChain} from './restaurantController';
+import {
+  getAllUserRestaurants, getRestaurantByID, getAllRestosFromRestoChain
+} from './restaurantController';
+import {getProductsByUser} from './productsController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -443,4 +446,21 @@ export async function removeDishCombo(
   };
   await updateDish(resto.name, newDish);
   return newDish;
+}
+
+export async function getAllergensFromDishProducts(dish: IDishesCommunication, userId: number) {
+  const products = await getProductsByUser(userId);
+  const allergens: string[] = [];
+
+  for (const product of products) {
+    if (dish.products?.includes(product.name)) {
+      for (const allergen of product.allergens) {
+        if (!allergens.includes(allergen)) {
+          allergens.push(allergen);
+        }
+      }
+    }
+  }
+
+  return allergens;
 }
