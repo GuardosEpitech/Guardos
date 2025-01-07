@@ -95,6 +95,7 @@ const RestoPage = () => {
     setRangeValue(0);
     setAllergens(prevAllergens =>
         prevAllergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })));
+    setUserPosition(null);
   };
 
   const getPremium = async () => {
@@ -216,6 +217,7 @@ const RestoPage = () => {
 
   const loadFilter = async () => {
     const filter = JSON.parse(localStorage.getItem('filter') || '{}');
+    setInputFields([filter.name, filter.location]);
     await handleFilterChange(filter);
   };
 
@@ -227,12 +229,12 @@ const RestoPage = () => {
     let inputFieldOutput = '';
     if (filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0) {
       setRating(filter.rating[0]);
-    } else {
-      setRating(0);
     }
     if (filter.range) setRangeValue(filter.range);
+    if ((filter.name && filter.name.length > 0) || (filter.location && filter.location.length > 0)) {
+      setInputFields([filter.name, filter.location]);
+    }
     setLoading(true);
-
     const updatedCategories = categories.map((category) => ({
       ...category,
       value: filter.categories ? filter.categories?.includes(category.name) : category.value,
@@ -248,28 +250,27 @@ const RestoPage = () => {
     setAllergens(updatedAllergens);
     setInputFieldsOutput('');
 
-    if (inputFields[0] !== '' || inputFields[1] !== '') {
+    if (filter.name !== '' || filter.location !== '') {
       inputFieldOutput += t('pages.RestoPage.search-query-text');
     }
-    if (inputFields[0] !== '') {
-      inputFieldOutput += inputFields[0];
-      if (inputFields[1] !== '') {
+    if (filter.name !== '') {
+      inputFieldOutput += filter.name;
+      if (filter.location !== '') {
         inputFieldOutput += '; ';
       }
     }
-    if (inputFields[1] !== '') {
-      inputFieldOutput += inputFields[1];
+    if (filter.location !== '') {
+      inputFieldOutput += filter.location;
     }
     setInputFieldsOutput(inputFieldOutput);
-
     const newFilter = {
       range: filter.range ? filter.range : rangeValue,
       rating:
           filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0
               ? [filter.rating[0], 5]
               : [rating, 5],
-      name: inputFields[0],
-      location: inputFields[1],
+      name: filter.name,
+      location: filter.location,
       categories: updatedCategories
           .filter((category) => category.value)
           .map((category) => category.name),
@@ -278,7 +279,6 @@ const RestoPage = () => {
           .map((allergen) => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc,
     };
-
     localStorage.setItem('filter', JSON.stringify(newFilter));
     const restos = await getNewFilteredRestos(newFilter);
     if (!premium) {
@@ -311,7 +311,6 @@ const RestoPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
       const newFilter = {
         range: rangeValue,
         rating: [rating, 5],

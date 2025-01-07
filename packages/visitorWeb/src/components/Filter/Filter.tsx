@@ -136,6 +136,11 @@ const Filter = (props: FilterProps) => {
   }, [props.categories]);
 
   useEffect(() => {
+    // Handle updates to allergens here
+    setAllergens(props.allergens);
+  }, [props.allergens]);
+
+  useEffect(() => {
     const userToken = localStorage.getItem('user');
     if (userToken === null) {
       return;
@@ -537,29 +542,41 @@ const Filter = (props: FilterProps) => {
       categories: [],
       allergenList: [],
       location: '',
-      name: ''
+      name: '',
+      userLoc: null
     };
+    let clearedPos = false;
+    if (isAddress) clearedPos = true;
 
     // Reset UI state
     setCategories((prevCategories) =>
       prevCategories.map((category) => ({ ...category, value: false }))
     );
-    setAllergens((prevAllergens) =>
-      prevAllergens.map((allergen) => ({ ...allergen, colorButton: "primary", value: false }))
-    );
+    const updatedAllergies = allergens.map(allergy => ({
+      ...allergy,
+      value: false,
+      colorButton: "primary" as color
+    }));
+    setAllergens(updatedAllergies);
     setGroupProfiles([{
       name: userProfileName,
-      allergens: defaultAllergens
+      allergens: updatedAllergies
     }])
     setSelectedProfileIndex("0");
     setRating(0);
     setRange(0);
+    setAddress('');
+    setIsAddress(false);
 
     localStorage.removeItem('filter');
 
     // Notify parent component
-    props.onChange(clearedFilter, []);
-    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: defaultAllergens }]));
+    if (clearedPos) {
+      props.onChangeUserPosition(null)
+    } else {
+      props.onChange(clearedFilter, []);
+    }
+    localStorage.setItem('groupProfiles', JSON.stringify([{ name: userProfileName, allergens: updatedAllergies }]));
   };
 
   const handleRemoveProfile = (index: number) => {
@@ -638,7 +655,7 @@ const Filter = (props: FilterProps) => {
   };
 
   return (
-    <div className={styles.RectFilter}>
+    <div className={isAddress || groupProfiles.length > 1 ? styles.RectFilterBig : styles.RectFilter}>
       <div className={styles.DivFilter}>
         <div>
           <div className={styles.DivTitleFilter}>
