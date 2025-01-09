@@ -23,6 +23,7 @@ export const getRestosMenu = async (restoId: number, allergenList: string[], dis
     }
   } catch (error) {
     console.error("Error fetching the Users:", error);
+    return null;
   }
 };
 
@@ -40,6 +41,7 @@ export const getDishesByID = async (restoId: number, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching dishes by id:", error);
+    return null;
   }
 }
 
@@ -63,6 +65,5 @@ export const getRestaurantDetails = async (restoID: number) => {
     }
   } catch (error) {
     console.error("Error fetching restaurant details:", error);
-    throw error;
-  }
+    return null;  }
 };

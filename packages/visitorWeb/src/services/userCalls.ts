@@ -19,6 +19,7 @@ export const checkIfVisitorTokenIsValid = async (body: any) => {
     }
   } catch (error) {
     console.error("Error fetching the Users:", error);
+    return null;
   }
 };
 
@@ -35,6 +36,7 @@ export const checkIfVisitorUserExist = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
+    return null;
   }
 };
 
@@ -51,6 +53,7 @@ export const sendRecoveryLinkForVisitorUser = async (body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
+    return null;
   }
 }
 
@@ -71,6 +74,7 @@ export const updateVisitorPassword = async (token: string,
     return response.data;
   } catch (error) {
     console.error("Error while checking visitor user:", error);
+    return null;
   }
 }
 
@@ -91,6 +95,7 @@ export const deleteAccount = async (token: string) => {
     }
   } catch (error) {
     console.error("Error deleting the User:", error);
+    return null;
   }
 };
 
@@ -111,6 +116,7 @@ export const getUserAllergens = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the User allergens:", error);
+    return null;
   }
 };
 
@@ -131,6 +137,7 @@ export const getUserDislikedIngredients = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching the User disliked ingredients:", error);
+    return null;
   }
 };
 
@@ -154,6 +161,7 @@ export const addCustomer = async (token: string) => {
     }
   } catch (error) {
     console.error("Error adding Customer:", error);
+    return null;
   }
 };
 
@@ -174,6 +182,7 @@ export const getCustomer = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching Customer:", error);
+    return null;
   }
 };
 
@@ -194,6 +203,7 @@ export const getPaymentMethods = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -216,6 +226,7 @@ export const deletePaymentMethod = async (paymentID: string) => {
     }
   } catch (error) {
     console.error("Error deleting payment method:", error);
+    return null;
   }
 };
 
@@ -239,6 +250,7 @@ export const createSubscription = async (token: string, priceId: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -259,6 +271,7 @@ export const getSubscriptionTime = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -279,6 +292,7 @@ export const addSubscriptionTime = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -299,6 +313,7 @@ export const getSubscriptionID = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -322,6 +337,7 @@ export const deleteSubscription = async (token: string, subscriptionId: string) 
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -342,6 +358,7 @@ export const deleteSubscriptionTime = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -362,6 +379,7 @@ export const deleteActiveSubscription = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -385,6 +403,7 @@ export const addActiveSubscription = async (token: string, activeSubscriptionIde
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };
 
@@ -405,5 +424,6 @@ export const getActiveSubscription = async (token: string) => {
     }
   } catch (error) {
     console.error("Error fetching payment methods:", error);
+    return null;
   }
 };

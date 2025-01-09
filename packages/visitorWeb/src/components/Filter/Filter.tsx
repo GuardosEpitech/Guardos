@@ -146,6 +146,7 @@ const Filter = (props: FilterProps) => {
       return;
     }
     getUserAllergens(userToken).then((userAllergens) => {
+      if (!userAllergens) return;
       const profileCopy = groupProfiles[0] ?? { name: userProfileName, allergens: allergens };
       for (let i = 0; i < userAllergens.length; i++) {
         profileCopy.allergens.map((state, index) => {

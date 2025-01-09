@@ -26,6 +26,7 @@ export const getCurrentCoords = async (address: string) => {
         }
       } catch (error) {
         console.error("Error fetching the current coordinats:", error);
+        return null;
       }
 }
 
@@ -51,5 +52,6 @@ export const getPosFromCoords = async (lat: number, lng: number) => {
     }
   } catch (error) {
     console.error('Error reverse gecoding');
+    return null;
   }
 }
