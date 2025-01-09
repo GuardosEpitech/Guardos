@@ -64,7 +64,7 @@ const MVPRouter = () => {
   const areCookiesSet = async () => {
     if (isUserTokenSet) {
       const data = await getUserRestoPreferences(userToken);
-      if (data.isSet) {
+      if (data && data.isSet) {
         setShowCookies(false);
         localStorage.setItem('visitedRestoBefore', 'true');  
       } else {
