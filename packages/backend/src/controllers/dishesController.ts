@@ -31,6 +31,13 @@ export async function getDishByID(restaurantID: number, dishID: number) {
   return restaurant.dishes.find((dish) => dish.uid === dishID);
 }
 
+export async function getDishByRestoId(restaurantID: number, dishName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const restaurant = await Restaurant.findOne({ _id: restaurantID });
+  if (!restaurant) return null;
+  return restaurant.dishes.find((dish) => dish.name === dishName);
+}
+
 export async function getDishByUser(loggedInUserId: number) {
   const restaurants = await getAllUserRestaurants(loggedInUserId);
   const dishes: IDishFE[] = [];
@@ -257,10 +264,10 @@ export async function updateDish(
 }
 
 export async function updateDishByID(
-  restaurantID: number, dish: IDishBE) {
+  restaurantID: number, dish: IDishBE, oldName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    { _id: restaurantID, 'dishes.uid': dish.uid },
+    { _id: restaurantID, 'dishes.name': oldName },
     { $set: { 'dishes.$': dish } },
     { new: true }
   );
@@ -268,7 +275,7 @@ export async function updateDishByID(
 
 export async function changeDishByID(
   restaurantID: number, dish: IDishesCommunication, allergens: string[]) {
-  const oldDish = await getDishByID(restaurantID, dish.uid);
+  const oldDish = await getDishByRestoId(restaurantID, dish.oldName);
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
@@ -292,7 +299,7 @@ export async function changeDishByID(
     validTill: dish.validTill as string,
     combo: oldDish.combo as [number],
   };
-  await updateDishByID(restaurantID, newDish);
+  await updateDishByID(restaurantID, newDish, dish.oldName);
   return newDish;
 }
 
