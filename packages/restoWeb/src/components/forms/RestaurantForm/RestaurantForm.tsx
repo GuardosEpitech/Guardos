@@ -149,6 +149,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [isCityEmpty, setIsCityEmpty] = useState(false);
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
   const [restaurantData, setRestaurantData] = useState();
+  const [selectedPictureId, setSelectedPictureId] = useState<number[]>([]);
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
@@ -167,6 +168,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             id: image.id,
           }));
           setPictures(fetchedPictures);
+          setSelectedPictureId(props.picturesId);
         } catch (error) {
           setPictures([{
             base64: defaultRestoImage,
@@ -176,6 +178,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
             uploadDate: "0",
             id: 0,
           }]);
+          setSelectedPictureId([]);
         }
       } else {
         setPictures([{
@@ -186,6 +189,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           uploadDate: "0",
           id: 0,
         }]);
+        setSelectedPictureId([]);
       }
     };
 
@@ -336,7 +340,8 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         longitude: "0",
       },
       menuDesignID: selectedMenuDesignId,
-      ...(selectedRestoChainId !== null && { restoChainID: selectedRestoChainId })
+      ...(selectedRestoChainId !== null && { restoChainID: selectedRestoChainId }),
+      picturesId: selectedPictureId
     };
     
     const data: IAddRestoRequest  = {
@@ -366,9 +371,11 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
           .then(r => {
             setPictures([{ base64: result, contentType: file.type,
               filename: file.name, size: file.size, uploadDate: "0", id: r }]);
+            setSelectedPictureId([r]);
             if (picturesId.length > 0) {
               deleteImageRestaurant(picturesId[0], restaurantName);
               picturesId.shift();
+              setSelectedPictureId([]);
             }
             picturesId.push(r);
           });
@@ -388,6 +395,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         uploadDate: "0",
         id: 0,
       }]);
+      setSelectedPictureId([]);
     }
   }
 
