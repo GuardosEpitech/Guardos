@@ -17,6 +17,48 @@ export async function getDishesByRestaurantName(restaurantName: string) {
   return Restaurant.find({ name: restaurantName }, 'dishes');
 }
 
+export async function getDishesByRestaurantNameTypeChecked
+(restaurantName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const resto = await Restaurant.find({ name: restaurantName }, 'dishes');
+  if (!resto) return null;
+  const dishes: IDishFE[] = [];
+  for (const dish of resto[0].dishes) {
+    const dishFE: IDishFE = {
+      name: dish.name as string,
+      uid: dish.uid as number,
+      description: dish.description as string,
+      price: dish.price as number,
+      pictures: [''],
+      picturesId: [],
+      allergens: [''],
+      category: {} as ICategoryFE,
+      resto: restaurantName,
+      products: dish.products as string[],
+      restoChainID: dish.restoChainID as number,
+      discount: dish.discount as number,
+      validTill: dish.validTill as string,
+      combo: dish.combo as number[]
+    };
+    dishFE.pictures.pop();
+    dishFE.allergens.pop();
+    dishFE.picturesId?.pop();
+    
+    dishFE.category.foodGroup = dish.category.foodGroup as string;
+    dishFE.category.extraGroup = dish.category.extraGroup as string[];
+    dishFE.category.menuGroup = dish.category.menuGroup as string;
+    for (const pict of dish.pictures) {
+      dishFE.pictures.push(pict as string);
+    }
+    
+    for (const allergen of dish.allergens) {
+      dishFE.allergens.push(allergen as string);
+    }
+    dishes.push(dishFE);
+  }
+  return dishes;
+}
+
 export async function getDishByName(restaurantName: string, dishName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const restaurant = await Restaurant.findOne({ name: restaurantName });
