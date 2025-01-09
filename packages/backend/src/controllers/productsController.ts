@@ -191,6 +191,32 @@ export async function deleteProductByName(productName: string, userId: number) {
   }
 }
 
+export async function deleteAllProductsFromUser(userId: number) {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    const existingProducts = await Product.find({ userID: userId });
+    if (!existingProducts || existingProducts.length === 0) {
+      console.log('Product not found');
+      return false;
+    }
+    let productDeleted = false;
+    for (const product of existingProducts) {
+      if (product.userID === userId) {
+        await Product.deleteOne({ _id: product._id });
+        console.log(`Product with ID ${product._id} deleted successfully`);
+        productDeleted = true;
+      }
+    }
+    if (productDeleted) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function updateProduct(product: IProductBE, oldName: string) {
   const Product = mongoose.model('Product', productSchema);
   return Product.findOneAndUpdate(
