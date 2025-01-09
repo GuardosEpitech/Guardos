@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import styles from "./Popup.module.scss";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,8 @@ const PopupContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  will-change: transform; /* Ensure smooth rendering */
+  z-index: 9999; /* Ensure it stays above other elements */
 `;
 
 const PopupButton = styled.button`
@@ -38,13 +41,14 @@ const PopupButton = styled.button`
 export const Popup: React.FC<PopupProps> = ({ message, onConfirm, onCancel }) => {
   const { t } = useTranslation();
 
-  return (
+  return ReactDOM.createPortal(
     <PopupContainer>
       <div className={styles.PopupText}>{message}</div>
       <div>
         <PopupButton onClick={onConfirm}>{t('common.confirm')}</PopupButton>
         <PopupButton onClick={onCancel}>{t('common.cancel')}</PopupButton>
       </div>
-    </PopupContainer>
+    </PopupContainer>,
+    document.body // Render outside the app hierarchy
   );
 };

@@ -400,22 +400,6 @@ const MyAccountPage = () => {
           <input className={styles.InputField} type="text" value={name} onChange={handleNameChange} required/>
         </div>
         <FormControl fullWidth className={styles.selectInput}>
-          <InputLabel id="menu-design-label">
-            {t('pages.MyAccountPage.menu-design')}
-          </InputLabel>
-          <Select
-            labelId="menu-design-label"
-            id="menu-design"
-            value={menuDesign}
-            onChange={handleMenuDesignChange}
-            label={t('pages.MyAccountPage.menu-design')}
-          >
-            <MenuItem value="default">Default</MenuItem>
-            <MenuItem value="fast-food">Fast Food</MenuItem>
-            <MenuItem value="pizzeria">Pizzeria</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth className={styles.selectInput}>
           <InputLabel id="langauge-label">
             {t('pages.MyAccountPage.preferred-language')}
           </InputLabel>
