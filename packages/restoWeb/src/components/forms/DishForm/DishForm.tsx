@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getProductsByUser} from "@src/services/productCalls";
-import {addNewDish, deleteDish, editDish} from "@src/services/dishCalls";
+import {addNewDish, deleteDish, editDish, getDishesByUser} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
@@ -89,6 +89,7 @@ const DishForm = (props: IDishFormProps) => {
   const [valueRestoChain, setValueRestoChain] = useState(null);
   const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const [invalidDishname, setInvalidDishname] = useState<boolean>(false);
+  const [takenDishName, setTakenDishname] = useState<boolean>(false);
   const [invalidPrice, setInvalidPrice] = useState<boolean>(false);
   const [invalidResto, setInvalidResto] = useState<boolean>(false);
   const [invalidProducts, setInvalidProducts] = useState<boolean>(false);
@@ -109,6 +110,7 @@ const DishForm = (props: IDishFormProps) => {
   const picturesId: number[] = props.picturesId || [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [categories, setCategories] = useState<{ name: string; categories: string[]; }[]>([]);
+  const [userDishes, setUserDishes] = useState<IDishFE[]>([]);
 
   const {t} = useTranslation();
 
@@ -118,6 +120,11 @@ const DishForm = (props: IDishFormProps) => {
       .then((res) => {
         allDishProd = res.map((item: IProduct) => item.name);
         setProductListTest(allDishProd);
+      });
+
+    getDishesByUser({ key: userToken })
+      .then((res) => {
+        setUserDishes(res);
       });
   }, []);
 
@@ -174,6 +181,11 @@ const DishForm = (props: IDishFormProps) => {
       setInvalidDishname(true);
       invalidFields = true;
     }
+    if (userDishes.map((item) => item.name).includes(dish)) {
+      setInvalidDishname(true);
+      setTakenDishname(true);
+      invalidFields = true;
+    }
     if (dishProd === undefined || dishProd.length === 0) {
       setInvalidProducts(true);
       invalidFields = true;
@@ -196,6 +208,7 @@ const DishForm = (props: IDishFormProps) => {
 
   async function sendRequestAndGoBack() {
     setInvalidDishname(false);
+    setTakenDishname(false);
     setInvalidPrice(false);
     setInvalidResto(false);
     setInvalidProducts(false);
@@ -244,7 +257,7 @@ const DishForm = (props: IDishFormProps) => {
       const deleteFromResto = originalDishResto.filter((resto) => !dishResto.includes(resto));
       for (let i = 0; i < dishList.length; i++) {
         if (originalDishResto.includes(dishList[i].resto)) {
-          await editDish(dishList[i].resto, dishList[i], userToken);
+          await editDish(dishList[i].resto, dishList[i], userToken, props.dishName);
         } else {
           const data: IAddDish = {
             resto: dishList[i].resto,
@@ -435,7 +448,8 @@ const DishForm = (props: IDishFormProps) => {
                   label={t('components.DishForm.name')}
                   error={invalidDishname}
                   helperText={invalidDishname ?
-                    t('components.DishForm.name-is-required') : ""}
+                    takenDishName ? t('components.DishForm.name-is-taken')
+                      : t('components.DishForm.name-is-required') : ""}
                   defaultValue={dish}
                   id="component-outlined"
                   fullWidth

@@ -4,8 +4,8 @@ import {
   createNewDish, deleteDishByName,
   getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName,
   addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
-  createNewForEveryRestoChainDish, getDishByID, changeDishByID,
-  getAllergensFromDishProducts
+  createNewForEveryRestoChainDish, changeDishByID,
+  getAllergensFromDishProducts, getDishByRestoId
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -159,14 +159,14 @@ router.put('/:name', async (req, res) => {
         .send('Couldnt find restaurant named '
         + req.params.name + ' for this user');
     }
-    if (!req.body.uid) {
+    if (!req.body.oldName) {
       return res.status(404)
-        .send('Coundt find dish named ' + req.body.name);
+        .send('Coundt find dish named ' + req.body.oldName);
     }
-    const dishToChange = await getDishByID(restaurant.uid,req.body.uid);
+    const dishToChange = await getDishByRestoId(restaurant.uid,req.body.oldName);
     if (!dishToChange) {
       return res.status(404)
-        .send('Coundt find dish named ' + req.body.name);
+        .send('Coundt find dish named ' + req.body.oldName);
     }
     const newDish: IDishesCommunication = req.body;
     const allergens =

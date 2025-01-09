@@ -85,6 +85,7 @@
         "delete-img": "Bild löschen",
         "name": "Name",
         "name-is-required": "Name ist erforderlich",
+        "name-is-taken": "Name existiert bereits für eines Ihrer Gerichte",
         "price": "Preis",
         "price-is-required": "Preis ist erforderlich",
         "description": "Beschreibung",
