@@ -103,7 +103,7 @@ const UserSupportPage = () => {
       <Layout>
         <p>
           {(t('pages.UserSupport.support-description1'))}
-          <a onClick={() => { navigate('/Q&A'); }}>{t('pages.UserSupport.Q&A')}</a>
+          {t('pages.UserSupport.Q&A')}
           {(t('pages.UserSupport.support-description2'))}
         </p>
         <div className={styles.requestform}>
