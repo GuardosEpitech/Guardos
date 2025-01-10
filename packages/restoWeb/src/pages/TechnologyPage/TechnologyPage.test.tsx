@@ -1,14 +1,19 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TechnologyPage from './TechnologyPage';
 
-import {useTranslation} from 'react-i18next';
-
 // jest.mock('react-i18next');
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: () => ['key'] }),
-  Trans: () => jest.fn(),
+  useTranslation: () => {
+    return {
+      t: (i18nKey: string) => i18nKey,
+      i18n: {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
   t: () => jest.fn(),
 }));
 

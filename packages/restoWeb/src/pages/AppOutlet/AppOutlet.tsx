@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./AppOutlet.module.scss";
 import Header from "@src/components/dumpComponents/Header/Header";
 import {useTranslation} from "react-i18next";
 import instagram from "../../../../shared/assets/whiteInstagram.png";
 import linkedIn from "../../../../shared/assets/linkedin.png";
-import { log } from "console";
 
 const AppOutlet = () => {
   const {t} = useTranslation();

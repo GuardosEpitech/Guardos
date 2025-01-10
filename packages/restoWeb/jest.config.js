@@ -5,7 +5,9 @@ module.exports = {
 
     // if your using tsconfig.paths thers is no harm in telling jest
     // '@components/(.*)$': '<rootDir>/src/components/$1',
-    // '@/(.*)$': '<rootDir>/src/$1',
+    '@src/(.*)$': '<rootDir>/src/$1',
+
+    "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/test/styleMock.js",
 
     // mocking assests and styling
     '^.+\\.(css|less|scss|sass)$': '<rootDir>/src/test/styleMock.js',
