@@ -60,7 +60,7 @@ const DishComboPage = () => {
         setSuccessMessage(t('pages.DishComboPage.successAdd'));
         setTimeout(() => {
             navigate('/dishes'); 
-        }, 1500);
+        }, 1200);
     }
   };
 
