@@ -111,7 +111,7 @@ const HomePage = () => {
       <Layout>
         <div className={styles.DivContent}>
           <div>
-            {isUserTokenSet && restoData.length === 0 && (
+            {isUserTokenSet && restoData && restoData.length === 0 && (
               <p>{t('pages.HomePage.no-restos-yet')}</p>
             )}
             {!isUserTokenSet && (
@@ -141,7 +141,7 @@ const HomePage = () => {
                 </React.Fragment>
               ))
             )}
-            {!premium && restoData.length === adIndex && <AdCard />}
+            {!premium && restoData && restoData.length === adIndex && <AdCard />}
           </div>
         </div>
       </Layout>

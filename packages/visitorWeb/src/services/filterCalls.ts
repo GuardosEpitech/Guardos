@@ -17,7 +17,7 @@ export const getFilteredRestos = async (body: any) => {
         return response.data;
     } catch (error) {
         console.error(`Error in getFilteredRestos: ${error}`);
-        throw error;
+        return null;
     }
 }
 
@@ -34,7 +34,7 @@ export const getSelectedFilteredRestos = async (body: any) => {
         return response.data;
     } catch (error) {
         console.error(`Error in getFilteredRestos: ${error}`);
-        throw error;
+        return null;
     }
 }
 
@@ -51,6 +51,6 @@ export const getNewFilteredRestos = async (body: any) => {
         return response.data;
     } catch (error) {
         console.error(`Error in getnewFilteredRestos: ${error}`);
-        throw error;
+        return null;
     }
 }

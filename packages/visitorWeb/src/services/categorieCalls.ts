@@ -15,7 +15,7 @@ export const getCategories = async (userToken: string) => {
     return response.data;
   } catch (error) {
     console.error(`Error in getFilteredRestos: ${error}`);
-    throw error;
+    return null;
   }
 }
 

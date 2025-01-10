@@ -155,12 +155,6 @@ const MenuPage = () => {
     return restoMenu[selectedProfileIndex] ?? [];
   }
 
-  useEffect(() => {
-    if (restoMenu && restoMenu.length > selectedProfileIndex) {
-      sectionRefs.current = sectionRefs.current.slice(0, getCurrentMenu().length);
-    }
-  }, [restoMenu]);
-
   const fetchMenu = async (profiles: AllergenProfile[]) => {
     const userToken = localStorage.getItem('user');
     setLoading(true)
@@ -237,8 +231,18 @@ const MenuPage = () => {
 
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  useEffect(() => {
+    // Ensure the length of refs matches the menu categories
+    sectionRefs.current = Array(getCurrentMenu().length)
+      .fill(null)
+      .map((_, index) => sectionRefs.current[index] || null);
+  }, [restoMenu, selectedProfileIndex]);
+
   const scrollToSection = (index: number) => {
-    sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+    const targetSection = sectionRefs.current[index];
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const handleProfileChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -363,29 +367,23 @@ const MenuPage = () => {
                           <div className={styles.restoList}>
                             {getCurrentMenu().length > 0 ? getCurrentMenu().map((category: ICategories, index: number) => {
                               return (//@ts-ignore
-                                <div key={index} ref={sectionRefs.current[index]}>
+                                <div key={index} ref={(el) => (sectionRefs.current[index] = el)}>
                                   {index % 3 === 0 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic1})`
-                                    }} className={styles.secondLayoutBanner} />
+                                    <div
+                                      style={{ backgroundImage: `url(${pic1})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
+                                  ) : index % 3 === 1 ? (
+                                    <div
+                                      style={{ backgroundImage: `url(${pic2})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
                                   ) : (
-                                    <div/>
+                                    <div
+                                      style={{ backgroundImage: `url(${pic3})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
                                   )}
-                                  {index % 3 === 1 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic2})`
-                                    }} className={styles.secondLayoutBanner} />
-                                  ) : (
-                                    <div/>
-                                  )}
-                                  {index % 3 === 2 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic3})`
-                                    }} className={styles.secondLayoutBanner}/>
-                                  ) : (
-                                    <div/>
-                                  )}
-
                                   <Category title={category.name}>
                                     {category.dishes
                                       .filter((dish: IDishFE) => dish.fitsPreference)

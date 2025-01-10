@@ -114,7 +114,7 @@ const CookieBanner: React.FC = () => {
 
     if (userToken) {
       const data = await getUserPreferences(userToken);
-      if (data.isSet) {
+      if (data && data.isSet) {
         setIsOpen(false);
         localStorage.setItem('visitedBefore', 'true');
       } else {

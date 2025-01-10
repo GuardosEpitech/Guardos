@@ -11,6 +11,7 @@ export const getAllIngredients = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching all ingredients:", error);
+    return null;
   }
 };
 

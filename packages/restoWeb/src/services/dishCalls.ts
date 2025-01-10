@@ -36,13 +36,28 @@ export const addNewDish = async (body: IAddDish, token: string) => {
   }
 };
 
-export const editDish = async (restoName: string, dish: IDishFE, token: string) => {
+export const editDish = async (restoName: string, dish: IDishFE, token: string, oldName: string) => {
   try {
     const response = await axios({
       url: baseUrl + restoName,
       method: "PUT",
       params: {key: token},
-      data: JSON.stringify(dish),
+      data: JSON.stringify({
+        oldName: oldName,
+        name: dish.name,
+        uid: dish.uid,
+        description: dish.description,
+        price: dish.price,
+        allergens: dish.allergens,
+        picturesId: dish.picturesId,
+        category: dish.category,
+        resto: dish.category,
+        products: dish.products,
+        discount: dish.discount,
+        validTill: dish.validTill,
+        combo: dish.combo,
+        restoChainID: dish.restoChainID,
+      }),
       headers: {
         "content-type": "application/json",
       },

@@ -4,7 +4,8 @@ import {
   createNewDish, deleteDishByName,
   getAllDishes, getDishByName, getDishByUser, getDishesByRestaurantName,
   addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
-  createNewForEveryRestoChainDish, getDishByID, changeDishByID
+  createNewForEveryRestoChainDish, changeDishByID,
+  getAllergensFromDishProducts, getDishByRestoId
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -12,8 +13,6 @@ import {
   checkIfRestaurantExists
 } from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
-import {detectAllergensInDish, detectAllergensInDishEdit}
-  from '../controllers/allergenDetectionController';
 import {
   doesUserOwnRestaurantByName,
   getRestaurantByID
@@ -160,33 +159,21 @@ router.put('/:name', async (req, res) => {
         .send('Couldnt find restaurant named '
         + req.params.name + ' for this user');
     }
-    if (!req.body.uid) {
+    if (!req.body.oldName) {
       return res.status(404)
-        .send('Coundt find dish named ' + req.body.name);
+        .send('Coundt find dish named ' + req.body.oldName);
     }
-    const dishToChange = await getDishByID(restaurant.uid,req.body.uid);
+    const dishToChange = await getDishByRestoId(restaurant.uid,req.body.oldName);
     if (!dishToChange) {
       return res.status(404)
-        .send('Coundt find dish named ' + req.body.name);
+        .send('Coundt find dish named ' + req.body.oldName);
     }
     const newDish: IDishesCommunication = req.body;
-    const allergensDB = await detectAllergensInDishEdit(
-        newDish as IDishesCommunication, userID as number);
-    if (allergensDB.status !== 200) {
-      return res.status(allergensDB.status)
-        .send(allergensDB.data);
-    }
-
-    let filteredAllergens: string[] = Array.isArray(allergensDB.data)
-      ? [...allergensDB.data]
-      : [allergensDB.data];
-
-    filteredAllergens = Array.from(new Set(
-      filteredAllergens.filter(allergen => !allergen.includes('No allergens'))
-    ));
+    const allergens =
+      await getAllergensFromDishProducts(newDish, userID as number);
 
     const dish = await changeDishByID(
-      restaurant.uid, req.body, filteredAllergens);
+      restaurant.uid, req.body, allergens);
     return res.status(200)
       .send(dish);
   } catch (error) {
@@ -338,22 +325,8 @@ router.post('/:name', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const allergensDB = await detectAllergensInDish(req, userID as number);
-    if (allergensDB.status !== 200) {
-      return res.status(allergensDB.status)
-        .send(allergensDB.data);
-    }
+    dish.allergens = await getAllergensFromDishProducts(dish, userID as number);
 
-    let filteredAllergens: string[] = Array.isArray(allergensDB.data)
-      ? [...allergensDB.data]
-      : [allergensDB.data];
-
-    filteredAllergens = Array.from(new Set(
-      filteredAllergens.filter(allergen => !allergen.includes('No allergens'))
-    ));
-
-    if (filteredAllergens)
-      dish.allergens.push(...filteredAllergens);
     const newDish = await createNewDish(resto, dish, userID as number);
     if (restoChainID) {
       await createNewForEveryRestoChainDish(dish,

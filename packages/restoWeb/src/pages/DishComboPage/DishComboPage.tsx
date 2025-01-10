@@ -93,7 +93,6 @@ const DishComboPage = () => {
               <TextField
                 {...params}
                 label={t('pages.DishComboPage.selectDish')}
-                required
               />
             )}
           />

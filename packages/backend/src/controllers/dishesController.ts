@@ -7,11 +7,56 @@ import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { IRestaurantBackEnd, IRestaurantFrontEnd }
   from '../../../shared/models/restaurantInterfaces';
 import { restaurantSchema } from '../models/restaurantInterfaces';
-import {getAllUserRestaurants, getRestaurantByID, getAllRestosFromRestoChain} from './restaurantController';
+import {
+  getAllUserRestaurants, getRestaurantByID, getAllRestosFromRestoChain
+} from './restaurantController';
+import {getProductsByUser} from './productsController';
 
 export async function getDishesByRestaurantName(restaurantName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.find({ name: restaurantName }, 'dishes');
+}
+
+export async function getDishesByRestaurantNameTypeChecked
+(restaurantName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const resto = await Restaurant.find({ name: restaurantName }, 'dishes');
+  if (!resto) return null;
+  const dishes: IDishFE[] = [];
+  for (const dish of resto[0].dishes) {
+    const dishFE: IDishFE = {
+      name: dish.name as string,
+      uid: dish.uid as number,
+      description: dish.description as string,
+      price: dish.price as number,
+      pictures: [''],
+      picturesId: [],
+      allergens: [''],
+      category: {} as ICategoryFE,
+      resto: restaurantName,
+      products: dish.products as string[],
+      restoChainID: dish.restoChainID as number,
+      discount: dish.discount as number,
+      validTill: dish.validTill as string,
+      combo: dish.combo as number[]
+    };
+    dishFE.pictures.pop();
+    dishFE.allergens.pop();
+    dishFE.picturesId?.pop();
+    
+    dishFE.category.foodGroup = dish.category.foodGroup as string;
+    dishFE.category.extraGroup = dish.category.extraGroup as string[];
+    dishFE.category.menuGroup = dish.category.menuGroup as string;
+    for (const pict of dish.pictures) {
+      dishFE.pictures.push(pict as string);
+    }
+    
+    for (const allergen of dish.allergens) {
+      dishFE.allergens.push(allergen as string);
+    }
+    dishes.push(dishFE);
+  }
+  return dishes;
 }
 
 export async function getDishByName(restaurantName: string, dishName: string) {
@@ -26,6 +71,13 @@ export async function getDishByID(restaurantID: number, dishID: number) {
   const restaurant = await Restaurant.findOne({ _id: restaurantID });
   if (!restaurant) return null;
   return restaurant.dishes.find((dish) => dish.uid === dishID);
+}
+
+export async function getDishByRestoId(restaurantID: number, dishName: string) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const restaurant = await Restaurant.findOne({ _id: restaurantID });
+  if (!restaurant) return null;
+  return restaurant.dishes.find((dish) => dish.name === dishName);
 }
 
 export async function getDishByUser(loggedInUserId: number) {
@@ -190,6 +242,7 @@ export async function createNewDish(
     price: dishCom.price ? dishCom.price : -1,
     products: dishCom.products ? dishCom.products : [''],
     pictures: dishCom.pictures ? dishCom.pictures : [''],
+    picturesId: dishCom.picturesId ?? [],
     allergens: dishCom.allergens ? dishCom.allergens : [''],
     category: dishCom.category ? dishCom.category : {
       menuGroup: '',
@@ -253,10 +306,10 @@ export async function updateDish(
 }
 
 export async function updateDishByID(
-  restaurantID: number, dish: IDishBE) {
+  restaurantID: number, dish: IDishBE, oldName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    { _id: restaurantID, 'dishes.uid': dish.uid },
+    { _id: restaurantID, 'dishes.name': oldName },
     { $set: { 'dishes.$': dish } },
     { new: true }
   );
@@ -264,7 +317,7 @@ export async function updateDishByID(
 
 export async function changeDishByID(
   restaurantID: number, dish: IDishesCommunication, allergens: string[]) {
-  const oldDish = await getDishByID(restaurantID, dish.uid);
+  const oldDish = await getDishByRestoId(restaurantID, dish.oldName);
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
@@ -288,7 +341,7 @@ export async function changeDishByID(
     validTill: dish.validTill as string,
     combo: oldDish.combo as [number],
   };
-  await updateDishByID(restaurantID, newDish);
+  await updateDishByID(restaurantID, newDish, dish.oldName);
   return newDish;
 }
 
@@ -442,4 +495,21 @@ export async function removeDishCombo(
   };
   await updateDish(resto.name, newDish);
   return newDish;
+}
+
+export async function getAllergensFromDishProducts(dish: IDishesCommunication, userId: number) {
+  const products = await getProductsByUser(userId);
+  const allergens: string[] = [];
+
+  for (const product of products) {
+    if (dish.products?.includes(product.name)) {
+      for (const allergen of product.allergens) {
+        if (!allergens.includes(allergen)) {
+          allergens.push(allergen);
+        }
+      }
+    }
+  }
+
+  return allergens;
 }
