@@ -19,7 +19,6 @@ import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
 import { useTranslation } from "react-i18next";
 import { getAllIngredients, addIngredient } from "@src/services/ingredientsCalls";
-import { add } from "cypress/types/lodash";
 
 const PageBtn = () => {
   return createTheme({
@@ -168,19 +167,25 @@ const ProductForm = (props: IDishFormProps) => {
       setProductIngredients(value);
       setIsInputEmpty(value.length === 0);
 
+      let valueIndex = 0;
       for (const ingredient of value) {
         if (!allIngredients.some(ing => ing.name === ingredient)) {
           const response = await addIngredient(ingredient);
-          if (response.ok) {
+          if (response.status === 200) {
             setIngredientFeedback(`Ingredient ${ingredient} has been added to the database.`);
             const updatedIngredients = await getAllIngredients();
             setApiIngredients(updatedIngredients || []);
+            value[valueIndex] = response.data;
+            setProductIngredients(value);
           } else {
             throw new Error(`Failed to add ingredient ${ingredient}`);
           }
         }
+        valueIndex++;
       }
     } catch (error) {
+      value.pop();
+      setProductIngredients(value);
       console.error("Error handling ingredient change:", error);
       setIngredientFeedback(`Error: ${error.message}`);
     }

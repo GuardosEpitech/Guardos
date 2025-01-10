@@ -16,7 +16,7 @@ export const addRestoAsFavourite = async (userToken: string, restoID: number) =>
     return response.data;
   } catch (error) {
     console.error(`Error in addRestoAsFavourite: ${error}`);
-    throw error;
+    return null;
   }
 };
 
@@ -37,7 +37,7 @@ export const addDishAsFavourite = async (userToken: string, restoID: number, dis
     return response.data;
   } catch (error) {
     console.error(`Error in addDishAsFavourite: ${error}`);
-    throw error;
+    return null;
   }
 };
 
@@ -55,7 +55,7 @@ export const deleteRestoFromFavourites = async (userToken: string, restoID: numb
     return response.data;
   } catch (error) {
     console.error(`Error in deleteRestoFromFavourites: ${error}`);
-    throw error;
+    return null;
   }
 };
 
@@ -76,7 +76,7 @@ export const deleteDishFromFavourites = async (userToken: string, restoID: numbe
     return response.data;
   } catch (error) {
     console.error(`Error in deleteDishFromFavourites: ${error}`);
-    throw error;
+    return null;
   }
 };
 
@@ -93,7 +93,7 @@ export const getRestoFavourites = async (userToken: string) => {
     return response.data;
   } catch (error) {
     console.error(`Error in getRestoFavourites: ${error}`);
-    throw error;
+    return null;
   }
 };
 
@@ -110,6 +110,6 @@ export const getDishFavourites = async (userToken: string) => {
     return response.data;
   } catch (error) {
     console.error(`Error in getDishFavourites: ${error}`);
-    throw error;
+    return null;
   }
 };

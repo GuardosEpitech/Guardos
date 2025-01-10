@@ -3,6 +3,12 @@ import {productSchema} from '../models/productsInterfaces';
 import {restaurantSchema} from '../models/restaurantInterfaces';
 import {IProduct} from '../../../shared/models/restaurantInterfaces';
 import {IProductBE} from '../../../shared/models/productInterfaces';
+import {getIngredientByName} from './ingredientsController';
+import {changeDishByID,
+  getAllergensFromDishProducts,
+  getDishesByRestaurantNameTypeChecked}
+  from './dishesController';
+import {IDishesCommunication} from '../models/communicationInterfaces';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -24,7 +30,8 @@ export async function getMaxProductId() {
   }
 }
 
-export async function createOrUpdateProduct(product: IProduct, restaurantId: number) {
+export async function createOrUpdateProduct
+(product: IProduct, restaurantId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -34,11 +41,20 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
       return;
     }
 
+    let allergens = [];
+    for (const ingredientName of product.ingredients) {
+      const ingredient = await getIngredientByName(ingredientName);
+      if (ingredient && ingredient.length > 0) {
+        allergens.push(...ingredient[0].allergens);
+      }
+    }
+    allergens = Array.from(new Set(allergens));
+
     const existingProduct = await Product.findOne({ name: product.name });
 
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
-        existingProduct.allergens = product.allergens;
+        existingProduct.allergens = allergens;
         existingProduct.ingredients = product.ingredients;
         if (!existingProduct.restaurantId.includes(restaurantId)) {
           existingProduct.restaurantId.push(restaurantId);
@@ -55,11 +71,12 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
           _id: maxProductIdResult,
           userID: restaurant.userID,
           name: product.name,
-          allergens: product.allergens,
+          allergens: allergens,
           ingredients: product.ingredients,
           restaurantId: [restaurantId],
         });
         await newProduct.save();
+        return newProduct;
       }
     } else {
       const maxProductIdResult = await getMaxProductId();
@@ -72,11 +89,12 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
         _id: maxProductIdResult,
         userID: restaurant.userID,
         name: product.name,
-        allergens: product.allergens,
+        allergens: allergens,
         ingredients: product.ingredients,
         restaurantId: [restaurantId],
       });
       await newProduct.save();
+      return newProduct;
     }
   } catch (error) {
     console.error('Error while creating or updating a product: ', error);
@@ -123,7 +141,8 @@ export async function addProductsFromRestaurantToOwnDB(restaurantId: number) {
   }
 }
 
-export async function getProductByName(productName: string):Promise<IProductBE> {
+export async function getProductByName(productName: string)
+    :Promise<IProductBE> {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.findOne({name: { $regex: productName, $options: 'i'}});
@@ -179,6 +198,32 @@ export async function deleteProductByName(productName: string, userId: number) {
   }
 }
 
+export async function deleteAllProductsFromUser(userId: number) {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    const existingProducts = await Product.find({ userID: userId });
+    if (!existingProducts || existingProducts.length === 0) {
+      console.log('Product not found');
+      return false;
+    }
+    let productDeleted = false;
+    for (const product of existingProducts) {
+      if (product.userID === userId) {
+        await Product.deleteOne({ _id: product._id });
+        console.log(`Product with ID ${product._id} deleted successfully`);
+        productDeleted = true;
+      }
+    }
+    if (productDeleted) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function updateProduct(product: IProductBE, oldName: string) {
   const Product = mongoose.model('Product', productSchema);
   return Product.findOneAndUpdate(
@@ -188,18 +233,79 @@ export async function updateProduct(product: IProductBE, oldName: string) {
   );
 }
 
-export async function changeProductByName(product: IProductBE, oldProductsName:string) {
+export async function changeProductByName
+(product: IProductBE, oldProductsName:string) {
   const oldProduct = await getProductByName(oldProductsName);
+
+  let allergens = [];
+  for (const ingredientName of product.ingredients) {
+    const ingredient = await getIngredientByName(ingredientName);
+    if (ingredient && ingredient.length > 0) {
+      allergens.push(...ingredient[0].allergens);
+    }
+  }
+  allergens = Array.from(new Set(allergens));
+
   const newProduct: IProductBE = {
     name: product.name ? product.name : oldProduct.name,
     userID: oldProduct.userID,
     id: oldProduct.id,
-    allergens: product.allergens ? product.allergens : oldProduct.allergens,
+    allergens: allergens,
     ingredients: product.ingredients ? product.ingredients :
       oldProduct.ingredients,
     restaurantId: product.restaurantId ? product.restaurantId :
       oldProduct.restaurantId,
   };
-  await updateProduct(product, oldProduct.name);
+  await updateProduct(newProduct, oldProductsName);
+  if (product.ingredients) {
+    for (const ingredient of product.ingredients) {
+      await updateAllDishesWithIngredient(ingredient, oldProduct.userID);
+    }
+  }
   return newProduct;
+}
+
+async function updateAllDishesWithIngredient
+(ingredientName: string, userID: number) {
+  const Product = mongoose.model('products', productSchema);
+  const Restaurant = mongoose.model('restaurants', restaurantSchema);
+  const restoOfUser = await Restaurant.find({ userID: userID });
+  const products = await Product.find({ ingredients: ingredientName });
+
+  for (const product of products) {
+    if (product.userID === userID) {
+      for (const resto of restoOfUser) {
+        if (product.userID === resto.userID) {
+          const dishes =
+              await getDishesByRestaurantNameTypeChecked(
+                  await resto.name as string);
+          for (const dish of dishes) {
+            const newDish: IDishesCommunication = {
+              discount: dish.discount as number,
+              pictures: dish.pictures as [string],
+              picturesId: dish.picturesId as [number],
+              products: dish.products as [string],
+              restoChainID: dish.restoChainID as number,
+              uid: dish.uid as number,
+              userID: userID,
+              validTill: dish.validTill as string,
+              name: dish.name as string,
+              description: dish.description as string,
+              price: dish.price as number,
+              category: {
+                menuGroup: dish.category.menuGroup as string,
+                foodGroup: dish.category.foodGroup as string,
+                extraGroup: dish.category.extraGroup as [string],
+              },
+              allergens: []
+            };
+            newDish.allergens = await
+            getAllergensFromDishProducts(newDish, userID);
+            await changeDishByID(
+                  resto._id as number, newDish, newDish.allergens);
+          }
+        }
+      }
+    }
+  }
 }

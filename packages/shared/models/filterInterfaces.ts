@@ -1,5 +1,6 @@
 import {ISearchCommunication} from './communicationInterfaces';
 import {IRestaurantFrontEnd} from './restaurantInterfaces';
+import { ICoordinates } from './locationInterfaces';
 
 export interface IFilterObj {
   savedFilter: ISearchCommunication;
@@ -14,4 +15,5 @@ export interface IFilterObject {
   range?: number;
   categories?: string[];
   dishes?: any;
+  userLoc?: ICoordinates;
 }

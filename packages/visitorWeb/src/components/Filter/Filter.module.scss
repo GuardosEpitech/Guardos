@@ -12,6 +12,17 @@
   border-radius: 0.625rem;
 }
 
+.RectFilterBig {
+  width: 24.13rem;
+  height: 70rem;
+  background-color: #ffffff;
+  filter: drop-shadow(0rem 0.25rem 0.313rem rgba(0, 0, 0, 0.25));
+  margin-top: 3rem;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  border-radius: 0.625rem;
+}
+
 .ButtonFilterSaver {
   button {
     background-color: $burgundy !important;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import Button from "@mui/material/Button";
@@ -34,9 +34,9 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     getRatingData(restoName).then(res => setRatingData(res));
-  })
+  }, [restoName]);
 
   return (
     <div className={styles.ReviewContainer}>

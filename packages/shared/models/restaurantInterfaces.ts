@@ -100,9 +100,10 @@ export interface IAddResto {
   website: string;
   openingHours: IOpeningHours[];
   location: ILocation;
+  picturesId: number[];
   menuDesignID: number;
   restoChainID?: number;
-};
+}
 
 export interface IAddRestoRequest {
   userToken: string;

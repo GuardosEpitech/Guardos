@@ -454,6 +454,12 @@ export async function deleteRestaurantByName(restaurantName: string) {
   return 'deleted ' + restaurantName;
 }
 
+export async function deleteRestaurantByID(restaurantID: number) {
+  const Restaurant = mongoose.model('Restaurants', restaurantSchema);
+  await Restaurant.deleteOne({ _id: restaurantID });
+  return 'deleted ' + restaurantID;
+}
+
 async function updateRestaurantByName(
   restaurant: IRestaurantBackEnd,
   restaurantName: string

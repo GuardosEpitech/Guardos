@@ -28,6 +28,7 @@ export interface IDishesCommunication {
   restoChainID: number;
   discount: number;
   validTill: String;
+  oldName?: string;
 }
 
 export interface IRestaurantCommunication {

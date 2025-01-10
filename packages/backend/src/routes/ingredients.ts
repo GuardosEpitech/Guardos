@@ -3,14 +3,11 @@ import * as express from 'express';
 import { addRestoProduct } from '../controllers/restaurantController';
 import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
   from '../middleware/ingredientsMiddleWare';
-import { checkIfRestaurantExists } from '../middleware/restaurantMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
 import {detectAllergens} from '../controllers/allergenDetectionController';
 import {
   deleteIngredient,
-  findMaxIndexIngredients,
-  getAllIngredients, getIngredientByName,
-  isArrayOfStrings
+  getAllIngredients, getIngredientByName
 } from '../controllers/ingredientsController';
 
 const router = express.Router();
@@ -25,41 +22,36 @@ router.post('/', async (req, res) => {
   try {
     if (await checkIfNameAndIdExistsIngredients(
       req.body as IIngredientsCommunication)) {
-      const id =
-        req.body.id ? req.body.id : (await findMaxIndexIngredients() + 1);
-      const allergensDB = await detectAllergens(req);
+      const allergensDB: {
+        status: number;
+        data: {
+          error: boolean;
+          name: string;
+          allergens: string[];
+        }[];
+      } = await detectAllergens(req);
       if (allergensDB.status !== 200) {
         return allergensDB;
       }
-      let allergens: string[] = Array.isArray(allergensDB.data)
-        ? [...allergensDB.data]
-        : [allergensDB.data];
+      const ingredientsInfo = allergensDB.data[0];
+      if (ingredientsInfo.error) {
+        return res.status(400)
+          .send('No ingredients found');
+      }
+      let allergens: string[] = ingredientsInfo.allergens;
 
       allergens = Array.from(new Set(
         allergens.filter(allergen => !allergen.includes('No allergens'))
       ));
 
-      if (isArrayOfStrings(req.body.allergens)) {
-        allergens.push(...req.body.allergens);
-      } else if (typeof req.body.allergens === 'string') {
-        allergens.push(req.body.allergens);
-      }
       await addRestoProduct({
         name: req.body.name,
         allergens: allergens,
-        ingredients: req.body.name,
+        ingredients: [ingredientsInfo.name.toLowerCase()],
       }, req.body.restoName);
 
-      if (!await checkIfRestaurantExists(req.body.restoName)) {
-        return res.status(200)
-          .send('Couldn’t find restaurant named ' +
-            req.body.restoName +
-            ' but added ingredient to ingredients database');
-      }
-
       return res.status(200)
-        .send('Ingredient '
-          + req.body.name + ' saved ' + ' with id ' + id);
+        .send(ingredientsInfo.name.toLowerCase());
     } else {
       return res.status(400)
         .send('Missing name or wrong id for ingredient');

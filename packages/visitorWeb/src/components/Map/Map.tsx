@@ -24,7 +24,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RatingDisplay from "@src/components/RestoCard/Rating/Rating";
 import RestoDetailOverlay from "@src/components/RestoDetailOverlay/RestoDetailOverlay";
-import { event } from "cypress/types/jquery";
+import { getImages } from "@src/services/imageCalls";
+import { IimageInterface } from "shared/models/imageInterface";
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 // Coordinates for initial map view
 const Epitech = [13.328820, 52.508540];
@@ -89,7 +93,8 @@ const MapView = (props: MapProps) => {
   const { t } = useTranslation();
   const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
   const [localFavRestos, setLocalFavRestos] = useState<number[]>(props.favRestos);
-
+  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  
   useEffect(() => {
     setLocalFavRestos(props.favRestos);
   }, [props.favRestos]);
@@ -219,6 +224,45 @@ const MapView = (props: MapProps) => {
     }
   }, [map, props.userPosition, testMarkerL]);
 
+  const fetchImage = async (picturesId: number[]): Promise<any[]> => {
+    if (picturesId && picturesId.length > 0) {
+      const fetchedImages = await getImages(picturesId);
+      setPictures(fetchedImages); 
+      return fetchedImages;  
+    } else {
+      const placeholderImage = [{
+        base64: defaultRestoImage,
+        contentType: "image/png",
+        filename: "placeholderResto.png",
+        size: 0,
+        uploadDate: "0",
+        id: 0,
+      }];
+      setPictures(placeholderImage); 
+      return placeholderImage;      
+    }
+  };
+
+  useEffect(() => {
+    if (clickedFeature) {
+      const loadPictures = async () => {
+        if (clickedFeature.picturesId) {
+          await fetchImage(clickedFeature.picturesId);
+        } else {
+          setPictures([{
+            base64: defaultRestoImage,
+            contentType: "image/png",
+            filename: "placeholderResto.png",
+            size: 0,
+            uploadDate: "0",
+            id: 0,
+          }]);
+        }
+      };
+      loadPictures();
+    }
+  }, [clickedFeature]);
+
   useEffect(() => {
     if (element.current && map) {
       const popup = new Overlay({
@@ -237,7 +281,7 @@ const MapView = (props: MapProps) => {
         setIsDetailPageOpen(true);
       };
 
-      const handleMapClick = (evt: any) => {
+      const handleMapClick = async (evt: any) => {
         const targetElement = evt.originalEvent.target;
         let targetClass = "";
         if (targetElement.className instanceof SVGAnimatedString) {
@@ -264,14 +308,31 @@ const MapView = (props: MapProps) => {
             popup.setPosition(geometry.getCoordinates());
             const restaurant = feature.get('objectR') as IRestaurantFrontEnd;
             const { telephone, address } = feature.getProperties();
+
             setPopupContent(
               <>
-                {restaurant.pictures[0] !== "empty.jpg" && (
-                  <img 
-                    key={0 + restaurant.name}
-                    src={restaurant.pictures[0]} 
+                <div className={styles.loadingPlaceholder}>
+                  <CircularProgress />
+                </div>
+              </>
+            );
+
+            const fetchedImages = await fetchImage(restaurant.picturesId);
+
+            setPopupContent(
+              <>
+                {fetchedImages && fetchedImages[0]?.base64 ? (
+                  <img
+                    key={fetchedImages[0].id + restaurant.name}
+                    src={fetchedImages[0].base64}
                     alt={restaurant.name}
-                    className={styles.popoverImage} 
+                    className={styles.popoverImage}
+                  />
+                ) : (
+                  <img
+                    src={defaultRestoImage}
+                    alt="Default"
+                    className={styles.popoverImage}
                   />
                 )}
                 <div className={styles.popoverTitle}>
@@ -306,7 +367,7 @@ const MapView = (props: MapProps) => {
                     <Button
                       className={styles.RestoBtn}
                       variant="contained"
-                      onClick={handleDetailPageOpen}
+                      onClick={() => setIsDetailPageOpen(true)}
                     >
                       {t('components.RestoCard.details')}
                     </Button>
@@ -352,7 +413,7 @@ const MapView = (props: MapProps) => {
         <RestoDetailOverlay 
           restaurant={clickedFeature} 
           onClose={() => setIsDetailPageOpen(false)} 
-          pictureBase64={clickedFeature.pictures[0]} 
+          pictureBase64={pictures[0].base64} 
         />
       )}
     </>
