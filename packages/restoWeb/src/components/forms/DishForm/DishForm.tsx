@@ -181,11 +181,7 @@ const DishForm = (props: IDishFormProps) => {
       setInvalidDishname(true);
       invalidFields = true;
     }
-    if (userDishes.map((item) => item.name).includes(dish)) {
-      setInvalidDishname(true);
-      setTakenDishname(true);
-      invalidFields = true;
-    }
+
     if (dishProd === undefined || dishProd.length === 0) {
       setInvalidProducts(true);
       invalidFields = true;
