@@ -317,11 +317,16 @@ export async function updateDishByID(
 
 export async function changeDishByID(
   restaurantID: number, dish: IDishesCommunication, allergens: string[]) {
+  if (!dish.oldName)
+    dish.oldName = dish.name;
   const oldDish = await getDishByRestoId(restaurantID, dish.oldName);
+  if (!oldDish) {
+    return null;
+  }
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
-    uid: oldDish.uid as number,
+    uid: oldDish.uid as number ? oldDish.uid as number : dish.uid,
     description: dish.description ?
       dish.description : oldDish.description as string,
     price: dish.price ? dish.price : oldDish.price as number,

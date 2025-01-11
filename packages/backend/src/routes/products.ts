@@ -5,7 +5,7 @@ import {
   // getAllRestoProducts, getRestaurantByName
 } from '../controllers/restaurantController';
 import {
-  changeProductByName, createOrUpdateProduct, deleteProductByName,
+  changeProductByName, createOrUpdateProduct, deleteProductByName, getAllProducts,
   // getAllProducts,
   getProductByName, getProductsByUser
 } from '../controllers/productsController';
@@ -142,6 +142,23 @@ router.put('/:name', async (req, res) => {
       .send(product);
   } catch (error) {
     console.error("Error in 'products/:name' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
+router.get('/trigger-rescan-products', async (_req, res) => {
+  try {
+    const products = await getAllProducts();
+    for (const product of products) {
+      const productToUpdate = await getProductByName(product.name);
+      await changeProductByName(productToUpdate, product.name);
+      console.log('Rescanning product:', product);
+    }
+    return res.status(200)
+      .send('Rescanned all products');
+  } catch (error) {
+    console.error("Error in 'products/trigger-rescan-products' route:", error);
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
