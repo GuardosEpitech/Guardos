@@ -129,10 +129,7 @@ const Dish = (props: IEditableDishProps) => {
               className={styles.ImageDimensions}
             />
           </Grid>
-          <Grid
-            item
-            className={extended ? styles.GridItem : styles.FlexGridItem}
-          >
+          <Grid item className={extended ? styles.GridItem : styles.FlexGridItem}>
             <div className={styles.FlexParentMenu}>
               <h3 className={styles.DishTitle}>{name}</h3>
               {editable && isTopLevel && (
@@ -140,32 +137,34 @@ const Dish = (props: IEditableDishProps) => {
                   <DishActions
                     actionList={[
                       {
-                      actionName: t('common.edit'),
-                      actionIcon: EditIcon,
-                      actionRedirect: "/editDish",
-                      redirectProps: { dish: dish }
-                    }, {
-                      actionName: t('common.discount'),
-                      actionIcon: PercentIcon,
-                      actionRedirect: "/discount",
-                      redirectProps: { dish: dish}
-                    }, {
-                      actionName: t('common.combo'),
-                      actionIcon: AddCircleOutlineIcon,
-                      actionRedirect: "/combo",
-                      redirectProps: { dish: dish}
-                    }]}
+                        actionName: t('common.edit'),
+                        actionIcon: EditIcon,
+                        actionRedirect: "/editDish",
+                        redirectProps: { dish: dish }
+                      },
+                      {
+                        actionName: t('common.discount'),
+                        actionIcon: PercentIcon,
+                        actionRedirect: "/discount",
+                        redirectProps: { dish: dish}
+                      },
+                      {
+                        actionName: t('common.combo'),
+                        actionIcon: AddCircleOutlineIcon,
+                        actionRedirect: "/combo",
+                        redirectProps: { dish: dish}
+                      }
+                    ]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
                   />
                   <div className={styles.popUp}>
                     {showPopup && (
-                        <Popup
-                          message={t('components.Dish.confirm-delete',
-                            {dishName: dish.name})}
-                          onConfirm={getOnDelete}
-                          onCancel={() => setShowPopup(false)}
-                        />
+                      <Popup
+                        message={t('components.Dish.confirm-delete', { dishName: dish.name })}
+                        onConfirm={getOnDelete}
+                        onCancel={() => setShowPopup(false)}
+                      />
                     )}
                   </div>
                 </>
@@ -196,8 +195,12 @@ const Dish = (props: IEditableDishProps) => {
             ) : (
               <div>
                 <h3 className={styles.discount}>{priceStr}</h3>
-                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3>{t('components.Dish.valid')} {validTill}</h3>
+                <h3>
+                  {t('components.Dish.discount')} {`${discount.toFixed(2)} €`}
+                </h3>
+                <h3>
+                  {t('components.Dish.valid')} {validTill}
+                </h3>
               </div>
             )}
           </Grid>
@@ -210,32 +213,36 @@ const Dish = (props: IEditableDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{name}</h3>
-              {editable  && isTopLevel && (
+              {editable && isTopLevel && (
                 <>
                   <DishActions
-                    actionList={[{
-                      actionName: t('common.edit'),
-                      actionIcon: EditIcon,
-                      actionRedirect: "/editDish",
-                      redirectProps: { dish: dish }
-                    }, {
-                      actionName: t('common.discount'),
-                      actionIcon: PercentIcon,
-                      actionRedirect: "/discount",
-                      redirectProps: { dish: dish}
-                    }, {
-                      actionName: t('common.combo'),
-                      actionIcon: AddCircleOutlineIcon,
-                      actionRedirect: "/combo",
-                      redirectProps: { dish: dish}
-                    }]}
+                    actionList={[
+                      {
+                        actionName: t('common.edit'),
+                        actionIcon: EditIcon,
+                        actionRedirect: "/editDish",
+                        redirectProps: { dish: dish }
+                      },
+                      {
+                        actionName: t('common.discount'),
+                        actionIcon: PercentIcon,
+                        actionRedirect: "/discount",
+                        redirectProps: { dish: dish}
+                      },
+                      {
+                        actionName: t('common.combo'),
+                        actionIcon: AddCircleOutlineIcon,
+                        actionRedirect: "/combo",
+                        redirectProps: { dish: dish}
+                      }
+                    ]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
                   />
                   {showPopup && (
                     <div className={styles.popUp}>
                       <Popup
-                        message={t('components.Dish.confirm-delete', {dishName: dish.name})}
+                        message={t('components.Dish.confirm-delete', { dishName: dish.name })}
                         onConfirm={getOnDelete}
                         onCancel={() => setShowPopup(false)}
                       />
@@ -267,40 +274,48 @@ const Dish = (props: IEditableDishProps) => {
             ) : (
               <div>
                 <h3 className={styles.discount}>{priceStr}</h3>
-                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
+                <h3 className={styles.DishPrice}>
+                  {t('components.Dish.discount')} {`${discount.toFixed(2)} €`}
+                </h3>
+                <h3 className={styles.DishPrice}>
+                  {t('components.Dish.valid')} {validTill}
+                </h3>
               </div>
             )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
-            {<img
+            <img
               src={pictures[0]?.base64 || defaultDishImage}
               alt={name}
               className={styles.ImageDimensions}
-            />}
+            />
           </Grid>
         </Grid>
+
         {isTopLevel && recommendedDishes.length > 0 && (
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <h4>{t('components.Dish.recommendedCombos')}</h4>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div className={styles.Combos}>
-              {recommendedDishes.map((recommendedDish, index) => (
-                <Dish
-                  key={index}
-                  dish={recommendedDish}
-                  editable={editable}
-                  onUpdate={onUpdate}
-                  isTopLevel={false}
-                />
-              ))}
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      )}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <h4>{t('components.Dish.recommendedCombos')}</h4>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={styles.Combos}>
+                {recommendedDishes.map((recommendedDish, index) => (
+                  // Stoppe hier das Event-Bubbling, damit
+                  // das Kind eigenständig geklickt werden kann:
+                  <div onClick={(e) => e.stopPropagation()} key={index}>
+                    <Dish
+                      dish={recommendedDish}
+                      editable={editable}
+                      onUpdate={onUpdate}
+                      isTopLevel={false}
+                    />
+                  </div>
+                ))}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        )}
       </div>
     </Paper>
   );
