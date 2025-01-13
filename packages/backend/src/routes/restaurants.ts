@@ -43,6 +43,25 @@ router.get('/:name', async (req, res) => {
   }
 });
 
+router.get('/id/:id', async (req, res) => {
+  try {
+    if (req.params.id === undefined || req.params.id === null) {
+      return res.status(404)
+        .send({ error: 'Restaurant ID not given' });
+    }
+    const restaurant = await getRestaurantByID(Number(req.params.id));
+    if (!restaurant)
+      return res.status(404)
+        .send('Coudnt find restaurant/:id  ' + req.params.id);
+    return res.status(200)
+      .send(restaurant);
+  } catch (error) {
+    console.error("Error in 'restaurants' route:", error);
+    return res.status(500)
+      .send({ error: 'Internal Server Error' });
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const maxID = await findMaxIndexRestaurants();
