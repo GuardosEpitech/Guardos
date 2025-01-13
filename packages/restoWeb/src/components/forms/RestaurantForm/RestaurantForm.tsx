@@ -108,7 +108,7 @@ const days: IDay[] = [
 
 const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
-  const {
+  let {
     restoId,
     restaurantName,
     street,
@@ -350,18 +350,21 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       userToken: userToken,
       resto: resto,
     };
-    async function addQRCODE() {
-      const res = await getRestoById(restoId as unknown as string);
-      await addQRCode({uid: res.uid,
-        url: `https://guardos.eu/menu/${res.uid}`});
+    async function addQRCODE(newRestoId: number) {
+      const res = await getRestoById(newRestoId.toString());
+      await addQRCode({
+        uid: res.uid,
+        url: `https://guardos.eu/menu/${res.uid}`
+      });
     }
-    if (props.add) {
-      await addNewResto(data);
-      await addQRCODE();
-    } else {
 
+    if (props.add) {
+      const newResto = await addNewResto(data);
+      await addQRCODE(newResto._id);
+    } else {
       await editResto(restoId as unknown as string, resto, userToken);
     }
+
     return NavigateTo("/", navigate, { successfulForm: true });
   }
 
@@ -370,7 +373,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const file = event.target.files[0];
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
-        addImageResto(restaurantName, file.name, file.type, file.size, result)
+        addImageResto(restoId, file.name, file.type, file.size, result)
           .then(r => {
             setPictures([{ base64: result, contentType: file.type,
               filename: file.name, size: file.size, uploadDate: "0", id: r }]);
