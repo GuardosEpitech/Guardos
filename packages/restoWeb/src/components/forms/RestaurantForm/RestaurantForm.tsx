@@ -74,6 +74,7 @@ interface IOpeningHours {
 
 interface IRestaurantFormProps {
   restaurantName?: string;
+  restoId?: number;
   street?: string;
   streetNumber?: number;
   postalCode?: string;
@@ -109,6 +110,7 @@ const days: IDay[] = [
 const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
   const {
+    restoId,
     restaurantName,
     street,
     streetNumber,
@@ -150,6 +152,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
   const [restaurantData, setRestaurantData] = useState();
   const [selectedPictureId, setSelectedPictureId] = useState<number[]>([]);
+  const [restoID, setRestoID] = useState<number>();
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
@@ -192,7 +195,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         setSelectedPictureId([]);
       }
     };
-
+    setRestoID(restoId);
     setSelectedRestaurantName(restaurantName);
     setSelectedStreet(street);
     setSelectedStreetNumber(streetNumber);
@@ -357,7 +360,8 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       await addNewResto(data);
       await addQRCODE();
     } else {
-      await editResto(origRestoName, resto, userToken);
+
+      await editResto(restoId as unknown as string, resto, userToken);
     }
     return NavigateTo("/", navigate, { successfulForm: true });
   }

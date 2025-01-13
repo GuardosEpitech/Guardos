@@ -47,11 +47,11 @@ export const addNewResto = async (body: any) => {
   }
 };
 
-export const editResto = async (restoName: string, body: any, token: string) => {
+export const editResto = async (restoId: string, body: any, token: string) => {
   try {
     console.log(body);
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify(body),
@@ -121,7 +121,7 @@ export const getAllRestaurantsByUserAndFilter = async (userToken: string,
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
-    return []
+    return [];
   }
 };
 
@@ -138,22 +138,23 @@ export const getAllMenuDesigns = async (token: string) => {
   }
 };
 
-export const updateRestoCategories = async (userToken: string, uid: number, newCategories: any) => {
-  try {
-    const response = await axios({
-      url: baseUrl + 'updateCategories', 
-      method: 'POST',
-      data: {
-        userToken: userToken,
-        uid: uid,
-        newCategories: newCategories
-      },
-      headers: {
-        'Content-Type': 'application/json'
+export const updateRestoCategories = 
+    async (userToken: string, uid: number, newCategories: any) => {
+      try {
+        const response = await axios({
+          url: baseUrl + 'updateCategories', 
+          method: 'POST',
+          data: {
+            userToken: userToken,
+            uid: uid,
+            newCategories: newCategories
+          },
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error updating user categories:', error);
       }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating user categories:', error);
-  }
-};
+    };
