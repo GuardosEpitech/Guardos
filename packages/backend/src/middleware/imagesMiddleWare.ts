@@ -1,4 +1,4 @@
-import {checkIfRestaurantExists} from './restaurantMiddleWare';
+import {checkIfRestaurantExists, checkIfRestaurantExistsWithId} from './restaurantMiddleWare';
 import {Request} from 'express';
 import {checkIfDishExists, checkIfExtraExists} from './dishesMiddelWare';
 import {getImageById} from '../controllers/imageController';
@@ -24,8 +24,14 @@ export function errorHandlingImage(_req: Request) {
 export async function errorHandlingRestoDishImage(_req: Request) {
   const restaurantName: string = _req.body.restaurant;
 
-  if (await checkIfRestaurantExists(restaurantName) === false) {
-    return 'Post Images failed: Restaurant does not exist';
+  if (restaurantName) {
+    if (await checkIfRestaurantExists(restaurantName) === false) {
+      return 'Post Images failed: Restaurant does not exist';
+    }
+  } else {
+    if (await checkIfRestaurantExistsWithId(_req.body.restaurantId) === false) {
+      return 'Post Images failed: RestaurantID does not exist';
+    }
   }
   const dishName: string = _req.body.dish;
   const extraName: string = _req.body.extra;
