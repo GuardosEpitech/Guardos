@@ -65,10 +65,10 @@ export const editResto = async (restoName: string, body: any, token: string) => 
   }
 };
 
-export const deleteResto = async (restoName: string, token: string) => {
+export const deleteResto = async (restoId: string, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId,
       method: "DELETE",
       params: {key: token},
     });
