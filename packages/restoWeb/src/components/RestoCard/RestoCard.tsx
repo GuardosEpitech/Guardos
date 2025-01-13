@@ -73,7 +73,7 @@ const RestoCard = (props: IRestoCardProps) => {
       console.log("Error getting user ID");
       return;
     }
-    await deleteResto(resto.uid as unknown as string, userToken);
+    await deleteResto(resto.uid, userToken);
     await onUpdate();
   }
   const averageRating = () => {

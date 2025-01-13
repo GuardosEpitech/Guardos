@@ -19,11 +19,11 @@ export const getAllResto = async () => {
   }
 };
 
-export const getRestoById = async (restoId: string) => {
+export const getRestoById = async (restoId: number) => {
   try {
     const response = await axios({
       method: "GET",
-      url: baseUrl + 'id/' + restoId
+      url: baseUrl + 'id/' + restoId as string,
     });
     return response.data;
   } catch (error) {
@@ -47,10 +47,10 @@ export const addNewResto = async (body: any) => {
   }
 };
 
-export const editResto = async (restoId: string, body: any, token: string) => {
+export const editResto = async (restoId: number, body: any, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoId,
+      url: baseUrl + restoId as string,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify(body),
@@ -64,10 +64,10 @@ export const editResto = async (restoId: string, body: any, token: string) => {
   }
 };
 
-export const deleteResto = async (restoId: string, token: string) => {
+export const deleteResto = async (restoId: number, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoId,
+      url: baseUrl + restoId as string,
       method: "DELETE",
       params: {key: token},
     });

@@ -72,7 +72,7 @@ const MenuPage = () => {
   const idPopover = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
-    getRestoById(restaurantData.uid as unknown as string)
+    getRestoById(restaurantData.uid)
       .then(res => setRestaurantData(res));
     const filteredMenu = menu.filter((category: ICategories) =>
       category.dishes.length > 0);

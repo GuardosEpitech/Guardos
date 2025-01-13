@@ -351,7 +351,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       resto: resto,
     };
     async function addQRCODE(newRestoId: number) {
-      const res = await getRestoById(newRestoId.toString());
+      const res = await getRestoById(newRestoId);
       await addQRCode({
         uid: res.uid,
         url: `https://guardos.eu/menu/${res.uid}`
@@ -362,7 +362,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const newResto = await addNewResto(data);
       await addQRCODE(newResto._id);
     } else {
-      await editResto(restoId as unknown as string, resto, userToken);
+      await editResto(restoId, resto, userToken);
     }
 
     return NavigateTo("/", navigate, { successfulForm: true });
