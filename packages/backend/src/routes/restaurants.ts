@@ -1,10 +1,10 @@
 import * as express from 'express';
 
 import {
-  changeRestaurant, createNewRestaurant, deleteRestaurantByName,
+  changeRestaurant, createNewRestaurant,
   getAllRestaurants, getRestaurantByName, getAllUserRestaurants,
   addCategory, doesUserOwnRestaurantByName, getAllUserRestaurantChains,
-  getAllRestosFromRestoChain
+  getAllRestosFromRestoChain, doesUserOwnRestaurantById, deleteRestaurantByID
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -139,7 +139,9 @@ router.get('/user/resto/chain/resto', async (req, res) => {
         .send({ error: 'Restaurant Chain ID not given' });
     }
     
-    const restaurants = await getAllRestosFromRestoChain(userID as number, restoChainID as number);
+    const restaurants = await getAllRestosFromRestoChain(
+        userID as number,
+        restoChainID as number);
     
     // Return 200 OK with the restaurant data
     return res.status(200)
@@ -154,24 +156,28 @@ router.get('/user/resto/chain/resto', async (req, res) => {
   }
 });
 
-router.delete('/:name', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
-      // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    if (!(await doesUserOwnRestaurantByName(req.params.name,
-      userID as number))) {
+    const restId = Number(req.params.id);
+    if (restId === undefined || restId === null) {
+      return res.status(404)
+        .send({ error: 'Restaurant ID not given' });
+    }
+    if (!(await doesUserOwnRestaurantById(restId,
+        userID as number))) {
       return res.status(404)
         .send('Coudnt find restaurant named '
-          + req.params.name + ' for this user');
+              + restId+ ' for this user');
     }
 
-    const answerRestaurant = deleteRestaurantByName(req.params.name);
+    const answerRestaurant = deleteRestaurantByID(restId);
     return res.status(200)
       .send(answerRestaurant);
   } catch (error) {
@@ -179,7 +185,6 @@ router.delete('/:name', async (req, res) => {
     return res.status(500)
       .send({ error: 'Internal Server Error' });
   }
-
 });
 
 router.put('/:name', async (req, res) => {

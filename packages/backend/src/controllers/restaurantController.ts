@@ -729,6 +729,22 @@ export async function doesUserOwnRestaurantByName(
   }
 }
 
+export async function doesUserOwnRestaurantById(
+  restoID: number,
+  userID: number
+) {
+  try {
+    const restaurant = await getRestaurantByID(restoID);
+    if (!restaurant || restaurant.userID !== userID) {
+      return null;
+    }
+    return restaurant;
+  } catch (error) {
+    console.error('Error finding restaurant for user:', error);
+    throw error;
+  }
+}
+
 export async function getProfileDetailsResto(userId: number) {
   const UserSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const userData = await UserSchema.findOne({uid: userId});
