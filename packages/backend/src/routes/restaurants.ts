@@ -1,10 +1,11 @@
 import * as express from 'express';
 
 import {
-  changeRestaurant, createNewRestaurant,
+  createNewRestaurant,
   getAllRestaurants, getRestaurantByName, getAllUserRestaurants,
-  addCategory, doesUserOwnRestaurantByName, getAllUserRestaurantChains,
-  getAllRestosFromRestoChain, doesUserOwnRestaurantById, deleteRestaurantByID
+  addCategory, getAllUserRestaurantChains,
+  getAllRestosFromRestoChain, doesUserOwnRestaurantById,
+  deleteRestaurantByID, getRestaurantByID, changeRestaurantByID
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
@@ -187,23 +188,31 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:name', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
-      // If user ID is not found, return 404 Not Found
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    if (!(await doesUserOwnRestaurantByName(req.params.name,
-      userID as number))) {
+    const restId = Number(req.params.id);
+    if (restId === undefined || restId === null) {
+      return res.status(404)
+        .send({ error: 'Restaurant ID not given' });
+    }
+    if (!(await doesUserOwnRestaurantById(restId,
+        userID as number))) {
       return res.status(404)
         .send('Coudnt find restaurant named '
-          + req.params.name + ' for this user');
+              + restId + ' for this user');
     }
-    const answer = await changeRestaurant(req.body, req.params.name);
+    const restaurant = await getRestaurantByID(restId);
+    if (!restaurant)
+      return res.status(404)
+        .send('Coudnt find restaurant with id ' + restId);
+    const answer = await changeRestaurantByID(req.body, restId);
     await addProductsFromRestaurantToOwnDB(answer.uid);
     return res.status(200)
       .send(answer);
