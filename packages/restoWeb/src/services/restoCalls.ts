@@ -19,17 +19,17 @@ export const getAllResto = async () => {
   }
 };
 
-export const restoByName = async (restoName: string) =>  {
+export const getRestoById = async (restoId: string) => {
   try {
     const response = await axios({
       method: "GET",
-      url: baseUrl + restoName
+      url: baseUrl + 'id/' + restoId
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching restoByName:", error);
+    console.error("Error fetching restoById:", error);
   }
-};
+}
 
 export const addNewResto = async (body: any) => {
   try {
@@ -49,7 +49,6 @@ export const addNewResto = async (body: any) => {
 
 export const editResto = async (restoId: string, body: any, token: string) => {
   try {
-    console.log(body);
     const response = await axios({
       url: baseUrl + restoId,
       method: "PUT",

@@ -23,8 +23,7 @@ import {
   addNewResto,
   editResto,
   getAllMenuDesigns,
-  getAllRestaurantChainsByUser,
-  restoByName
+  getAllRestaurantChainsByUser, getRestoById,
 } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
@@ -352,7 +351,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       resto: resto,
     };
     async function addQRCODE() {
-      const res = await restoByName(resto.name);
+      const res = await getRestoById(restoId as unknown as string);
       await addQRCode({uid: res.uid,
         url: `https://guardos.eu/menu/${res.uid}`});
     }
