@@ -297,6 +297,7 @@ async function updateAllDishesWithIngredient
                 foodGroup: dish.category.foodGroup as string,
                 extraGroup: dish.category.extraGroup as [string],
               },
+              combo: dish.combo as [number],
               allergens: []
             };
             newDish.allergens = await
