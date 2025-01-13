@@ -29,6 +29,7 @@ export interface IDishesCommunication {
   discount: number;
   validTill: String;
   oldName?: string;
+  combo?: [number];
 }
 
 export interface IRestaurantCommunication {

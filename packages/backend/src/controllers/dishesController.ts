@@ -321,7 +321,7 @@ export async function changeDishByID(
   const newDish: IDishBE = {
     //if the new dish has a property, use it, else use the old one
     name: dish.name ? dish.name : oldDish.name as string,
-    uid: oldDish.uid as number,
+    uid: dish.uid ? dish.uid : oldDish.uid as number,
     description: dish.description ?
       dish.description : oldDish.description as string,
     price: dish.price ? dish.price : oldDish.price as number,
@@ -339,9 +339,12 @@ export async function changeDishByID(
     restoChainID: dish.restoChainID ?? oldDish.restoChainID as number,
     discount: dish.discount,
     validTill: dish.validTill as string,
-    combo: oldDish.combo as [number],
+    combo: dish.combo ? dish.combo : [],
   };
-  await updateDishByID(restaurantID, newDish, dish.oldName);
+  await updateDishByID(
+    restaurantID,
+    newDish,
+    dish.oldName ? dish.oldName : dish.name);
   return newDish;
 }
 
