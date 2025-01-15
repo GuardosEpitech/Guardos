@@ -121,7 +121,7 @@ const DiscountDishPage = () => {
         setErrorMessage(t('pages.DiscountDishPage.errorPrice'));
         return;
       }
-      dish.discount = 100 - discountNumber;
+      dish.discount = price - discountNumber;
     }
 
     dish.validTill = formatDate(startDate);
