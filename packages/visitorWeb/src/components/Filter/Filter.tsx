@@ -538,7 +538,7 @@ const Filter = (props: FilterProps) => {
   const handleClearFilter = () => {
     // default values
     const clearedFilter: IFilterObject = {
-      rating: [0, 0],
+      rating: [0, 5],
       range: 0,
       categories: [],
       allergenList: [],
@@ -605,6 +605,33 @@ const Filter = (props: FilterProps) => {
 
   const handleProfileChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedProfileIndex(String(newValue));
+
+    const categoriesCopy = [...categories];
+    const categoriesSelected = [];
+
+    for (let i = 0; i < categoriesCopy.length; i++) {
+      if (categoriesCopy[i].value == true) {
+        categoriesSelected.push(categoriesCopy[i].name);
+      }
+    }
+
+    const allergenCopy = [...groupProfiles[newValue].allergens];
+    const allergenSelected = [];
+
+    for (let i = 0; i < allergenCopy.length; i++) {
+      if (allergenCopy[i].value == true) {
+        allergenSelected.push(allergenCopy[i].name);
+      }
+    }
+
+    const inter: IFilterObject = {
+      rating: [rating, 5],
+      range: range,
+      categories: categoriesSelected,
+      allergenList: allergenSelected,
+      userLoc: userPosition
+    };
+    props.onChange(inter);
   };
 
   const handleAddProfile = () => {
