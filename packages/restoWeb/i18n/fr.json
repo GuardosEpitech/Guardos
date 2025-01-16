@@ -101,6 +101,7 @@
       "ProductForm": {
         "name": "Nom",
         "input-empty-error": "Le champ ne peut pas être vide",
+        "name-used-error": "Le nom est déjà utilisé pour un autre produit",
         "resto": "Restaurant",
         "english-please": "Remarque : veuillez insérer uniquement les ingrédients en anglais."
       },
@@ -109,6 +110,7 @@
         "change-image": "Changer l'image",
         "delete-image": "Supprimer l'image",
         "name": "Nom",
+        "name-used-error": "Le nom est déjà utilisé pour un autre de vos restaurants",
         "phone-number": "Numéro de téléphone",
         "street-name": "Nom de rue",
         "street-number": "Numéro de rue",
