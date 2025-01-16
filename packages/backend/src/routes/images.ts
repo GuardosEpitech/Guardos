@@ -119,7 +119,7 @@ router.post('/', async (_req, res) => {
       _req.body.image.size,
       _req.body.image.base64);
     const id: number = await getLatestID();
-    await linkImageToRestaurant(_req.body.restaurant, id);
+    await linkImageToRestaurant(_req.body.restaurantId, id);
     return res.status(200)
       .send('Post Images for restaurant successfully');
 

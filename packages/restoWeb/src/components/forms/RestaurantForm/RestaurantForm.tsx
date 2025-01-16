@@ -23,8 +23,7 @@ import {
   addNewResto,
   editResto,
   getAllMenuDesigns,
-  getAllRestaurantChainsByUser,
-  restoByName
+  getAllRestaurantChainsByUser, getRestoById,
 } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
@@ -74,6 +73,7 @@ interface IOpeningHours {
 
 interface IRestaurantFormProps {
   restaurantName?: string;
+  restoId?: number;
   street?: string;
   streetNumber?: number;
   postalCode?: string;
@@ -108,7 +108,8 @@ const days: IDay[] = [
 
 const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
-  const {
+  let {
+    restoId,
     restaurantName,
     street,
     streetNumber,
@@ -150,6 +151,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
   const [restaurantData, setRestaurantData] = useState();
   const [selectedPictureId, setSelectedPictureId] = useState<number[]>([]);
+  const [restoID, setRestoID] = useState<number>();
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
@@ -192,7 +194,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         setSelectedPictureId([]);
       }
     };
-
+    setRestoID(restoId);
     setSelectedRestaurantName(restaurantName);
     setSelectedStreet(street);
     setSelectedStreetNumber(streetNumber);
@@ -348,17 +350,21 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       userToken: userToken,
       resto: resto,
     };
-    async function addQRCODE() {
-      const res = await restoByName(resto.name);
-      await addQRCode({uid: res.uid,
-        url: `https://guardos.eu/menu/${res.uid}`});
+    async function addQRCODE(newRestoId: number) {
+      const res = await getRestoById(newRestoId);
+      await addQRCode({
+        uid: res.uid,
+        url: `https://guardos.eu/menu/${res.uid}`
+      });
     }
+
     if (props.add) {
-      await addNewResto(data);
-      await addQRCODE();
+      const newResto = await addNewResto(data);
+      await addQRCODE(newResto._id);
     } else {
-      await editResto(origRestoName, resto, userToken);
+      await editResto(restoId, resto, userToken);
     }
+
     return NavigateTo("/", navigate, { successfulForm: true });
   }
 
@@ -367,7 +373,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const file = event.target.files[0];
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
-        addImageResto(restaurantName, file.name, file.type, file.size, result)
+        addImageResto(restoId, file.name, file.type, file.size, result)
           .then(r => {
             setPictures([{ base64: result, contentType: file.type,
               filename: file.name, size: file.size, uploadDate: "0", id: r }]);

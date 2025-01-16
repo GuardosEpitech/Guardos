@@ -13,7 +13,11 @@ import { ICategories } from '../../../shared/models/categoryInterfaces';
 import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { ILocation } from '../../../shared/models/locationInterfaces';
-import {IProfileCommunication, IRestaurantCommunication, ISearchCommunication} from '../models/communicationInterfaces';
+import {
+  IProfileCommunication,
+  IRestaurantCommunication,
+  ISearchCommunication
+} from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { geocodeAddress } from './mapController';
 
@@ -448,11 +452,6 @@ export async function createNewRestaurant(
   return upload;
 }
 
-export async function deleteRestaurantByName(restaurantName: string) {
-  const Restaurant = mongoose.model('Restaurants', restaurantSchema);
-  await Restaurant.deleteOne({ name: restaurantName });
-  return 'deleted ' + restaurantName;
-}
 
 export async function deleteRestaurantByID(restaurantID: number) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
@@ -460,23 +459,23 @@ export async function deleteRestaurantByID(restaurantID: number) {
   return 'deleted ' + restaurantID;
 }
 
-async function updateRestaurantByName(
+async function updateRestaurantById(
   restaurant: IRestaurantBackEnd,
-  restaurantName: string
+  restaurantId: number
 ) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
-  return Restaurant.findOneAndUpdate({ name: restaurantName }, restaurant, {
+  return Restaurant.findOneAndUpdate({ _id: restaurantId }, restaurant, {
     new: true,
   });
 }
 
-export async function changeRestaurant(
+export async function changeRestaurantByID(
   restaurant: IRestaurantCommunication,
-  restaurantName: string
+  restaurantId: number
 ) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const oldRest = (await Restaurant.findOne({
-    name: restaurantName,
+    _id: restaurantId,
   })) as IRestaurantBackEnd;
   const loc = restaurant.location;
   const address = formatLocation(restaurant.location);
@@ -492,9 +491,9 @@ export async function changeRestaurant(
     uid: oldRest.uid,
     userID: oldRest.userID,
     restoChainID:
-      restaurant.restoChainID !== undefined
-        ? restaurant.restoChainID
-        : oldRest.restoChainID,
+        restaurant.restoChainID !== undefined
+          ? restaurant.restoChainID
+          : oldRest.restoChainID,
     location: restaurant.location ? loc : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
     openingHours: restaurant.openingHours
@@ -513,11 +512,11 @@ export async function changeRestaurant(
     website: restaurant.website ? restaurant.website : oldRest.website,
     name: restaurant.name ? restaurant.name : oldRest.name,
     menuDesignID:
-      restaurant.menuDesignID !== undefined
-        ? restaurant.menuDesignID
-        : oldRest.menuDesignID,
+        restaurant.menuDesignID !== undefined
+          ? restaurant.menuDesignID
+          : oldRest.menuDesignID,
   };
-  await updateRestaurantByName(newRest, restaurantName);
+  await updateRestaurantById(newRest, restaurantId);
   return newRest;
 }
 
@@ -719,6 +718,22 @@ export async function doesUserOwnRestaurantByName(
 ) {
   try {
     const restaurant = await getRestaurantByName(restoName);
+    if (!restaurant || restaurant.userID !== userID) {
+      return null;
+    }
+    return restaurant;
+  } catch (error) {
+    console.error('Error finding restaurant for user:', error);
+    throw error;
+  }
+}
+
+export async function doesUserOwnRestaurantById(
+  restoID: number,
+  userID: number
+) {
+  try {
+    const restaurant = await getRestaurantByID(restoID);
     if (!restaurant || restaurant.userID !== userID) {
       return null;
     }

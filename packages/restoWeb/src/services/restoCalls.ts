@@ -19,17 +19,17 @@ export const getAllResto = async () => {
   }
 };
 
-export const restoByName = async (restoName: string) =>  {
+export const getRestoById = async (restoId: number) => {
   try {
     const response = await axios({
       method: "GET",
-      url: baseUrl + restoName
+      url: baseUrl + 'id/' + restoId as string,
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching restoByName:", error);
+    console.error("Error fetching restoById:", error);
   }
-};
+}
 
 export const addNewResto = async (body: any) => {
   try {
@@ -47,11 +47,10 @@ export const addNewResto = async (body: any) => {
   }
 };
 
-export const editResto = async (restoName: string, body: any, token: string) => {
+export const editResto = async (restoId: number, body: any, token: string) => {
   try {
-    console.log(body);
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId as string,
       method: "PUT",
       params: {key: token},
       data: JSON.stringify(body),
@@ -65,10 +64,10 @@ export const editResto = async (restoName: string, body: any, token: string) => 
   }
 };
 
-export const deleteResto = async (restoName: string, token: string) => {
+export const deleteResto = async (restoId: number, token: string) => {
   try {
     const response = await axios({
-      url: baseUrl + restoName,
+      url: baseUrl + restoId as string,
       method: "DELETE",
       params: {key: token},
     });
@@ -121,7 +120,7 @@ export const getAllRestaurantsByUserAndFilter = async (userToken: string,
     return response.data;
   } catch (error) {
     console.error("Error fetching all restaurants:", error);
-    return []
+    return [];
   }
 };
 
@@ -138,22 +137,23 @@ export const getAllMenuDesigns = async (token: string) => {
   }
 };
 
-export const updateRestoCategories = async (userToken: string, uid: number, newCategories: any) => {
-  try {
-    const response = await axios({
-      url: baseUrl + 'updateCategories', 
-      method: 'POST',
-      data: {
-        userToken: userToken,
-        uid: uid,
-        newCategories: newCategories
-      },
-      headers: {
-        'Content-Type': 'application/json'
+export const updateRestoCategories = 
+    async (userToken: string, uid: number, newCategories: any) => {
+      try {
+        const response = await axios({
+          url: baseUrl + 'updateCategories', 
+          method: 'POST',
+          data: {
+            userToken: userToken,
+            uid: uid,
+            newCategories: newCategories
+          },
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        return response.data;
+      } catch (error) {
+        console.error('Error updating user categories:', error);
       }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating user categories:', error);
-  }
-};
+    };

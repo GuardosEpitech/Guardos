@@ -73,7 +73,7 @@ const RestoCard = (props: IRestoCardProps) => {
       console.log("Error getting user ID");
       return;
     }
-    await deleteResto(resto.name, userToken);
+    await deleteResto(resto.uid, userToken);
     await onUpdate();
   }
   const averageRating = () => {
@@ -165,6 +165,7 @@ const RestoCard = (props: IRestoCardProps) => {
                       actionRedirect: "/editResto",
                       redirectProps: {
                         restoName: resto.name,
+                        restoId: resto.uid,
                         phone: resto.phoneNumber,
                         street: resto.location.streetName,
                         streetNumber: resto.location.streetNumber,
