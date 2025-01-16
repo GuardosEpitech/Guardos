@@ -98,8 +98,12 @@ const ProductForm = (props: IDishFormProps) => {
         console.error("Error fetching ingredients:", error);
       });
   }, []);
-  
-  const allIngredients = apiIngredients || [];
+
+  const allIngredients = Array
+    .from(new Set(apiIngredients.map(ingredient => ingredient.name)))
+    .map(name => {
+      return apiIngredients.find(ingredient => ingredient.name === name);
+    });
 
   async function sendRequestAndGoBack() {
     if (productName === '') {
