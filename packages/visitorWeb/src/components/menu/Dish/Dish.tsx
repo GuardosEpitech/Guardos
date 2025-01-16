@@ -198,7 +198,7 @@ const Dish = (props: IDishProps) => {
             )}
           </Grid>
         </Grid>
-        {isTopLevel && combo && combo.length > 0 && (
+        {isTopLevel && recommendedDishes && recommendedDishes.length > 0 && (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <h4>{t('components.Dish.recommendedCombos')}</h4>
@@ -302,7 +302,7 @@ const Dish = (props: IDishProps) => {
             ))}
           </Grid>
         </Grid>
-        {isTopLevel && combo && combo.length > 0 && (
+        {isTopLevel && recommendedDishes && recommendedDishes.length > 0 && (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <h4>{t('components.Dish.recommendedCombos')}</h4>

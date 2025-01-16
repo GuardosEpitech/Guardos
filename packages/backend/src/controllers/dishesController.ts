@@ -185,10 +185,24 @@ export async function getAllDishes() {
 
 async function deleteDish(restaurantName: string, dishName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  return Restaurant.findOneAndUpdate(
+  const restaurant = await Restaurant.findOne({ name: restaurantName });
+
+  if (!restaurant) return;
+
+  const dishToDelete = restaurant.dishes.find((dish) => dish.name === dishName);
+  if (!dishToDelete) return;
+
+  // Remove the dish
+  await Restaurant.findOneAndUpdate(
     { name: restaurantName },
     { $pull: { dishes: { name: dishName } } },
     { new: true }
+  );
+
+  // Remove references to the dish ID from other dishes' combo arrays
+  await Restaurant.updateMany(
+    { name: restaurantName, 'dishes.combo': dishToDelete.uid },
+    { $pull: { 'dishes.$.combo': dishToDelete.uid } }
   );
 }
 

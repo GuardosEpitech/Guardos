@@ -103,7 +103,7 @@ const Dish = (props: IEditableDishProps) => {
         const comboDishes = await getDishesByID(dish.resto, { ids: combo });
 
         if (comboDishes) {
-          const validCombos = comboDishes.filter((dish : any) => dish != null);
+          const validCombos = comboDishes.filter((dish : any) => dish !== null);
           setRecommendedDishes(validCombos);
         }
       } catch (error) {
