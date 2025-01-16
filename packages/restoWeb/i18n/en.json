@@ -102,6 +102,7 @@
       "ProductForm": {
         "name": "Name",
         "input-empty-error": "Input cannot be empty",
+        "name-used-error": "Name is already used for another product",
         "resto": "Restaurant",
         "english-please": "Note: please only insert the ingredients in English."
       },
@@ -110,6 +111,7 @@
         "change-image": "Change Image",
         "delete-image": "Delete Image",
         "name": "Name",
+        "name-used-error": "The name is already used for another one of your restaurants",
         "phone-number": "Phone number",
         "street-name": "Street name",
         "street-number": "Street number",
