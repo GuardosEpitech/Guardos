@@ -95,8 +95,7 @@ const RestoCard = (props: IRestoCardProps) => {
       state: {
         restoName: name,
         restoID: props.resto.uid,
-        address: address,
-        menuDesignID: props.resto.menuDesignID
+        address: address
       }
     });
   };
