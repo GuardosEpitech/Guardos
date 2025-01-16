@@ -18,6 +18,9 @@ import Stack from '@mui/material/Stack';
 import {getUserAllergens} from "@src/services/userCalls";
 import {getCategories} from "@src/services/categorieCalls";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
+import { IimageInterface } from 'shared/models/imageInterface';
+import { getImages } from '@src/services/imageCalls';
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -86,6 +89,39 @@ const RestoPage = () => {
   const [loading, setLoading] = useState(true);
   const [loadingAllergens, setLoadingAllergens] = useState(true);
   const [premium, setPremium] = useState<boolean>(false);
+  const [restaurantImages, setRestaurantImages] = useState<Record<number, IimageInterface[]>>({});
+
+  const fetchAllImages = async (restaurants: IRestaurantFrontEnd[]) => {
+    const imagesMap: Record<number, IimageInterface[]> = {};
+    for (const resto of restaurants) {
+      if (resto.picturesId && resto.picturesId.length > 0) {
+        try {
+          imagesMap[resto.uid] = await getImages(resto.picturesId);
+        } catch {
+          imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                    contentType: "image/png", 
+                                    filename: "placeholderResto.png",
+                                    size: 0,
+                                    uploadDate: "0",
+                                    id: 0 }];
+        }
+      } else {
+        imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                  contentType: "image/png", 
+                                  filename: "placeholderResto.png",
+                                  size: 0,
+                                  uploadDate: "0",
+                                  id: 0 }];
+      }
+    }
+    setRestaurantImages(imagesMap);
+  };
+
+  useEffect(() => {
+    if (filteredRestaurants && filteredRestaurants.length > 0) {
+      fetchAllImages(filteredRestaurants);
+    }
+  }, [filteredRestaurants]);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -398,7 +434,7 @@ const RestoPage = () => {
                   return <AdCard key={`ad-${index}`} />;
                 }
                 const isFavourite = isFavouriteRestos?.includes(item.uid);
-                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
+                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} pictures={restaurantImages[item.uid] || []}/>;
               }))
             )}
           </div>

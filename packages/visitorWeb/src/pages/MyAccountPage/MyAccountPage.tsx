@@ -816,6 +816,7 @@ const MyAccountPage = () => {
                         isFavourite={true}
                         dataIndex={0}
                         deleteFavResto={removeFavResto}
+                        pictures={[]}
                       />
                     ))
                   )}

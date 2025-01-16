@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -50,6 +50,7 @@ interface IRestoCardProps {
   isFavourite: boolean;
   dataIndex: number;
   key: number;
+  pictures: IimageInterface[];
   deleteFavResto?: (restoId: number) => void;
 }
 
@@ -62,14 +63,17 @@ const RestoCard = (props: IRestoCardProps) => {
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [pictures, setPictures] = useState<IimageInterface[]>(props.pictures.length > 0 ? props.pictures : []);
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
   const { t } = useTranslation();
+  const isMounted = useRef(true);
 
   useEffect(() => {
+    isMounted.current = true;
     async function fetchImages() {
+      console.log('fetch Images: resto name: ', name, " image id: ", picturesId);
       if (picturesId) {
         if (picturesId.length > 0) {
           const fetchedImages = await getImages(picturesId);
@@ -86,8 +90,13 @@ const RestoCard = (props: IRestoCardProps) => {
         }
       }
     }
+    if (props.pictures.length <= 0) {
+      fetchImages();
+    }
 
-    fetchImages();
+    return () => {
+      isMounted.current = false;
+    }
   }, [picturesId]);
 
   const handleClickInfo = () => {
