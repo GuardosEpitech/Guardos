@@ -67,3 +67,26 @@ export const getRestaurantDetails = async (restoID: number) => {
     console.error("Error fetching restaurant details:", error);
     return null;  }
 };
+
+export const getRestaurantMenuId = async (restoID: number) => {
+  try {
+    const response = await axios({
+      url: `${baseUrl}/restaurants/`,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const restaurants = response.data;
+    const restaurant = restaurants.find((resto: any) => resto.uid === restoID);
+
+    if (restaurant) {
+      return restaurant.menuDesignID;
+    } else {
+      throw new Error("Restaurant not found");
+    }
+  } catch (error) {
+    console.error("Error fetching restaurant details:", error);
+    return null;  }
+};

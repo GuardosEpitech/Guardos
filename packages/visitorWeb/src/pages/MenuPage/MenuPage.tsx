@@ -21,7 +21,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
-import { getRestosMenu, getRestaurantDetails } from "@src/services/menuCalls";
+import { getRestosMenu, getRestaurantDetails, getRestaurantMenuId } from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import { useTranslation } from "react-i18next";
 import { getUserAllergens, getUserDislikedIngredients } from "@src/services/userCalls";
@@ -85,17 +85,24 @@ const MenuPage = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const restoMenuId = await getRestaurantMenuId(parseInt(id));
+      setMenuDesignID(restoMenuId);
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     let profiles: AllergenProfile[] = [];
     // Extract state from location
     if (location.state) {
-      const { restoName: passedName, address: passedAddress, menuDesignID: passedMenuDesignID } = location.state as {
+      const { restoName: passedName, address: passedAddress} = location.state as {
         restoName: string;
         address: string;
         menuDesignID: number;
       };
       setRestoName(passedName);
       setAddress(passedAddress);
-      setMenuDesignID(passedMenuDesignID);
 
       profiles = JSON.parse(localStorage.getItem('groupProfiles') || '[]');
 
