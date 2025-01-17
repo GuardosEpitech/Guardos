@@ -693,7 +693,7 @@ export async function modifyRestoReview(
 
 export async function addCategory(
   uid: number,
-  newCategories: [{ name: string; hitRate: number }]
+  newCategories: [{ name: string; hitRate: number, edited?: boolean }]
 ) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
@@ -709,6 +709,24 @@ export async function addCategory(
       sortId: category.hitRate
     }));
     rest.mealType = transformedArray;
+
+    rest.dishes.forEach(dish => {
+      const dishCategory = dish.category;
+    
+      const editedCategory = newCategories.find(category => category.edited);
+    
+      if (editedCategory) {
+        const categoryInNewCategories = newCategories.some(category => 
+          category.name === dishCategory.menuGroup && 
+          category.name === dishCategory.foodGroup
+        );
+
+        if (!categoryInNewCategories) {
+          dish.category.menuGroup = editedCategory.name;
+          dish.category.foodGroup = editedCategory.name;
+        }
+      }
+    });
 
     await rest.save();
 
@@ -732,6 +750,8 @@ export async function addCategory(
       website: rest.website as string,
       menuDesignID: rest.menuDesignID as number,
     });
+
+    console.log('restaurantBE dishes: ', restaurantBE.dishes);
 
     return createRestaurantObjFe(restaurantBE);
   } catch (error) {
