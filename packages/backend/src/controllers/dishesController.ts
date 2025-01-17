@@ -17,6 +17,11 @@ export async function getDishesByRestaurantName(restaurantName: string) {
   return Restaurant.find({ name: restaurantName }, 'dishes');
 }
 
+export async function getDishesByRestaurantID(restaurantID: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  return Restaurant.findOne({ _id: restaurantID }, 'dishes');
+}
+
 export async function getDishesByUserRestaurantName(restaurantName: string, userID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOne({ name: restaurantName, userID: userID }, 'dishes');

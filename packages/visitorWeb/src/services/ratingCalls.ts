@@ -37,13 +37,13 @@ export const deleteRatingDataUser = async (
     });
 
 export const postRatingData = async (
-  name: string,
+  restoID: number,
   comment: string,
   note: number,
   userName: string
 ) =>
   axios
-    .post(`${baseUrl}/review/restaurants/${name}`, { comment, note, userName })
+    .post(`${baseUrl}/review/restaurants/${restoID}`, { comment, note, userName })
     .then(function (response) {
       console.log(`Post with ID ${userName}`);
       return response.data;

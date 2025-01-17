@@ -27,12 +27,12 @@ export const getRestosMenu = async (restoId: number, allergenList: string[], dis
   }
 };
 
-export const getDishesByID = async (restoId: number, body: any) => {
+export const getDishesByID = async (userToken: string, body: any) => {
   try {
     const response = await axios({
       url: baseUrl + '/dishes/dishIDsByID',
       method: "POST",
-      params: {key: restoId},
+      params: {key: userToken},
       data: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",

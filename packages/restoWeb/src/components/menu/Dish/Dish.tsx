@@ -113,7 +113,7 @@ const Dish = (props: IEditableDishProps) => {
           return;
         }
         const userToken = localStorage.getItem('user');
-        const comboDishes = await getDishesByID(dish.resto, { ids: combo, key: userToken });
+        const comboDishes = await getDishesByID(userToken, { ids: combo, key: dish.resto });
 
         if (comboDishes) {
           const validCombos = comboDishes.filter((dish : any) => dish !== null);

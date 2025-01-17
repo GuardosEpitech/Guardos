@@ -6,7 +6,7 @@ import {
   addDishDiscount, removeDishDiscount, addDishCombo, removeDishCombo,
   createNewForEveryRestoChainDish, changeDishByID,
   getAllergensFromDishProducts, getDishByRestoId, getUserDishByName,
-  getDishesByUserRestaurantName
+  getDishesByUserRestaurantName, getDishesByRestaurantID
 }
   from '../controllers/dishesController';
 import {checkIfNameExists} from '../middleware/dishesMiddelWare';
@@ -15,8 +15,7 @@ import {
 } from '../middleware/restaurantMiddleWare';
 import {getUserIdResto} from '../controllers/userRestoController';
 import {
-  doesUserOwnRestaurantByName,
-  getUserRestaurantByID
+  doesUserOwnRestaurantByName, getRestaurantByID,
 } from '../controllers/restaurantController';
 import { IDishesCommunication } from '../models/communicationInterfaces';
 
@@ -88,26 +87,18 @@ router.post('/dishIDs', async (req, res) => {
   }
 });
 
+// only called by visitors
 router.post('/dishIDsByID', async (req, res) => {
   try {
-    const restoID = Number(req.query.key);
-    const userToken = String(req.body.key);
-    const userID = await getUserIdResto(userToken);
+    const restoID = Number(req.body.key);
 
-    if (userID === false) {
-      // If user ID is not found, return 404 Not Found
-      return res.status(404)
-        .send({ error: 'User not found' });
-    }
-
-    if (!await getUserRestaurantByID(restoID, userID as number)) {
+    if (!await getRestaurantByID(restoID)) {
       return res.status(404)
         .send('Coudnt find restaurant with ID  ' + restoID);
     }
-    const resto = await getUserRestaurantByID(restoID, userID as number);
     const { ids } = req.body;
     const dishResto =
-      await getDishesByUserRestaurantName(resto.name, userID as number);
+      await getDishesByRestaurantID(restoID);
     const dishesArray = dishResto.dishes;
     const filteredDishes = dishesArray.filter(dish => ids.includes(dish.uid));
     return res.status(200)

@@ -42,7 +42,7 @@ const RatingPage = () => {
       const userName = localStorage.getItem("userName") || "";
       if (userToken === null) return;
 
-      await postRatingData(restoName, comment, note, userName);
+      await postRatingData(restoID, comment, note, userName);
       setOpen(true);
       setNote(2);
       setComment('');
@@ -50,7 +50,7 @@ const RatingPage = () => {
       console.error(err);
     }
 
-    getRatingData(restoName).then(res => setRatingData(res));
+    getRatingData(restoID).then(res => setRatingData(res));
   };
 
   useEffect(() => {

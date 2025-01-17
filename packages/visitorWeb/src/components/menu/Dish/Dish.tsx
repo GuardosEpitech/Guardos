@@ -73,7 +73,7 @@ const Dish = (props: IDishProps) => {
     }
     const getComboDishes = async () => {
       const userToken = localStorage.getItem('user');
-      const comboDishes = await getDishesByID(props.restoID, {ids: combo, key: userToken});
+      const comboDishes = await getDishesByID(userToken, {ids: combo, key: props.restoID});
       setRecommendedDishes(comboDishes);
     }
     if (combo) {
