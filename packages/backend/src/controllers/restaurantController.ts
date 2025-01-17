@@ -751,8 +751,6 @@ export async function addCategory(
       menuDesignID: rest.menuDesignID as number,
     });
 
-    console.log('restaurantBE dishes: ', restaurantBE.dishes);
-
     return createRestaurantObjFe(restaurantBE);
   } catch (error) {
     console.error('Error adding/updating category:', error);
