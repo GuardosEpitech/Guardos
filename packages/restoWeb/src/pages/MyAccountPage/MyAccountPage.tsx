@@ -227,7 +227,7 @@ const MyAccountPage = () => {
   const toggleDarkMode = () => {
     const darkModeEnabled = localStorage.getItem('darkMode');
     setDarkMode(!darkMode);
-    if (darkModeEnabled == 'false') {
+    if (darkModeEnabled == 'false' || darkModeEnabled == null ) {
       enableDarkMode();
     } else {
       disableDarkMode();
