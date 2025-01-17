@@ -214,9 +214,6 @@
         "error": "There was an error",
         "change-pw-failure": "Please try again to change the password. If the Error appears one more time, please contact us."
       },
-      "MenuPage": {
-        "qr-code": "Get my QR Code"
-      },
       "DishesPage": {
         "no-dishes-yet": "Oops, looks like you dont have any dishes yet!",
         "add-first-dish": "Add your first dish by clicking ",
@@ -428,7 +425,7 @@
         "wrong-pw-format": "Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters"
       },
       "ResetPassword": {
-        "invalid-credentials": "That username and email {{ email }} don't match. Please check its spelling or try another username",
+        "invalid-credentials": "That username and email don't match. Please check its spelling or try another username",
         "user-error": "Error checking resto user. Please try again",
         "get-back-in-account": "Get back into your Guardos account",
         "enter-account-info": "Tell us some information about your account",

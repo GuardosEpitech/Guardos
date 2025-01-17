@@ -344,9 +344,6 @@
         "email-sent-success": "Email envoyé avec succès !",
         "require-field": "Ce champ est requis"
       },
-      "MenuPage": {
-        "qr-code": "Afficher mon QR Code"
-      },
       "LoginPage": {
         "redirect-facebook-login": "Redirection vers la connexion Facebook",
         "redirect-google-login": "Redirection vers la connexion Google",
@@ -427,7 +424,7 @@
         "wrong-pw-format": "Votre mot de passe doit contenir au minimum : 1x lettre majuscule et minuscule, 1x chiffre et au minimum 7 caractères"
       },
       "ResetPassword": {
-        "invalid-credentials": "Ce nom d'utilisateur et cet email {{ email }} ne correspondent pas. Veuillez vérifier l'orthographe ou essayer un autre nom d'utilisateur",
+        "invalid-credentials": "Ce nom d'utilisateur et cet email ne correspondent pas. Veuillez vérifier l'orthographe ou essayer un autre nom d'utilisateur",
         "user-error": "Erreur lors de la vérification de l'utilisateur. Veuillez réessayer",
         "get-back-in-account": "Retournez dans votre compte Guardos",
         "enter-account-info": "Indiquez-nous des informations sur votre compte",
