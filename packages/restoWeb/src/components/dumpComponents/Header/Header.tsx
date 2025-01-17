@@ -22,9 +22,12 @@ const Header = () => {
     const event = new Event('loggedOut');
     localStorage.removeItem('user');
     localStorage.removeItem('visitedRestoBefore');
+    localStorage.removeItem('freshLogin');
     setLoggedIn(false);
     document.dispatchEvent(event);
     handleOptionClick();
+    const userEvent = new CustomEvent("setUserToken");
+    window.dispatchEvent(userEvent);
     NavigateTo('/login', navigate);
   }
 
@@ -45,6 +48,8 @@ const Header = () => {
         console.log(tmpObject);
         setLoggedIn(false);
         localStorage.removeItem('user');
+        const userEvent = new CustomEvent("setUserToken");
+        window.dispatchEvent(userEvent);
       }
     } catch (error) {
       console.error('Error fetching login data:', error);

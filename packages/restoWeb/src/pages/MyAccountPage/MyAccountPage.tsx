@@ -208,6 +208,8 @@ const MyAccountPage = () => {
           localStorage.removeItem('user');
           localStorage.removeItem('visitedRestoBefore');
           document.dispatchEvent(event);
+          const userEvent = new CustomEvent("setUserToken");
+          window.dispatchEvent(userEvent);
           NavigateTo('/login', navigate, {});
         }
       });
