@@ -15,9 +15,11 @@ import {getImages} from "@src/services/callImages";
 import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
 import {useTranslation} from "react-i18next";
+import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
 
 interface IEditableDishProps {
   dish: IDishFE;
+  userRestos?: IRestaurantFrontEnd[];
   // eslint-disable-next-line @typescript-eslint/ban-types
   onUpdate?: Function;
   imageSrc?: string;
@@ -52,7 +54,19 @@ const Dish = (props: IEditableDishProps) => {
     if (userToken === null) {
       return;
     }
-    await deleteDish(dish.resto, name, userToken);
+    let dishRestos: string[] = [];
+
+    if (props.userRestos && props.userRestos.length > 0) {
+      dishRestos = props.userRestos
+        .filter((item: IRestaurantFrontEnd) => item.dishes
+          .some((dish) => dish.name === name))
+        .map((item: IRestaurantFrontEnd) => item.name);
+    } else {
+      dishRestos = [dish.resto];
+    }
+    for (const resto of dishRestos) {
+      await deleteDish(resto, name, userToken);
+    }
     if (onUpdate) {
       await onUpdate();
       setShowPopup(false);
