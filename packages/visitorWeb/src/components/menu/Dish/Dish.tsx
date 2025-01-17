@@ -9,7 +9,6 @@ import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
 import {IimageInterface} from "shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
 import {defaultDishImage} from "shared/assets/placeholderImageBase64";
-import {displayImageFromBase64} from "shared/utils/imageConverter";
 import {
   addDishAsFavourite,
   deleteDishFromFavourites,
@@ -73,7 +72,8 @@ const Dish = (props: IDishProps) => {
       }
     }
     const getComboDishes = async () => {
-      const comboDishes = await getDishesByID(props.restoID, {ids: combo});
+      const userToken = localStorage.getItem('user');
+      const comboDishes = await getDishesByID(props.restoID, {ids: combo, key: userToken});
       setRecommendedDishes(comboDishes);
     }
     if (combo) {

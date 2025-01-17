@@ -118,7 +118,8 @@ router.get('/resto', async (req, res) => {
     }
 
     const favouriteRestaurants = await getRestoFavourites(userID);
-    return res.status(200).send(favouriteRestaurants);
+    return res.status(200)
+      .send(favouriteRestaurants);
   } catch (error) {
     return res.status(500)
       .send('An error occurred while processing your request');
@@ -137,7 +138,8 @@ router.get('/dish', async (req, res) => {
     }
 
     const favouriteDishes = await getDishFavourites(userID);
-    return res.status(200).send(favouriteDishes);
+    return res.status(200)
+      .send(favouriteDishes);
   } catch (error) {
     return res.status(500)
       .send('An error occurred while processing your request');

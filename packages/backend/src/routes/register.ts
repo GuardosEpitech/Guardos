@@ -23,7 +23,8 @@ router.post('/', async function (req: Request, res: Response) {
     
     const errArray = await addUser(username, email, password);
     if (errArray.includes(true)) {
-      return res.status(200).send(errArray);
+      return res.status(200)
+        .send(errArray);
     }
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -38,9 +39,11 @@ router.post('/', async function (req: Request, res: Response) {
 
     await sgMail.send(msg);
 
-    return res.status(200).send(errArray);
+    return res.status(200)
+      .send(errArray);
   } catch (error) {
-    return res.status(500).send('An error occurred while processing your request');
+    return res.status(500)
+      .send('An error occurred while processing your request');
   }
 });
 
@@ -52,9 +55,11 @@ router.get('/verify-email', async (req: Request, res: Response) => {
 
     await updateUserVerificationStatusVisitor(decoded.email);
 
-    return res.status(200).send('Email successfully verified!');
+    return res.status(200)
+      .send('Email successfully verified!');
   } catch (error) {
-    return res.status(400).send('Invalid or expired token');
+    return res.status(400)
+      .send('Invalid or expired token');
   }
 });
 
@@ -62,14 +67,16 @@ router.post('/resend-verification', async (req: Request, res: Response) => {
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).send('Email is required');
+    return res.status(400)
+      .send('Email is required');
   }
 
   try {
     const validUser = await checkIfEmailExistsVisitor(email);
     
     if (!validUser) {
-      return res.status(404).send('User not found');
+      return res.status(404)
+        .send('User not found');
     }
 
     const token = jwt.sign({ email: validUser }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -84,13 +91,14 @@ router.post('/resend-verification', async (req: Request, res: Response) => {
 
     await sgMail.send(msg);
 
-    return res.status(200).send('Verification link resent. Please check your email.');
+    return res.status(200)
+      .send('Verification link resent. Please check your email.');
   } catch (error) {
     console.error('Error resending verification link:', error);
-    return res.status(500).send('An error occurred while resending the verification link.');
+    return res.status(500)
+      .send('An error occurred while resending the verification link.');
   }
 });
-
 
 router.post('/restoWeb', async function (req: Request, res: Response) {
   try {
@@ -98,7 +106,8 @@ router.post('/restoWeb', async function (req: Request, res: Response) {
     const errArray =
         await addUserResto(username, email, password);
     if (errArray.includes(true)) {
-      return res.status(200).send(errArray);
+      return res.status(200)
+        .send(errArray);
     }
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -129,9 +138,11 @@ router.get('/restoWeb/verify-email', async (req: Request, res: Response) => {
 
     await updateUserVerificationStatusResto(decoded.email);
 
-    return res.status(200).send('Email successfully verified!');
+    return res.status(200)
+      .send('Email successfully verified!');
   } catch (error) {
-    return res.status(400).send('Invalid or expired token');
+    return res.status(400)
+      .send('Invalid or expired token');
   }
 });
 
@@ -139,14 +150,16 @@ router.post('/restoWeb/resend-verification', async (req: Request, res: Response)
   const { email } = req.body;
 
   if (!email) {
-    return res.status(400).send('Email is required');
+    return res.status(400)
+      .send('Email is required');
   }
 
   try {
     const validUser = await checkIfEmailExistsResto(email);
 
     if (!validUser) {
-      return res.status(404).send('User not found');
+      return res.status(404)
+        .send('User not found');
     }
 
     const token = jwt.sign({ email: validUser }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -161,10 +174,12 @@ router.post('/restoWeb/resend-verification', async (req: Request, res: Response)
 
     await sgMail.send(msg);
 
-    return res.status(200).send('Verification link resent. Please check your email.');
+    return res.status(200)
+      .send('Verification link resent. Please check your email.');
   } catch (error) {
     console.error('Error resending verification link:', error);
-    return res.status(500).send('An error occurred while resending the verification link.');
+    return res.status(500)
+      .send('An error occurred while resending the verification link.');
   }
 });
 

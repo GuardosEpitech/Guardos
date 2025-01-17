@@ -1,8 +1,10 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import { getUserId, loginUser} from '../controllers/userController';
-import {loginUserResto, getUserIdResto, getRestoProfileDetails, addTwoFactorResto}
-  from '../controllers/userRestoController';
+import {
+  loginUserResto, getUserIdResto, getRestoProfileDetails,
+  addTwoFactorResto
+} from '../controllers/userRestoController';
 import { authenticateGoogle } from '../middleware/googleAuthenticate';
 import { handleGoogleLogin } from '../controllers/googleLoginController';
 import { authenticateFacebook } from '../middleware/facebookAuthenticate';
@@ -17,8 +19,10 @@ router.post('/', async function (req: Request, res: Response) {
     const answer = await loginUser(data.username, data.password);
 
     if (answer !== false) {
-      if (answer === 'unverified')
-        return res.status(404).send(answer);
+      if (answer === 'unverified') {
+        return res.status(404)
+          .send(answer);
+      }
       return res.status(200)
         .send(answer);
     } else {

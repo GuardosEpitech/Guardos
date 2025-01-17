@@ -1,10 +1,17 @@
 import mongoose from 'mongoose';
 
-import { getRestaurantByName, getRestaurantByID } from '../controllers/restaurantController';
+import {
+  getRestaurantByName, getRestaurantByID, getUserRestaurantByName
+} from '../controllers/restaurantController';
 import { restaurantSchema } from '../models/restaurantInterfaces';
 
 export async function checkIfRestaurantExists(restaurantName: string) {
   const restaurant = await getRestaurantByName(restaurantName);
+  return !!restaurant;
+}
+
+export async function checkIfUserRestaurantExists(restaurantName: string, userID: number) {
+  const restaurant = await getUserRestaurantByName(restaurantName, userID);
   return !!restaurant;
 }
 

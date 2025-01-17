@@ -272,9 +272,10 @@ router.delete('/profilePicDB', async (req, res) => {
       .send('Delete Image for profile successfully');
   } catch (error) {
     console.error('Error deleting profile pic from DB ', error);
-    return res.status(404).send('Failed to delete from DB');
+    return res.status(404)
+      .send('Failed to delete from DB');
   }
-})
+});
 
 router.delete('/restoProfile', async (req, res) => {
   try {

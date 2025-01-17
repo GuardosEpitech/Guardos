@@ -28,7 +28,9 @@ import {
   addActiveSubscription,
   getActiveSubscription
 } from '../controllers/userRestoController';
-import {getProfileDetailsResto, addCustomerResto} from '../controllers/restaurantController';
+import {
+  getProfileDetailsResto, addCustomerResto
+} from '../controllers/restaurantController';
 
 const router = express.Router();
 
@@ -946,7 +948,8 @@ router.post('/activeSubscription-visitor', async (req, res) => {
         .send({ error: 'No CustomerID' });
     }
 
-    const returnValue = await addActiveSubscriptionVisitor(userID as number, activeSubscriptionIdentifier);
+    const returnValue =
+      await addActiveSubscriptionVisitor(userID as number, activeSubscriptionIdentifier);
 
     res.status(200)
       .send(returnValue);

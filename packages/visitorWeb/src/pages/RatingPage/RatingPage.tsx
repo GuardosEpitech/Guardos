@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 import { TextField } from "@mui/material";
 
 const RatingPage = () => {
-  const { restoName } = useLocation().state;
+  const { restoName, restoID } = useLocation().state;
   const [note, setNote] = React.useState<number | null>(2);
   const [comment, setComment] = React.useState("");
   const [ratingData, setRatingData] = React.useState([]);
@@ -54,8 +54,8 @@ const RatingPage = () => {
   };
 
   useEffect(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
-  }, [restoName]);
+    getRatingData(restoID).then(res => setRatingData(res));
+  }, [restoID]);
 
   return (
     <>

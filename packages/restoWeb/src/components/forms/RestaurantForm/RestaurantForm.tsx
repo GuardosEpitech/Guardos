@@ -37,7 +37,6 @@ import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
 import {addQRCode} from "@src/services/qrcodeCall";
-import { SignalCellularConnectedNoInternet4BarSharp } from "@mui/icons-material";
 
 const PageBtn = () => {
   return createTheme({
@@ -95,7 +94,6 @@ interface IDay {
   name?: string;
 }
 
-// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },

@@ -29,7 +29,7 @@ export const getRestoById = async (restoId: number) => {
   } catch (error) {
     console.error("Error fetching restoById:", error);
   }
-}
+};
 
 export const addNewResto = async (body: any) => {
   try {
