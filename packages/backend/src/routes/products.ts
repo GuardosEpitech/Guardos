@@ -88,7 +88,7 @@ router.post('/:name', async (req, res) => {
       name: product.name,
       allergens: product.allergens,
       ingredients: product.ingredients,
-    }, restaurant.name);
+    }, restaurant.name, userID as number);
     return res.status(200)
       .send(product);
   } catch (error) {
