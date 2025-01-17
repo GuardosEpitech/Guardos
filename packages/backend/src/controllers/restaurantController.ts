@@ -710,10 +710,10 @@ export async function addCategory(
     }));
     rest.mealType = transformedArray;
 
+    const editedCategory = newCategories.find(category => category.edited);
+
     rest.dishes.forEach(dish => {
       const dishCategory = dish.category;
-    
-      const editedCategory = newCategories.find(category => category.edited);
     
       if (editedCategory) {
         const categoryInNewCategories = newCategories.some(category => 
