@@ -358,9 +358,11 @@ const MyAccountPage = () => {
     deleteAccount(userToken).then(res => {
       if (res !== null) {
         const event = new Event('loggedOut');
+        const userEvent = new Event('setUserToken');
         localStorage.removeItem('user');
         localStorage.removeItem('visitedBefore');
         document.dispatchEvent(event);
+        document.dispatchEvent(userEvent);
         NavigateTo('/login', navigate, {})
       }
     });
