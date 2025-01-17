@@ -199,10 +199,10 @@ export async function getRestaurantByName(restaurantName: string) {
   return createRestaurantObjFe(restaurantBE);
 }
 
-export async function getUserRestaurantByName(restaurantName: string, userID: number) {
+export async function getUserRestaurantByName(restaurantName: string, userId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest =
-    await Restaurant.findOne({ name: restaurantName, userID: userID });
+    await Restaurant.findOne({ name: restaurantName, userID: userId });
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
@@ -576,10 +576,10 @@ export async function changeRestaurantByID(
   return newRest;
 }
 
-export async function addRestoProduct(product: IProduct, restoName: string) {
+export async function addRestoProduct(product: IProduct, restoName: string, userID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { name: restoName, userID: userID },
     { $push: { products: product } },
     { new: true }
   );
@@ -773,7 +773,7 @@ export async function doesUserOwnRestaurantByName(
   userID: number
 ) {
   try {
-    const restaurant = await getRestaurantByName(restoName);
+    const restaurant = await getUserRestaurantByName(restoName, userID);
     if (!restaurant || restaurant.userID !== userID) {
       return null;
     }

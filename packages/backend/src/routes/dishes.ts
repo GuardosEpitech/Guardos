@@ -197,6 +197,10 @@ router.put('/:name', async (req, res) => {
 
     const dish = await changeDishByID(
       restaurant.uid, req.body, allergens, userID as number);
+    if (!dish) {
+      return res.status(404)
+        .send('Couldnt find dish named ' + req.body.oldName);
+    }
     return res.status(200)
       .send(dish);
   } catch (error) {
