@@ -9,7 +9,7 @@ import {changeDishByID,
   getDishesByRestaurantNameTypeChecked}
   from './dishesController';
 import {IDishesCommunication} from '../models/communicationInterfaces';
-import {detectAllergensByProduct} from "./allergenDetectionController";
+import {detectAllergensByProduct} from './allergenDetectionController';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -57,7 +57,7 @@ export async function createOrUpdateProduct
         }
       }
     }
-    allergens = Array.from(new Set(allergens));
+    allergens = Array.from(new Set(allergens)) as string[];
     console.log('Allergens:', allergens);
 
     const existingProduct = await Product.findOne({ name: product.name });
@@ -168,16 +168,6 @@ export async function getProductsByUser(loggedInUserId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.find({ userID: loggedInUserId });
-  } catch (error) {
-    console.error('Error while fetching all products: ', error);
-    return [];
-  }
-}
-
-export async function getAllProducts() {
-  try {
-    const Product = mongoose.model('Product', productSchema);
-    return await Product.find({});
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return [];
