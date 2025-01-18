@@ -53,7 +53,7 @@ export async function createOrUpdateProduct
     console.log('Allergens:', allergens);
 
     const existingProduct = await Product.findOne({ name: product.name });
-
+    console.log('Existing product:', existingProduct);
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
         existingProduct.allergens = allergens;
@@ -78,6 +78,7 @@ export async function createOrUpdateProduct
           restaurantId: [restaurantId],
         });
         await newProduct.save();
+        console.log('New product:', newProduct);
         return newProduct;
       }
     } else {
@@ -96,6 +97,7 @@ export async function createOrUpdateProduct
         restaurantId: [restaurantId],
       });
       await newProduct.save();
+      console.log('New product else tree:', newProduct);
       return newProduct;
     }
   } catch (error) {
