@@ -804,32 +804,38 @@ export async function addCategory(
 
       for (const resto of restos) {
         if (resto._id !== uid) {
-          const lastElement = resto.mealType[resto.mealType.length - 1];
-          const newId = resto.mealType.length;
-          const newSortId = lastElement ? lastElement.sortId as number + 1 : 1;
-          const newElement = {
-            _id: newId,
-            name: editedCategory.name,
-            sortId: newSortId,
-          };
-          
-          resto.mealType.push(newElement);
+          const isCategoryInMealType = resto.mealType.some(meal => meal.name === editedCategory.name);
+
+          if (!isCategoryInMealType) {
+            const newId = resto.mealType.length;
+            const maxSortId = resto.mealType.reduce((max, current) => {
+              return current.sortId as number > max ? current.sortId : max;
+            }, -Infinity);
+            const newSortId = maxSortId as number + 1;
+            const newElement = {
+              _id: newId,
+              name: editedCategory.name,
+              sortId: newSortId,
+            };
+            
+            resto.mealType.push(newElement);
+          }
 
           const matchingDishes = resto.dishes.filter(dish =>
             affectedDishes.some(
               affectedDish => affectedDish.name === dish.name && affectedDish.price === dish.price
             )
           );
-          resto.dishes.forEach(dish => {
-            const isMatchingDish = matchingDishes.some(
-              matchingDish => matchingDish.name === dish.name && matchingDish.price === dish.price
-            );
-            if (isMatchingDish) {
-              dish.category.menuGroup = editedCategory.name;
-              dish.category.foodGroup = editedCategory.name;
-            }
-          });
           if (matchingDishes.length > 0) {
+            resto.dishes.forEach(dish => {
+              const isMatchingDish = matchingDishes.some(
+                matchingDish => matchingDish.name === dish.name && matchingDish.price === dish.price
+              );
+              if (isMatchingDish) {
+                dish.category.menuGroup = editedCategory.name;
+                dish.category.foodGroup = editedCategory.name;
+              }
+            });
             await resto.save();
           }
         }
