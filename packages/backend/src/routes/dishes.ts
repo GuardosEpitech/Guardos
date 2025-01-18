@@ -59,8 +59,8 @@ router.get('/user/dish', async (req, res) => {
 
 router.post('/dishIDs', async (req, res) => {
   try {
-    const restoName = String(req.query.key);
-    const userToken = String(req.body.key);
+    const restoName = String(req.body.key);
+    const userToken = String(req.query.key);
     const userID = await getUserIdResto(userToken);
 
     if (userID === false) {
