@@ -30,7 +30,6 @@ interface IDay {
   name?: string;
 }
 
-// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -45,7 +44,6 @@ const RestoCard = (props: IRestoCardProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, resto, editable } = props;
-  const imgStr = `${resto.pictures[0]}?auto=compress&cs=tinysrgb&h=350`;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
@@ -98,7 +96,7 @@ const RestoCard = (props: IRestoCardProps) => {
   };
 
   useState(() => {
-    getRatingData(props.resto.name)
+    getRatingData(props.resto.uid)
       .then(res => setRatingData(res));
   });
 

@@ -11,7 +11,8 @@ router.post('/', async (req, res) => {
     const dislikedIngrList = req.body.dislikedIngredientsList;
 
     //@ts-ignore
-    const menu = await getMenuByRestoID(restoID, allergenList, dislikedIngrList);
+    const menu =
+      await getMenuByRestoID(restoID, allergenList, dislikedIngrList);
     await updateRestoUserStatistics(restoID, allergenList, dislikedIngrList);
     return res.status(200)
       .send(menu);

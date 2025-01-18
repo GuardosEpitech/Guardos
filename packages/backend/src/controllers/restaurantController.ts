@@ -201,7 +201,8 @@ export async function getRestaurantByName(restaurantName: string) {
 
 export async function getUserRestaurantByName(restaurantName: string, userId: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({ name: restaurantName, userID: userId });
+  const rest =
+    await Restaurant.findOne({ name: restaurantName, userID: userId });
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
@@ -230,6 +231,34 @@ export async function getUserRestaurantByName(restaurantName: string, userId: nu
 export async function getRestaurantByID(restaurantID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({ _id: restaurantID });
+  if (!rest) return null;
+
+  const restaurantBE = createBackEndObj({
+    description: rest.description as string,
+    dishes: rest.dishes as [IDishBE],
+    extras: rest.extras as unknown as [IDishBE],
+    uid: rest._id as number,
+    userID: rest.userID as number,
+    restoChainID: rest.restoChainID as number,
+    location: rest.location as ILocation,
+    mealType: rest.mealType as [IMealType],
+    name: rest.name as string,
+    openingHours: rest.openingHours as [IOpeningHours],
+    phoneNumber: rest.phoneNumber as string,
+    pictures: rest.pictures as [string],
+    picturesId: rest.picturesId as [number],
+    products: rest.products as [IProduct],
+    rating: rest.rating as number,
+    ratingCount: rest.ratingCount as number,
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
+  });
+  return createRestaurantObjFe(restaurantBE);
+}
+
+export async function getUserRestaurantByID(restaurantID: number, userID: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({ _id: restaurantID, userID: userID });
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
@@ -480,7 +509,6 @@ export async function createNewRestaurant(
   return upload;
 }
 
-
 export async function deleteRestaurantByID(restaurantID: number) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
   await Restaurant.deleteOne({ _id: restaurantID });
@@ -564,25 +592,25 @@ export async function getAllRestoProducts(restoName: string) {
   return rest.products;
 }
 
-export async function getAllRestoReviews(restoName: string) {
+export async function getAllRestoReviews(restoID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({ name: restoName });
+  const rest = await Restaurant.findOne({ _id: restoID });
   if (!rest) return null;
   return rest.reviews;
 }
 
-export async function addRestoReview(review: IReview, restoName: string) {
+export async function addRestoReview(review: IReview, restoID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   review.date = new Date();
   review._id = uuidv4();
   const updatedRestaurant = await Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { _id: restoID },
     { $push: { reviews: review } },
     { new: true } 
   );
 
   if (!updatedRestaurant) {
-    throw new Error(`Restaurant with name "${restoName}" not found.`);
+    throw new Error(`Restaurant with id "${restoID}" not found.`);
   }
 
   const reviews = updatedRestaurant.reviews as IReview[];
@@ -626,7 +654,7 @@ export async function deleteRestoReview(reviewId: string, restoName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   const updatedRestaurant = await Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { name: restoName, 'reviews._id': reviewId},
     { $pull: { reviews: { _id: reviewId } } },
     { new: true }
   );
@@ -658,7 +686,7 @@ export async function modifyRestoReview(
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
-    return Restaurant.findOne({ name: restoName });
+    return Restaurant.findOne({ name: restoName, 'reviews._id': reviewId });
   }
 
   const updateQuery: Record<string, any> = {};

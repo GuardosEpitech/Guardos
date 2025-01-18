@@ -112,7 +112,8 @@ export async function newfilterRestaurants
     
     filteredRestaurants = filteredRestaurants.filter(restaurant => {
       const restaurantCity = restaurant.location?.city?.toLowerCase() || '';
-      const restaurantStreet = restaurant.location?.streetName?.toLowerCase() || '';
+      const restaurantStreet =
+        restaurant.location?.streetName?.toLowerCase() || '';
     
       const isCityMatch = restaurantCity === searchLocation;
       const isStreetMatch = restaurantStreet.includes(searchLocation);
@@ -122,10 +123,14 @@ export async function newfilterRestaurants
   }
 
   if (searchParams.categories && searchParams.categories.length > 0) {
-    const categoriesLowerCase = searchParams.categories.map(category => category.toLowerCase());
+    const categoriesLowerCase =
+      searchParams.categories.map(category => category.toLowerCase());
     filteredRestaurants = filteredRestaurants.filter(restaurant => {
-      const restaurantCategories = restaurant.dishes?.map(dish => dish.category.foodGroup?.toLowerCase()) ?? [];
-      return restaurantCategories.some(category => categoriesLowerCase.includes(category));
+      const restaurantCategories =
+        restaurant
+          .dishes?.map(dish => dish.category.foodGroup?.toLowerCase()) ?? [];
+      return restaurantCategories
+        .some(category => categoriesLowerCase.includes(category));
     });
   }
         
@@ -138,7 +143,8 @@ export async function newfilterRestaurants
             allergen.toLowerCase()
               .includes(searchAllergen.toLowerCase())
           ))) || [];
-      const percentageWithoutAllergen = (dishesWithoutAllergen.length / totalDishes) * 100;
+      const percentageWithoutAllergen =
+        (dishesWithoutAllergen.length / totalDishes) * 100;
       return percentageWithoutAllergen >= 50;
     });
   }
@@ -222,6 +228,7 @@ function createRestaurantObjFe(restaurant: IRestaurantBackEnd): IRestaurantFront
 }
 
 function transformToIRestaurantFrontend(data: IRestaurantBackEnd[]): IRestaurantFrontEnd[] {
-  const results: IRestaurantFrontEnd[] = data.map(restaurant => createRestaurantObjFe(restaurant));
+  const results: IRestaurantFrontEnd[] =
+    data.map(restaurant => createRestaurantObjFe(restaurant));
   return results;
 }

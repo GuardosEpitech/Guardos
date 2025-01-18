@@ -30,12 +30,10 @@ interface IEditableDishProps {
 const Dish = (props: IEditableDishProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showCombos, setShowCombos] = useState(false);
   const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
   const { name, description, price, discount, validTill, combo, allergens } = dish;
   const priceStr = `${price.toFixed(2)} €`;
-  const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const {t} = useTranslation();
   const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
@@ -114,7 +112,8 @@ const Dish = (props: IEditableDishProps) => {
         if (dish.resto === undefined) {
           return;
         }
-        const comboDishes = await getDishesByID(dish.resto, { ids: combo });
+        const userToken = localStorage.getItem('user');
+        const comboDishes = await getDishesByID(userToken, { ids: combo, key: dish.resto });
 
         if (comboDishes) {
           const validCombos = comboDishes.filter((dish : any) => dish !== null);

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 //Database structure for restaurants
 export const restaurantSchema = new mongoose.Schema({

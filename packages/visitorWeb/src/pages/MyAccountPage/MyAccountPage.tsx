@@ -90,7 +90,6 @@ const MyAccountPage = () => {
 
   const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
-  // TODO: apply i18n
   const allAllergens = [
     'celery',
     'gluten',
@@ -341,8 +340,6 @@ const MyAccountPage = () => {
     } else {
       isError = true;
     }
-
-    // TODO: add image mngt
 
     if (isError) {
       setDataChangeStatus("failed");

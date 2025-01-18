@@ -58,8 +58,8 @@ export async function loginUser(username: string,
       } else if ((elem.username === username || elem.email === username)
         && AES.decrypt(elem.password as string, 'Guardos')
           .toString(enc.Utf8) === password && elem.validEmail !== true) {
-            return 'unverified';
-          }
+        return 'unverified';
+      }
     }
     return false;
   } catch (error) {
@@ -317,15 +317,6 @@ export async function getAllergens(userID: number) {
   return userData?.allergens;
 }
 
-export async function updateAllergens(email: string, allergens: string) {
-  const UserSchema = mongoose.model('User', userSchema, 'User');
-  const userData = await UserSchema
-    .findOneAndUpdate({email: email}, {
-      allergens: JSON.parse(allergens)
-    }, {new: true});
-  return userData;
-}
-
 export async function getDislikedIngredients(userID: number) {
   const UserSchema = mongoose.model('User', userSchema, 'User');
   const userData = await UserSchema.findOne({ uid: userID })
@@ -457,14 +448,14 @@ export async function addSubscribeTime(userID: number) {
   const existingUser = await UserSchema.findOne({ uid: userID });
 
   if (existingUser) {
-    let currentTime = new Date();
+    const currentTime = new Date();
     currentTime.setHours(currentTime.getHours() + 2);
     const answer = await UserSchema.findOneAndUpdate(
       { uid: userID },
       { $set: { subscribeTime: currentTime } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
@@ -479,7 +470,7 @@ export async function addSubscribtionID(userID: number,subscriptionID: string) {
       { $set: { subscriptionID: subscriptionID } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
@@ -515,7 +506,7 @@ export async function addActiveSubscriptionVisitor(userID: number, activeSubscri
       { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
@@ -525,7 +516,7 @@ export async function getActiveSubscriptionVisitor(userID: number) {
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser.activeSubscriptionIdentifier) {
-    return existingUser.activeSubscriptionIdentifier
+    return existingUser.activeSubscriptionIdentifier;
   }
   return 'default';
 }

@@ -359,7 +359,8 @@ const MapView = (props: MapProps) => {
                   <RatingDisplay 
                     restoRating={restaurant.rating} 
                     restoRatingsCount={restaurant.ratingCount} 
-                    restoName={restaurant.name} 
+                    restoName={restaurant.name}
+                    restoID={restaurant.uid}
                   />
                 </div>
                 <ThemeProvider theme={PageBtn()}>
