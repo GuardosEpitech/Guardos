@@ -119,7 +119,7 @@ router.post('/', async (_req, res) => {
       _req.body.image.size,
       _req.body.image.base64);
     const id: number = await getLatestID();
-    await linkImageToRestaurant(_req.body.restaurant, id);
+    await linkImageToRestaurant(_req.body.restaurantId, id);
     return res.status(200)
       .send('Post Images for restaurant successfully');
 
@@ -272,9 +272,10 @@ router.delete('/profilePicDB', async (req, res) => {
       .send('Delete Image for profile successfully');
   } catch (error) {
     console.error('Error deleting profile pic from DB ', error);
-    return res.status(404).send('Failed to delete from DB');
+    return res.status(404)
+      .send('Failed to delete from DB');
   }
-})
+});
 
 router.delete('/restoProfile', async (req, res) => {
   try {

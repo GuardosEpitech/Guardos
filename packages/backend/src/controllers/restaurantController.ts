@@ -10,10 +10,14 @@ import {
 import { restaurantSchema } from '../models/restaurantInterfaces';
 import { userRestoSchema } from '../models/userRestaurantInterfaces';
 import { ICategories } from '../../../shared/models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { IDishBE, IDishFE, TDish } from '../../../shared/models/dishInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { ILocation } from '../../../shared/models/locationInterfaces';
-import {IProfileCommunication, IRestaurantCommunication, ISearchCommunication} from '../models/communicationInterfaces';
+import {
+  IProfileCommunication,
+  IRestaurantCommunication,
+  ISearchCommunication
+} from '../models/communicationInterfaces';
 import { v4 as uuidv4 } from 'uuid';
 import { geocodeAddress } from './mapController';
 
@@ -195,9 +199,66 @@ export async function getRestaurantByName(restaurantName: string) {
   return createRestaurantObjFe(restaurantBE);
 }
 
+export async function getUserRestaurantByName(restaurantName: string, userId: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest =
+    await Restaurant.findOne({ name: restaurantName, userID: userId });
+  if (!rest) return null;
+
+  const restaurantBE = createBackEndObj({
+    description: rest.description as string,
+    dishes: rest.dishes as [IDishBE],
+    extras: rest.extras as unknown as [IDishBE],
+    uid: rest._id as number,
+    userID: rest.userID as number,
+    restoChainID: rest.restoChainID as number,
+    location: rest.location as ILocation,
+    mealType: rest.mealType as [IMealType],
+    name: rest.name as string,
+    openingHours: rest.openingHours as [IOpeningHours],
+    phoneNumber: rest.phoneNumber as string,
+    pictures: rest.pictures as [string],
+    picturesId: rest.picturesId as [number],
+    products: rest.products as [IProduct],
+    rating: rest.rating as number,
+    ratingCount: rest.ratingCount as number,
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
+  });
+  return createRestaurantObjFe(restaurantBE);
+}
+
 export async function getRestaurantByID(restaurantID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const rest = await Restaurant.findOne({ _id: restaurantID });
+  if (!rest) return null;
+
+  const restaurantBE = createBackEndObj({
+    description: rest.description as string,
+    dishes: rest.dishes as [IDishBE],
+    extras: rest.extras as unknown as [IDishBE],
+    uid: rest._id as number,
+    userID: rest.userID as number,
+    restoChainID: rest.restoChainID as number,
+    location: rest.location as ILocation,
+    mealType: rest.mealType as [IMealType],
+    name: rest.name as string,
+    openingHours: rest.openingHours as [IOpeningHours],
+    phoneNumber: rest.phoneNumber as string,
+    pictures: rest.pictures as [string],
+    picturesId: rest.picturesId as [number],
+    products: rest.products as [IProduct],
+    rating: rest.rating as number,
+    ratingCount: rest.ratingCount as number,
+    website: rest.website as string,
+    menuDesignID: rest.menuDesignID as number,
+  });
+  return createRestaurantObjFe(restaurantBE);
+}
+
+export async function getUserRestaurantByID(restaurantID: number, userID: number) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({ _id: restaurantID, userID: userID });
   if (!rest) return null;
 
   const restaurantBE = createBackEndObj({
@@ -448,35 +509,29 @@ export async function createNewRestaurant(
   return upload;
 }
 
-export async function deleteRestaurantByName(restaurantName: string) {
-  const Restaurant = mongoose.model('Restaurants', restaurantSchema);
-  await Restaurant.deleteOne({ name: restaurantName });
-  return 'deleted ' + restaurantName;
-}
-
 export async function deleteRestaurantByID(restaurantID: number) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
   await Restaurant.deleteOne({ _id: restaurantID });
   return 'deleted ' + restaurantID;
 }
 
-async function updateRestaurantByName(
+async function updateRestaurantById(
   restaurant: IRestaurantBackEnd,
-  restaurantName: string
+  restaurantId: number
 ) {
   const Restaurant = mongoose.model('Restaurants', restaurantSchema);
-  return Restaurant.findOneAndUpdate({ name: restaurantName }, restaurant, {
+  return Restaurant.findOneAndUpdate({ _id: restaurantId }, restaurant, {
     new: true,
   });
 }
 
-export async function changeRestaurant(
+export async function changeRestaurantByID(
   restaurant: IRestaurantCommunication,
-  restaurantName: string
+  restaurantId: number
 ) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   const oldRest = (await Restaurant.findOne({
-    name: restaurantName,
+    _id: restaurantId,
   })) as IRestaurantBackEnd;
   const loc = restaurant.location;
   const address = formatLocation(restaurant.location);
@@ -492,9 +547,9 @@ export async function changeRestaurant(
     uid: oldRest.uid,
     userID: oldRest.userID,
     restoChainID:
-      restaurant.restoChainID !== undefined
-        ? restaurant.restoChainID
-        : oldRest.restoChainID,
+        restaurant.restoChainID !== undefined
+          ? restaurant.restoChainID
+          : oldRest.restoChainID,
     location: restaurant.location ? loc : oldRest.location,
     mealType: restaurant.mealType ? restaurant.mealType : oldRest.mealType,
     openingHours: restaurant.openingHours
@@ -513,18 +568,18 @@ export async function changeRestaurant(
     website: restaurant.website ? restaurant.website : oldRest.website,
     name: restaurant.name ? restaurant.name : oldRest.name,
     menuDesignID:
-      restaurant.menuDesignID !== undefined
-        ? restaurant.menuDesignID
-        : oldRest.menuDesignID,
+        restaurant.menuDesignID !== undefined
+          ? restaurant.menuDesignID
+          : oldRest.menuDesignID,
   };
-  await updateRestaurantByName(newRest, restaurantName);
+  await updateRestaurantById(newRest, restaurantId);
   return newRest;
 }
 
-export async function addRestoProduct(product: IProduct, restoName: string) {
+export async function addRestoProduct(product: IProduct, restoName: string, userID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   return Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { name: restoName, userID: userID },
     { $push: { products: product } },
     { new: true }
   );
@@ -537,25 +592,25 @@ export async function getAllRestoProducts(restoName: string) {
   return rest.products;
 }
 
-export async function getAllRestoReviews(restoName: string) {
+export async function getAllRestoReviews(restoID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({ name: restoName });
+  const rest = await Restaurant.findOne({ _id: restoID });
   if (!rest) return null;
   return rest.reviews;
 }
 
-export async function addRestoReview(review: IReview, restoName: string) {
+export async function addRestoReview(review: IReview, restoID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
   review.date = new Date();
   review._id = uuidv4();
   const updatedRestaurant = await Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { _id: restoID },
     { $push: { reviews: review } },
     { new: true } 
   );
 
   if (!updatedRestaurant) {
-    throw new Error(`Restaurant with name "${restoName}" not found.`);
+    throw new Error(`Restaurant with id "${restoID}" not found.`);
   }
 
   const reviews = updatedRestaurant.reviews as IReview[];
@@ -599,7 +654,7 @@ export async function deleteRestoReview(reviewId: string, restoName: string) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   const updatedRestaurant = await Restaurant.findOneAndUpdate(
-    { name: restoName },
+    { name: restoName, 'reviews._id': reviewId},
     { $pull: { reviews: { _id: reviewId } } },
     { new: true }
   );
@@ -631,7 +686,7 @@ export async function modifyRestoReview(
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
   if (!modifiedFields || Object.keys(modifiedFields).length === 0) {
-    return Restaurant.findOne({ name: restoName });
+    return Restaurant.findOne({ name: restoName, 'reviews._id': reviewId });
   }
 
   const updateQuery: Record<string, any> = {};
@@ -664,61 +719,28 @@ export async function modifyRestoReview(
   return updatedRestaurant;
 }
 
-export async function addCategory(
-  uid: number,
-  newCategories: [{ name: string; hitRate: number }]
-) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
-  try {
-    const rest = await Restaurant.findOne({ _id: uid });
-
-    if (!rest) {
-      throw new Error('Restaurant not found');
-    }
-    const transformedArray= newCategories.map((category, index) => ({
-      _id: index + 1,
-      name: category.name,
-      sortId: category.hitRate
-    }));
-    rest.mealType = transformedArray;
-
-    await rest.save();
-
-    const restaurantBE = createBackEndObj({
-      description: rest.description as string,
-      dishes: rest.dishes as [IDishBE],
-      extras: rest.extras as unknown as [IDishBE],
-      uid: rest._id as number,
-      userID: rest.userID as number,
-      restoChainID: rest.restoChainID as number,
-      location: rest.location as ILocation,
-      mealType: rest.mealType as [IMealType],
-      name: rest.name as string,
-      openingHours: rest.openingHours as [IOpeningHours],
-      phoneNumber: rest.phoneNumber as string,
-      pictures: rest.pictures as [string],
-      picturesId: rest.picturesId as [number],
-      products: rest.products as [IProduct],
-      rating: rest.rating as number,
-      ratingCount: rest.ratingCount as number,
-      website: rest.website as string,
-      menuDesignID: rest.menuDesignID as number,
-    });
-
-    return createRestaurantObjFe(restaurantBE);
-  } catch (error) {
-    console.error('Error adding/updating category:', error);
-    throw error;
-  }
-}
-
 export async function doesUserOwnRestaurantByName(
   restoName: string,
   userID: number
 ) {
   try {
-    const restaurant = await getRestaurantByName(restoName);
+    const restaurant = await getUserRestaurantByName(restoName, userID);
+    if (!restaurant || restaurant.userID !== userID) {
+      return null;
+    }
+    return restaurant;
+  } catch (error) {
+    console.error('Error finding restaurant for user:', error);
+    throw error;
+  }
+}
+
+export async function doesUserOwnRestaurantById(
+  restoID: number,
+  userID: number
+) {
+  try {
+    const restaurant = await getRestaurantByID(restoID);
     if (!restaurant || restaurant.userID !== userID) {
       return null;
     }
@@ -762,5 +784,95 @@ export async function addCustomerResto(userID: number, customerID: string) {
       { new: true }
     );
     return answer.customerID;
+  }
+}
+
+export async function addCategory(
+  userID: number,
+  uid: number,
+  newCategories: [{ name: string; hitRate: number, edited?: boolean }]
+) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+  try {
+    const editedCategory = newCategories.find(category => category.edited);
+
+    let affectedDishes: TDish[] = [];
+
+    const rest = await Restaurant.findOne({ _id: uid });
+
+    if (!rest) {
+      throw new Error('Restaurant not found');
+    }
+    const transformedArray= newCategories.map((category, index) => ({
+      _id: index + 1,
+      name: category.name,
+      sortId: category.hitRate
+    }));
+    rest.mealType = transformedArray;
+    rest.dishes.forEach(dish => {
+      const dishCategory = dish.category;
+    
+      if (editedCategory) {
+        const categoryInNewCategories = newCategories.some(category => 
+          category.name === dishCategory.menuGroup && 
+          category.name === dishCategory.foodGroup
+        );
+        if (!categoryInNewCategories) {
+          dish.category.menuGroup = editedCategory.name;
+          dish.category.foodGroup = editedCategory.name;
+          affectedDishes.push(dish as TDish);
+        }
+      }
+    });
+    await rest.save();
+
+    if (editedCategory) {
+      const restos = await Restaurant.find({ userID: userID });
+
+      for (const resto of restos) {
+        if (resto._id !== uid) {
+          const isCategoryInMealType = resto.mealType.some(meal => meal.name === editedCategory.name);
+
+          if (!isCategoryInMealType) {
+            const newId = resto.mealType.length;
+            const maxSortId = resto.mealType.reduce((max, current) => {
+              return current.sortId as number > max ? current.sortId : max;
+            }, -Infinity);
+            const newSortId = maxSortId as number + 1;
+            const newElement = {
+              _id: newId,
+              name: editedCategory.name,
+              sortId: newSortId,
+            };
+            
+            resto.mealType.push(newElement);
+          }
+
+          const matchingDishes = resto.dishes.filter(dish =>
+            affectedDishes.some(
+              affectedDish => affectedDish.name === dish.name && affectedDish.price === dish.price
+            )
+          );
+          if (matchingDishes.length > 0) {
+            resto.dishes.forEach(dish => {
+              const isMatchingDish = matchingDishes.some(
+                matchingDish => matchingDish.name === dish.name && matchingDish.price === dish.price
+              );
+              if (isMatchingDish) {
+                dish.category.menuGroup = editedCategory.name;
+                dish.category.foodGroup = editedCategory.name;
+              }
+            });
+            await resto.save();
+          }
+        }
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding/updating category:', error);
+    throw error;
   }
 }

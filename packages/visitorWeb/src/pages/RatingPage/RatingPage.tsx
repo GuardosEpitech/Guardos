@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 import { TextField } from "@mui/material";
 
 const RatingPage = () => {
-  const { restoName } = useLocation().state;
+  const { restoName, restoID } = useLocation().state;
   const [note, setNote] = React.useState<number | null>(2);
   const [comment, setComment] = React.useState("");
   const [ratingData, setRatingData] = React.useState([]);
@@ -42,7 +42,7 @@ const RatingPage = () => {
       const userName = localStorage.getItem("userName") || "";
       if (userToken === null) return;
 
-      await postRatingData(restoName, comment, note, userName);
+      await postRatingData(restoID, comment, note, userName);
       setOpen(true);
       setNote(2);
       setComment('');
@@ -50,12 +50,12 @@ const RatingPage = () => {
       console.error(err);
     }
 
-    getRatingData(restoName).then(res => setRatingData(res));
+    getRatingData(restoID).then(res => setRatingData(res));
   };
 
   useEffect(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
-  }, [restoName]);
+    getRatingData(restoID).then(res => setRatingData(res));
+  }, [restoID]);
 
   return (
     <>

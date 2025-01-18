@@ -66,21 +66,22 @@ router.put('/', async (req, res) => {
     const profileDetails = await updateRestoProfileDetails(userID as number,
       updateFields);
 
-      if (oldUser.email !== updateFields.email) {
-        await setValidEmailFalseResto(userID as number);
-        const email = updateFields.email;
-        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    if (oldUser.email !== updateFields.email) {
+      await setValidEmailFalseResto(userID as number);
+      const email = updateFields.email;
+      const token =
+        jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
   
-        const msg = {
-          to: email,
-          from: process.env.SMTP_USER,
-          subject: 'Email Verification',
-          html: `<p>You changed your email. Please click the following link to verify your new email:</p>
+      const msg = {
+        to: email,
+        from: process.env.SMTP_USER,
+        subject: 'Email Verification',
+        html: `<p>You changed your email. Please click the following link to verify your new email:</p>
                 <a href="${process.env.USER_SITE}/verify-email?token=${token}">Verify Email</a>`,
-        };
+      };
   
-        await sgMail.send(msg);
-      }
+      await sgMail.send(msg);
+    }
 
     return res.status(200)
       .send(profileDetails);
@@ -133,7 +134,8 @@ router.put('/updateRecoveryPassword', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    const returnValue = await updateRecoveryPasswordResto(Number(userID), newPassword);
+    const returnValue =
+      await updateRecoveryPasswordResto(Number(userID), newPassword);
     return res.status(200)
       .send(returnValue);
   } catch (error) {

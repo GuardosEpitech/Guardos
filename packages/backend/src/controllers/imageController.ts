@@ -87,10 +87,10 @@ export async function changeImageById(id: number, imageNew: IImage) {
 }
 
 export async function linkImageToRestaurant(
-  restaurantName: string, imageId: number) {
+  restaurantId: number, imageId: number) {
   try {
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-    const rest = await Restaurant.findOne({name: restaurantName});
+    const rest = await Restaurant.findOne({_id: restaurantId});
     if (!rest) {
       return null;
     }

@@ -65,7 +65,6 @@ const RestoPage = () => {
   const [filteredRestaurants, setFilteredRestaurants] = 
     useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = useState<Allergen[]>([
-    // TODO: apply i18n
     { name: "celery", value: false, colorButton: "primary" },
     { name: "gluten", value: false, colorButton: "primary" },
     { name: "crustaceans", value: false, colorButton: "primary" },
@@ -205,15 +204,6 @@ const RestoPage = () => {
 
     return combinedCards;
   };
-
-  const updateRestoData = () => {
-    const inter: ISearchCommunication = { name: "" }
-    setLoading(true);
-    getNewFilteredRestos(inter).then((res) => {
-      setFilteredRestaurants(res);
-      setLoading(false);
-    });
-  }
 
   const loadFilter = async () => {
     const filter = JSON.parse(localStorage.getItem('filter') || '{}');

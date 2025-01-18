@@ -24,6 +24,8 @@ const Header = () => {
     localStorage.removeItem('visitedBefore');
     setLoggedIn(false);
     document.dispatchEvent(event);
+    const userEvent = new CustomEvent("setUserToken");
+    window.dispatchEvent(userEvent);
     NavigateTo('/login', navigate, {})
   }
 
@@ -42,6 +44,8 @@ const Header = () => {
       } else {
         setLoggedIn(false);
         localStorage.removeItem('user');
+        const userEvent = new CustomEvent("setUserToken");
+        window.dispatchEvent(userEvent);
       }
     } catch (error) {
       console.error('Error fetching login data:', error);

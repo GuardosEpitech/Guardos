@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { BrowserRouter, Routes, Route, Navigate }
+import { BrowserRouter, Routes, Route, Navigate, useNavigate }
   from "react-router-dom";
 
 import AddDishPage from "@src/pages/AddDishPage";
@@ -42,123 +42,154 @@ import GuidesPage from "@src/pages/GuidesPage";
 import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
 import { checkDarkMode } from "../utils/DarkMode";
 
+const NavigationHandler = ():any => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleCustomEvent = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      if (customEvent.detail) {
+        navigate(customEvent.detail);
+      }
+    };
+
+    const handleStorageEvent = () => {
+      const event = new CustomEvent("navigate", { detail: "/" });
+      const userEvent = new CustomEvent("setUserToken");
+      window.dispatchEvent(event);
+      window.dispatchEvent(userEvent);
+    };
+
+    window.addEventListener("navigate", handleCustomEvent);
+    window.addEventListener("storage", handleStorageEvent);
+
+    return () => {
+      window.removeEventListener("navigate", handleCustomEvent);
+      window.removeEventListener("storage", handleStorageEvent);
+    };
+  }, [navigate]);
+
+  return null; // This component doesn't render anything visible
+};
+
+
 const MVPRouter = () => {
-  const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
-  const [showCookies, setShowCookies] = useState<boolean>();
-  const userToken = localStorage.getItem('user');
-  const [loading, setLoading] = useState(true);
-  const [login, setLogin] = useState(false);
+  const [userToken, setUserToken] = useState<string | null>(localStorage.getItem("user"));
+  const [showCookies, setShowCookies] = useState<boolean>(true);
 
-  useMemo(() => {
-    checkDarkMode();
-  }, [location]);
+  // Fetch and set the user token when the app loads
+  useEffect(() => {
+    const token = localStorage.getItem("user");
+    setUserToken(token);
 
-  const checkUserToken = () => {
-    if (userToken === null) {
-      setIsUserTokenSet(false);
-      return;
-    }
-    setIsUserTokenSet(true);
-  };
-
-  const areCookiesSet = async () => {
-    if (isUserTokenSet) {
-      const data = await getUserRestoPreferences(userToken);
-      if (data && data.isSet) {
-        setShowCookies(false);
-        localStorage.setItem('visitedRestoBefore', 'true');  
+    const checkCookies = async () => {
+      if (token) {
+        const data = await getUserRestoPreferences(token);
+        setShowCookies(!data?.isSet);
+        if (data?.isSet) {
+          localStorage.setItem("visitedRestoBefore", "true");
+        }
       } else {
         setShowCookies(true);
       }
-    } else {
-      setShowCookies(true);
-    }
-  };
+    };
 
-  useEffect(() => {
-    checkUserToken();
-    areCookiesSet();
+    checkCookies();
+  }, []);
 
-    const loginToken = localStorage.getItem('freshLogin');
-
-    if (loginToken && loginToken !== 'false') {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-  }, [isUserTokenSet, userToken]);
-
+  // Handle cookie banner visibility
   const toggleCookieBanner = (value: boolean) => {
     setShowCookies(value);
   };
 
+  // PrivateRoute for authenticated users
+  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    return userToken ? <>{children}</> : <Navigate to="/login" />;
+  };
+
+  const LoginOnlyRoute = ({ children }: { children: React.ReactNode }) => {
+    return userToken ? <Navigate to="/" /> : <>{children}</>;
+  };
+
+  window.addEventListener('setUserToken', () => {
+    setUserToken(localStorage.getItem("user"));
+  })
+
   return (
     <>
-    {showCookies && <CookieBanner />}
-    <BrowserRouter>
-      <ScrollToTop />
-      {isUserTokenSet === false && window.location.pathname !== '/register'
-        && window.location.pathname !== '/account-recovery' &&
-        window.location.pathname !== '/payment-failed' &&
-        window.location.pathname !== '/verify-email' && 
-        window.location.pathname !== '/payment-success' &&
-        window.location.pathname !== '/login' &&
-        window.location.pathname !== '/change-password' &&
-        window.location.pathname !== '/cookiestatement' &&
-        window.location.pathname !== '/technologies' && (
-        <Navigate to="login" />
-      )}
-      {isUserTokenSet === true && (window.location.pathname === '/register'
-      || window.location.pathname === '/account-recovery' || window.location.pathname === '/login'
-      ) && (
-        <Navigate to="/" />
-      )}
-      {login === true && (window.location.pathname === '/login') && (
-        <Navigate to="/" />
-      )}
-      <Routes>
-        <Route element={<AppOutlet />}>
-          <Route path="addDish" element={<AddDishPage />} />
-          <Route path="addProduct" element={<AddProductPage />} />
-          <Route path="addResto" element={<AddRestaurantPage />} />
-          <Route path="dishes" element={<DishesPage />} />
-          <Route path="login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>} />
-          <Route path="/register" element={<RegistrationPage />} />
-          <Route path="verify-email" element={<VerifyEmailPage />} />
-          <Route path="account" element={<MyAccountPage />} />
-          <Route path="editDish" element={<EditDishPage />} />
-          <Route path="editProduct" element={<EditProductPage />} />
-          <Route path="editResto" element={<EditRestaurantPage />} />
-          <Route path="products" element={<ProductsPage />} />
-          <Route path="menu" element={<MenuPage />} />
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/account-recovery" element={<ResetPassword />} />
-          <Route path="/feature-request" element={<FeatureRequest />}> </Route>
-          <Route path="/support" element={<UserSupportPage/>}></Route>
-          <Route path="/account-recovery" element={<ResetPassword />}></Route>
-          <Route path="/change-password" element={<ChangePasswordPage />}></Route>
-          <Route path="/privacy" element={<PrivacyPage />}></Route>
-          <Route path="/imprint" element={<ImprintPage />}></Route>
-          <Route path="addCategory" element={<AddCategoryPage />}></Route>
-          <Route path="addRestoChain" element={<AddRestoChainPage />}></Route>
-          <Route path="restoOverview" element={<RestoOverViewPage />}></Route>
-          <Route path="/cookiestatement" element={<CookieStatement />}></Route>
-          <Route path="/technologies" element={<TechnologyList />}></Route>
-          <Route path="/subscriptions" element={<SubscriptionPage />}></Route>
-          <Route path="/payment" element={<PaymentPage />}></Route>
-          <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
-          <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
-          <Route path="/terms" element={<TermsPage />}></Route>
-          <Route path="/discount" element={<DiscountDishPage />}></Route>
-          <Route path="/combo" element={<DishComboPage />}></Route>
-          <Route path="/insights" element={<UserInsights />}></Route>
-          <Route path="/guides" element={<GuidesPage />}></Route>
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      {showCookies && <CookieBanner />}
+      <BrowserRouter>
+        <ScrollToTop />
+        <NavigationHandler />
+        <Routes>
+          <Route element={<AppOutlet />}>
+          <Route
+              path="/login"
+              element={
+                <LoginOnlyRoute>
+                  <LoginPage toggleCookieBanner={setShowCookies} />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <LoginOnlyRoute>
+                  <RegistrationPage />
+                </LoginOnlyRoute>
+              }
+            />
+            {/* Public routes */}
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+            <Route path="/account-recovery" element={<ResetPassword />} />
+            <Route path="/change-password" element={<ChangePasswordPage />} />
+            <Route path="/cookiestatement" element={<CookieStatement />} />
+            <Route path="/technologies" element={<TechnologyList />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/imprint" element={<ImprintPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+
+            {/* Protected routes */}
+            <Route
+              path="*"
+              element={
+                <PrivateRoute>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/addDish" element={<AddDishPage />} />
+                    <Route path="/addProduct" element={<AddProductPage />} />
+                    <Route path="/addResto" element={<AddRestaurantPage />} />
+                    <Route path="/dishes" element={<DishesPage />} />
+                    <Route path="/account" element={<MyAccountPage />} />
+                    <Route path="/editDish" element={<EditDishPage />} />
+                    <Route path="/editProduct" element={<EditProductPage />} />
+                    <Route path="/editResto" element={<EditRestaurantPage />} />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/menu" element={<MenuPage />} />
+                    <Route path="/feature-request" element={<FeatureRequest />} />
+                    <Route path="/support" element={<UserSupportPage />} />
+                    <Route path="/addCategory" element={<AddCategoryPage />} />
+                    <Route path="/addRestoChain" element={<AddRestoChainPage />} />
+                    <Route path="/restoOverview" element={<RestoOverViewPage />} />
+                    <Route path="/subscriptions" element={<SubscriptionPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
+                    <Route path="/success" element={<PaymentAddSuccessPage />} />
+                    <Route path="/cancel" element={<PaymentAddCancelPage />} />
+                    <Route path="/discount" element={<DiscountDishPage />} />
+                    <Route path="/combo" element={<DishComboPage />} />
+                    <Route path="/insights" element={<UserInsights />} />
+                    <Route path="/guides" element={<GuidesPage />} />
+                    <Route path="*" element={<Navigate to="/" />} />
+                  </Routes>
+                </PrivateRoute>
+              }
+            />
+            </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 };
 
 export default MVPRouter;
+

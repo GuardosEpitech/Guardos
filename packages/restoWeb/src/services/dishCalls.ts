@@ -119,21 +119,6 @@ export const removeDiscount = async (body: any, token: string) => {
   }
 };
 
-export const getDishesByResto = async (name: string) => {
-  try {
-    const response = await axios({
-      method: "GET",
-      url: baseUrl + name,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching dishes by resto:", error);
-  }
-}
-
 export const addCombo = async (token: string, body: any) => {
   try {
     const response = await axios({
@@ -168,12 +153,12 @@ export const removeCombo = async (token: string, body: any) => {
   }
 }
 
-export const getDishesByID = async(restoName: string, body: any) => {
+export const getDishesByID = async(userToken: string, body: any) => {
   try {
     const response = await axios({
       url: baseUrl + 'dishIDs',
       method: "POST",
-      params: {key: restoName},
+      params: {key: userToken},
       data: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",

@@ -14,9 +14,12 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import {NavigateTo} from "@src/utils/NavigateTo";
 import {useNavigate} from "react-router-dom";
+import {IRestaurantFrontEnd} from "../../../../shared/models/restaurantInterfaces";
+import {getAllRestaurantsByUser} from "@src/services/restoCalls";
 
 const DishesPage = () => {
   const [dishData, setDishData] = useState<Array<IDishFE>>([]);
+  const [allUserRestos, setAllUserRestos] = useState<Array<IRestaurantFrontEnd>>([]);
   const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -33,6 +36,10 @@ const DishesPage = () => {
       .then((res) => {
         setDishData(res);
         setLoading(false);
+      });
+    getAllRestaurantsByUser({ key: userToken })
+      .then((res) => {
+        setAllUserRestos(res);
       });
   };
 
@@ -78,6 +85,7 @@ const DishesPage = () => {
                   <Dish
                     key={dish.name + index}
                     dish={dish}
+                    userRestos={allUserRestos}
                     onUpdate={updateDishData}
                     editable
                     isTopLevel={true}

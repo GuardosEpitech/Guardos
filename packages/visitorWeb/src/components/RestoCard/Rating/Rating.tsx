@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import Button from "@mui/material/Button";
@@ -8,13 +8,14 @@ import Rating from '@mui/material/Rating';
 import { useTranslation } from "react-i18next";
 
 interface IRatingProps {
-  restoRating: number;
-  restoRatingsCount: number;
-  restoName: string;
-  isPopup?: boolean;
+  restoRating: number,
+  restoRatingsCount: number,
+  restoName: string,
+  isPopup?: boolean,
+  restoID: number
 }
 
-const RatingDisplay = ({ restoRating, restoRatingsCount, restoName, isPopup }: IRatingProps) => {
+const RatingDisplay = ({ restoRating, restoRatingsCount, restoName, restoID, isPopup }: IRatingProps) => {
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
   const { t } = useTranslation();
@@ -31,24 +32,32 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName, isPopup }: I
   };
 
   useEffect(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
-  }, [restoName]);
+    getRatingData(restoID).then(res => setRatingData(res));
+  }, [restoID]);
 
   return (
     <div className={`${isPopup ? styles.PopupContainer : styles.ReviewContainer}`}>
       <div className={styles.RatingRow}>
-        <Button onClick={() => NavigateTo("/reviews", navigate, { restoName: restoName })}>
+        <Button
+            onClick={() => NavigateTo("/reviews", navigate, {
+              restoName: restoName,
+              restoID: restoID
+            })}
+        >
           <Rating name="read-only" value={averageRating()} readOnly />
-        </Button>
         <span className={styles.AverageTxt}>
           {Array.isArray(ratingData) ? ratingData.length : 0}
         </span>
+        </Button>
       </div>
       <Button
         className={styles.AddReview}
         variant="contained"
-        onClick={() => NavigateTo("/addreview", navigate, { restoName: restoName })}
-      >
+        onClick={() => NavigateTo("/addreview", navigate, {
+          restoName: restoName,
+          restoID: restoID
+        })}
+        >
         {t("components.RestoCard.add-review")}
       </Button>
     </div>
