@@ -53,7 +53,7 @@ export async function createOrUpdateProduct
         const allergen = await detectAllergensByProduct([ingredientName]);
         console.log('Allergen:', allergen);
         if (allergen && allergen.length > 0) {
-          allergens.push(...allergen);
+          allergens.push(...allergen[0].allergens);
         }
       }
     }
