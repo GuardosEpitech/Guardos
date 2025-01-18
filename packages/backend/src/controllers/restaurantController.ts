@@ -10,7 +10,7 @@ import {
 import { restaurantSchema } from '../models/restaurantInterfaces';
 import { userRestoSchema } from '../models/userRestaurantInterfaces';
 import { ICategories } from '../../../shared/models/categoryInterfaces';
-import { IDishBE, IDishFE } from '../../../shared/models/dishInterfaces';
+import { IDishBE, IDishFE, TDish } from '../../../shared/models/dishInterfaces';
 import { IMealType } from '../../../shared/models/mealTypeInterfaces';
 import { ILocation } from '../../../shared/models/locationInterfaces';
 import {
@@ -719,55 +719,6 @@ export async function modifyRestoReview(
   return updatedRestaurant;
 }
 
-export async function addCategory(
-  uid: number,
-  newCategories: [{ name: string; hitRate: number }]
-) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
-  try {
-    const rest = await Restaurant.findOne({ _id: uid });
-
-    if (!rest) {
-      throw new Error('Restaurant not found');
-    }
-    const transformedArray= newCategories.map((category, index) => ({
-      _id: index + 1,
-      name: category.name,
-      sortId: category.hitRate
-    }));
-    rest.mealType = transformedArray;
-
-    await rest.save();
-
-    const restaurantBE = createBackEndObj({
-      description: rest.description as string,
-      dishes: rest.dishes as [IDishBE],
-      extras: rest.extras as unknown as [IDishBE],
-      uid: rest._id as number,
-      userID: rest.userID as number,
-      restoChainID: rest.restoChainID as number,
-      location: rest.location as ILocation,
-      mealType: rest.mealType as [IMealType],
-      name: rest.name as string,
-      openingHours: rest.openingHours as [IOpeningHours],
-      phoneNumber: rest.phoneNumber as string,
-      pictures: rest.pictures as [string],
-      picturesId: rest.picturesId as [number],
-      products: rest.products as [IProduct],
-      rating: rest.rating as number,
-      ratingCount: rest.ratingCount as number,
-      website: rest.website as string,
-      menuDesignID: rest.menuDesignID as number,
-    });
-
-    return createRestaurantObjFe(restaurantBE);
-  } catch (error) {
-    console.error('Error adding/updating category:', error);
-    throw error;
-  }
-}
-
 export async function doesUserOwnRestaurantByName(
   restoName: string,
   userID: number
@@ -833,5 +784,95 @@ export async function addCustomerResto(userID: number, customerID: string) {
       { new: true }
     );
     return answer.customerID;
+  }
+}
+
+export async function addCategory(
+  userID: number,
+  uid: number,
+  newCategories: [{ name: string; hitRate: number, edited?: boolean }]
+) {
+  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+  try {
+    const editedCategory = newCategories.find(category => category.edited);
+
+    let affectedDishes: TDish[] = [];
+
+    const rest = await Restaurant.findOne({ _id: uid });
+
+    if (!rest) {
+      throw new Error('Restaurant not found');
+    }
+    const transformedArray= newCategories.map((category, index) => ({
+      _id: index + 1,
+      name: category.name,
+      sortId: category.hitRate
+    }));
+    rest.mealType = transformedArray;
+    rest.dishes.forEach(dish => {
+      const dishCategory = dish.category;
+    
+      if (editedCategory) {
+        const categoryInNewCategories = newCategories.some(category => 
+          category.name === dishCategory.menuGroup && 
+          category.name === dishCategory.foodGroup
+        );
+        if (!categoryInNewCategories) {
+          dish.category.menuGroup = editedCategory.name;
+          dish.category.foodGroup = editedCategory.name;
+          affectedDishes.push(dish as TDish);
+        }
+      }
+    });
+    await rest.save();
+
+    if (editedCategory) {
+      const restos = await Restaurant.find({ userID: userID });
+
+      for (const resto of restos) {
+        if (resto._id !== uid) {
+          const isCategoryInMealType = resto.mealType.some(meal => meal.name === editedCategory.name);
+
+          if (!isCategoryInMealType) {
+            const newId = resto.mealType.length;
+            const maxSortId = resto.mealType.reduce((max, current) => {
+              return current.sortId as number > max ? current.sortId : max;
+            }, -Infinity);
+            const newSortId = maxSortId as number + 1;
+            const newElement = {
+              _id: newId,
+              name: editedCategory.name,
+              sortId: newSortId,
+            };
+            
+            resto.mealType.push(newElement);
+          }
+
+          const matchingDishes = resto.dishes.filter(dish =>
+            affectedDishes.some(
+              affectedDish => affectedDish.name === dish.name && affectedDish.price === dish.price
+            )
+          );
+          if (matchingDishes.length > 0) {
+            resto.dishes.forEach(dish => {
+              const isMatchingDish = matchingDishes.some(
+                matchingDish => matchingDish.name === dish.name && matchingDish.price === dish.price
+              );
+              if (isMatchingDish) {
+                dish.category.menuGroup = editedCategory.name;
+                dish.category.foodGroup = editedCategory.name;
+              }
+            });
+            await resto.save();
+          }
+        }
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding/updating category:', error);
+    throw error;
   }
 }

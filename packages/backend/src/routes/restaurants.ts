@@ -247,7 +247,7 @@ router.post('/updateCategories', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    const answer = await addCategory(uid, newCategories);
+    const answer = await addCategory(userID as number, uid, newCategories);
     return res.status(200)
       .send(answer);
   } catch (error) {
