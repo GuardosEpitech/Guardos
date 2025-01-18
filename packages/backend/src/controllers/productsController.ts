@@ -45,10 +45,12 @@ export async function createOrUpdateProduct
     for (const ingredientName of product.ingredients) {
       const ingredient = await getIngredientByName(ingredientName);
       if (ingredient && ingredient.length > 0) {
+        console.log('found:' ,ingredient);
         allergens.push(...ingredient[0].allergens);
       }
     }
     allergens = Array.from(new Set(allergens));
+    console.log('Allergens:', allergens);
 
     const existingProduct = await Product.findOne({ name: product.name });
 
