@@ -46,22 +46,16 @@ export async function createOrUpdateProduct
     for (const ingredientName of product.ingredients) {
       const ingredient = await getIngredientByName(ingredientName);
       if (ingredient && ingredient.length > 0) {
-        console.log('found:' ,ingredient);
         allergens.push(...ingredient[0].allergens);
       } else {
-        console.log('Ingredient not found:', ingredientName);
         const allergen = await detectAllergensByProduct([ingredientName]);
-        console.log('Allergen:', allergen);
         if (allergen && allergen.length > 0) {
           allergens.push(...allergen[0].allergens);
         }
       }
     }
     allergens = Array.from(new Set(allergens)) as string[];
-    console.log('Allergens:', allergens);
-
     const existingProduct = await Product.findOne({ name: product.name });
-    console.log('Existing product:', existingProduct);
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
         existingProduct.allergens = allergens;
