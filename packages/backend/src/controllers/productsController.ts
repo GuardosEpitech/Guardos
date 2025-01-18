@@ -80,7 +80,6 @@ export async function createOrUpdateProduct
           restaurantId: [restaurantId],
         });
         await newProduct.save();
-        console.log('New product:', newProduct);
         return newProduct;
       }
     } else {
