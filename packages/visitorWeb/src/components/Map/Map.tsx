@@ -360,6 +360,7 @@ const MapView = (props: MapProps) => {
                     restoRating={restaurant.rating} 
                     restoRatingsCount={restaurant.ratingCount} 
                     restoName={restaurant.name} 
+                    isPopup={true}
                   />
                 </div>
                 <ThemeProvider theme={PageBtn()}>

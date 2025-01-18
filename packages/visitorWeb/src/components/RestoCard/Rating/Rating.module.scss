@@ -38,4 +38,38 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem; 
+}
+
+.PopupContainer {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  gap: 10px; 
+  width: 100%;
+}
+
+.PopupContainer .RatingRow {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  gap: 0.5rem; 
+}
+
+.PopupContainer .AverageTxt {
+  font-size: 1rem;
+  margin-left: 0.5rem;  
+}
+
+.PopupContainer .MuiRating-root {
+  margin: 0;
+}
+
+.PopupContainer .AddReview {
+  margin-left: auto; 
+  text-transform: none; 
+  font-size: 14px;
+  padding: 6px 12px;
+  min-width: auto;
+  width: auto; 
 }
