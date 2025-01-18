@@ -17,6 +17,7 @@ import { IimageInterface } from "shared/models/imageInterface";
 import Rating from '@mui/material/Rating';
 import { getRatingData } from "@src/services/ratingCalls";
 import {useTranslation} from "react-i18next";
+import { log } from "console";
 
 interface IRestoCardProps {
   resto: IRestaurantFrontEnd;
@@ -49,6 +50,10 @@ const RestoCard = (props: IRestoCardProps) => {
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
   const [openingHours, setOpeningHours] = useState(resto.openingHours);
+  const sortedOpeningHours = resto.openingHours
+  .sort((a, b) => a.day - b.day)
+  .filter(hour => hour.open && hour.close);
+
 
   const address =
     `${resto.location.streetName} ${resto.location.streetNumber}` +
@@ -98,6 +103,8 @@ const RestoCard = (props: IRestoCardProps) => {
   });
 
   useEffect(() => {
+  console.log(openingHours);
+  
     async function callToImages() {
       if (resto.picturesId.length > 0) {
         const picturesId = resto.picturesId;
@@ -216,24 +223,21 @@ const RestoCard = (props: IRestoCardProps) => {
             {resto.description}
           </p>
           <h3>{t('components.RestoCard.opening-hours')}</h3>
-          <div className={styles.ContainerOpeningHours}>
-            {resto.openingHours.map((index, key) => (
-              <div key={key} className={styles.ContainerOpeningHoursDetails}>
-                <span className={styles.DaysTextValue}>{days[key].name} :</span>
-                <div>
-                  <span className={styles.OpenCloseTextValue}>
-                    {index?.open}
-                  </span>
-                  <span className={styles.OpenCloseDelim}>
-                    -
-                  </span>
-                  <span className={styles.OpenCloseTextValue}>
-                    {index?.close}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+            <div className={styles.ContainerOpeningHours}>
+              {sortedOpeningHours.map((hour) => {
+                const day = days.find((d) => d.id === hour.day);
+                return (
+                  <div key={day.id} className={styles.ContainerOpeningHoursDetails}>
+                    <span className={styles.DaysTextValue}>{day?.name} :</span>
+                    <div>
+                      <span className={styles.OpenCloseTextValue}>{hour.open}</span>
+                      <span className={styles.OpenCloseDelim}> - </span>
+                      <span className={styles.OpenCloseTextValue}>{hour.close}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
         </Grid>
       </Grid>
     </Paper>
