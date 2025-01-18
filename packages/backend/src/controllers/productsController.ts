@@ -98,7 +98,6 @@ export async function createOrUpdateProduct
         restaurantId: [restaurantId],
       });
       await newProduct.save();
-      console.log('New product else tree:', newProduct);
       return newProduct;
     }
   } catch (error) {
