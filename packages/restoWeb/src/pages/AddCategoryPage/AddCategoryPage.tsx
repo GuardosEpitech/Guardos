@@ -23,6 +23,7 @@ const AddCategoryPage = () => {
   const [categoryToEdit, setCategoryToEdit] = useState<ICategory | undefined>(undefined);
   const {t} = useTranslation();
   const navigate = useNavigate();
+  const [reloadCategories, setReloadCategories] = useState(false);
   
   useEffect(() => {
     async function fetchRestaurants() {
@@ -37,7 +38,8 @@ const AddCategoryPage = () => {
       }
     }
     fetchRestaurants();
-  }, []);
+    setReloadCategories(false);
+  }, [reloadCategories]);
   
   const updateNewCategories = (categories: ICategories[]) => {
     const formattedCategories: { name: string; hitRate: number }[] = categories.map(category => ({
@@ -138,6 +140,7 @@ const AddCategoryPage = () => {
     setNewCategoryHitRate('');
     setCategoryToEdit(undefined);
     setShowNewCategoryInput(false);
+    setReloadCategories(updatedResto);
   };
 
   const handleDeleteConfirmation = (category: ICategory) => {
