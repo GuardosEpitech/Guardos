@@ -9,6 +9,7 @@ import {changeDishByID,
   getDishesByRestaurantNameTypeChecked}
   from './dishesController';
 import {IDishesCommunication} from '../models/communicationInterfaces';
+import {detectAllergensByProduct} from "./allergenDetectionController";
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -47,6 +48,13 @@ export async function createOrUpdateProduct
       if (ingredient && ingredient.length > 0) {
         console.log('found:' ,ingredient);
         allergens.push(...ingredient[0].allergens);
+      } else {
+        console.log('Ingredient not found:', ingredientName);
+        const allergen = await detectAllergensByProduct([ingredientName]);
+        console.log('Allergen:', allergen);
+        if (allergen && allergen.length > 0) {
+          allergens.push(...allergen);
+        }
       }
     }
     allergens = Array.from(new Set(allergens));
