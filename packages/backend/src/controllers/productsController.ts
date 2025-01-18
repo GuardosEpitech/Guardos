@@ -9,6 +9,7 @@ import {changeDishByID,
   getDishesByRestaurantNameTypeChecked}
   from './dishesController';
 import {IDishesCommunication} from '../models/communicationInterfaces';
+import {detectAllergensByProduct} from './allergenDetectionController';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -46,12 +47,15 @@ export async function createOrUpdateProduct
       const ingredient = await getIngredientByName(ingredientName);
       if (ingredient && ingredient.length > 0) {
         allergens.push(...ingredient[0].allergens);
+      } else {
+        const allergen = await detectAllergensByProduct([ingredientName]);
+        if (allergen && allergen.length > 0) {
+          allergens.push(...allergen[0].allergens);
+        }
       }
     }
-    allergens = Array.from(new Set(allergens));
-
+    allergens = Array.from(new Set(allergens)) as string[];
     const existingProduct = await Product.findOne({ name: product.name });
-
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
         existingProduct.allergens = allergens;
@@ -156,16 +160,6 @@ export async function getProductsByUser(loggedInUserId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.find({ userID: loggedInUserId });
-  } catch (error) {
-    console.error('Error while fetching all products: ', error);
-    return [];
-  }
-}
-
-export async function getAllProducts() {
-  try {
-    const Product = mongoose.model('Product', productSchema);
-    return await Product.find({});
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return [];
