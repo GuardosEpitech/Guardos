@@ -23,7 +23,7 @@ import {
   addNewResto,
   editResto,
   getAllMenuDesigns,
-  getAllRestaurantChainsByUser, getRestoById,
+  getAllRestaurantChainsByUser, getAllRestaurantsByUser, getRestoById,
 } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
@@ -37,7 +37,6 @@ import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
 import {addQRCode} from "@src/services/qrcodeCall";
-import { SignalCellularConnectedNoInternet4BarSharp } from "@mui/icons-material";
 
 const PageBtn = () => {
   return createTheme({
@@ -95,7 +94,6 @@ interface IDay {
   name?: string;
 }
 
-// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -144,19 +142,31 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [inputValue, setInputValue] = React.useState("");
   const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const [isNameEmpty, setIsNameEmpty] = useState(false);
+  const [isNameUsed, setIsNameUsed] = useState(false);
   const [isStreetEmpty, setIsStreetEmpty] = useState(false);
   const [isStreetNumberEmpty, setIsStreetNumberEmpty] = useState(false);
   const [isPostalEmpty, setIsPostalEmpty] = useState(false);
   const [isCityEmpty, setIsCityEmpty] = useState(false);
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
-  const [restaurantData, setRestaurantData] = useState();
   const [selectedPictureId, setSelectedPictureId] = useState<number[]>([]);
   const [restoID, setRestoID] = useState<number>();
+  const [allUserRestos, setAllUserRestos] = useState<string[]>([]);
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
 
   useEffect(() => {
+    const userToken = localStorage.getItem('user');
+
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+
+    getAllRestaurantsByUser({ key: userToken })
+      .then((res) => {
+        setAllUserRestos(res.map((resto: any) => resto.name));
+      });
     const fetchImages = async () => {
       if (props.picturesId && props.picturesId.length > 0) {
         try {
@@ -209,11 +219,6 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     }
     fetchImages();
 
-    const userToken = localStorage.getItem('user');
-    if (userToken === null) {
-      console.log("Error getting user ID");
-      return;
-    }
     getAllMenuDesigns(userToken)
       .then((res) => {
         setMenuDesigns(res);
@@ -285,6 +290,13 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       errorBool = true;
     } else {
       setIsNameEmpty(false);
+    }
+
+    if (allUserRestos.includes(selectedRestaurantName) && selectedRestaurantName !== origRestoName) {
+      setIsNameUsed(true);
+      errorBool = true;
+    } else {
+      setIsNameUsed(false);
     }
 
     if (!selectedStreet || selectedStreet.length === 0) {
@@ -465,12 +477,17 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   defaultValue={restaurantName}
                   label={t('components.RestaurantForm.name') + '*'}
                   onChange={(e) => (setSelectedRestaurantName(e.target.value))}
-                  error={isNameEmpty}        
+                  error={isNameEmpty || isNameUsed}
                   required
                 />
                 {isNameEmpty && (
                   <FormHelperText error id="accountId-error">
                     {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
+                {isNameUsed && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.RestaurantForm.name-used-error')}
                   </FormHelperText>
                 )}
               </FormControl>

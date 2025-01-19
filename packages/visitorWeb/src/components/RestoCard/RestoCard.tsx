@@ -59,7 +59,7 @@ const RestoCard = (props: IRestoCardProps) => {
   const [extended, setExtended] = useState(false);
   const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(props.isFavourite);
-  const { name, rating, description, categories, ratingCount, picturesId } = props.resto;
+  const { name, rating, description, ratingCount, picturesId } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -104,8 +104,7 @@ const RestoCard = (props: IRestoCardProps) => {
       state: {
         restoName: name,
         restoID: props.resto.uid,
-        address: address,
-        menuDesignID: props.resto.menuDesignID
+        address: address
       }
     });
   };
@@ -176,7 +175,12 @@ const RestoCard = (props: IRestoCardProps) => {
             </div>
           </div>
           <div className={styles.FlexParent}>
-            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name} />
+            <RatingDisplay
+              restoRating={rating}
+              restoRatingsCount={ratingCount}
+              restoName={name}
+              restoID={props.resto.uid}
+            />
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />

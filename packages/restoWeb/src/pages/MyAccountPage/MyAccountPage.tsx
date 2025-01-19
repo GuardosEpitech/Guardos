@@ -208,6 +208,8 @@ const MyAccountPage = () => {
           localStorage.removeItem('user');
           localStorage.removeItem('visitedRestoBefore');
           document.dispatchEvent(event);
+          const userEvent = new CustomEvent("setUserToken");
+          window.dispatchEvent(userEvent);
           NavigateTo('/login', navigate, {});
         }
       });
@@ -225,7 +227,7 @@ const MyAccountPage = () => {
   const toggleDarkMode = () => {
     const darkModeEnabled = localStorage.getItem('darkMode');
     setDarkMode(!darkMode);
-    if (darkModeEnabled == 'false') {
+    if (darkModeEnabled == 'false' || darkModeEnabled == null ) {
       enableDarkMode();
     } else {
       disableDarkMode();

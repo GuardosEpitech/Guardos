@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import {checkDarkMode} from "@src/utils/DarkMode";
 
 const ViewRatingPage = () => {
-  const { restoName } = useLocation().state;
+  const { restoName, restoID } = useLocation().state;
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
 
@@ -26,8 +26,8 @@ const ViewRatingPage = () => {
   }
 
   useEffect(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
-  }, [restoName]);
+    getRatingData(restoID).then(res => setRatingData(res));
+  }, [restoID]);
 
   return (
     <>

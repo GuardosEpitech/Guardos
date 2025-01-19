@@ -15,9 +15,11 @@ import {getImages} from "@src/services/callImages";
 import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
 import {useTranslation} from "react-i18next";
+import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
 
 interface IEditableDishProps {
   dish: IDishFE;
+  userRestos?: IRestaurantFrontEnd[];
   // eslint-disable-next-line @typescript-eslint/ban-types
   onUpdate?: Function;
   imageSrc?: string;
@@ -28,12 +30,10 @@ interface IEditableDishProps {
 const Dish = (props: IEditableDishProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showCombos, setShowCombos] = useState(false);
   const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
   const { name, description, price, discount, validTill, combo, allergens } = dish;
   const priceStr = `${price.toFixed(2)} €`;
-  const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const {t} = useTranslation();
   const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
@@ -52,7 +52,19 @@ const Dish = (props: IEditableDishProps) => {
     if (userToken === null) {
       return;
     }
-    await deleteDish(dish.resto, name, userToken);
+    let dishRestos: string[] = [];
+
+    if (props.userRestos && props.userRestos.length > 0) {
+      dishRestos = props.userRestos
+        .filter((item: IRestaurantFrontEnd) => item.dishes
+          .some((dish) => dish.name === name))
+        .map((item: IRestaurantFrontEnd) => item.name);
+    } else {
+      dishRestos = [dish.resto];
+    }
+    for (const resto of dishRestos) {
+      await deleteDish(resto, name, userToken);
+    }
     if (onUpdate) {
       await onUpdate();
       setShowPopup(false);
@@ -100,10 +112,11 @@ const Dish = (props: IEditableDishProps) => {
         if (dish.resto === undefined) {
           return;
         }
-        const comboDishes = await getDishesByID(dish.resto, { ids: combo });
+        const userToken = localStorage.getItem('user');
+        const comboDishes = await getDishesByID(userToken, { ids: combo, key: dish.resto });
 
         if (comboDishes) {
-          const validCombos = comboDishes.filter((dish : any) => dish != null);
+          const validCombos = comboDishes.filter((dish : any) => dish !== null);
           setRecommendedDishes(validCombos);
         }
       } catch (error) {

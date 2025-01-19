@@ -403,52 +403,6 @@ export default class Filter {
     return results;
   }
 
-  // async filterForRestaurantWithRange(lookingFor: number) {
-  //   let results = [{} as IRestaurantFrontEnd];
-  //   results.pop();
-  //   for (let restaurant of await this.restaurants) {
-  //     let inserted = false;
-  //     if (restaurant.range <= lookingFor) {
-  //       inserted = true;
-  //       results.push(this.createRestaurantObj(restaurant as IRestaurantBackEnd, 100));
-  //     }
-  //     if (!inserted) {
-  //       results.push(this.createRestaurantObj(restaurant as IRestaurantBackEnd, 0));
-  //     }
-  //   }
-  //   results.sort((a, b) => (a.hitRate < b.hitRate) ? 1 : -1);
-  //   return results;
-  // }
-
-  async filterForRestaurantWithAllergen(lookingFor: string[]) {
-    const results = [{} as IRestaurantFrontEnd];
-    results.pop();
-    for (const restaurant of await this.restaurants) {
-      let hitRate = 0;
-      for (const dish of restaurant.dishes) {
-        for (const allerg of lookingFor) {
-          if (dish.allergens.some(s => s.toLowerCase() ===
-            allerg.toLowerCase())) {
-            hitRate = 100;
-            break;
-          }
-        }
-        if (hitRate === 100) {
-          break;
-        }
-      }
-      if (hitRate === 100) {
-        results.push(this.createRestaurantObjFe(
-          restaurant as IRestaurantBackEnd, hitRate));
-      } else {
-        results.push(this.createRestaurantObjFe(
-          restaurant as IRestaurantBackEnd, hitRate));
-      }
-    }
-    results.sort((a, b) => (a.hitRate < b.hitRate) ? 1 : -1);
-    return results;
-  }
-
   async returnDefaultQuery() {
     const results = [{} as IRestaurantFrontEnd];
     results.pop();

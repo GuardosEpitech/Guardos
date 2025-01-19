@@ -27,12 +27,12 @@ export const getRestosMenu = async (restoId: number, allergenList: string[], dis
   }
 };
 
-export const getDishesByID = async (restoId: number, body: any) => {
+export const getDishesByID = async (userToken: string, body: any) => {
   try {
     const response = await axios({
       url: baseUrl + '/dishes/dishIDsByID',
       method: "POST",
-      params: {key: restoId},
+      params: {key: userToken},
       data: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
@@ -63,6 +63,24 @@ export const getRestaurantDetails = async (restoID: number) => {
     } else {
       throw new Error("Restaurant not found");
     }
+  } catch (error) {
+    console.error("Error fetching restaurant details:", error);
+    return null;  }
+};
+
+export const getRestaurantMenuId = async (restoID: number) => {
+  try {
+    const response = await axios({
+      url: `${baseUrl}/restaurants/id/` + restoID,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const restaurant = response.data;
+    return restaurant.menuDesignID;
+    
   } catch (error) {
     console.error("Error fetching restaurant details:", error);
     return null;  }

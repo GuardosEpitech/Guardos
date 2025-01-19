@@ -102,6 +102,7 @@
       "ProductForm": {
         "name": "Name",
         "input-empty-error": "Input cannot be empty",
+        "name-used-error": "Name is already used for another product",
         "resto": "Restaurant",
         "english-please": "Note: please only insert the ingredients in English."
       },
@@ -110,6 +111,7 @@
         "change-image": "Change Image",
         "delete-image": "Delete Image",
         "name": "Name",
+        "name-used-error": "The name is already used for another one of your restaurants",
         "phone-number": "Phone number",
         "street-name": "Street name",
         "street-number": "Street number",
@@ -211,9 +213,6 @@
         "go-back-to-login": "Go back to Login",
         "error": "There was an error",
         "change-pw-failure": "Please try again to change the password. If the Error appears one more time, please contact us."
-      },
-      "MenuPage": {
-        "qr-code": "Get my QR Code"
       },
       "DishesPage": {
         "no-dishes-yet": "Oops, looks like you dont have any dishes yet!",
@@ -426,7 +425,7 @@
         "wrong-pw-format": "Your Password should contain minimum: 1x Uppercase and Lowercase Letter, 1x Number and minimum 7 Characters"
       },
       "ResetPassword": {
-        "invalid-credentials": "That username and email {{ email }} don't match. Please check its spelling or try another username",
+        "invalid-credentials": "That username and email don't match. Please check its spelling or try another username",
         "user-error": "Error checking resto user. Please try again",
         "get-back-in-account": "Get back into your Guardos account",
         "enter-account-info": "Tell us some information about your account",

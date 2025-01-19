@@ -1,5 +1,3 @@
-// email.ts
-
 import express from 'express';
 import sgMail from '@sendgrid/mail'; 
 import { getUserToken } from '../controllers/userController';
@@ -24,10 +22,12 @@ router.post('/', async (req, res) => {
 
     await sgMail.send(msg);
 
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200)
+      .json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Failed to send email' });
+    res.status(500)
+      .json({ message: 'Failed to send email' });
   }
 });
 
@@ -39,7 +39,8 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
     let userToken = await getUserToken(email);
 
     if (userToken === false) {
-      res.status(500).json({ message: 'failed to fetch user' });
+      res.status(500)
+        .json({ message: 'failed to fetch user' });
     }
     userToken = encodeURIComponent(userToken);
 
@@ -49,7 +50,7 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
     const msg = {
       from: process.env.SMTP_USER,
       to: email,
-      subject: `Guardos User Recovery Link`,
+      subject: 'Guardos User Recovery Link',
       text: `Name: ${username}\nEmail: ${email}\nYour specific password recovery link: \n${recoveryLink}`,
       html: `<p>Name: ${username}</p>
          <p>Email: ${email}</p>
@@ -58,10 +59,12 @@ router.post('/userVisitor/sendPasswordRecovery', async (req, res) => {
 
     await sgMail.send(msg);
 
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200)
+      .json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Failed to send email' });
+    res.status(500)
+      .json({ message: 'Failed to send email' });
   }
 });
 
@@ -73,7 +76,8 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
     let userToken = await getUserTokenResto(email);
 
     if (userToken === false) {
-      res.status(500).json({ message: 'failed to fetch user' });
+      res.status(500)
+        .json({ message: 'failed to fetch user' });
     }
     userToken = encodeURIComponent(userToken);
 
@@ -83,7 +87,7 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
     const msg = {
       from: process.env.SMTP_USER,
       to: email,
-      subject: `Guardos Restaurant User Recovery Link`,
+      subject: 'Guardos Restaurant User Recovery Link',
       text: `Name: ${username}\nEmail: ${email}\nYour specific password recovery link: \n${recoveryLink}`,
       html: `<p>Name: ${username}</p>
          <p>Email: ${email}</p>
@@ -92,10 +96,12 @@ router.post('/userResto/sendPasswordRecovery', async (req, res) => {
 
     await sgMail.send(msg);
 
-    res.status(200).json({ message: 'Email sent successfully' });
+    res.status(200)
+      .json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Failed to send email' });
+    res.status(500)
+      .json({ message: 'Failed to send email' });
   }
 });
 

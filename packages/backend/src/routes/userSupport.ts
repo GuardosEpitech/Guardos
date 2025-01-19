@@ -7,18 +7,18 @@ const router = express.Router();
 
 function toBoolean(value: string | boolean): boolean {
   if (typeof value === 'boolean') {
-      return value;
+    return value;
   }
   
   if (typeof value === 'string') {
-      const lowerValue = value.toLowerCase();
-      if (lowerValue === 'true') {
-          return true;
-      } else if (lowerValue === 'false') {
-          return false;
-      } else {
-          throw new Error('Invalid boolean string');
-      }
+    const lowerValue = value.toLowerCase();
+    if (lowerValue === 'true') {
+      return true;
+    } else if (lowerValue === 'false') {
+      return false;
+    } else {
+      throw new Error('Invalid boolean string');
+    }
   }
   throw new Error('Invalid input type');
 }
@@ -29,22 +29,26 @@ router.post('/', async function (req: Request, res: Response) {
   try {
     const data = req.body;
 
-    const headers = toBoolean(data.isPremium) ? { 'X-Priority': '1 (Highest)' } : {};
+    const headers =
+      toBoolean(data.isPremium) ? { 'X-Priority': '1 (Highest)' } : {};
 
     const msg = {
       to: process.env.SUPPORT,
       from: process.env.SMTP_USER,
-      subject: toBoolean(data.isPremium) ? `[IMPORTANT] ${data.subject}` : data.subject,
+      subject: toBoolean(data.isPremium)
+        ? `[IMPORTANT] ${data.subject}` : data.subject,
       text: `Name: ${data.name}\nRequest: ${data.request}`,
       headers: headers,
     };
 
     await sgMail.send(msg);
 
-    res.status(200).send('Email sent successfully');
+    res.status(200)
+      .send('Email sent successfully');
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).send('Error sending email');
+    res.status(500)
+      .send('Error sending email');
   }
 });
   

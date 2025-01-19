@@ -1,5 +1,7 @@
 import express from 'express';
-import {getAllUserRestaurantsFiltered} from '../controllers/restaurantController';
+import {
+  getAllUserRestaurantsFiltered
+} from '../controllers/restaurantController';
 import {getUserIdResto} from '../controllers/userRestoController';
 
 const router = express.Router();

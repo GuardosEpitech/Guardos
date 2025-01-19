@@ -1,6 +1,5 @@
 import * as express from 'express';
 
-import { addRestoProduct } from '../controllers/restaurantController';
 import { checkIfNameAndIdExistsIngredients, checkIfIdExists }
   from '../middleware/ingredientsMiddleWare';
 import { IIngredientsCommunication } from '../models/communicationInterfaces';
@@ -38,17 +37,6 @@ router.post('/', async (req, res) => {
         return res.status(400)
           .send('No ingredients found');
       }
-      let allergens: string[] = ingredientsInfo.allergens;
-
-      allergens = Array.from(new Set(
-        allergens.filter(allergen => !allergen.includes('No allergens'))
-      ));
-
-      await addRestoProduct({
-        name: req.body.name,
-        allergens: allergens,
-        ingredients: [ingredientsInfo.name.toLowerCase()],
-      }, req.body.restoName);
 
       return res.status(200)
         .send(ingredientsInfo.name.toLowerCase());

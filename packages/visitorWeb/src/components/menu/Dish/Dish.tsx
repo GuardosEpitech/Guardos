@@ -9,7 +9,6 @@ import AllergenTags from "shared/components/menu/AllergenTags/AllergenTags";
 import {IimageInterface} from "shared/models/imageInterface";
 import {getImages} from "@src/services/imageCalls";
 import {defaultDishImage} from "shared/assets/placeholderImageBase64";
-import {displayImageFromBase64} from "shared/utils/imageConverter";
 import {
   addDishAsFavourite,
   deleteDishFromFavourites,
@@ -73,7 +72,8 @@ const Dish = (props: IDishProps) => {
       }
     }
     const getComboDishes = async () => {
-      const comboDishes = await getDishesByID(props.restoID, {ids: combo});
+      const userToken = localStorage.getItem('user');
+      const comboDishes = await getDishesByID(userToken, {ids: combo, key: props.restoID});
       setRecommendedDishes(comboDishes);
     }
     if (combo) {
@@ -198,7 +198,7 @@ const Dish = (props: IDishProps) => {
             )}
           </Grid>
         </Grid>
-        {isTopLevel && combo && combo.length > 0 && (
+        {isTopLevel && recommendedDishes && recommendedDishes.length > 0 && (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <h4>{t('components.Dish.recommendedCombos')}</h4>
@@ -302,7 +302,7 @@ const Dish = (props: IDishProps) => {
             ))}
           </Grid>
         </Grid>
-        {isTopLevel && combo && combo.length > 0 && (
+        {isTopLevel && recommendedDishes && recommendedDishes.length > 0 && (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <h4>{t('components.Dish.recommendedCombos')}</h4>

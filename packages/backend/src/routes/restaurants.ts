@@ -9,8 +9,6 @@ import {
 }
   from '../controllers/restaurantController';
 import { findMaxIndexRestaurants } from '../middleware/restaurantMiddleWare';
-import { addProductsFromRestaurantToOwnDB }
-  from '../controllers/productsController';
 import { getUserIdResto }
   from '../controllers/userRestoController';
 
@@ -79,7 +77,6 @@ router.post('/', async (req, res) => {
     }
     const restaurant = await createNewRestaurant(
       resto, userID as number, maxID + 1);
-    await addProductsFromRestaurantToOwnDB(restaurant.id);
     return res.status(200)
       .send(restaurant);
   } catch (error) {
@@ -232,7 +229,6 @@ router.put('/:id', async (req, res) => {
       return res.status(404)
         .send('Coudnt find restaurant with id ' + restId);
     const answer = await changeRestaurantByID(req.body, restId);
-    await addProductsFromRestaurantToOwnDB(answer.uid);
     return res.status(200)
       .send(answer);
   } catch (error) {
@@ -251,7 +247,7 @@ router.post('/updateCategories', async (req, res) => {
       return res.status(404)
         .send({ error: 'User not found' });
     }
-    const answer = await addCategory(uid, newCategories);
+    const answer = await addCategory(userID as number, uid, newCategories);
     return res.status(200)
       .send(answer);
   } catch (error) {
