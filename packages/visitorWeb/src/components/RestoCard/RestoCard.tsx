@@ -17,6 +17,7 @@ import { IimageInterface } from "../../../../shared/models/imageInterface";
 import { getImages } from "@src/services/imageCalls";
 import { addRestoAsFavourite, deleteRestoFromFavourites } from "@src/services/favourites";
 import { useTranslation } from "react-i18next";
+import Skeleton from '@mui/material/Skeleton';
 
 const PageBtn = () => {
   return createTheme({
@@ -63,7 +64,9 @@ const RestoCard = (props: IRestoCardProps) => {
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [pictures, setPictures] = useState<IimageInterface[]>(props.pictures.length > 0 ? props.pictures : []);
+  const [pictures, setPictures] = useState<IimageInterface[]>(props.pictures && props.pictures.length > 0 ? props.pictures : []);
+  const [loading, setLoading] = useState(props.pictures ? props.pictures.length === 0 : false);
+
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
@@ -72,13 +75,18 @@ const RestoCard = (props: IRestoCardProps) => {
 
   useEffect(() => {
     isMounted.current = true;
-    async function fetchImages() {
-      console.log('fetch Images: resto name: ', name, " image id: ", picturesId);
-      if (picturesId) {
-        if (picturesId.length > 0) {
-          const fetchedImages = await getImages(picturesId);
-          setPictures(fetchedImages);
-        } else {
+
+    const fetchImages = async () => {
+      setLoading(true);
+      try {
+        if (props.resto.picturesId.length > 0) {
+          const fetchedImages = await getImages(props.resto.picturesId);
+          if (isMounted.current) {
+            setPictures(fetchedImages);
+          }
+        }
+      } catch {
+        if (isMounted.current) {
           setPictures([{
             base64: defaultRestoImage,
             contentType: "image/png",
@@ -88,12 +96,16 @@ const RestoCard = (props: IRestoCardProps) => {
             id: 0,
           }]);
         }
+      } finally {
+        if (isMounted.current) {
+          setLoading(false);
+        }
       }
-    }
-    if (props.pictures.length <= 0) {
+    };
+
+    if (props.pictures && props.pictures.length <= 0) {
       fetchImages();
     }
-
     return () => {
       isMounted.current = false;
     }
@@ -145,14 +157,16 @@ const RestoCard = (props: IRestoCardProps) => {
     <Paper id="resto-card" key={props.resto.uid + 'card'} className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={12} sm={3} className={styles.GridItemImage}>
-          {pictures.length > 0 &&
-              <img
-                  key={pictures[0].id + name}
-                  src={pictures[0].base64}
-                  alt={name}
-                  className={styles.ImageDimensions}
-              />
-          }
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height={200} />
+          ) : (
+            <img
+              key={pictures[0].id + name}
+              src={pictures[0].base64}
+              alt={name}
+              className={styles.ImageDimensions}
+            />
+          )}
         </Grid>
   
         <Grid item xs={12} sm={9} className={styles.GridItem}>
