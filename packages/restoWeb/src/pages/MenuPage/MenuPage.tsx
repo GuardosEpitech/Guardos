@@ -14,7 +14,7 @@ import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
 import {useTranslation} from "react-i18next";
-import {restoByName} from "@src/services/restoCalls";
+import {getRestoById} from "@src/services/restoCalls";
 import { Buffer } from 'buffer';
 import DownloadIcon from '@mui/icons-material/Download';
 
@@ -72,7 +72,7 @@ const MenuPage = () => {
   const idPopover = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
-    restoByName(restoName)
+    getRestoById(restaurantData.uid)
       .then(res => setRestaurantData(res));
     const filteredMenu = menu.filter((category: ICategories) =>
       category.dishes.length > 0);

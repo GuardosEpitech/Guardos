@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "@src/components/RestoCard/Rating/Rating.module.scss";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import Button from "@mui/material/Button";
@@ -11,9 +11,10 @@ interface IRatingProps {
   restoRating: number,
   restoRatingsCount: number,
   restoName: string
+  restoID: number
 }
 
-const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingProps) => {
+const RatingDisplay = ({ restoRating, restoRatingsCount, restoName, restoID }: IRatingProps) => {
   const navigate = useNavigate();
   const [ratingData, setRatingData] = React.useState([]);
   const {t} = useTranslation();
@@ -35,14 +36,15 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
   };
 
   useEffect(() => {
-    getRatingData(restoName).then(res => setRatingData(res));
-  }, [restoName]);
+    getRatingData(restoID).then(res => setRatingData(res));
+  }, [restoID]);
 
   return (
     <div className={styles.ReviewContainer}>
       <Button
           onClick={() => NavigateTo("/reviews", navigate, {
             restoName: restoName,
+            restoID: restoID
           })}
       >
         <Rating name="read-only" value={averageRating()} readOnly />
@@ -53,6 +55,7 @@ const RatingDisplay = ({ restoRating, restoRatingsCount, restoName }: IRatingPro
         variant="contained"
         onClick={() => NavigateTo("/addreview", navigate, {
           restoName: restoName,
+          restoID: restoID
         })}
         >
         {t('components.RestoCard.add-review')}

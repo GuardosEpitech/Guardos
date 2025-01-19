@@ -13,12 +13,16 @@ import {
 } from "@mui/material";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getProductsByUser} from "@src/services/productCalls";
-import {addNewDish, deleteDish, editDish, getDishesByUser} from "@src/services/dishCalls";
+import {addNewDish,
+  deleteDish,
+  editDish,
+  getDishesByUser} from "@src/services/dishCalls";
 import {IProduct, IRestaurantFrontEnd}
   from "shared/models/restaurantInterfaces";
 import {IAddDish, IDishFE} from "shared/models/dishInterfaces";
 import { ICategories } from "shared/models/categoryInterfaces";
-import {getAllRestaurantsByUser, getAllRestaurantChainsByUser} from "@src/services/restoCalls";
+import {getAllRestaurantsByUser,
+  getAllRestaurantChainsByUser} from "@src/services/restoCalls";
 import {NavigateTo} from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/DishForm/DishForm.module.scss";
 import {addImageDish, deleteImageDish, getImages}
@@ -181,11 +185,18 @@ const DishForm = (props: IDishFormProps) => {
       setInvalidDishname(true);
       invalidFields = true;
     }
-    if (userDishes.map((item) => item.name).includes(dish)) {
-      setInvalidDishname(true);
-      setTakenDishname(true);
-      invalidFields = true;
+
+    if (
+      props.add ||
+               dish !== props.dishName) {
+      if (userDishes.map((item) => item.name)
+        .includes(dish)) {
+        setInvalidDishname(true);
+        setTakenDishname(true);
+        invalidFields = true;
+      }
     }
+
     if (dishProd === undefined || dishProd.length === 0) {
       setInvalidProducts(true);
       invalidFields = true;

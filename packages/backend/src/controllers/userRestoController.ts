@@ -286,7 +286,8 @@ export async function addRestoChain(userId: number, name: string) {
       }
     }
 
-    userData.restaurantChains.push({uid: userData.restaurantChains.length, name: name});
+    userData.restaurantChains
+      .push({uid: userData.restaurantChains.length, name: name});
     await userData.save();
 
     return true;
@@ -306,15 +307,19 @@ export async function deleteRestoChain(userId: number, restoChainName: string) {
       return false;
     }
 
-    const index = userData.restaurantChains.findIndex(item => item.name === restoChainName);
+    const index = userData.restaurantChains
+      .findIndex(item => item.name === restoChainName);
 
     for (const elem of userData.restaurantChains) {
       if (elem.name === restoChainName) {
-        await deleteRestoChainFromRestaurant(userId, elem.uid as number)
+        await deleteRestoChainFromRestaurant(userId, elem.uid as number);
       }
     }
     if (index !== -1) {
-      userData.restaurantChains = [...userData.restaurantChains.slice(0, index), ...userData.restaurantChains.slice(index + 1)];
+      userData.restaurantChains = [
+        ...userData.restaurantChains.slice(0, index),
+        ...userData.restaurantChains.slice(index + 1)
+      ];
     }
     await userData.save();
 
@@ -438,22 +443,6 @@ export async function setUserRestoCookiePreferences(userId: number,
   return 200;
 }
 
-export async function addCustomerResto(userID: number, customerID: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
-  const existingUser = await UserRestoSchema.findOne({ uid: userID });
-
-  if (existingUser && existingUser.customerID) {
-    return existingUser.customerID as string;
-  } else {
-    const answer = await UserRestoSchema.findOneAndUpdate(
-      { uid: userID },
-      { $set: { customerID: customerID } },
-      { new: true }
-    );
-    return answer.customerID as string;
-  }
-}
-
 export async function getCustomerResto(userID: number) {
   const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const answer = await UserRestoSchema.findOne({uid: userID});
@@ -479,20 +468,21 @@ export async function addSubscribeTimeResto(userID: number) {
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser) {
-    let currentTime = new Date();
+    const currentTime = new Date();
     currentTime.setHours(currentTime.getHours() + 2);
     const answer = await UserRestoSchema.findOneAndUpdate(
       { uid: userID },
       { $set: { subscribeTime: currentTime } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
 
 export async function addSubscribtionIDResto(userID: number,subscriptionID: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser) {
@@ -501,13 +491,14 @@ export async function addSubscribtionIDResto(userID: number,subscriptionID: stri
       { $set: { subscriptionID: subscriptionID } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
 
 export async function getSubscribtionIDResto(userID: number) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser) {
@@ -517,7 +508,8 @@ export async function getSubscribtionIDResto(userID: number) {
 }
 
 export async function deleteSubscribtionIDResto(userID: number) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
 
   const result = await UserRestoSchema.updateOne(
     { uid: userID }, 
@@ -528,7 +520,8 @@ export async function deleteSubscribtionIDResto(userID: number) {
 }
 
 export async function deleteActiveSubscription(userID: number) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
 
   const result = await UserRestoSchema.updateOne(
     { uid: userID }, 
@@ -539,7 +532,8 @@ export async function deleteActiveSubscription(userID: number) {
 }
 
 export async function addActiveSubscription(userID: number, activeSubscriptionIdentifier: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser) {
@@ -548,17 +542,18 @@ export async function addActiveSubscription(userID: number, activeSubscriptionId
       { $set: { activeSubscriptionIdentifier: activeSubscriptionIdentifier } },
       { new: true }
     );
-    return answer
+    return answer;
   }
   return false;
 }
 
 export async function getActiveSubscription(userID: number) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
   const existingUser = await UserRestoSchema.findOne({ uid: userID });
 
   if (existingUser.activeSubscriptionIdentifier) {
-    return existingUser.activeSubscriptionIdentifier
+    return existingUser.activeSubscriptionIdentifier;
   }
   return 'default';
 }
@@ -575,7 +570,8 @@ export async function addTwoFactorResto(userId: number, twoFactor: string) {
 }
 
 export async function updateUserVerificationStatusResto(email: string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
   
   const updatedUser = await UserRestoSchema.findOneAndUpdate(
     { email }, 
@@ -587,25 +583,27 @@ export async function updateUserVerificationStatusResto(email: string) {
 }
 
 export async function checkIfEmailExistsResto(email:string) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
 
-    const user = await UserRestoSchema.findOne({ 
-      $or: [{ email: email }, { username: email }] 
-    });
+  const user = await UserRestoSchema.findOne({ 
+    $or: [{ email: email }, { username: email }] 
+  });
 
-    if (!user) {
-      return false;
-    }
+  if (!user) {
+    return false;
+  }
 
-    if (user.validEmail) {
-      return false;
-    }
+  if (user.validEmail) {
+    return false;
+  }
 
-    return user.email;
+  return user.email;
 }
 
 export async function setValidEmailFalseResto(userId: number) {
-  const UserRestoSchema = mongoose.model('UserResto', userRestoSchema, 'UserResto');
+  const UserRestoSchema =
+    mongoose.model('UserResto', userRestoSchema, 'UserResto');
 
   const updatedUser = await UserRestoSchema.findOneAndUpdate(
     {uid: userId}, 

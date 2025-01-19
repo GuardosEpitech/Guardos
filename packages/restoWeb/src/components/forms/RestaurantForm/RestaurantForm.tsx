@@ -23,8 +23,7 @@ import {
   addNewResto,
   editResto,
   getAllMenuDesigns,
-  getAllRestaurantChainsByUser,
-  restoByName
+  getAllRestaurantChainsByUser, getAllRestaurantsByUser, getRestoById,
 } from "@src/services/restoCalls";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "./RestaurantForm.module.scss";
@@ -38,7 +37,6 @@ import {addImageResto, deleteImageRestaurant, getImages}
   from "@src/services/callImages";
 import {useTranslation} from "react-i18next";
 import {addQRCode} from "@src/services/qrcodeCall";
-import { SignalCellularConnectedNoInternet4BarSharp } from "@mui/icons-material";
 
 const PageBtn = () => {
   return createTheme({
@@ -74,6 +72,7 @@ interface IOpeningHours {
 
 interface IRestaurantFormProps {
   restaurantName?: string;
+  restoId?: number;
   street?: string;
   streetNumber?: number;
   postalCode?: string;
@@ -95,7 +94,6 @@ interface IDay {
   name?: string;
 }
 
-// TODO: apply i18n
 const days: IDay[] = [
   { id: 0, name: "Monday" },
   { id: 1, name: "Tuesday" },
@@ -108,7 +106,8 @@ const days: IDay[] = [
 
 const RestaurantForm = (props: IRestaurantFormProps) => {
   const navigate = useNavigate();
-  const {
+  let {
+    restoId,
     restaurantName,
     street,
     streetNumber,
@@ -143,18 +142,31 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
   const [inputValue, setInputValue] = React.useState("");
   const [inputValueRestoChain, setInputValueRestoChain] = React.useState("");
   const [isNameEmpty, setIsNameEmpty] = useState(false);
+  const [isNameUsed, setIsNameUsed] = useState(false);
   const [isStreetEmpty, setIsStreetEmpty] = useState(false);
   const [isStreetNumberEmpty, setIsStreetNumberEmpty] = useState(false);
   const [isPostalEmpty, setIsPostalEmpty] = useState(false);
   const [isCityEmpty, setIsCityEmpty] = useState(false);
   const [isCountryEmpty, setIsCountryEmpty] = useState(false);
-  const [restaurantData, setRestaurantData] = useState();
   const [selectedPictureId, setSelectedPictureId] = useState<number[]>([]);
+  const [restoID, setRestoID] = useState<number>();
+  const [allUserRestos, setAllUserRestos] = useState<string[]>([]);
 
   const origRestoName = restaurantName;
   const {t} = useTranslation();
 
   useEffect(() => {
+    const userToken = localStorage.getItem('user');
+
+    if (userToken === null) {
+      console.log("Error getting user ID");
+      return;
+    }
+
+    getAllRestaurantsByUser({ key: userToken })
+      .then((res) => {
+        setAllUserRestos(res.map((resto: any) => resto.name));
+      });
     const fetchImages = async () => {
       if (props.picturesId && props.picturesId.length > 0) {
         try {
@@ -192,7 +204,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
         setSelectedPictureId([]);
       }
     };
-
+    setRestoID(restoId);
     setSelectedRestaurantName(restaurantName);
     setSelectedStreet(street);
     setSelectedStreetNumber(streetNumber);
@@ -207,11 +219,6 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
     }
     fetchImages();
 
-    const userToken = localStorage.getItem('user');
-    if (userToken === null) {
-      console.log("Error getting user ID");
-      return;
-    }
     getAllMenuDesigns(userToken)
       .then((res) => {
         setMenuDesigns(res);
@@ -285,6 +292,13 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       setIsNameEmpty(false);
     }
 
+    if (allUserRestos.includes(selectedRestaurantName) && selectedRestaurantName !== origRestoName) {
+      setIsNameUsed(true);
+      errorBool = true;
+    } else {
+      setIsNameUsed(false);
+    }
+
     if (!selectedStreet || selectedStreet.length === 0) {
       setIsStreetEmpty(true);
       errorBool = true;
@@ -348,17 +362,21 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       userToken: userToken,
       resto: resto,
     };
-    async function addQRCODE() {
-      const res = await restoByName(resto.name);
-      await addQRCode({uid: res.uid,
-        url: `https://guardos.eu/menu/${res.uid}`});
+    async function addQRCODE(newRestoId: number) {
+      const res = await getRestoById(newRestoId);
+      await addQRCode({
+        uid: res.uid,
+        url: `https://guardos.eu/menu/${res.uid}`
+      });
     }
+
     if (props.add) {
-      await addNewResto(data);
-      await addQRCODE();
+      const newResto = await addNewResto(data);
+      await addQRCODE(newResto._id);
     } else {
-      await editResto(origRestoName, resto, userToken);
+      await editResto(restoId, resto, userToken);
     }
+
     return NavigateTo("/", navigate, { successfulForm: true });
   }
 
@@ -367,7 +385,7 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
       const file = event.target.files[0];
       const base64 = convertImageToBase64(file);
       base64.then((result) => {
-        addImageResto(restaurantName, file.name, file.type, file.size, result)
+        addImageResto(restoId, file.name, file.type, file.size, result)
           .then(r => {
             setPictures([{ base64: result, contentType: file.type,
               filename: file.name, size: file.size, uploadDate: "0", id: r }]);
@@ -459,12 +477,17 @@ const RestaurantForm = (props: IRestaurantFormProps) => {
                   defaultValue={restaurantName}
                   label={t('components.RestaurantForm.name') + '*'}
                   onChange={(e) => (setSelectedRestaurantName(e.target.value))}
-                  error={isNameEmpty}        
+                  error={isNameEmpty || isNameUsed}
                   required
                 />
                 {isNameEmpty && (
                   <FormHelperText error id="accountId-error">
                     {t('components.ProductForm.input-empty-error')}
+                  </FormHelperText>
+                )}
+                {isNameUsed && (
+                  <FormHelperText error id="accountId-error">
+                    {t('components.RestaurantForm.name-used-error')}
                   </FormHelperText>
                 )}
               </FormControl>

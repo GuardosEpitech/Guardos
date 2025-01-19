@@ -11,15 +11,25 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { addNewProduct, editProduct } from "@src/services/productCalls";
-import { IIngredient, IProduct, IRestaurantFrontEnd, IRestoName } from "shared/models/restaurantInterfaces";
+import {
+  addNewProduct,
+  editProduct,
+  getProductsByUser
+} from "@src/services/productCalls";
+import {
+  IIngredient,
+  IProduct,
+  IRestaurantFrontEnd
+} from "shared/models/restaurantInterfaces";
 import { IProductFE } from "shared/models/productInterfaces";
 import { NavigateTo } from "@src/utils/NavigateTo";
 import styles from "@src/components/forms/ProductForm/ProductForm.module.scss";
 import { getAllRestaurantsByUser } from "@src/services/restoCalls";
 import { useTranslation } from "react-i18next";
-import { getAllIngredients, addIngredient } from "@src/services/ingredientsCalls";
-import { add } from "cypress/types/lodash";
+import {
+  getAllIngredients,
+  addIngredient
+} from "@src/services/ingredientsCalls";
 
 const PageBtn = () => {
   return createTheme({
@@ -58,15 +68,24 @@ interface IDishFormProps {
 
 const ProductForm = (props: IDishFormProps) => {
   const navigate = useNavigate();
-  const { productName: initialProductName, productIngredients: initialProductIngredients = [], productAllergens, productRestaurant, productRestaurantIds, editable } = props;
+  const {
+    productName: initialProductName,
+    productIngredients: initialProductIngredients = [],
+    productRestaurant,
+    productRestaurantIds,
+    editable
+  } = props;
   const [restoList, setRestoList] = useState<Array<IRestaurantFrontEnd>>([]);
   const [isInputEmpty, setIsInputEmpty] = useState(false);
+  const [isNameUsed, setIsNameUsed] = useState(false);
   const [isInputEmptyIngredients, setIsInputEmptyIngredients] = useState(false);
   const [isInputEmptyRestaurant, setIsInputEmptyRestaurant] = useState(false); 
   const [ingredientFeedback, setIngredientFeedback] = useState<string>("");
   const [apiIngredients, setApiIngredients] = useState<IIngredient[]>([]);
   const [productIngredients, setProductIngredients] = useState<string[]>(initialProductIngredients);
+  const originalProductName = initialProductName || "";
   const [productName, setProductName] = useState<string>(initialProductName || "");
+  const [allProductNames, setAllProductNames] = useState<string[]>([]);
   const [selectedResto, setSelectedResto] = useState<string[]>([]);
 
   const { t } = useTranslation();
@@ -97,9 +116,18 @@ const ProductForm = (props: IDishFormProps) => {
       .catch((error) => {
         console.error("Error fetching ingredients:", error);
       });
+
+    getProductsByUser(userToken)
+      .then((products) => {
+        setAllProductNames(products.map((product: any) => product.name));
+      });
   }, []);
-  
-  const allIngredients = apiIngredients || [];
+
+  const allIngredients = Array
+    .from(new Set(apiIngredients.map(ingredient => ingredient.name)))
+    .map(name => {
+      return apiIngredients.find(ingredient => ingredient.name === name);
+    });
 
   async function sendRequestAndGoBack() {
     if (productName === '') {
@@ -107,6 +135,13 @@ const ProductForm = (props: IDishFormProps) => {
       return;
     } else {
       setIsInputEmpty(false);
+    }
+
+    if (allProductNames.includes(productName) && productName !== originalProductName) {
+      setIsNameUsed(true);
+      return;
+    } else {
+      setIsNameUsed(false);
     }
 
     if (productIngredients.length === 0) {
@@ -210,9 +245,10 @@ const ProductForm = (props: IDishFormProps) => {
                 fullWidth
                 required
                 onChange={handleInputChange}
-                error={isInputEmpty}
+                error={isInputEmpty || isNameUsed}
                 helperText={isInputEmpty ?
-                  t('components.ProductForm.input-empty-error') : ''}
+                  t('components.ProductForm.input-empty-error') : (isNameUsed ?
+                    t('components.ProductForm.name-used-error') : '')}
               />
             </FormControl>
           </Grid>

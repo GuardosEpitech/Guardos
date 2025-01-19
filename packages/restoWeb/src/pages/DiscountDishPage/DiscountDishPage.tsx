@@ -62,7 +62,7 @@ const DiscountDishPage = () => {
 
     if (discount) {
       if (discount !== -1 && discountType === 'percent') {
-        const percentage = (discount / price) * 100;
+        const percentage = ((price - discount) / price) * 100;
         setDiscountValue(percentage.toFixed(2));
       }
     }
@@ -113,15 +113,15 @@ const DiscountDishPage = () => {
         setErrorMessage(t('pages.DiscountDishPage.errorPercent'));
         return;
       }
-
-      const discountPrice = (discountNumber / 100) * price;
+      const percent = 100 - discountNumber;
+      const discountPrice = (percent / 100) * price;
       dish.discount = parseFloat(discountPrice.toFixed(2));
     } else {
       if (discountNumber <= 0 || discountNumber >= price) {
         setErrorMessage(t('pages.DiscountDishPage.errorPrice'));
         return;
       }
-      dish.discount = discountNumber;
+      dish.discount = price - discountNumber;
     }
 
     dish.validTill = formatDate(startDate);

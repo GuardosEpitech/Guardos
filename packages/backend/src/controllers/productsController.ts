@@ -4,6 +4,12 @@ import {restaurantSchema} from '../models/restaurantInterfaces';
 import {IProduct} from '../../../shared/models/restaurantInterfaces';
 import {IProductBE} from '../../../shared/models/productInterfaces';
 import {getIngredientByName} from './ingredientsController';
+import {changeDishByID,
+  getAllergensFromDishProducts,
+  getDishesByRestaurantNameTypeChecked}
+  from './dishesController';
+import {IDishesCommunication} from '../models/communicationInterfaces';
+import {detectAllergensByProduct} from './allergenDetectionController';
 
 export async function getMaxProductId() {
   const Product = mongoose.model('Product', productSchema);
@@ -25,7 +31,8 @@ export async function getMaxProductId() {
   }
 }
 
-export async function createOrUpdateProduct(product: IProduct, restaurantId: number) {
+export async function createOrUpdateProduct
+(product: IProduct, restaurantId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
@@ -40,12 +47,15 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
       const ingredient = await getIngredientByName(ingredientName);
       if (ingredient && ingredient.length > 0) {
         allergens.push(...ingredient[0].allergens);
+      } else {
+        const allergen = await detectAllergensByProduct([ingredientName]);
+        if (allergen && allergen.length > 0) {
+          allergens.push(...allergen[0].allergens);
+        }
       }
     }
-    allergens = Array.from(new Set(allergens));
-
+    allergens = Array.from(new Set(allergens)) as string[];
     const existingProduct = await Product.findOne({ name: product.name });
-
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
         existingProduct.allergens = allergens;
@@ -95,50 +105,25 @@ export async function createOrUpdateProduct(product: IProduct, restaurantId: num
   }
 }
 
-export async function addProductsFromRestaurantToOwnDB(restaurantId: number) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  try {
-    const restaurant = await Restaurant.findById(restaurantId);
-    if (!restaurant) {
-      console.log(`Restaurant with ID: ${restaurantId} not found`);
-      return;
-    }
-
-    for (const product of restaurant.products) {
-      const Product = mongoose.model('Product', productSchema);
-      const existingProduct = await Product.findOne({ name: product.name });
-      if (!existingProduct) {
-        const maxProductId = await getMaxProductId();
-        if (!maxProductId) {
-          console.log('Error while getting max product id');
-          return;
-        }
-        const newProduct = new Product({
-          _id: maxProductId,
-          userID: restaurant.userID,
-          name: product.name,
-          allergens: product.allergens,
-          ingredients: product.ingredients,
-          restaurantId: [restaurantId]
-        });
-        await newProduct.save();
-      } else if (!existingProduct.restaurantId.includes(restaurantId)) {
-        existingProduct.restaurantId.push(restaurantId);
-        await existingProduct.save();
-      }
-    }
-    console.log(`Successfully added/updated products from Restaurant with
-     ID: ${restaurantId}`);
-  } catch (error) {
-    console.error(`Error while adding products from Restaurant with
-     ID: ${restaurantId} to Product collection: `, error);
-  }
-}
-
-export async function getProductByName(productName: string):Promise<IProductBE> {
+export async function getProductByName(productName: string)
+    :Promise<IProductBE> {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.findOne({name: { $regex: productName, $options: 'i'}});
+  } catch (error) {
+    console.error('Error while fetching all products: ', error);
+    return null;
+  }
+}
+
+export async function getUserProductByName(productName: string, userID: number)
+  :Promise<IProductBE> {
+  try {
+    const Product = mongoose.model('Product', productSchema);
+    return await Product.findOne({
+      name: { $regex: productName, $options: 'i'},
+      userID: userID
+    });
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return null;
@@ -149,16 +134,6 @@ export async function getProductsByUser(loggedInUserId: number) {
   try {
     const Product = mongoose.model('Product', productSchema);
     return await Product.find({ userID: loggedInUserId });
-  } catch (error) {
-    console.error('Error while fetching all products: ', error);
-    return [];
-  }
-}
-
-export async function getAllProducts() {
-  try {
-    const Product = mongoose.model('Product', productSchema);
-    return await Product.find({});
   } catch (error) {
     console.error('Error while fetching all products: ', error);
     return [];
@@ -217,17 +192,18 @@ export async function deleteAllProductsFromUser(userId: number) {
   }
 }
 
-export async function updateProduct(product: IProductBE, oldName: string) {
+export async function updateProduct(product: IProductBE, oldName: string, userID: number) {
   const Product = mongoose.model('Product', productSchema);
   return Product.findOneAndUpdate(
-    { name: oldName },
+    { name: oldName, userID: userID },
     product,
     { new: true }
   );
 }
 
-export async function changeProductByName(product: IProductBE, oldProductsName:string) {
-  const oldProduct = await getProductByName(oldProductsName);
+export async function changeProductByName
+(product: IProductBE, oldProductsName:string, userID: number) {
+  const oldProduct = await getUserProductByName(oldProductsName, userID);
 
   let allergens = [];
   for (const ingredientName of product.ingredients) {
@@ -248,6 +224,57 @@ export async function changeProductByName(product: IProductBE, oldProductsName:s
     restaurantId: product.restaurantId ? product.restaurantId :
       oldProduct.restaurantId,
   };
-  await updateProduct(newProduct, oldProductsName);
+  await updateProduct(newProduct, oldProductsName, userID);
+  if (product.ingredients) {
+    for (const ingredient of product.ingredients) {
+      await updateAllDishesWithIngredient(ingredient, oldProduct.userID);
+    }
+  }
   return newProduct;
+}
+
+async function updateAllDishesWithIngredient
+(ingredientName: string, userID: number) {
+  const Product = mongoose.model('products', productSchema);
+  const Restaurant = mongoose.model('restaurants', restaurantSchema);
+  const restoOfUser = await Restaurant.find({ userID: userID });
+  const products = await Product.find({ ingredients: ingredientName });
+
+  for (const product of products) {
+    if (product.userID === userID) {
+      for (const resto of restoOfUser) {
+        if (product.userID === resto.userID) {
+          const dishes =
+              await getDishesByRestaurantNameTypeChecked(
+                  await resto.name as string, userID);
+          for (const dish of dishes) {
+            const newDish: IDishesCommunication = {
+              discount: dish.discount as number,
+              pictures: dish.pictures as [string],
+              picturesId: dish.picturesId as [number],
+              products: dish.products as [string],
+              restoChainID: dish.restoChainID as number,
+              uid: dish.uid as number,
+              userID: userID,
+              validTill: dish.validTill as string,
+              name: dish.name as string,
+              description: dish.description as string,
+              price: dish.price as number,
+              category: {
+                menuGroup: dish.category.menuGroup as string,
+                foodGroup: dish.category.foodGroup as string,
+                extraGroup: dish.category.extraGroup as [string],
+              },
+              combo: dish.combo as [number],
+              allergens: []
+            };
+            newDish.allergens = await
+            getAllergensFromDishProducts(newDish, userID);
+            await changeDishByID(
+                  resto._id as number, newDish, newDish.allergens, userID);
+          }
+        }
+      }
+    }
+  }
 }

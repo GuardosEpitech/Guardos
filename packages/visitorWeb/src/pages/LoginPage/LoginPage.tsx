@@ -96,7 +96,7 @@ const Login = (props: LoginPageProps) => {
         setIsUnverified(false);
         localStorage.setItem('user', response.data);
         localStorage.setItem('userName', user.username);
-        localStorage.setItem('freshLogin', 'true');
+        window.dispatchEvent(new Event("storage"));
         setErrorForm(false);
         props.toggleCookieBanner(false);
         NavigateTo("/", navigate, {
