@@ -18,6 +18,9 @@ import Stack from '@mui/material/Stack';
 import {getUserAllergens} from "@src/services/userCalls";
 import {getCategories} from "@src/services/categorieCalls";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
+import { IimageInterface } from 'shared/models/imageInterface';
+import { getImages } from '@src/services/imageCalls';
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -85,6 +88,42 @@ const RestoPage = () => {
   const [loading, setLoading] = useState(true);
   const [loadingAllergens, setLoadingAllergens] = useState(true);
   const [premium, setPremium] = useState<boolean>(false);
+  const [restaurantImages, setRestaurantImages] = useState<Record<number, IimageInterface[]>>({});
+  const [isImagesLoaded, setIsImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchAllImages = async (restaurants: IRestaurantFrontEnd[]) => {
+      const imagesMap: Record<number, IimageInterface[]> = {};
+      for (const resto of restaurants) {
+        if (resto.picturesId && resto.picturesId.length > 0) {
+          try {
+            imagesMap[resto.uid] = await getImages(resto.picturesId);
+          } catch {
+            imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                      contentType: "image/png", 
+                                      filename: "placeholderResto.png",
+                                      size: 0,
+                                      uploadDate: "0",
+                                      id: 0 }];
+          }
+        } else {
+          imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                    contentType: "image/png", 
+                                    filename: "placeholderResto.png",
+                                    size: 0,
+                                    uploadDate: "0",
+                                    id: 0 }];
+        }
+      }
+      setRestaurantImages(imagesMap);
+      setIsImagesLoaded(true);
+    };
+
+    if (filteredRestaurants && filteredRestaurants.length > 0) {
+      setIsImagesLoaded(false);
+      fetchAllImages(filteredRestaurants);
+    }
+  }, [filteredRestaurants]);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -114,7 +153,7 @@ const RestoPage = () => {
     } catch (error) {
         console.error("Error getting permissions: ", error);
     }
-};
+  };
 
   useEffect(() => {
     getPremium();
@@ -370,29 +409,54 @@ const RestoPage = () => {
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
             {filteredRestaurants?.length === 0 ? (
-              <h2 style={{textAlign: "center"}}>{t('pages.RestoPage.noresto')}</h2>
-            ) : (loading ? 
-              (    <Stack spacing={1}>
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-              </Stack>) 
-            :
+              <h2 style={{ textAlign: "center" }}>{t('pages.RestoPage.noresto')}</h2>
+            ) : ( loading ? 
               (
-              filteredRestaurants?.map((item, index) => {
-                if ('isAd' in item) {
-                  return <AdCard key={`ad-${index}`} />;
-                }
-                const isFavourite = isFavouriteRestos?.includes(item.uid);
-                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
-              }))
-            )}
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+                !isImagesLoaded ? ( // Check if images are loading
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+                filteredRestaurants?.map((item, index) => {
+                  if ('isAd' in item) {
+                    return <AdCard key={`ad-${index}`} />;
+                  }
+                  const isFavourite = isFavouriteRestos?.includes(item.uid);
+                  return <RestoCard 
+                            resto={item} 
+                            dataIndex={index} 
+                            key={index} 
+                            isFavourite={isFavourite} 
+                            pictures={restaurantImages[item.uid] || [{
+                              base64: defaultRestoImage,
+                              contentType: "image/png",
+                              filename: "placeholderResto.png",
+                              size: 0,
+                              uploadDate: "0",
+                              id: 0,
+                            }]}
+                          />
+                })
+              )
+              ))}
           </div>
-        ) : (
+          ) : (
           <div className={styles.container}>
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} favRestos={isFavouriteRestos}/>
