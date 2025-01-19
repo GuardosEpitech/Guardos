@@ -37,7 +37,8 @@ async function generateUniqueProductName(productName: string): Promise<string> {
   let counter = 1;
 
   while (true) {
-    const existingProduct = await mongoose.model('Product', productSchema).findOne({ name: newName });
+    const existingProduct = await mongoose.model('Product', productSchema)
+      .findOne({ name: newName });
 
     if (!existingProduct) {
       break; // Produktname ist einzigartig
@@ -54,10 +55,9 @@ async function generateUniqueProductName(productName: string): Promise<string> {
   return newName;
 }
 
-
 export async function createOrUpdateProduct(
-    product: IProduct,
-    restaurantId: number
+  product: IProduct,
+  restaurantId: number
 ) {
   try {
     const Product = mongoose.model('Product', productSchema);
@@ -86,7 +86,7 @@ export async function createOrUpdateProduct(
     allergens = Array.from(new Set(allergens));
 
     // Überprüfung, ob das Produkt existiert
-    let existingProduct = await Product.findOne({ name: product.name });
+    const existingProduct = await Product.findOne({ name: product.name });
 
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
