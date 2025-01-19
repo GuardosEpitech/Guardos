@@ -31,18 +31,47 @@ export async function getMaxProductId() {
   }
 }
 
-export async function createOrUpdateProduct
-(product: IProduct, restaurantId: number) {
+async function generateUniqueProductName(productName: string): Promise<string> {
+  const regex = /(.*)\s\+(\d+)$/;
+  let newName = productName;
+  let counter = 1;
+
+  while (true) {
+    const existingProduct = await mongoose.model('Product', productSchema).findOne({ name: newName });
+
+    if (!existingProduct) {
+      break; // Produktname ist einzigartig
+    }
+
+    if (regex.test(newName)) {
+      newName = newName.replace(regex, (_match, baseName, number) => `${baseName} +${parseInt(number) + 1}`);
+    } else {
+      newName = `${productName} +${counter}`;
+      counter++;
+    }
+  }
+
+  return newName;
+}
+
+
+export async function createOrUpdateProduct(
+    product: IProduct,
+    restaurantId: number
+) {
   try {
     const Product = mongoose.model('Product', productSchema);
     const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+    // Restaurant suchen
     const restaurant = await Restaurant.findById(restaurantId);
     if (!restaurant) {
       console.log(`Restaurant with ID: ${restaurantId} not found`);
       return;
     }
 
-    let allergens = [];
+    // Allergene ermitteln
+    let allergens: string[] = [];
     for (const ingredientName of product.ingredients) {
       const ingredient = await getIngredientByName(ingredientName);
       if (ingredient && ingredient.length > 0) {
@@ -54,52 +83,46 @@ export async function createOrUpdateProduct
         }
       }
     }
-    allergens = Array.from(new Set(allergens)) as string[];
-    const existingProduct = await Product.findOne({ name: product.name });
+    allergens = Array.from(new Set(allergens));
+
+    // Überprüfung, ob das Produkt existiert
+    let existingProduct = await Product.findOne({ name: product.name });
+
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
+        // Produkt aktualisieren, wenn es dem selben Benutzer gehört
         existingProduct.allergens = allergens;
         existingProduct.ingredients = product.ingredients;
+
         if (!existingProduct.restaurantId.includes(restaurantId)) {
           existingProduct.restaurantId.push(restaurantId);
         }
         await existingProduct.save();
+        return existingProduct;
       } else {
-        const maxProductIdResult = await getMaxProductId();
-        if (maxProductIdResult === null) {
-          console.log('Error while getting max product id');
-          return;
-        }
-
-        const newProduct = new Product({
-          _id: maxProductIdResult,
-          userID: restaurant.userID,
-          name: product.name,
-          allergens: allergens,
-          ingredients: product.ingredients,
-          restaurantId: [restaurantId],
-        });
-        await newProduct.save();
-        return newProduct;
+        // Produkt gehört einem anderen Benutzer, Name anpassen
+        product.name = await generateUniqueProductName(product.name);
       }
-    } else {
-      const maxProductIdResult = await getMaxProductId();
-      if (maxProductIdResult === null) {
-        console.log('Error while getting max product id');
-        return;
-      }
-
-      const newProduct = new Product({
-        _id: maxProductIdResult,
-        userID: restaurant.userID,
-        name: product.name,
-        allergens: allergens,
-        ingredients: product.ingredients,
-        restaurantId: [restaurantId],
-      });
-      await newProduct.save();
-      return newProduct;
     }
+
+    // Neues Produkt anlegen, wenn kein bestehendes gefunden wurde
+    const maxProductIdResult = await getMaxProductId();
+    if (maxProductIdResult === null) {
+      console.log('Error while getting max product id');
+      return;
+    }
+
+    const newProduct = new Product({
+      _id: maxProductIdResult,
+      userID: restaurant.userID,
+      name: product.name,
+      allergens: allergens,
+      ingredients: product.ingredients,
+      restaurantId: [restaurantId],
+    });
+
+    await newProduct.save();
+    return newProduct;
   } catch (error) {
     console.error('Error while creating or updating a product: ', error);
   }
