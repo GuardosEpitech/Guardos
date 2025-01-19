@@ -577,24 +577,54 @@ export async function changeRestaurantByID(
 }
 
 export async function addRestoProduct(product: IProduct, restoName: string, userID: number) {
-  const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-  const rest = await Restaurant.findOne({ name: restoName, userID: userID });
-  if (!rest) return null;
-  if (rest.products.find((p: IProduct) => p.name === product.name)) {
-    const regex = /(.*)\s\+\d+$/;
-    if (regex.test(product.name)) {
-      product.name = product.name
-        .replace(regex, '$1 ' 
-            + (parseInt(product.name.match(/\d+$/)![0]) + 1));
-    } else {
-      product.name = product.name + ' 1';
+  try {
+    const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+
+    const rest = await Restaurant.findOne({ name: restoName, userID: userID });
+    if (!rest) {
+      // eslint-disable-next-line max-len
+      console.error(`Restaurant with name ${restoName} and userID ${userID} not found.`);
+      return null;
     }
+
+    const existingProduct = rest.products.find(
+      (p: IProduct) => p.name.trim()
+        .toLowerCase() === product.name.trim()
+        .toLowerCase()
+    );
+
+    const newProduct = { ...product };
+
+    if (existingProduct) {
+      const regex = /(.*)\s\+(\d+)$/;
+      if (regex.test(newProduct.name)) {
+        newProduct.name = newProduct.name.replace(
+          regex,
+          (_match, baseName, number) => `${baseName} +${parseInt(number) + 1}`
+        );
+      } else {
+        newProduct.name = `${newProduct.name} +1`;
+      }
+    }
+
+    console.log(`Adding product: ${newProduct.name}`);
+
+    const updatedResto = await Restaurant.findOneAndUpdate(
+      { name: restoName, userID: userID },
+      { $push: { products: newProduct } },
+      { new: true }
+    );
+
+    if (!updatedResto) {
+      console.error(`Failed to update restaurant: ${restoName}`);
+      return null;
+    }
+
+    return updatedResto;
+  } catch (error) {
+    console.error('Error adding product to restaurant:', error);
+    return null;
   }
-  return Restaurant.findOneAndUpdate(
-    { name: restoName, userID: userID },
-    { $push: { products: product } },
-    { new: true }
-  );
 }
 
 export async function getAllRestoProducts(restoName: string) {
