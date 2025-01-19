@@ -122,6 +122,7 @@ const MVPRouter = () => {
         <Routes>
           <Route element={<AppOutlet/>}>
             {/* Public routes */}
+            <Route path="/intropage" element={<IntroPage/>}/>
             <Route
               path="/login"
               element={
@@ -177,7 +178,6 @@ const MVPRouter = () => {
                   <PrivateRoute>
                     <Routes>
                       <Route path="/my-account" element={<MyAccountPage/>}/>
-                      <Route path="/intropage" element={<IntroPage/>}/>
                       <Route path="/menu/:id" element={<MenuPage />} />
                       <Route path="/addreview" element={<RatingPage/>}/>
                       <Route path="/" element={<RestoPage/>}/>
