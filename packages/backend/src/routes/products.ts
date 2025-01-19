@@ -56,6 +56,7 @@ router.post('/:name', async (req, res) => {
           + req.params.name + ' for this user');
     }
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
+    console.log('product', product);
     await addRestoProduct({
       name: product.name,
       allergens: product.allergens,
