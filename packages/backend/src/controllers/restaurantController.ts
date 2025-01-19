@@ -578,6 +578,18 @@ export async function changeRestaurantByID(
 
 export async function addRestoProduct(product: IProduct, restoName: string, userID: number) {
   const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+  const rest = await Restaurant.findOne({ name: restoName, userID: userID });
+  if (!rest) return null;
+  if (rest.products.find((p: IProduct) => p.name === product.name)) {
+    const regex = /(.*)\s\+\d+$/;
+    if (regex.test(product.name)) {
+      product.name = product.name
+        .replace(regex, '$1 ' 
+            + (parseInt(product.name.match(/\d+$/)![0]) + 1));
+    } else {
+      product.name = product.name + ' 1';
+    }
+  }
   return Restaurant.findOneAndUpdate(
     { name: restoName, userID: userID },
     { $push: { products: product } },
@@ -797,7 +809,7 @@ export async function addCategory(
   try {
     const editedCategory = newCategories.find(category => category.edited);
 
-    let affectedDishes: TDish[] = [];
+    const affectedDishes: TDish[] = [];
 
     const rest = await Restaurant.findOne({ _id: uid });
 
