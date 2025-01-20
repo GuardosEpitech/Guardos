@@ -16,6 +16,7 @@ import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
 import {useTranslation} from "react-i18next";
 import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
+import { removeDiscount } from "@src/services/dishCalls";
 
 interface IEditableDishProps {
   dish: IDishFE;
@@ -32,11 +33,35 @@ const Dish = (props: IEditableDishProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
-  const { name, description, price, discount, validTill, combo, allergens } = dish;
+  const { name, description, price, validTill, combo, allergens } = dish;
   const priceStr = `${price.toFixed(2)} €`;
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const {t} = useTranslation();
   const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
+  const [discount, setDiscount] = useState(dish.discount);
+
+  useEffect(() => {
+    function parseDate(dateString: string): Date {
+      const [day, month, year] = dateString.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+      date.setHours(23, 59, 0, 0);
+      return date;
+    }
+    const fetchData = async () => {
+      const userToken = localStorage.getItem('user');
+        if (userToken === null) {
+          return;
+        }
+      const discountDate = parseDate(props.dish.validTill);
+      const currentDate = new Date();
+
+      if (currentDate > discountDate) {
+        await removeDiscount({ restoName: props.dish.resto, dish }, userToken);
+        setDiscount(-1);
+      } 
+    }
+    fetchData();
+  }, [props.dish.validTill, props.dish.resto]);
 
   const handleChildClick = (e: any) => {
     e.stopPropagation();
@@ -130,6 +155,7 @@ const Dish = (props: IEditableDishProps) => {
   
     loadImages();
   }, [dish.picturesId, combo, onUpdate]);  // Trigger re-fetch on updates
+
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={() => setExtended(!extended)}>
       {/*mobile version of dish element*/}
