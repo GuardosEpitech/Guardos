@@ -56,13 +56,16 @@ router.post('/:name', async (req, res) => {
           + req.params.name + ' for this user');
     }
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
-    await addRestoProduct({
-      name: product.name,
-      allergens: product.allergens,
-      ingredients: product.ingredients,
-    }, restaurant.name, userID as number);
-    return res.status(200)
-      .send(product);
+    if (product) {
+      await addRestoProduct({
+        name: product.name,
+        allergens: product.allergens,
+        ingredients: product.ingredients,
+      }, restaurant.name, userID as number);
+      return res.status(200)
+        .send(product);
+    }
+      return res.status(200).send('updated');
   } catch (error) {
     console.error("Error in 'products/:name' route:", error);
     return res.status(500)
