@@ -130,6 +130,7 @@ const Dish = (props: IEditableDishProps) => {
   
     loadImages();
   }, [dish.picturesId, combo, onUpdate]);  // Trigger re-fetch on updates
+
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={() => setExtended(!extended)}>
       {/*mobile version of dish element*/}
