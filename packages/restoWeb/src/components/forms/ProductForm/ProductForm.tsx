@@ -137,7 +137,12 @@ const ProductForm = (props: IDishFormProps) => {
       setIsInputEmpty(false);
     }
 
-    if (allProductNames.includes(productName) && productName !== originalProductName) {
+    if (
+      allProductNames.some(
+        (name) => name.toLowerCase() === productName.toLowerCase()
+      ) && 
+      productName.toLowerCase() !== originalProductName.toLowerCase()
+    ) {
       setIsNameUsed(true);
       return;
     } else {

@@ -31,6 +31,10 @@ export async function getMaxProductId() {
   }
 }
 
+function normalizeName(name: string): string {
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+}
+
 export async function createOrUpdateProduct
 (product: IProduct, restaurantId: number) {
   try {
@@ -55,7 +59,11 @@ export async function createOrUpdateProduct
       }
     }
     allergens = Array.from(new Set(allergens)) as string[];
-    const existingProduct = await Product.findOne({ name: product.name });
+    // const existingProduct = await Product.findOne({ name: product.name });
+    const normalizedName = normalizeName(product.name);
+    const existingProduct = await Product.findOne({
+      name: { $regex: `^${normalizedName}$`, $options: 'i' }
+    });
     if (existingProduct) {
       if (existingProduct.userID === restaurant.userID) {
         existingProduct.allergens = allergens;
