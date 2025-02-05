@@ -1,7 +1,9 @@
 import * as express from 'express';
 import { Response, Request } from 'express';
 import {deleteUser, getUserId} from '../controllers/userController';
-import {getAllUserRestaurants, deleteRestaurantByName} from '../controllers/restaurantController';
+import {getAllUserRestaurants, deleteRestaurantByID} from '../controllers/restaurantController';
+import {deleteAllProductsFromUser} from '../controllers/productsController';
+import {deleteImageFromDB} from '../controllers/imageController';
 import {deleteUserResto, getUserIdResto}
   from '../controllers/userRestoController';
 
@@ -41,10 +43,18 @@ router.delete('/resto', async function (req: Request, res: Response) {
         .send({ error: 'Invalid Access' });
     }
 
+    // delete all products from user
+    await deleteAllProductsFromUser(userID as number);
+
     const restos = await getAllUserRestaurants(userID as number);
 
     for (const resto of await restos) {
-      await deleteRestaurantByName(resto.name);
+      if (resto.picturesId.length > 0) {
+        for (const pictureId of resto.picturesId) {
+          await deleteImageFromDB(pictureId);
+        }
+      }
+      await deleteRestaurantByID(resto.uid);
     }
 
     const answer = await deleteUserResto(userID as number);

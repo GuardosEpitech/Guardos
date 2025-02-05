@@ -35,6 +35,8 @@ import menu from './routes/menu';
 import map from './routes/map';
 import statistics from './routes/statistics';
 import categories from './routes/categories';
+import { removeAllExpiredDiscounts } from './middleware/dishesMiddelWare';
+import cron from 'node-cron';
 
 function constructAllowedOrigins(): string[] {
   const domains: { [key: string]: string | undefined } = {
@@ -116,6 +118,10 @@ async function main() {
     app.use('/api/statistics', asyncHandler(statistics));
     app.use('/api/categories', asyncHandler(categories));
     app.use('/api/qrcode', qrcode);
+
+    cron.schedule('0 0 * * *', async () => {
+      await removeAllExpiredDiscounts();
+    });
   }
 
   // Catch 404 and forward to error handler

@@ -3,11 +3,6 @@ import {ingredientsSchema} from '../models/ingredientsInterfaces';
 
 const IngredientSchema = mongoose.model('Ingredients', ingredientsSchema);
 
-export function isArrayOfStrings(value: any): value is string[] {
-  return Array.isArray(value) &&
-      value.every(element => typeof element === 'string');
-}
-
 export function findRelevantAllergens(healthLabels: string[]): [string] {
   const allergenMap: { [key: string]: string } =
       {
@@ -41,6 +36,11 @@ export function findRelevantAllergens(healthLabels: string[]): [string] {
 
 export async function createNewIngredient(foodID: string, name: string,
   nutrients: object, healthLabels: [string], allergens: [string]) {
+  if ((await getIngredientByName(name)).length > 0) {
+    console.log('Ingredient ' + name + ' already exists');
+    return;
+  }
+
   const id = await findMaxIndexIngredients() + 1;
   name = name.toLowerCase();
   const upload = new IngredientSchema({
@@ -62,10 +62,6 @@ export async function getAllIngredients() {
 export async function getIngredientByName(name: string) {
   name = name.toLowerCase();
   return IngredientSchema.find({ name });
-}
-
-export async function getIngredientById(id: string) {
-  return IngredientSchema.find({ foodID: id });
 }
 
 export async function deleteIngredient(name: string, id: string) {

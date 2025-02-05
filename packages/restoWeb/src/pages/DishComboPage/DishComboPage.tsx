@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { IDishFE } from "shared/models/dishInterfaces";
 import styles from "@src/pages/DishComboPage/DishComboPage.module.scss";
 import { useTranslation } from "react-i18next";
-import { getDishesByResto } from "@src/services/dishCalls";
+import { getDishesByUser} from "@src/services/dishCalls";
 import {
-    Autocomplete,
-    Grid,
-    TextField,
-  } from "@mui/material";
+  Autocomplete,
+  Grid,
+  TextField,
+} from "@mui/material";
 import { addCombo, removeCombo } from "@src/services/dishCalls";
 
 interface IDishComboPageProps {
@@ -16,29 +16,39 @@ interface IDishComboPageProps {
 }
 
 const DishComboPage = () => {
-    const { dish } = useLocation().state as IDishComboPageProps;
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const [dishes, setDishes] = useState<IDishFE[]>([]);
-    const [selectedDishes, setSelectedDishes] = useState<IDishFE[]>([]);
-    const [successMessage, setSuccessMessage] = useState<string>('');
-    const [errorMessage, setErrorMessage] = useState<string>('');
+  const { dish } = useLocation().state as IDishComboPageProps;
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [dishes, setDishes] = useState<IDishFE[]>([]);
+  const [selectedDishes, setSelectedDishes] = useState<IDishFE[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
     const fetchDishes = async () => {
-        const allDishes = await getDishesByResto(dish.resto);
-        const cleanedDishes = allDishes[0].dishes.filter((d: IDishFE) => d.name !== dish.name);
-        const selected: IDishFE[] = [];
-        if (dish.combo && dish.combo.length > 0) {
-          cleanedDishes.forEach((d: IDishFE) => {
-            if (dish.combo.includes(d.uid)) {
-              selected.push(d);
-            }
-          });
-        }
-        setDishes(cleanedDishes);
-        setSelectedDishes(selected);
-      };
+      const userToken = localStorage.getItem('user');
+
+      if (!userToken) {
+        return;
+      }
+
+      const allDishes = await getDishesByUser({ key: userToken });
+
+      console.log(allDishes);
+
+      const cleanedDishes = allDishes
+        .filter((d: IDishFE) => d.name !== dish.name);
+      const selected: IDishFE[] = [];
+      if (dish.combo && dish.combo.length > 0) {
+        cleanedDishes.forEach((d: IDishFE) => {
+          if (dish.combo.includes(d.uid)) {
+            selected.push(d);
+          }
+        });
+      }
+      setDishes(cleanedDishes);
+      setSelectedDishes(selected);
+    };
     fetchDishes();
   }, [dish.resto]);
 
@@ -49,18 +59,18 @@ const DishComboPage = () => {
   const handleSave = async () => {
     const userToken = localStorage.getItem('user');
     if (selectedDishes.length < 1) {
-        const newDish = await removeCombo(userToken, {restoName: dish.resto, dish: dish});
-        setSuccessMessage(t('pages.DishComboPage.successRemove'));
-        setTimeout(() => {
-            navigate('/dishes'); 
-        }, 1500);  
+      await removeCombo(userToken, {restoName: dish.resto, dish: dish});
+      setSuccessMessage(t('pages.DishComboPage.successRemove'));
+      setTimeout(() => {
+        navigate('/dishes');
+      }, 1500);
     } else {
-        const selectedUids = selectedDishes.map((dish) => dish.uid);
-        const newDish = await addCombo(userToken, {restoName: dish.resto, dish: dish, combo: selectedUids});
-        setSuccessMessage(t('pages.DishComboPage.successAdd'));
-        setTimeout(() => {
-            navigate('/dishes'); 
-        }, 1500);
+      const selectedUids = selectedDishes.map((dish) => dish.uid);
+      await addCombo(userToken, {restoName: dish.resto, dish: dish, combo: selectedUids});
+      setSuccessMessage(t('pages.DishComboPage.successAdd'));
+      setTimeout(() => {
+        navigate('/dishes');
+      }, 1500);
     }
   };
 
@@ -93,7 +103,6 @@ const DishComboPage = () => {
               <TextField
                 {...params}
                 label={t('pages.DishComboPage.selectDish')}
-                required
               />
             )}
           />

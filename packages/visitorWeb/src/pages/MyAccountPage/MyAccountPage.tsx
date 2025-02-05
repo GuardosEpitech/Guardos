@@ -36,7 +36,8 @@ import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import IconButton from "@mui/material/IconButton";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
-
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
+import { IRestaurantFrontEnd } from "shared/models/restaurantInterfaces";
 const PageBtn = () => {
   return createTheme({
     palette: {
@@ -90,7 +91,6 @@ const MyAccountPage = () => {
 
   const [openAddIngredientPopup, setOpenAddIngredientPopup] = useState(false);
   const [newIngredient, setNewIngredient] = useState('');
-  // TODO: apply i18n
   const allAllergens = [
     'celery',
     'gluten',
@@ -108,6 +108,42 @@ const MyAccountPage = () => {
     'tree nuts',
   ];
 
+  const [restaurantImages, setRestaurantImages] = useState<Record<number, IimageInterface[]>>({});
+  const [isImagesLoaded, setIsImagesLoaded] = useState(false);
+
+  useEffect(() => {
+      const fetchAllImages = async (restaurants: IRestaurantFrontEnd[]) => {
+        const imagesMap: Record<number, IimageInterface[]> = {};
+        for (const resto of restaurants) {
+          if (resto.picturesId && resto.picturesId.length > 0) {
+            try {
+              imagesMap[resto.uid] = await getImages(resto.picturesId);
+            } catch {
+              imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                        contentType: "image/png", 
+                                        filename: "placeholderResto.png",
+                                        size: 0,
+                                        uploadDate: "0",
+                                        id: 0 }];
+            }
+          } else {
+            imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                      contentType: "image/png", 
+                                      filename: "placeholderResto.png",
+                                      size: 0,
+                                      uploadDate: "0",
+                                      id: 0 }];
+          }
+        }
+        setRestaurantImages(imagesMap);
+        setIsImagesLoaded(true);
+      };
+  
+      if (favoriteRestaurants && favoriteRestaurants.length > 0) {
+        setIsImagesLoaded(false);
+        fetchAllImages(favoriteRestaurants);
+      }
+    }, [favoriteRestaurants]);
 
   useEffect(() => {
     fetchProfileData();
@@ -342,8 +378,6 @@ const MyAccountPage = () => {
       isError = true;
     }
 
-    // TODO: add image mngt
-
     if (isError) {
       setDataChangeStatus("failed");
     } else {
@@ -361,7 +395,9 @@ const MyAccountPage = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('visitedBefore');
         document.dispatchEvent(event);
-        NavigateTo('/login', navigate, {})
+        const userEvent = new CustomEvent("setUserToken");
+        window.dispatchEvent(userEvent);
+        NavigateTo('/login', navigate, {});
       }
     });
     setOpenDeletePopup(false);
@@ -803,24 +839,43 @@ const MyAccountPage = () => {
                   <Skeleton variant="rounded" width={1000} height={130} />
                 </Stack>
               ) : (
+                !isImagesLoaded ? ( // Check if images are loading
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
                 <>
                   {favoriteRestaurants.length === 0 ? (
                     <div>
                       <span>{t('pages.MyAccountPage.no-fav-restos')}</span>
                     </div>
                   ) : (
-                    favoriteRestaurants.map((restaurant) => (
+                    favoriteRestaurants.map((restaurant, index) => (
                       <RestoCard
-                        key={restaurant.id}
                         resto={restaurant}
+                        dataIndex={index}
+                        key={index}
                         isFavourite={true}
-                        dataIndex={0}
                         deleteFavResto={removeFavResto}
+                        pictures={restaurantImages[restaurant.uid] || [{
+                          base64: defaultRestoImage,
+                          contentType: "image/png",
+                          filename: "placeholderResto.png",
+                          size: 0,
+                          uploadDate: "0",
+                          id: 0,
+                          }]}
                       />
                     ))
                   )}
                 </>
-              )}
+              ))}
             </div>
           )}
           {activeTab === "reviews" && (

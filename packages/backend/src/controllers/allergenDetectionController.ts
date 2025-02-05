@@ -15,11 +15,22 @@ export async function detectAllergens(req: Request) {
     }
 
     if (!products || products.length === 0) {
-      return { status: 400, data: 'No ingredients provided' };
+      return { status: 400, data: [{
+        error: true,
+        name: 'No ingredients provided',
+        allergens: []
+      }] } as {
+        status: number;
+        data: {
+          error: boolean;
+          name: string;
+          allergens: string[];
+        }[];
+      };
     }
     const answer = await detectAllergensByProduct(products);
 
-    if (answer.some(a => a?.includes('No allergens found'))) {
+    if (answer.some(a => a?.error && a?.name.includes('No allergens found'))) {
       console.log(answer);
       return { status: 404, data: answer };
     }
@@ -27,7 +38,18 @@ export async function detectAllergens(req: Request) {
     return { status: 200, data: answer };
   } catch (error) {
     console.error('Allergen detection error:', error);
-    return { status: 500, data: 'Failed to detect allergens' };
+    return { status: 500, data: [{
+      error: true,
+      name: 'Failed to detect allergens',
+      allergens: []
+    }] } as {
+      status: number;
+      data: {
+        error: boolean;
+        name: string;
+        allergens: string[];
+      }[];
+    };
   }
 }
 
@@ -128,18 +150,34 @@ async function detectAllergensByIngredients(ingredients: string[]) {
   }
 }
 
-async function detectAllergensByProduct(ingredients: string[]) {
+export async function detectAllergensByProduct(ingredients: string[]) {
   try {
     if (!ingredients || ingredients.length === 0) {
-      return ['No ingredients provided'];
+      return [{
+        error: true,
+        name: 'No ingredients provided',
+        allergens: []
+      }];
     }
-    const ingredientsInfo = [];
+    const ingredientsInfo: {
+      error: boolean;
+      name: string;
+      allergens: string[];
+    }[] = [];
     for (const item of ingredients) {
       const answer = await findIngredientInfos(item);
       if (!answer) {
-        ingredientsInfo.push(`No allergens found for ingredient: ${item}`);
+        ingredientsInfo.push({
+          error: true,
+          name: `No allergens found for ingredient: ${item}`,
+          allergens: []
+        });
       } else {
-        ingredientsInfo.push(...answer.allergens);
+        ingredientsInfo.push({
+          error: false,
+          name: answer.label ?? answer.name,
+          allergens: answer.allergens,
+        });
 
       }
     }
@@ -147,6 +185,10 @@ async function detectAllergensByProduct(ingredients: string[]) {
     return ingredientsInfo;
   } catch (error) {
     console.error('Allergen detection error:', error);
-    return ['Failed to detect allergens'];
+    return [{
+      error: true,
+      name: 'Failed to detect allergens',
+      allergens: []
+    }];
   }
 }

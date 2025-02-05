@@ -2,31 +2,15 @@ import * as express from 'express';
 
 import {
   addRestoProduct, doesUserOwnRestaurantByName,
-  // getAllRestoProducts, getRestaurantByName
 } from '../controllers/restaurantController';
 import {
   changeProductByName, createOrUpdateProduct, deleteProductByName,
-  // getAllProducts,
-  getProductByName, getProductsByUser
+  getProductsByUser, getUserProductByName
 } from '../controllers/productsController';
 import {getUserIdResto} from '../controllers/userRestoController';
 import { IRestaurantFrontEnd } from 'shared/models/restaurantInterfaces';
 
 const router = express.Router();
-
-// router.get('/', async (_req, res) => {
-//   try {
-//     const products = await getAllProducts();
-//     if (!products)
-//       return res.status(404);
-//     return res.status(200)
-//       .send(products);
-//   } catch (error) {
-//     console.error("Error in 'products' route:", error);
-//     return res.status(500)
-//       .send({ error: 'Internal Server Error' });
-//   }
-// });
 
 router.get('/user/product', async (req, res) => {
   try {
@@ -54,18 +38,6 @@ router.get('/user/product', async (req, res) => {
   }
 });
 
-// router.get('/:name', async (req, res) => {
-//   try {
-//     const products = await getAllRestoProducts(req.params.name);
-//     return res.status(200)
-//       .send(products);
-//   } catch (error) {
-//     console.error("Error in 'products/:name' route:", error);
-//     return res.status(500)
-//       .send({ error: 'Internal Server Error' });
-//   }
-// });
-
 router.post('/:name', async (req, res) => {
   try {
     const userToken = String(req.query.key);
@@ -84,9 +56,16 @@ router.post('/:name', async (req, res) => {
           + req.params.name + ' for this user');
     }
     const product = await createOrUpdateProduct(req.body, restaurant.uid);
-    await addRestoProduct(req.body, restaurant.name);
-    return res.status(200)
-      .send(product);
+    if (product) {
+      await addRestoProduct({
+        name: product.name,
+        allergens: product.allergens,
+        ingredients: product.ingredients,
+      }, restaurant.name, userID as number);
+      return res.status(200)
+        .send(product);
+    }
+      return res.status(200).send('updated');
   } catch (error) {
     console.error("Error in 'products/:name' route:", error);
     return res.status(500)
@@ -129,11 +108,12 @@ router.put('/:name', async (req, res) => {
         .send({ error: 'User not found' });
     }
 
-    if (!await getProductByName(req.params.name)) {
+    if (!await getUserProductByName(req.params.name, userID as number)) {
       return res.status(404)
         .send('Coundt find product named ' + req.params.name);
     }
-    const product = await changeProductByName(req.body, req.params.name);
+    const product =
+      await changeProductByName(req.body, req.params.name, userID as number);
     return res.status(200)
       .send(product);
   } catch (error) {

@@ -52,13 +52,13 @@ interface IRestaurantDetailProps {
 const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
   const navigate = useNavigate();
   const {
+    uid,
     pictures,
     name,
     rating,
     ratingCount,
     location,
     description,
-    categories,
     openingHours,
     phoneNumber,
     website,
@@ -108,7 +108,12 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
             </Typography>
           </div>
           <div className={styles.FlexParentRating}>
-            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name}/>
+            <RatingDisplay
+              restoRating={rating}
+              restoRatingsCount={ratingCount}
+              restoName={name}
+              restoID={uid}
+            />
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon/>
@@ -157,7 +162,6 @@ const RestoDetailOverlay = (props: IRestaurantDetailProps) => {
 
 const getDayOpeningHours = (requestedDay: number, openingHours: IOpeningHours[]) => {
   const matchingDay = openingHours.find((item) => item.day === requestedDay);
-  // TODO: apply i18n
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const readableDay = daysOfWeek[requestedDay];
 

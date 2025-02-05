@@ -18,6 +18,9 @@ import Stack from '@mui/material/Stack';
 import {getUserAllergens} from "@src/services/userCalls";
 import {getCategories} from "@src/services/categorieCalls";
 import { getVisitorUserPermission } from '@src/services/permissionsCalls';
+import { IimageInterface } from 'shared/models/imageInterface';
+import { getImages } from '@src/services/imageCalls';
+import { defaultRestoImage } from "shared/assets/placeholderImageBase64";
 
 type Color = "primary" | "secondary" | "default" | "error" | "info" | "success" | "warning"
 
@@ -65,7 +68,6 @@ const RestoPage = () => {
   const [filteredRestaurants, setFilteredRestaurants] = 
     useState<Array<IRestaurantFrontEnd>>();
   const [allergens, setAllergens] = useState<Allergen[]>([
-    // TODO: apply i18n
     { name: "celery", value: false, colorButton: "primary" },
     { name: "gluten", value: false, colorButton: "primary" },
     { name: "crustaceans", value: false, colorButton: "primary" },
@@ -86,6 +88,42 @@ const RestoPage = () => {
   const [loading, setLoading] = useState(true);
   const [loadingAllergens, setLoadingAllergens] = useState(true);
   const [premium, setPremium] = useState<boolean>(false);
+  const [restaurantImages, setRestaurantImages] = useState<Record<number, IimageInterface[]>>({});
+  const [isImagesLoaded, setIsImagesLoaded] = useState(false);
+
+  useEffect(() => {
+    const fetchAllImages = async (restaurants: IRestaurantFrontEnd[]) => {
+      const imagesMap: Record<number, IimageInterface[]> = {};
+      for (const resto of restaurants) {
+        if (resto.picturesId && resto.picturesId.length > 0) {
+          try {
+            imagesMap[resto.uid] = await getImages(resto.picturesId);
+          } catch {
+            imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                      contentType: "image/png", 
+                                      filename: "placeholderResto.png",
+                                      size: 0,
+                                      uploadDate: "0",
+                                      id: 0 }];
+          }
+        } else {
+          imagesMap[resto.uid] = [{ base64: defaultRestoImage, 
+                                    contentType: "image/png", 
+                                    filename: "placeholderResto.png",
+                                    size: 0,
+                                    uploadDate: "0",
+                                    id: 0 }];
+        }
+      }
+      setRestaurantImages(imagesMap);
+      setIsImagesLoaded(true);
+    };
+
+    if (filteredRestaurants && filteredRestaurants.length > 0) {
+      setIsImagesLoaded(false);
+      fetchAllImages(filteredRestaurants);
+    }
+  }, [filteredRestaurants]);
 
   const clearFilter = () => {
     setInputFields(['', '']);
@@ -95,6 +133,7 @@ const RestoPage = () => {
     setRangeValue(0);
     setAllergens(prevAllergens =>
         prevAllergens.map(allergen => ({ ...allergen, value: false, colorButton: "primary" })));
+    setUserPosition(null);
   };
 
   const getPremium = async () => {
@@ -114,7 +153,7 @@ const RestoPage = () => {
     } catch (error) {
         console.error("Error getting permissions: ", error);
     }
-};
+  };
 
   useEffect(() => {
     getPremium();
@@ -205,17 +244,9 @@ const RestoPage = () => {
     return combinedCards;
   };
 
-  const updateRestoData = () => {
-    const inter: ISearchCommunication = { name: "" }
-    setLoading(true);
-    getNewFilteredRestos(inter).then((res) => {
-      setFilteredRestaurants(res);
-      setLoading(false);
-    });
-  }
-
   const loadFilter = async () => {
     const filter = JSON.parse(localStorage.getItem('filter') || '{}');
+    setInputFields([filter.name, filter.location]);
     await handleFilterChange(filter);
   };
 
@@ -227,12 +258,12 @@ const RestoPage = () => {
     let inputFieldOutput = '';
     if (filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0) {
       setRating(filter.rating[0]);
-    } else {
-      setRating(0);
     }
     if (filter.range) setRangeValue(filter.range);
+    if ((filter.name && filter.name.length > 0) || (filter.location && filter.location.length > 0)) {
+      setInputFields([filter.name, filter.location]);
+    }
     setLoading(true);
-
     const updatedCategories = categories.map((category) => ({
       ...category,
       value: filter.categories ? filter.categories?.includes(category.name) : category.value,
@@ -248,28 +279,27 @@ const RestoPage = () => {
     setAllergens(updatedAllergens);
     setInputFieldsOutput('');
 
-    if (inputFields[0] !== '' || inputFields[1] !== '') {
+    if (filter.name !== '' || filter.location !== '') {
       inputFieldOutput += t('pages.RestoPage.search-query-text');
     }
-    if (inputFields[0] !== '') {
-      inputFieldOutput += inputFields[0];
-      if (inputFields[1] !== '') {
+    if (filter.name !== '') {
+      inputFieldOutput += filter.name;
+      if (filter.location !== '') {
         inputFieldOutput += '; ';
       }
     }
-    if (inputFields[1] !== '') {
-      inputFieldOutput += inputFields[1];
+    if (filter.location !== '') {
+      inputFieldOutput += filter.location;
     }
     setInputFieldsOutput(inputFieldOutput);
-
     const newFilter = {
       range: filter.range ? filter.range : rangeValue,
       rating:
           filter.rating && Array.isArray(filter.rating) && filter.rating.length > 0
               ? [filter.rating[0], 5]
               : [rating, 5],
-      name: inputFields[0],
-      location: inputFields[1],
+      name: filter.name,
+      location: filter.location,
       categories: updatedCategories
           .filter((category) => category.value)
           .map((category) => category.name),
@@ -278,7 +308,6 @@ const RestoPage = () => {
           .map((allergen) => allergen.name),
       userLoc: userPosition ? userPosition : filter.userLoc,
     };
-
     localStorage.setItem('filter', JSON.stringify(newFilter));
     const restos = await getNewFilteredRestos(newFilter);
     if (!premium) {
@@ -311,7 +340,6 @@ const RestoPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
       const newFilter = {
         range: rangeValue,
         rating: [rating, 5],
@@ -381,29 +409,54 @@ const RestoPage = () => {
               <h1 className={styles.TitleCard}>{inputFieldsOutput}</h1>
             )}
             {filteredRestaurants?.length === 0 ? (
-              <h2 style={{textAlign: "center"}}>{t('pages.RestoPage.noresto')}</h2>
-            ) : (loading ? 
-              (    <Stack spacing={1}>
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-                <Skeleton variant="rounded" width={1000} height={130} />
-              </Stack>) 
-            :
+              <h2 style={{ textAlign: "center" }}>{t('pages.RestoPage.noresto')}</h2>
+            ) : ( loading ? 
               (
-              filteredRestaurants?.map((item, index) => {
-                if ('isAd' in item) {
-                  return <AdCard key={`ad-${index}`} />;
-                }
-                const isFavourite = isFavouriteRestos?.includes(item.uid);
-                return <RestoCard resto={item} dataIndex={index} key={index} isFavourite={isFavourite} />;
-              }))
-            )}
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+                !isImagesLoaded ? ( // Check if images are loading
+                <Stack spacing={1}>
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                  <Skeleton variant="rounded" width={1000} height={130} />
+                </Stack>
+              ) : (
+                filteredRestaurants?.map((item, index) => {
+                  if ('isAd' in item) {
+                    return <AdCard key={`ad-${index}`} />;
+                  }
+                  const isFavourite = isFavouriteRestos?.includes(item.uid);
+                  return <RestoCard 
+                            resto={item} 
+                            dataIndex={index} 
+                            key={index} 
+                            isFavourite={isFavourite} 
+                            pictures={restaurantImages[item.uid] || [{
+                              base64: defaultRestoImage,
+                              contentType: "image/png",
+                              filename: "placeholderResto.png",
+                              size: 0,
+                              uploadDate: "0",
+                              id: 0,
+                            }]}
+                          />
+                })
+              )
+              ))}
           </div>
-        ) : (
+          ) : (
           <div className={styles.container}>
             <div className={styles.mapContainer}>
               <MapView data={filteredRestaurants} userPosition={userPosition} favRestos={isFavouriteRestos}/>

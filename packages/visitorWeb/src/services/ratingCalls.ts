@@ -2,9 +2,9 @@ import axios from "axios";
 
 const baseUrl = `${process.env.DB_HOST}${process.env.DB_HOST_PORT}/api`;
 
-export const getRatingData = async (name: string) =>
+export const getRatingData = async (restoID: number) =>
   axios
-    .get(`${baseUrl}/review/restaurants/${name}`)
+    .get(`${baseUrl}/review/restaurants/${restoID}`)
     .then(function (response) {
       return response.data;
     })
@@ -37,13 +37,13 @@ export const deleteRatingDataUser = async (
     });
 
 export const postRatingData = async (
-  name: string,
+  restoID: number,
   comment: string,
   note: number,
   userName: string
 ) =>
   axios
-    .post(`${baseUrl}/review/restaurants/${name}`, { comment, note, userName })
+    .post(`${baseUrl}/review/restaurants/${restoID}`, { comment, note, userName })
     .then(function (response) {
       console.log(`Post with ID ${userName}`);
       return response.data;

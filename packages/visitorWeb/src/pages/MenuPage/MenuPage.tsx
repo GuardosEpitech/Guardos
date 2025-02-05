@@ -21,7 +21,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import pic1 from "../../../../shared/assets/menu-pic1.jpg";
 import pic2 from "../../../../shared/assets/menu-pic2.jpg";
 import pic3 from "../../../../shared/assets/menu-pic3.jpg";
-import { getRestosMenu, getRestaurantDetails } from "@src/services/menuCalls";
+import { getRestosMenu, getRestaurantDetails, getRestaurantMenuId } from "@src/services/menuCalls";
 import Accordion from "@src/components/Accordion/Accordion";
 import { useTranslation } from "react-i18next";
 import { getUserAllergens, getUserDislikedIngredients } from "@src/services/userCalls";
@@ -85,17 +85,24 @@ const MenuPage = () => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      const restoMenuId = await getRestaurantMenuId(parseInt(id));
+      setMenuDesignID(restoMenuId);
+    }
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     let profiles: AllergenProfile[] = [];
     // Extract state from location
     if (location.state) {
-      const { restoName: passedName, address: passedAddress, menuDesignID: passedMenuDesignID } = location.state as {
+      const { restoName: passedName, address: passedAddress} = location.state as {
         restoName: string;
         address: string;
         menuDesignID: number;
       };
       setRestoName(passedName);
       setAddress(passedAddress);
-      setMenuDesignID(passedMenuDesignID);
 
       profiles = JSON.parse(localStorage.getItem('groupProfiles') || '[]');
 
@@ -154,12 +161,6 @@ const MenuPage = () => {
     }
     return restoMenu[selectedProfileIndex] ?? [];
   }
-
-  useEffect(() => {
-    if (restoMenu && restoMenu.length > selectedProfileIndex) {
-      sectionRefs.current = sectionRefs.current.slice(0, getCurrentMenu().length);
-    }
-  }, [restoMenu]);
 
   const fetchMenu = async (profiles: AllergenProfile[]) => {
     const userToken = localStorage.getItem('user');
@@ -237,8 +238,18 @@ const MenuPage = () => {
 
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  useEffect(() => {
+    // Ensure the length of refs matches the menu categories
+    sectionRefs.current = Array(getCurrentMenu().length)
+      .fill(null)
+      .map((_, index) => sectionRefs.current[index] || null);
+  }, [restoMenu, selectedProfileIndex]);
+
   const scrollToSection = (index: number) => {
-    sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+    const targetSection = sectionRefs.current[index];
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const handleProfileChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -363,29 +374,23 @@ const MenuPage = () => {
                           <div className={styles.restoList}>
                             {getCurrentMenu().length > 0 ? getCurrentMenu().map((category: ICategories, index: number) => {
                               return (//@ts-ignore
-                                <div key={index} ref={sectionRefs.current[index]}>
+                                <div key={index} ref={(el) => (sectionRefs.current[index] = el)}>
                                   {index % 3 === 0 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic1})`
-                                    }} className={styles.secondLayoutBanner} />
+                                    <div
+                                      style={{ backgroundImage: `url(${pic1})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
+                                  ) : index % 3 === 1 ? (
+                                    <div
+                                      style={{ backgroundImage: `url(${pic2})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
                                   ) : (
-                                    <div/>
+                                    <div
+                                      style={{ backgroundImage: `url(${pic3})` }}
+                                      className={styles.secondLayoutBanner}
+                                    />
                                   )}
-                                  {index % 3 === 1 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic2})`
-                                    }} className={styles.secondLayoutBanner} />
-                                  ) : (
-                                    <div/>
-                                  )}
-                                  {index % 3 === 2 ? (
-                                    <div style={{
-                                      backgroundImage: `url(${pic3})`
-                                    }} className={styles.secondLayoutBanner}/>
-                                  ) : (
-                                    <div/>
-                                  )}
-
                                   <Category title={category.name}>
                                     {category.dishes
                                       .filter((dish: IDishFE) => dish.fitsPreference)

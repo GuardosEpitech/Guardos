@@ -15,9 +15,11 @@ import {getImages} from "@src/services/callImages";
 import { IimageInterface } from "shared/models/imageInterface";
 import { defaultDishImage } from "shared/assets/placeholderImageBase64";
 import {useTranslation} from "react-i18next";
+import {IRestaurantFrontEnd} from "shared/models/restaurantInterfaces";
 
 interface IEditableDishProps {
   dish: IDishFE;
+  userRestos?: IRestaurantFrontEnd[];
   // eslint-disable-next-line @typescript-eslint/ban-types
   onUpdate?: Function;
   imageSrc?: string;
@@ -28,12 +30,10 @@ interface IEditableDishProps {
 const Dish = (props: IEditableDishProps) => {
   const [extended, setExtended] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showCombos, setShowCombos] = useState(false);
   const { onUpdate, dish, editable, isTopLevel } = props;
   const options = dish.category.extraGroup;
   const { name, description, price, discount, validTill, combo, allergens } = dish;
   const priceStr = `${price.toFixed(2)} €`;
-  const picturesId: number[] = [];
   const [pictures, setPictures] = useState<IimageInterface[]>([]);
   const {t} = useTranslation();
   const [recommendedDishes, setRecommendedDishes] = useState<IDishFE[]>([]);
@@ -52,7 +52,19 @@ const Dish = (props: IEditableDishProps) => {
     if (userToken === null) {
       return;
     }
-    await deleteDish(dish.resto, name, userToken);
+    let dishRestos: string[] = [];
+
+    if (props.userRestos && props.userRestos.length > 0) {
+      dishRestos = props.userRestos
+        .filter((item: IRestaurantFrontEnd) => item.dishes
+          .some((dish) => dish.name === name))
+        .map((item: IRestaurantFrontEnd) => item.name);
+    } else {
+      dishRestos = [dish.resto];
+    }
+    for (const resto of dishRestos) {
+      await deleteDish(resto, name, userToken);
+    }
     if (onUpdate) {
       await onUpdate();
       setShowPopup(false);
@@ -100,10 +112,11 @@ const Dish = (props: IEditableDishProps) => {
         if (dish.resto === undefined) {
           return;
         }
-        const comboDishes = await getDishesByID(dish.resto, { ids: combo });
+        const userToken = localStorage.getItem('user');
+        const comboDishes = await getDishesByID(userToken, { ids: combo, key: dish.resto });
 
         if (comboDishes) {
-          const validCombos = comboDishes.filter((dish : any) => dish != null);
+          const validCombos = comboDishes.filter((dish : any) => dish !== null);
           setRecommendedDishes(validCombos);
         }
       } catch (error) {
@@ -117,6 +130,7 @@ const Dish = (props: IEditableDishProps) => {
   
     loadImages();
   }, [dish.picturesId, combo, onUpdate]);  // Trigger re-fetch on updates
+
   return (
     <Paper className={styles.DishBox} elevation={3} onClick={() => setExtended(!extended)}>
       {/*mobile version of dish element*/}
@@ -129,10 +143,7 @@ const Dish = (props: IEditableDishProps) => {
               className={styles.ImageDimensions}
             />
           </Grid>
-          <Grid
-            item
-            className={extended ? styles.GridItem : styles.FlexGridItem}
-          >
+          <Grid item className={extended ? styles.GridItem : styles.FlexGridItem}>
             <div className={styles.FlexParentMenu}>
               <h3 className={styles.DishTitle}>{name}</h3>
               {editable && isTopLevel && (
@@ -140,32 +151,34 @@ const Dish = (props: IEditableDishProps) => {
                   <DishActions
                     actionList={[
                       {
-                      actionName: t('common.edit'),
-                      actionIcon: EditIcon,
-                      actionRedirect: "/editDish",
-                      redirectProps: { dish: dish }
-                    }, {
-                      actionName: t('common.discount'),
-                      actionIcon: PercentIcon,
-                      actionRedirect: "/discount",
-                      redirectProps: { dish: dish}
-                    }, {
-                      actionName: t('common.combo'),
-                      actionIcon: AddCircleOutlineIcon,
-                      actionRedirect: "/combo",
-                      redirectProps: { dish: dish}
-                    }]}
+                        actionName: t('common.edit'),
+                        actionIcon: EditIcon,
+                        actionRedirect: "/editDish",
+                        redirectProps: { dish: dish }
+                      },
+                      {
+                        actionName: t('common.discount'),
+                        actionIcon: PercentIcon,
+                        actionRedirect: "/discount",
+                        redirectProps: { dish: dish}
+                      },
+                      {
+                        actionName: t('common.combo'),
+                        actionIcon: AddCircleOutlineIcon,
+                        actionRedirect: "/combo",
+                        redirectProps: { dish: dish}
+                      }
+                    ]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
                   />
                   <div className={styles.popUp}>
                     {showPopup && (
-                        <Popup
-                          message={t('components.Dish.confirm-delete',
-                            {dishName: dish.name})}
-                          onConfirm={getOnDelete}
-                          onCancel={() => setShowPopup(false)}
-                        />
+                      <Popup
+                        message={t('components.Dish.confirm-delete', { dishName: dish.name })}
+                        onConfirm={getOnDelete}
+                        onCancel={() => setShowPopup(false)}
+                      />
                     )}
                   </div>
                 </>
@@ -196,8 +209,12 @@ const Dish = (props: IEditableDishProps) => {
             ) : (
               <div>
                 <h3 className={styles.discount}>{priceStr}</h3>
-                <h3>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3>{t('components.Dish.valid')} {validTill}</h3>
+                <h3>
+                  {t('components.Dish.discount')} {`${discount.toFixed(2)} €`}
+                </h3>
+                <h3>
+                  {t('components.Dish.valid')} {validTill}
+                </h3>
               </div>
             )}
           </Grid>
@@ -210,32 +227,36 @@ const Dish = (props: IEditableDishProps) => {
           <Grid item xs={10} className={styles.GridItem}>
             <div className={styles.FlexParent}>
               <h3 className={styles.DishTitle}>{name}</h3>
-              {editable  && isTopLevel && (
+              {editable && isTopLevel && (
                 <>
                   <DishActions
-                    actionList={[{
-                      actionName: t('common.edit'),
-                      actionIcon: EditIcon,
-                      actionRedirect: "/editDish",
-                      redirectProps: { dish: dish }
-                    }, {
-                      actionName: t('common.discount'),
-                      actionIcon: PercentIcon,
-                      actionRedirect: "/discount",
-                      redirectProps: { dish: dish}
-                    }, {
-                      actionName: t('common.combo'),
-                      actionIcon: AddCircleOutlineIcon,
-                      actionRedirect: "/combo",
-                      redirectProps: { dish: dish}
-                    }]}
+                    actionList={[
+                      {
+                        actionName: t('common.edit'),
+                        actionIcon: EditIcon,
+                        actionRedirect: "/editDish",
+                        redirectProps: { dish: dish }
+                      },
+                      {
+                        actionName: t('common.discount'),
+                        actionIcon: PercentIcon,
+                        actionRedirect: "/discount",
+                        redirectProps: { dish: dish}
+                      },
+                      {
+                        actionName: t('common.combo'),
+                        actionIcon: AddCircleOutlineIcon,
+                        actionRedirect: "/combo",
+                        redirectProps: { dish: dish}
+                      }
+                    ]}
                     onDelete={handleDeleteClick}
                     onClick={handleChildClick}
                   />
                   {showPopup && (
                     <div className={styles.popUp}>
                       <Popup
-                        message={t('components.Dish.confirm-delete', {dishName: dish.name})}
+                        message={t('components.Dish.confirm-delete', { dishName: dish.name })}
                         onConfirm={getOnDelete}
                         onCancel={() => setShowPopup(false)}
                       />
@@ -267,40 +288,48 @@ const Dish = (props: IEditableDishProps) => {
             ) : (
               <div>
                 <h3 className={styles.discount}>{priceStr}</h3>
-                <h3 className={styles.DishPrice}>{t('components.Dish.discount')} {`${discount.toFixed(2)} €`}</h3>
-                <h3 className={styles.DishPrice}>{t('components.Dish.valid')} {validTill}</h3>
+                <h3 className={styles.DishPrice}>
+                  {t('components.Dish.discount')} {`${discount.toFixed(2)} €`}
+                </h3>
+                <h3 className={styles.DishPrice}>
+                  {t('components.Dish.valid')} {validTill}
+                </h3>
               </div>
             )}
           </Grid>
 
           <Grid item xs={2} className={styles.GridItemImage}>
-            {<img
+            <img
               src={pictures[0]?.base64 || defaultDishImage}
               alt={name}
               className={styles.ImageDimensions}
-            />}
+            />
           </Grid>
         </Grid>
+
         {isTopLevel && recommendedDishes.length > 0 && (
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <h4>{t('components.Dish.recommendedCombos')}</h4>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div className={styles.Combos}>
-              {recommendedDishes.map((recommendedDish, index) => (
-                <Dish
-                  key={index}
-                  dish={recommendedDish}
-                  editable={editable}
-                  onUpdate={onUpdate}
-                  isTopLevel={false}
-                />
-              ))}
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      )}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <h4>{t('components.Dish.recommendedCombos')}</h4>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className={styles.Combos}>
+                {recommendedDishes.map((recommendedDish, index) => (
+                  // Stoppe hier das Event-Bubbling, damit
+                  // das Kind eigenständig geklickt werden kann:
+                  <div onClick={(e) => e.stopPropagation()} key={index}>
+                    <Dish
+                      dish={recommendedDish}
+                      editable={editable}
+                      onUpdate={onUpdate}
+                      isTopLevel={false}
+                    />
+                  </div>
+                ))}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        )}
       </div>
     </Paper>
   );

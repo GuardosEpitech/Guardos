@@ -14,8 +14,11 @@ export async function getRestoFavourites(userID: number) {
     }
 
     const restoIDs = userData.favouriteLists.restoIDs;
-    return  await Promise.all(restoIDs.map((restoID) =>
-      getRestaurantByID(restoID)));
+    return await Promise.all(restoIDs.map(async (restoID) => {
+      return await getRestaurantByID(restoID);
+    }))
+      .then(results =>
+        results.filter(result => result));
   } catch (error) {
     console.error('Error getting favourite restaurants:', error);
     throw error;
@@ -37,8 +40,10 @@ export async function getDishFavourites(userID: number) {
       const {restoID, dishID} = item;
       const dish = await getDishByID(restoID, dishID);
       const resto = await getRestaurantByID(restoID);
-      return {dish, restoID, restoName: resto.name};
-    }));
+      return {dish, restoID, restoName: resto?.name};
+    }))
+      .then(results =>
+        results.filter(result => result.dish && result.restoName));
   } catch (error) {
     console.error('Error getting favourite dishes:', error);
     throw error;

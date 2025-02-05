@@ -1,6 +1,7 @@
 import {IDishesCommunication} from '../models/communicationInterfaces';
 import mongoose from 'mongoose';
 import {restaurantSchema} from '../models/restaurantInterfaces';
+import { removeDishDiscount } from '../controllers/dishesController';
 
 export function checkIfNameExists(req: IDishesCommunication) {
   if (!req.name) {
@@ -60,5 +61,42 @@ export async function checkIfExtraExists(
   } catch (error) {
     console.error('Error in checkIfExtraExists:', error);
     return false;
+  }
+}
+
+function parseDate(dateString: string): Date {
+  const [day, month, year] = dateString.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  date.setHours(23, 59, 0, 0);
+  return date;
+}
+
+export async function removeAllExpiredDiscounts() {
+  try {
+    const now = new Date();
+
+    const Restaurants = mongoose.model('Restaurant', restaurantSchema);
+    const restaurants = await Restaurants.find();
+
+    if (!restaurants) {
+      console.log('No restaurants found');
+      return false;
+    }
+
+    for (const restaurant of restaurants) {
+      for (const dish of restaurant.dishes) {
+        const validTillDate = dish.validTill;
+        if (validTillDate) {
+          const expiredDate = parseDate(dish.validTill as string);
+
+          if (now > expiredDate) {
+            await removeDishDiscount(restaurant._id as number, dish as IDishesCommunication, restaurant.userID as number);
+          }
+        }
+        
+      }
+    }
+  } catch (error) {
+    console.log('Error while removing expired discounts: ', error);
   }
 }

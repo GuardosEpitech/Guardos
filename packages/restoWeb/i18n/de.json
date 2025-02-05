@@ -85,6 +85,7 @@
         "delete-img": "Bild löschen",
         "name": "Name",
         "name-is-required": "Name ist erforderlich",
+        "name-is-taken": "Name existiert bereits für eines Ihrer Gerichte",
         "price": "Preis",
         "price-is-required": "Preis ist erforderlich",
         "description": "Beschreibung",
@@ -100,6 +101,7 @@
       "ProductForm": {
         "name": "Name",
         "input-empty-error": "Eingabe darf nicht leer sein",
+        "name-used-error": "Der Name wurde bereits für ein anderes Produkt verwendet",
         "resto": "Restaurant",
         "english-please": "Hinweis: Bitte geben Sie die Zutaten nur auf Englisch ein."
       },
@@ -108,6 +110,7 @@
         "change-image": "Bild ändern",
         "delete-image": "Bild löschen",
         "name": "Name",
+        "name-used-error": "Der Name wurde bereits für ein anderes deiner Restaurant verwendet",
         "phone-number": "Telefonnummer",
         "street-name": "Straßenname",
         "street-number": "Hausnummer",
@@ -340,9 +343,6 @@
         "request": "Nachricht *",
         "email-sent-success": "Nachricht erfolgreich gesendet!",
         "require-field": "Bitte fülle dieses Feld aus."
-      },
-      "MenuPage": {
-        "qr-code": "meinen qr-code erhalten"
       },
       "LoginPage": {
         "redirect-facebook-login": "Weiterleitung zur Facebook-Anmeldung",

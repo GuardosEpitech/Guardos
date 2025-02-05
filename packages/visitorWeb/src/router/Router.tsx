@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo} from "react";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import MenuPage from "@src/pages/MenuPage";
 import RegistrationPage from "@src/pages/RegistrationPage";
 import LoginPage from "@src/pages/LoginPage";
@@ -33,11 +33,40 @@ import VerifyEmailPage from "@src/pages/RegistrationPage/VerifyEmailPage";
 import { checkDarkMode } from "../utils/DarkMode";
 import ViewRatingPage from "@src/pages/ViewRatingPage";
 
+const NavigationHandler = ():any => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleCustomEvent = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      if (customEvent.detail) {
+        navigate(customEvent.detail);
+      }
+    };
+
+    const handleStorageEvent = () => {
+      const event = new CustomEvent("navigate", { detail: "/" });
+      const userEvent = new CustomEvent("setUserToken");
+      window.dispatchEvent(event);
+      window.dispatchEvent(userEvent);
+    };
+
+    window.addEventListener("navigate", handleCustomEvent);
+    window.addEventListener("storage", handleStorageEvent);
+
+    return () => {
+      window.removeEventListener("navigate", handleCustomEvent);
+      window.removeEventListener("storage", handleStorageEvent);
+    };
+  }, [navigate]);
+
+  return null; // This component doesn't render anything visible
+};
+
 const MVPRouter = () => {
   const [isUserTokenSet, setIsUserTokenSet] = useState<boolean>();
   const [showCookies, setShowCookies] = useState<boolean>(false);
-  const userToken = localStorage.getItem('user');
-  const [loading, setLoading] = useState(true);
+  const [userToken, setUserToken] = useState<string | null>(localStorage.getItem("user"));
   const [login, setLogin] = useState(false);
 
   useMemo(() => {
@@ -52,92 +81,128 @@ const MVPRouter = () => {
     setIsUserTokenSet(true);
   };
 
-  const areCookiesSet = async () => {
-    if (isUserTokenSet) {
-      const data = await getUserPreferences(userToken);
-      if (data.isSet) {
-        setShowCookies(false);
-        localStorage.setItem('visitedBefore', 'true');
+  // Fetch and set the user token when the app loads
+  useEffect(() => {
+    const token = localStorage.getItem("user");
+    setUserToken(token);
+
+    const checkCookies = async () => {
+      if (token) {
+        const data = await getUserPreferences(token);
+        setShowCookies(!data?.isSet);
+        if (data?.isSet) {
+          localStorage.setItem("visitedRestoBefore", "true");
+        }
       } else {
         setShowCookies(true);
       }
-    } else {
-      setShowCookies(true);
-    }
+    };
+
+    checkCookies();
+  }, []);
+
+  // PrivateRoute for authenticated users
+  const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+    return userToken ? <>{children}</> : <Navigate to="/login" />;
   };
 
-  useEffect(() => {
-    checkUserToken();
-    areCookiesSet();
-    
-    const loginToken = localStorage.getItem('freshLogin');
-    if (loginToken && loginToken !== 'false') {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-  }, [isUserTokenSet, userToken]);
-
-  const toggleCookieBanner = (value: boolean) => {
-    setShowCookies(value);
+  const LoginOnlyRoute = ({ children }: { children: React.ReactNode }) => {
+    return userToken ? <Navigate to="/" /> : <>{children}</>;
   };
+
+  window.addEventListener('setUserToken', () => {
+    setUserToken(localStorage.getItem("user"));
+  })
 
   return (
     <>
       {showCookies && <CookieBanner/>}
       <BrowserRouter>
-        {isUserTokenSet === false && window.location.pathname !== '/register'
-          && window.location.pathname !== '/account-recovery' &&
-          window.location.pathname !== '/verify-email' &&
-          window.location.pathname !== '/payment-failed' &&
-          window.location.pathname !== '/payment-success' &&
-          window.location.pathname !== '/login' &&
-          window.location.pathname !== '/change-password' &&
-          window.location.pathname !== '/intropage' &&
-          window.location.pathname !== '/cookiestatement' &&
-          window.location.pathname !== '/technologies' && (
-            <Navigate to="login"/>
-          )}
-        {isUserTokenSet === true && (window.location.pathname === '/register'
-          || window.location.pathname === '/account-recovery' || window.location.pathname === '/login'
-        ) && (
-          <Navigate to="/"/>
-        )}
-        {isUserTokenSet === true && login === true && (window.location.pathname === '/login') && (
-          <Navigate to="/" />
-        )}
+        <NavigationHandler />
         <Routes>
           <Route element={<AppOutlet/>}>
-            <Route path="/my-account" element={<MyAccountPage/>}/>
+            {/* Public routes */}
             <Route path="/intropage" element={<IntroPage/>}/>
-            <Route path="/login" element={<LoginPage toggleCookieBanner={toggleCookieBanner}/>}/>
-            <Route path="/register" element={<RegistrationPage/>}/>
-            <Route path="/verify-email" element={<VerifyEmailPage/>}/>
-            <Route path="/menu/:id" element={<MenuPage />} />
-            <Route path="/addreview" element={<RatingPage/>}/>
-            <Route path="/" element={<RestoPage/>}/>
-            <Route path="/reviews" element={<ViewRatingPage/>}/>
-            <Route path="/about-us" element={<AboutUsPage/>}/>
-            <Route path="/contact" element={<ContactPage/>}/>
-            <Route path="/account-recovery" element={<ResetPassword/>}/>
-            <Route path="/feature-request" element={<FeatureRequest/>}> </Route>
-            <Route path="/support" element={<UserSupportPage/>}></Route>
-            <Route path="/account-recovery" element={<ResetPassword/>}></Route>
-            <Route path="/payment-success" Component={PaymentSuccessPage}/>
-            <Route path="/payment-failed" Component={PaymentFailedPage}/>
-            <Route path="/login-success" element={<LoginSuccess/>}/>
-            <Route path="/change-password" element={<ChangePasswordPage/>}></Route>
-            <Route path="/privacy" element={<PrivacyPage/>}></Route>
-            <Route path="/imprint" element={<ImprintPage/>}></Route>
-            <Route path="/cookiestatement" element={<CookieStatement/>}></Route>
-            <Route path="/technologies" element={<TechnologyList/>}></Route>
-            <Route path="/subscriptions" element={<SubscriptionPage/>}></Route>
-            <Route path="/payment" element={<PaymentPage />}></Route>
-            <Route path="/guides" element={<GuidesPage/>}></Route>
-          <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
-          <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
-          <Route path="/terms" element={<TermsPage />}></Route>
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route
+              path="/login"
+              element={
+                <LoginOnlyRoute>
+                  <LoginPage toggleCookieBanner={setShowCookies} />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <LoginOnlyRoute>
+                  <RegistrationPage />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/account-recovery"
+              element={
+                <LoginOnlyRoute>
+                  <ResetPassword />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/change-password"
+              element={
+                <LoginOnlyRoute>
+                  <ChangePasswordPage />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/verify-email"
+              element={
+                <LoginOnlyRoute>
+                  <VerifyEmailPage />
+                </LoginOnlyRoute>
+              }
+            />
+            <Route
+              path="/login-success"
+              element={
+                <LoginOnlyRoute>
+                  <LoginSuccess />
+                </LoginOnlyRoute>
+              }
+            />
+            {/* Protected routes */}
+            <Route
+                path="*"
+                element={
+                  <PrivateRoute>
+                    <Routes>
+                      <Route path="/my-account" element={<MyAccountPage/>}/>
+                      <Route path="/menu/:id" element={<MenuPage />} />
+                      <Route path="/addreview" element={<RatingPage/>}/>
+                      <Route path="/" element={<RestoPage/>}/>
+                      <Route path="/reviews" element={<ViewRatingPage/>}/>
+                      <Route path="/about-us" element={<AboutUsPage/>}/>
+                      <Route path="/contact" element={<ContactPage/>}/>
+                      <Route path="/feature-request" element={<FeatureRequest/>}> </Route>
+                      <Route path="/support" element={<UserSupportPage/>}></Route>
+                      <Route path="/payment-success" Component={PaymentSuccessPage}/>
+                      <Route path="/payment-failed" Component={PaymentFailedPage}/>
+                      <Route path="/privacy" element={<PrivacyPage/>}></Route>
+                      <Route path="/imprint" element={<ImprintPage/>}></Route>
+                      <Route path="/cookiestatement" element={<CookieStatement/>}></Route>
+                      <Route path="/technologies" element={<TechnologyList/>}></Route>
+                      <Route path="/subscriptions" element={<SubscriptionPage/>}></Route>
+                      <Route path="/payment" element={<PaymentPage />}></Route>
+                      <Route path="/guides" element={<GuidesPage/>}></Route>
+                      <Route path="/success" element={<PaymentAddSuccessPage />}></Route>
+                      <Route path="/cancel" element={<PaymentAddCancelPage />}></Route>
+                      <Route path="/terms" element={<TermsPage />}></Route>
+                      <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                  </PrivateRoute>
+                }>
+              </Route>
           </Route>
         </Routes>
       </BrowserRouter>

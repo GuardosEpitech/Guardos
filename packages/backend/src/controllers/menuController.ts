@@ -14,7 +14,8 @@ export async function getMenuByRestoID(restoID: number, allergenList: string[],
         .map(a => a.toLowerCase());
       let containsUnwantedAllergens = false;
       for (let k = 0; k < allergenList.length; k++) {
-        if (dishAllergens.some(item => item.toLowerCase().includes(allergenList[k].toLowerCase()))) {
+        if (dishAllergens.some(item => item.toLowerCase()
+          .includes(allergenList[k].toLowerCase()))) {
           containsUnwantedAllergens = true;
           break;
         }

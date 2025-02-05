@@ -66,9 +66,9 @@ const Login = (props: LoginPageProps) => {
           setUser((prevState) => ({ ...prevState, id: response.data.userId }));
         } else {
           localStorage.setItem('user', response.data.token);
-          localStorage.setItem('freshLogin', 'true');
           setErrorForm(false);
           props.toggleCookieBanner(false);
+          window.dispatchEvent(new Event("storage"));
           navigate("/");
         }
       }
@@ -85,6 +85,7 @@ const Login = (props: LoginPageProps) => {
       if (response && response.status === 200) {
         localStorage.setItem('user', response.data);
         props.toggleCookieBanner(false);
+        window.dispatchEvent(new Event("storage"));
         NavigateTo("/", navigate, {
           loginName: user.username
         });

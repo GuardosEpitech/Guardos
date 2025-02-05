@@ -23,15 +23,16 @@ export const getRestosMenu = async (restoId: number, allergenList: string[], dis
     }
   } catch (error) {
     console.error("Error fetching the Users:", error);
+    return null;
   }
 };
 
-export const getDishesByID = async (restoId: number, body: any) => {
+export const getDishesByID = async (userToken: string, body: any) => {
   try {
     const response = await axios({
       url: baseUrl + '/dishes/dishIDsByID',
       method: "POST",
-      params: {key: restoId},
+      params: {key: userToken},
       data: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
@@ -40,6 +41,7 @@ export const getDishesByID = async (restoId: number, body: any) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching dishes by id:", error);
+    return null;
   }
 }
 
@@ -63,6 +65,23 @@ export const getRestaurantDetails = async (restoID: number) => {
     }
   } catch (error) {
     console.error("Error fetching restaurant details:", error);
-    throw error;
-  }
+    return null;  }
+};
+
+export const getRestaurantMenuId = async (restoID: number) => {
+  try {
+    const response = await axios({
+      url: `${baseUrl}/restaurants/id/` + restoID,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const restaurant = response.data;
+    return restaurant.menuDesignID;
+    
+  } catch (error) {
+    console.error("Error fetching restaurant details:", error);
+    return null;  }
 };

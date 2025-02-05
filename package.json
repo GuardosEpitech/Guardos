@@ -13,6 +13,7 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
-    "@remix-run/router": "^1.10.0"
+    "@remix-run/router": "^1.10.0",
+    "express-list-endpoints": "^7.1.0"
   }
 }

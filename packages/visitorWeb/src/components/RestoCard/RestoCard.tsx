@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -17,6 +17,7 @@ import { IimageInterface } from "../../../../shared/models/imageInterface";
 import { getImages } from "@src/services/imageCalls";
 import { addRestoAsFavourite, deleteRestoFromFavourites } from "@src/services/favourites";
 import { useTranslation } from "react-i18next";
+import Skeleton from '@mui/material/Skeleton';
 
 const PageBtn = () => {
   return createTheme({
@@ -50,6 +51,7 @@ interface IRestoCardProps {
   isFavourite: boolean;
   dataIndex: number;
   key: number;
+  pictures: IimageInterface[];
   deleteFavResto?: (restoId: number) => void;
 }
 
@@ -58,23 +60,33 @@ const RestoCard = (props: IRestoCardProps) => {
   const [extended, setExtended] = useState(false);
   const [isDetailPageOpen, setIsDetailPageOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(props.isFavourite);
-  const { name, rating, description, categories, ratingCount, picturesId } = props.resto;
+  const { name, rating, description, ratingCount, picturesId } = props.resto;
   const { streetName, streetNumber, postalCode, city, country } = props.resto.location;
   const address = `${streetName} ${streetNumber}, ${postalCode} ${city}, ${country}`;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [pictures, setPictures] = useState<IimageInterface[]>([]);
+  const [pictures, setPictures] = useState<IimageInterface[]>(props.pictures && props.pictures.length > 0 ? props.pictures : []);
+  const [loading, setLoading] = useState(props.pictures ? props.pictures.length === 0 : false);
+
   const handleClick = () => {
     setExtended((prevState) => !prevState);
   }
   const { t } = useTranslation();
+  const isMounted = useRef(true);
 
   useEffect(() => {
-    async function fetchImages() {
-      if (picturesId) {
-        if (picturesId.length > 0) {
-          const fetchedImages = await getImages(picturesId);
-          setPictures(fetchedImages);
-        } else {
+    isMounted.current = true;
+
+    const fetchImages = async () => {
+      setLoading(true);
+      try {
+        if (props.resto.picturesId.length > 0) {
+          const fetchedImages = await getImages(props.resto.picturesId);
+          if (isMounted.current) {
+            setPictures(fetchedImages);
+          }
+        }
+      } catch {
+        if (isMounted.current) {
           setPictures([{
             base64: defaultRestoImage,
             contentType: "image/png",
@@ -84,10 +96,19 @@ const RestoCard = (props: IRestoCardProps) => {
             id: 0,
           }]);
         }
+      } finally {
+        if (isMounted.current) {
+          setLoading(false);
+        }
       }
-    }
+    };
 
-    fetchImages();
+    if (props.pictures && props.pictures.length <= 0) {
+      fetchImages();
+    }
+    return () => {
+      isMounted.current = false;
+    }
   }, [picturesId]);
 
   const handleClickInfo = () => {
@@ -95,8 +116,7 @@ const RestoCard = (props: IRestoCardProps) => {
       state: {
         restoName: name,
         restoID: props.resto.uid,
-        address: address,
-        menuDesignID: props.resto.menuDesignID
+        address: address
       }
     });
   };
@@ -137,14 +157,16 @@ const RestoCard = (props: IRestoCardProps) => {
     <Paper id="resto-card" key={props.resto.uid + 'card'} className={styles.DishBox} elevation={3} onClick={handleClick}>
       <Grid container>
         <Grid item xs={12} sm={3} className={styles.GridItemImage}>
-          {pictures.length > 0 &&
-              <img
-                  key={pictures[0].id + name}
-                  src={pictures[0].base64}
-                  alt={name}
-                  className={styles.ImageDimensions}
-              />
-          }
+          {loading ? (
+            <Skeleton variant="rectangular" width="100%" height={200} />
+          ) : (
+            <img
+              key={pictures[0].id + name}
+              src={pictures[0].base64}
+              alt={name}
+              className={styles.ImageDimensions}
+            />
+          )}
         </Grid>
   
         <Grid item xs={12} sm={9} className={styles.GridItem}>
@@ -167,7 +189,12 @@ const RestoCard = (props: IRestoCardProps) => {
             </div>
           </div>
           <div className={styles.FlexParent}>
-            <RatingDisplay restoRating={rating} restoRatingsCount={ratingCount} restoName={name} />
+            <RatingDisplay
+              restoRating={rating}
+              restoRatingsCount={ratingCount}
+              restoName={name}
+              restoID={props.resto.uid}
+            />
           </div>
           <div className={styles.FlexParent}>
             <PlaceIcon />

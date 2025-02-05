@@ -30,11 +30,11 @@ export const getImages = async (imageIds: number[]) => {
   }
 };
 
-export const addImageResto = async (restaurantName: string,
+export const addImageResto = async (restaurantId: number,
   imageName: string, contentType: string, size: number, base64: string) => {
   try {
     const body = {
-      restaurant: restaurantName,
+      restaurantId: restaurantId,
       image: {
         filename: imageName,
         contentType: contentType,
