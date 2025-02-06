@@ -173,7 +173,7 @@ const SubscriptionPage: React.FC = () => {
               t('pages.SubscriptionPage.description-high-level-2'),
               t('pages.SubscriptionPage.save-filters', { filterNumber: 3})
             ]}
-            price="5.99 €"
+            price="4.99 €"
             onClick={handleSwitchPermissions}
             isActive={userPermissions.includes("premiumUser")}
             permission={"premiumUser"}

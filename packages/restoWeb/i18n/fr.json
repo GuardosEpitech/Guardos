@@ -447,10 +447,11 @@
         "free-description": "Utilisez les fonctionnalités de base gratuitement",
         "basic": "Abonnement de base",
         "description-low-level-1": "Supprimer les publicités",
-        "description-low-level-2": "Menu personnalisé",
+        "description-low-level-2": "Menus dynamiques",
         "premium": "Abonnement Premium",
         "description-high-level-1": "Prioriser les demandes de fonctionnalités",
-        "description-high-level-2": "Informations détaillées",
+        "description-high-level-2": "Analyses approfondies",
+        "description-high-level-3": "Suggestions par IA",
         "no-subscription": "Pas d'abonnement défini.",
         "subscription-time": "Abonnement Time:",
         "subscription-active": "Statut de l'abonnement:"

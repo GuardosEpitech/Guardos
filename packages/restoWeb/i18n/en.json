@@ -448,10 +448,11 @@
         "free-description": "Use the basic features for free",
         "basic": "Basic Subscription",
         "description-low-level-1": "remove ads",
-        "description-low-level-2": "personalized menu",
+        "description-low-level-2": "dynamic menus",
         "premium": "Premium Subscription",
         "description-high-level-1": "prioritize feature requests",
-        "description-high-level-2": "detailed insights",
+        "description-high-level-2": "deeper insights",
+        "description-high-level-3": "AI hints",
         "no-subscription": "No Abonnement set.",
         "subscription-time": "Abonnement Time:",
         "subscription-active": "Abonnement Status:"
